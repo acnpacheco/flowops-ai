@@ -1961,7 +1961,7 @@ function upd(){
     {l:'Aderência',  v:h.adherence,     c:'#185FA5'},
     {l:'Lead Time',  v:h.ltScore,       c:'#059669'},
     {l:'Bloqueios',  v:h.blockScore,    c:'#d97706'},
-    {l:'Carryover',  v:h.carryScore,    c:'#7c3aed'},
+    {l:'Transbordo', v:h.carryScore,    c:'#7c3aed'},
     {l:'Estabilidade',v:h.stabilityScore,c:'#dc2626'},
   ].map(r=>`<div class="hb-bar-row"><span class="hb-bar-lbl">${r.l}</span><div class="hb-bar-wrap"><div class="hb-bar-fill" style="width:${r.v}%;background:${r.c}"></div></div><span class="hb-bar-val" style="color:${r.c}">${r.v}</span></div>`).join('');
 
@@ -2215,7 +2215,7 @@ function calcHealth(q){
   // 3. Bloqueios / transbordos (20%)
   const blockScore=Math.max(0,Math.round(100-(totTr/totPlan*100)*2.5));
 
-  // 4. Volume de transbordos — carryover rate (20%)
+  // 4. Volume de transbordos — taxa de transbordo (20%)
   const carryScore=Math.max(0,Math.round(100-(totTr/totDel*100)));
 
   // 5. Estabilidade DORA + falhas (15%)
@@ -6231,7 +6231,7 @@ const GL={
     insight:'Times que usam reserva operacional têm velocidade mais estável e previsível. A reserva não reduz a entrega — ela protege a qualidade do que é entregue.',
     why:'A ausência de buffer é o erro mais comum em planejamentos ágeis. É impossível eliminar imprevistos, mas é possível planejar para absorvê-los com elegância.'},
 
-  transbordoSprint:{name:'Transbordo de Sprint',namePT:'Sprint Spillover / Carryover',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  transbordoSprint:{name:'Transbordo de Sprint',namePT:'Sprint Spillover / Transbordo',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Itens comprometidos na sprint que não foram concluídos até o Sprint Review e precisam ser replanejados para a próxima sprint.',
     what:'Transbordo (ou Spillover) ocorre quando um item comprometido na Sprint Planning não é entregue até o encerramento da sprint. Esses itens devem ser reavaliados pelo PO e podem ou não ser incluídos na próxima sprint.',
     measures:'A eficácia do processo de planejamento e a previsibilidade do time — um transbordo frequente indica super-comprometimento ou estimativas imprecisas.',
