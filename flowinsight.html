@@ -221,6 +221,9 @@
   /* Carga de Falhas v2 */
   .cf-header{margin-bottom:14px}
   .cf-title{font-size:15px;font-weight:600;color:#111827;margin:0 0 3px}
+  .cf-title-row{display:flex;align-items:center;gap:8px}
+  .cf-title-row .cf-title{margin:0}
+  .cf-title-dot{font-size:14px;line-height:1}
   .cf-sub{font-size:11px;color:#9ca3af;margin:0}
   .cfst{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
   .cfst-ok{background:#dcfce7;color:#166534}
@@ -661,7 +664,7 @@
   <!-- Visão Geral -->
   <div id="pv" class="fp on">
     <div class="cf-header">
-      <p class="cf-title">Visão geral</p>
+      <div class="cf-title-row"><span class="cf-title-dot" id="cftd-pv">🟢</span><p class="cf-title">Visão geral</p></div>
       <p class="cf-sub">Panorama executivo das principais métricas de fluxo, qualidade e eficiência operacional — visão consolidada da Sprint atual.</p>
     </div>
 
@@ -680,7 +683,7 @@
     <div class="exec-summary">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
         <i class="ti ti-brain" style="color:#185FA5;font-size:16px"></i>
-        <span style="font-size:13px;font-weight:600;color:#111827">Resumo Executivo</span>
+        <span style="font-size:13px;font-weight:600;color:#111827">Resumo executivo</span>
         <span style="font-size:10px;color:#9ca3af;margin-left:auto">Gerado automaticamente com base nos dados selecionados</span>
       </div>
       <p id="execSummaryText" style="font-size:12.5px;color:#374151;line-height:1.85;margin:0">—</p>
@@ -720,7 +723,7 @@
         <span class="kg-dot" id="kgdot-qual">🟢</span>
         Qualidade
       </div>
-      <span class="kg-desc">A qualidade entregue é sustentável ou exige intervenção agora?</span>
+      <span class="kg-desc">A qualidade entregue é sustentável ou exige intervenção imediata?</span>
       <div class="kgrid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:0">
         <div class="kcard" id="kc4"><div class="kcard-hd"><p class="klbl">Bugs Abertos</p><button class="gh-btn" onclick="openMetricDetail('bo')" title="Ver no Glossário">?</button><span id="ks4"></span></div><p class="kval" id="k4">—</p><p class="kdlt" id="kd4"></p><p class="ktrend" id="kt4"></p><div class="kmeta" id="km4"></div></div>
         <div class="kcard kc-placeholder"><div class="kcard-hd"><p class="klbl">Bugs em Produção</p></div><p class="kval">—</p><div><span class="kbadge-soon">Em breve</span></div></div>
@@ -789,7 +792,7 @@
   <!-- Métricas de Fluxo -->
   <div id="pf" class="fp">
     <div class="cf-header">
-      <p class="cf-title">Métricas de fluxo</p>
+      <div class="cf-title-row"><span class="cf-title-dot" id="cftd-pf">🟢</span><p class="cf-title">Métricas de fluxo</p></div>
       <p class="cf-sub">Indicadores de eficiência do fluxo de trabalho, previsibilidade e capacidade de entrega — acompanhamento Sprint a Sprint.</p>
     </div>
 
@@ -880,7 +883,7 @@
   <!-- DORA -->
   <div id="pd" class="fp">
     <div class="cf-header">
-      <p class="cf-title">Eficiência de deploys</p>
+      <div class="cf-title-row"><span class="cf-title-dot" id="cftd-pd">🟢</span><p class="cf-title">Eficiência de deploys</p></div>
       <p class="cf-sub">Monitore a eficiência das entregas por meio da frequência de deploy, lead time para mudanças, taxa de falhas e tempo médio de recuperação — visão Sprint a Sprint baseada nas métricas DORA.</p>
     </div>
 
@@ -890,7 +893,7 @@
         <span class="kg-dot" id="kgdot-pd-deploy">🟢</span>
         Eficiência de deploys
       </div>
-      <span class="kg-desc">As entregas em produção estão ocorrendo com velocidade, estabilidade e segurança?</span>
+      <span class="kg-desc">Nossa performance de engenharia está alinhada às boas práticas do mercado?</span>
     </div>
 
     <!-- KPI Cards -->
@@ -977,7 +980,7 @@
   <!-- Saúde da Qualidade -->
   <div id="pc" class="fp">
     <div class="cf-header">
-      <p class="cf-title">Saúde da qualidade</p>
+      <div class="cf-title-row"><span class="cf-title-dot" id="cftd-pc">🟢</span><p class="cf-title">Saúde da qualidade</p></div>
       <p class="cf-sub">Indicadores de defeitos, retrabalho e eficiência operacional — Sprint a Sprint · 10 métricas consolidadas</p>
     </div>
 
@@ -1114,11 +1117,11 @@
     </div>
     <!-- Sub-tabs -->
     <div class="as-tabs">
-      <button class="as-tab on" onclick="asTab(this,'as-resumo')"><i class="ti ti-layout-dashboard" style="font-size:13px"></i> Resumo Executivo</button>
+      <button class="as-tab on" onclick="asTab(this,'as-resumo')"><i class="ti ti-layout-dashboard" style="font-size:13px"></i> Resumo executivo</button>
       <button class="as-tab" onclick="asTab(this,'as-bd')"><i class="ti ti-chart-line" style="font-size:13px"></i> Burndown &amp; Burnup</button>
-      <button class="as-tab" onclick="asTab(this,'as-forecast')"><i class="ti ti-chart-arrows-vertical" style="font-size:13px"></i> Forecast da Sprint</button>
+      <button class="as-tab" onclick="asTab(this,'as-forecast')"><i class="ti ti-chart-arrows-vertical" style="font-size:13px"></i> Forecast da sprint</button>
       <button class="as-tab" onclick="asTab(this,'as-cap')"><i class="ti ti-users" style="font-size:13px"></i> Capacidade</button>
-      <button class="as-tab" onclick="asTab(this,'as-plxr')"><i class="ti ti-scale" style="font-size:13px"></i> Planejado × Realizado</button>
+      <button class="as-tab" onclick="asTab(this,'as-plxr')"><i class="ti ti-scale" style="font-size:13px"></i> Planejado × realizado</button>
       <button class="as-tab" onclick="asTab(this,'as-tl')"><i class="ti ti-timeline" style="font-size:13px"></i> Timeline</button>
       <button class="as-tab" onclick="asTab(this,'as-al')"><i class="ti ti-bell-ringing" style="font-size:13px"></i> Alertas</button>
     </div>
@@ -1190,7 +1193,7 @@
       <p class="cf-sub">Geração de relatórios de Sprint Planning, Forecast, Daily Digest e Encerramento, com apoio de Inteligência Artificial.</p>
     </div>
     <div class="snav">
-      <button class="stab on" onclick="sr(this,'ssp')"><i class="ti ti-clipboard-list"></i> Sprint Planning</button>
+      <button class="stab on" onclick="sr(this,'ssp')"><i class="ti ti-clipboard-list"></i> Sprint planning</button>
       <button class="stab" onclick="sr(this,'sm')"><i class="ti ti-chart-arrows-vertical"></i> Forecast</button>
       <button class="stab" onclick="sr(this,'sd')"><i class="ti ti-messages"></i> Daily digest</button>
       <button class="stab" onclick="sr(this,'se')"><i class="ti ti-flag-check"></i> Final de sprint</button>
@@ -1201,7 +1204,7 @@
     <div id="ssp" class="sp on">
       <div class="sr-card">
         <div class="sr-h">
-          <p class="sr-ht"><i class="ti ti-clipboard-list" style="color:#185FA5"></i> Sprint Planning · Q2-S6</p>
+          <p class="sr-ht"><i class="ti ti-clipboard-list" style="color:#185FA5"></i> Sprint planning · Q2-S6</p>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
             <span class="sr-meta">Time Alpha · 15/06/2026</span>
             <button class="btn-md" onclick="exportMd('sprint-planning')"><i class="ti ti-markdown" style="font-size:12px"></i> Exportar Markdown</button>
@@ -1762,7 +1765,7 @@
   <!-- Calendário Corporativo -->
   <div id="pcal" class="fp">
     <div class="cc ccal-header">
-      <p class="ccal-title"><i class="ti ti-calendar-stats" style="color:#185FA5"></i> Calendário Corporativo</p>
+      <p class="ccal-title"><i class="ti ti-calendar-stats" style="color:#185FA5"></i> Calendário corporativo</p>
       <p class="ccal-sub">Planejamento anual de Quarters, Sprints, ritos ágeis e janelas de implantação</p>
       <div class="ccal-tabs">
         <button class="ccal-tab on" onclick="calTab(this,'quarters')"><i class="ti ti-layout-grid" style="font-size:13px"></i> Quarters</button>
@@ -1776,7 +1779,7 @@
   <!-- Glossário de Métricas -->
   <div id="pg" class="fp">
     <div class="cc gl-header">
-      <p class="gl-title"><i class="ti ti-books" style="color:#185FA5;margin-right:6px"></i>Glossário de Métricas</p>
+      <p class="gl-title"><i class="ti ti-books" style="color:#185FA5;margin-right:6px"></i>Glossário de métricas</p>
       <p class="gl-sub">Definições, fórmulas, interpretações e boas práticas para todas as métricas do FlowOps AI</p>
       <div class="gl-search-row">
         <input class="gl-search" id="glSearch" type="text" placeholder="Buscar métrica… ex: Lead Time, WIP, MTTR, Bug" oninput="renderGlossario()">
@@ -2034,6 +2037,13 @@ function updateKpiGroupDots(){
   setDot('kgdot-fluxo', g([0,5,6]));
   setDot('kgdot-cap',   g([1,2,3]));
   setDot('kgdot-qual',  g([4]));
+  setConsolidatedDot('cftd-pv', ['kgdot-fluxo','kgdot-cap','kgdot-qual']);
+}
+
+// Sinaleira consolidada do cabeçalho principal = pior estado entre os dots de grupo da página
+function setConsolidatedDot(titleDotId, groupDotIds){
+  const emojis=groupDotIds.map(id=>{const el=document.getElementById(id);return el?el.textContent:'🟢';});
+  setGroupDot(titleDotId, emojis);
 }
 
 // Sinaleira dos agrupadores de Saúde da Qualidade, a partir das classes cfst-ok/warn/bad de cada card
@@ -2043,6 +2053,7 @@ function updateCfGroupDots(){
   const setDot=(id,emojis)=>{const el=document.getElementById(id);if(el)el.textContent=groupSinaleira(emojis);};
   setDot('kgdot-risco',      g(['crit','esc','bo','reo','bc']));
   setDot('kgdot-eficiencia', g(['rw','aging','res','trend','qhs']));
+  setConsolidatedDot('cftd-pc', ['kgdot-risco','kgdot-eficiencia']);
 }
 
 function setKpi(id,val,delta,unit,invGood){
@@ -2542,7 +2553,7 @@ function renderQuarterReport(){
   // HEADER
   html+=`<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:16px">
     <div>
-      <h2 style="font-size:18px;font-weight:700;color:#111827;margin:0 0 4px">Relatório de Encerramento — ${q} 2026</h2>
+      <h2 style="font-size:18px;font-weight:700;color:#111827;margin:0 0 4px">Relatório de encerramento — ${q} 2026</h2>
       <p style="font-size:12px;color:#6b7280;margin:0">FlowOps AI · Gestão Educacional · ${qDates[q]}</p>
     </div>
     <span class="q-status ${stateClass[state]}"><i class="ti ${stateIcon[state]}"></i>${qClose[q]}</span>
@@ -2592,7 +2603,7 @@ function renderQuarterReport(){
   </div>`;
 
   // SEC 1 — Resumo Executivo
-  html+=sect(1,'Resumo Executivo','Visão consolidada do desempenho do Quarter para a liderança.',
+  html+=sect(1,'Resumo executivo','Visão consolidada do desempenho do Quarter para a liderança.',
     `<div class="kgrid" style="margin-bottom:12px">
       <div class="kcard"><p class="klbl">Itens entregues</p><p class="kval" style="font-size:20px">${totDel}/${totPlan}</p></div>
       <div class="kcard"><p class="klbl">Taxa de entrega</p><p class="kval" style="font-size:20px">${h.adherence}%</p></div>
@@ -3180,7 +3191,7 @@ function renderAsPlxR(d,i,q){
   ];
 
   el.innerHTML=`<div class="cc">
-    <p class="ct" style="margin-bottom:12px">⚖️ Planejado × Realizado — ${q} · S${i+1}</p>
+    <p class="ct" style="margin-bottom:12px">⚖️ Planejado × realizado — ${q} · S${i+1}</p>
     <div style="overflow-x:auto">
       <table style="width:100%;border-collapse:collapse;font-size:12px">
         <thead><tr style="background:#f9fafb">
@@ -3980,7 +3991,7 @@ Sprint com foco técnico alto. Atenção especial à dependência com Infra Squa
 
 ---
 
-## 📊 Resumo Executivo
+## 📊 Resumo executivo
 
 Sprint ${spLabel} planejada com ${pl} pontos de capacidade e 5 itens priorizados. Risco principal identificado: dependência de API externa (Infra Squad). Mitigação ativa em curso. Meta de entrega: ≥ 85% do escopo comprometido.
 
@@ -4082,7 +4093,7 @@ function _mdForecast(team,q,sp,spLabel,spDate,now,d,i){
 
 ---
 
-## 📊 Resumo Executivo
+## 📊 Resumo executivo
 
 Forecast de ${forecast}% para ${spLabel}. ${done} de ${pl} itens concluídos na semana 1. Principal risco: blocker de API externa com o time de Infra. Plano de contingência ativo. Deploy planejado para 25/06 em janela recomendada.
 
@@ -4162,7 +4173,7 @@ ${tr>0?`- **US-007** — Exportação PDF (${tr} item(s) transbordado(s) para pr
 
 ---
 
-## 📊 Resumo Executivo
+## 📊 Resumo executivo
 
 Sprint ${spLabel} encerrada com ${pct}% de aderência ao planejado (${en}/${pl} itens). ${tr===0?'Zero transbordos — excelente previsibilidade.':tr+' item(s) transbordado(s) para a próxima sprint.'} Principais aprendizados incorporados ao processo via plano de ação da retrospectiva.
 
@@ -4238,7 +4249,7 @@ function _mdDailyDigest(team,q,sp,spLabel,spDate,now,d,i){
 
 ---
 
-## 📊 Resumo Executivo
+## 📊 Resumo executivo
 
 Daily de ${now} com 1 blocker ativo (US-007 · licença de lib). 6 itens em andamento, 3 on-track. Risco novo identificado: prazo de refinamento de US-012. Encaminhamentos agendados para resolução hoje.
 
@@ -4328,7 +4339,7 @@ ${d.sp.map((s,i)=>`| ${s} | ${d.pl[i]} | ${d.en[i]} | ${d.tr[i]} | ${d.p85[i]}d 
 
 ---
 
-## 📊 Resumo Executivo
+## 📊 Resumo executivo
 
 ${q} 2026 encerrado com índice de saúde de ${h.total}/100 (${h.total>=85?'Elite':h.total>=70?'High':h.total>=55?'Medium':'Low'}). Taxa de entrega consolidada: ${pct}%. ${sprintsMet} de ${n} sprints atingiram a meta de 85%. Lead Time P85 evoluiu de ${d.p85[0]}d para ${d.p85[n-1]}d (redução de ${Math.round((1-d.p85[n-1]/d.p85[0])*100)}%). Deploy Frequency passou de ${d.df[0].toFixed(1)} para ${d.df[n-1].toFixed(1)}/semana.
 
@@ -4465,6 +4476,7 @@ function renderDora(){
     m.emoji=(tier.c==='t-elite'||tier.c==='t-high')?'🟢':tier.c==='t-med'?'🟡':'🔴';
   });
   setGroupDot('kgdot-pd-deploy', metrics.map(m=>m.emoji));
+  setConsolidatedDot('cftd-pd', ['kgdot-pd-deploy']);
   renderDoraBands(d,i);
   renderDoraImpact(d,i);
   renderDoraInsight(d,i);
@@ -4654,6 +4666,7 @@ function renderFlowMetrics(){
   });
   setGroupDot('kgdot-pf-fluxo', [fkData[0].emoji,fkData[1].emoji,fkData[2].emoji,fkData[4].emoji]);
   setGroupDot('kgdot-pf-cap',   [fkData[3].emoji]);
+  setConsolidatedDot('cftd-pf', ['kgdot-pf-fluxo','kgdot-pf-cap']);
 
   // Bottleneck alert badge
   const ba=document.getElementById('botAlert');
