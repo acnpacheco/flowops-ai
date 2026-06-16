@@ -47,10 +47,10 @@
   .kup{color:#059669}.kdn{color:#dc2626}.knu{color:#9ca3af}
   /* KPI Card Groups */
   .kg-section{margin-bottom:10px}
-  .kg-label{font-size:10px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.07em;padding:6px 2px 8px;border-bottom:2px solid #e5e7eb;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .kg-label{font-size:11px;font-weight:700;color:#374151;letter-spacing:.02em;padding:6px 2px 2px;border-bottom:none;margin-bottom:0;display:flex;align-items:center;gap:6px}
   .kg-label-ico{font-size:14px}
-  .kg-desc{font-size:10px;font-weight:400;color:#9ca3af;letter-spacing:0;text-transform:none;margin-left:4px}
-  .kg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .kg-desc{display:block;font-size:10px;font-weight:400;color:#9ca3af;letter-spacing:0;text-transform:none;margin:2px 0 8px;padding-bottom:6px;border-bottom:2px solid #e5e7eb}
+  .kg-dot{font-size:11px;flex-shrink:0;line-height:1}
   /* Health Score Banner */
   .hbanner{background:#fff;border-radius:12px;border:1px solid #e5e5e3;border-left:4px solid #e5e5e3;padding:14px 18px;display:flex;align-items:center;gap:18px;margin-bottom:16px;transition:all .25s;flex-wrap:wrap}
   .hbanner.hb-ok{border-left-color:#059669;background:#f0fdf4}
@@ -623,7 +623,7 @@
       <option value="Q4">Q4 2026 — Lead Time 64d</option>
     </select>
     <select id="sS" onchange="upd()">
-      <option value="5">S6 (atual)</option>
+      <option value="5">🟢 S6</option>
       <option value="4">S5</option>
       <option value="3">S4</option>
       <option value="2">S3</option>
@@ -639,21 +639,25 @@
 <nav class="main-nav">
   <button class="ntab on" onclick="tab(this,'v')"><i class="ti ti-layout-dashboard"></i> Visão geral</button>
   <button class="ntab" onclick="tab(this,'f')"><i class="ti ti-wave-sine"></i> Métricas de fluxo</button>
-  <button class="ntab" onclick="tab(this,'d')"><i class="ti ti-rocket"></i> Eficiência de Deploys</button>
-  <button class="ntab" onclick="tab(this,'c')"><i class="ti ti-shield-check"></i> Saúde da Qualidade</button>
+  <button class="ntab" onclick="tab(this,'d')"><i class="ti ti-rocket"></i> Eficiência de deploys</button>
+  <button class="ntab" onclick="tab(this,'c')"><i class="ti ti-shield-check"></i> Saúde da qualidade</button>
   <button class="ntab" onclick="tab(this,'r')"><i class="ti ti-file-analytics"></i> Relatório de quarter</button>
   <button class="ntab" onclick="tab(this,'as')"><i class="ti ti-activity"></i> Acompanhamento</button>
   <button class="ntab" onclick="tab(this,'s')"><i class="ti ti-clipboard-text"></i> Status reports</button>
   <button class="ntab" onclick="tab(this,'m')"><i class="ti ti-users-group"></i> Multi-time</button>
   <button class="ntab" onclick="tab(this,'cal')"><i class="ti ti-calendar-stats"></i> Calendário</button>
   <button class="ntab" onclick="tab(this,'g')"><i class="ti ti-books"></i> Glossário</button>
-  <button class="ntab" onclick="tab(this,'ab')"><i class="ti ti-user-circle"></i> Sobre a Autora</button>
+  <button class="ntab" onclick="tab(this,'ab')"><i class="ti ti-user-circle"></i> Sobre a autora</button>
 </nav>
 
 <main class="content">
 
   <!-- Visão Geral -->
   <div id="pv" class="fp on">
+    <div class="cf-header">
+      <p class="cf-title">Visão geral</p>
+      <p class="cf-sub">Panorama executivo das principais métricas de fluxo, qualidade e eficiência operacional — visão consolidada da Sprint atual.</p>
+    </div>
 
     <!-- 1. Saúde do Time — topo da tela -->
     <div id="healthBanner" class="hbanner" style="margin-bottom:16px">
@@ -679,10 +683,10 @@
     <!-- 3. Saúde do Fluxo -->
     <div class="kg-section">
       <div class="kg-label">
-        <span class="kg-dot" style="background:#185FA5"></span>
-        Saúde do Fluxo
-        <span class="kg-desc">— Como está o fluxo de trabalho?</span>
+        <span class="kg-dot" id="kgdot-fluxo">🟢</span>
+        Saúde do fluxo
       </div>
+      <span class="kg-desc">Como está o fluxo de trabalho?</span>
       <div class="kgrid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:0">
         <div class="kcard" id="kc0"><div class="kcard-hd"><p class="klbl">Lead Time P85</p><button class="gh-btn" onclick="openMetricDetail('lt')" title="Ver no Glossário">?</button><span id="ks0"></span></div><p class="kval" id="k0">—</p><p class="kdlt" id="kd0"></p><p class="ktrend" id="kt0"></p><div class="kmeta" id="km0"></div></div>
         <div class="kcard" id="kc5"><div class="kcard-hd"><p class="klbl">WIP Atual</p><button class="gh-btn" onclick="openMetricDetail('wip')" title="Ver no Glossário">?</button><span id="ks5"></span></div><p class="kval" id="k5">—</p><p class="kdlt" id="kd5"></p><p class="ktrend" id="kt5"></p><div class="kmeta" id="km5"></div></div>
@@ -693,10 +697,10 @@
     <!-- 4. Capacidade de Entrega -->
     <div class="kg-section">
       <div class="kg-label">
-        <span class="kg-dot" style="background:#059669"></span>
-        Capacidade de Entrega
-        <span class="kg-desc">— Como isso impacta a entrega?</span>
+        <span class="kg-dot" id="kgdot-cap">🟢</span>
+        Capacidade de entrega
       </div>
+      <span class="kg-desc">Como isso impacta a entrega?</span>
       <div class="kgrid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:0">
         <div class="kcard" id="kc1"><div class="kcard-hd"><p class="klbl">Throughput</p><button class="gh-btn" onclick="openMetricDetail('tp')" title="Ver no Glossário">?</button><span id="ks1"></span></div><p class="kval" id="k1">—</p><p class="kdlt" id="kd1"></p><p class="ktrend" id="kt1"></p><div class="kmeta" id="km1"></div></div>
         <div class="kcard" id="kc2"><div class="kcard-hd"><p class="klbl">% Entrega</p><span id="ks2"></span></div><p class="kval" id="k2">—</p><p class="kdlt" id="kd2"></p><p class="ktrend" id="kt2"></p><div class="kmeta" id="km2"></div></div>
@@ -707,10 +711,10 @@
     <!-- 5. Qualidade — com placeholders para futuros indicadores -->
     <div class="kg-section" style="margin-bottom:12px">
       <div class="kg-label">
-        <span class="kg-dot" style="background:#dc2626"></span>
+        <span class="kg-dot" id="kgdot-qual">🟢</span>
         Qualidade
-        <span class="kg-desc">— Qual o impacto na qualidade do produto?</span>
       </div>
+      <span class="kg-desc">Qual o impacto na qualidade do produto?</span>
       <div class="kgrid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:0">
         <div class="kcard" id="kc4"><div class="kcard-hd"><p class="klbl">Bugs Abertos</p><button class="gh-btn" onclick="openMetricDetail('bo')" title="Ver no Glossário">?</button><span id="ks4"></span></div><p class="kval" id="k4">—</p><p class="kdlt" id="kd4"></p><p class="ktrend" id="kt4"></p><div class="kmeta" id="km4"></div></div>
         <div class="kcard kc-placeholder"><div class="kcard-hd"><p class="klbl">Bugs em Produção</p></div><p class="kval">—</p><div><span class="kbadge-soon">Em breve</span></div></div>
@@ -778,6 +782,10 @@
 
   <!-- Métricas de Fluxo -->
   <div id="pf" class="fp">
+    <div class="cf-header">
+      <p class="cf-title">Métricas de fluxo</p>
+      <p class="cf-sub">Indicadores de eficiência do fluxo de trabalho, previsibilidade e capacidade de entrega — acompanhamento Sprint a Sprint.</p>
+    </div>
 
     <!-- KPI cards de fluxo -->
     <div class="fkgrid">
@@ -838,7 +846,7 @@
   <!-- DORA -->
   <div id="pd" class="fp">
     <div class="cf-header">
-      <p class="cf-title">Eficiência de Deploys</p>
+      <p class="cf-title">Eficiência de deploys</p>
       <p class="cf-sub">Monitore a eficiência das entregas por meio da frequência de deploy, lead time para mudanças, taxa de falhas e tempo médio de recuperação — visão Sprint a Sprint baseada nas métricas DORA.</p>
     </div>
 
@@ -916,12 +924,18 @@
   <!-- Saúde da Qualidade -->
   <div id="pc" class="fp">
     <div class="cf-header">
-      <p class="cf-title">Saúde da Qualidade</p>
+      <p class="cf-title">Saúde da qualidade</p>
       <p class="cf-sub">Indicadores de defeitos, retrabalho e eficiência operacional — Sprint a Sprint · 10 métricas consolidadas</p>
     </div>
 
     <!-- ── Linha 1: Riscos Imediatos ── -->
-    <div class="cf-row-hdr">Linha 1 — Riscos Imediatos</div>
+    <div class="kg-section">
+      <div class="kg-label">
+        <span class="kg-dot" id="kgdot-risco">🟢</span>
+        Riscos imediatos
+      </div>
+      <span class="kg-desc">Quais indicadores exigem atenção imediata?</span>
+    </div>
     <div class="kgrid">
       <div class="kcard cf-clickable" id="cfcard-crit" onclick="openCfDetail('crit')" title="Bugs classificados como Crítico ou Blocker ainda não resolvidos. Meta: 0. Fórmula: ~25–40% dos bugs abertos com retrabalho elevado. Clique para ver detalhes.">
         <div class="kcard-hd"><p class="klbl">🚨 Bugs Críticos</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('bugcrit')" title="Ver no Glossário">?</button><span id="cfst-crit" class="cfst cfst-warn">—</span></div>
@@ -956,7 +970,13 @@
     </div>
 
     <!-- ── Linha 2: Eficiência Operacional ── -->
-    <div class="cf-row-hdr">Linha 2 — Eficiência Operacional</div>
+    <div class="kg-section">
+      <div class="kg-label">
+        <span class="kg-dot" id="kgdot-eficiencia">🟢</span>
+        Eficiência operacional
+      </div>
+      <span class="kg-desc">Como está a eficiência do time na resolução de defeitos?</span>
+    </div>
     <div class="kgrid">
       <div class="kcard cf-clickable" id="cfcard-rw" onclick="openCfDetail('rw')" title="% do esforço gasto em correções e refações. Meta: ≤ 10%. Fórmula: Itens reabertos ÷ Total entregues × 100. Clique para ver detalhes.">
         <div class="kcard-hd"><p class="klbl">♻️ Retrabalho</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('txdef')" title="Ver no Glossário">?</button><span id="cfst-rw" class="cfst cfst-warn">—</span></div>
@@ -1025,6 +1045,10 @@
 
   <!-- Acompanhamento da Sprint -->
   <div id="pas" class="fp">
+    <div class="cf-header">
+      <p class="cf-title">Acompanhamento</p>
+      <p class="cf-sub">Acompanhamento diário da Sprint — burndown, burnup, forecast, capacidade e riscos em tempo real.</p>
+    </div>
     <!-- Sub-tabs -->
     <div class="as-tabs">
       <button class="as-tab on" onclick="asTab(this,'as-resumo')"><i class="ti ti-layout-dashboard" style="font-size:13px"></i> Resumo Executivo</button>
@@ -1086,6 +1110,10 @@
 
   <!-- Relatório de Quarter -->
   <div id="pr" class="fp">
+    <div class="cf-header">
+      <p class="cf-title">Relatório de quarter</p>
+      <p class="cf-sub">Consolidação dos resultados do Quarter, tendências, indicadores estratégicos e evolução das entregas.</p>
+    </div>
     <div style="display:flex;justify-content:flex-end;padding:4px 0 8px">
       <button class="btn-md" onclick="exportMd('quarter')"><i class="ti ti-markdown" style="font-size:12px"></i> Exportar Markdown</button>
     </div>
@@ -1094,6 +1122,10 @@
 
   <!-- Status Reports -->
   <div id="ps" class="fp">
+    <div class="cf-header">
+      <p class="cf-title">Status reports</p>
+      <p class="cf-sub">Geração de relatórios de Sprint Planning, Forecast, Daily Digest e Encerramento, com apoio de Inteligência Artificial.</p>
+    </div>
     <div class="snav">
       <button class="stab on" onclick="sr(this,'ssp')"><i class="ti ti-clipboard-list"></i> Sprint Planning</button>
       <button class="stab" onclick="sr(this,'sm')"><i class="ti ti-chart-arrows-vertical"></i> Forecast</button>
@@ -1872,8 +1904,8 @@ function updateSprintOptions(){
   for(let s=5;s>=0;s--){
     const opt=document.createElement('option');
     opt.value=s;
-    const tag=(q===CURRENT_Q&&s===CURRENT_S)?' (atual)':'';
-    opt.textContent=`S${s+1} · ${dates[s]}${tag}`;
+    const tag=(q===CURRENT_Q&&s===CURRENT_S)?'🟢 ':'';
+    opt.textContent=`${tag}S${s+1} · ${dates[s]}`;
     sel.appendChild(opt);
   }
   if([...sel.options].some(o=>o.value===cur)) sel.value=cur;
@@ -1918,6 +1950,29 @@ function updateKpi(idx,val,arr,si,meta,metaUnit,low,dispUnit,displayVal){
   document.getElementById('kc'+idx).className='kcard '+(ok?'kc-ok':near?'kc-warn':'kc-bad');
 }
 
+// Sinaleira do agrupador = estado mais crítico entre os indicadores do grupo (🔴 > 🟡 > 🟢)
+function groupSinaleira(emojis){
+  if(emojis.includes('🔴')) return '🔴';
+  if(emojis.includes('🟡')) return '🟡';
+  return '🟢';
+}
+function updateKpiGroupDots(){
+  const g=(ids)=>ids.map(idx=>{const el=document.getElementById('ks'+idx);return el?el.textContent:'🟢';});
+  const setDot=(id,emojis)=>{const el=document.getElementById(id);if(el)el.textContent=groupSinaleira(emojis);};
+  setDot('kgdot-fluxo', g([0,5,6]));
+  setDot('kgdot-cap',   g([1,2,3]));
+  setDot('kgdot-qual',  g([4]));
+}
+
+// Sinaleira dos agrupadores de Saúde da Qualidade, a partir das classes cfst-ok/warn/bad de cada card
+function cfstToEmoji(cls){return cls.includes('cfst-bad')?'🔴':cls.includes('cfst-warn')?'🟡':'🟢';}
+function updateCfGroupDots(){
+  const g=(ids)=>ids.map(id=>{const el=document.getElementById('cfst-'+id);return el?cfstToEmoji(el.className):'🟢';});
+  const setDot=(id,emojis)=>{const el=document.getElementById(id);if(el)el.textContent=groupSinaleira(emojis);};
+  setDot('kgdot-risco',      g(['crit','esc','bo','reo','bc']));
+  setDot('kgdot-eficiencia', g(['rw','aging','res','trend','qhs']));
+}
+
 function setKpi(id,val,delta,unit,invGood){
   document.getElementById(id).textContent=val;
   const el=document.getElementById('kd'+id.slice(1));
@@ -1948,6 +2003,7 @@ function upd(){
   updateKpi(5,wipArr[i],wipArr,i,METAS.wip,'',true,'');
   updateKpi(6,agArr[i],agArr,i,METAS.aging,'',true,'',
     agArr[i]>0?`${agArr[i]}${aboveP85>0?' (⚠ '+aboveP85+' >p85)':''}`:' 0');
+  updateKpiGroupDots();
 
   // Transbordo summary line
   const trEl=document.getElementById('trSummary');
@@ -3619,9 +3675,9 @@ function renderMultiTeam(){
   }).join('');
 
   document.getElementById('pm').innerHTML=`
-    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px">
-      <p style="font-size:16px;font-weight:600;color:#111827">Comparativo Multi-Time</p>
-      <p style="font-size:12px;color:#9ca3af">${q} · Sprint ${sp}</p>
+    <div class="cf-header">
+      <p class="cf-title">Multi-time</p>
+      <p class="cf-sub">Comparativo entre squads para apoiar decisões estratégicas e identificar oportunidades de melhoria contínua — ${q} · Sprint ${sp}.</p>
     </div>
 
     <p class="mt-sec">Índice de saúde do quarter</p>
@@ -4724,6 +4780,7 @@ function renderCargaFalhas(){
   const qhsMc=qhsPct>=80?'#059669':qhsPct>=60?'#d97706':'#dc2626';
   document.getElementById('cfm-qhs').innerHTML=`<div class="dmeta-row"><span>Índice de qualidade</span><span style="font-weight:600;color:${qhsMc}">${qhsPct}%</span></div><div class="dmeta-track"><div class="dmeta-fill" style="width:${qhsPct}%;background:${qhsMc}"></div></div>`;
 
+  updateCfGroupDots();
   renderCfOrigin(d,i,esc);
   renderCfCauses(d,i,esc,reo,crit,aging,res);
   renderCfActions(d,i,esc,reo,crit,aging,res,qhs);
