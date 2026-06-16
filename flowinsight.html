@@ -686,7 +686,7 @@
         <span class="kg-dot" id="kgdot-fluxo">🟢</span>
         Saúde do fluxo
       </div>
-      <span class="kg-desc">Como está o fluxo de trabalho?</span>
+      <span class="kg-desc">O fluxo está sustentável o suficiente para manter o ritmo de entregas?</span>
       <div class="kgrid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:0">
         <div class="kcard" id="kc0"><div class="kcard-hd"><p class="klbl">Lead Time P85</p><button class="gh-btn" onclick="openMetricDetail('lt')" title="Ver no Glossário">?</button><span id="ks0"></span></div><p class="kval" id="k0">—</p><p class="kdlt" id="kd0"></p><p class="ktrend" id="kt0"></p><div class="kmeta" id="km0"></div></div>
         <div class="kcard" id="kc5"><div class="kcard-hd"><p class="klbl">WIP Atual</p><button class="gh-btn" onclick="openMetricDetail('wip')" title="Ver no Glossário">?</button><span id="ks5"></span></div><p class="kval" id="k5">—</p><p class="kdlt" id="kd5"></p><p class="ktrend" id="kt5"></p><div class="kmeta" id="km5"></div></div>
@@ -700,7 +700,7 @@
         <span class="kg-dot" id="kgdot-cap">🟢</span>
         Capacidade de entrega
       </div>
-      <span class="kg-desc">Como isso impacta a entrega?</span>
+      <span class="kg-desc">Temos capacidade para entregar o planejado com previsibilidade?</span>
       <div class="kgrid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:0">
         <div class="kcard" id="kc1"><div class="kcard-hd"><p class="klbl">Throughput</p><button class="gh-btn" onclick="openMetricDetail('tp')" title="Ver no Glossário">?</button><span id="ks1"></span></div><p class="kval" id="k1">—</p><p class="kdlt" id="kd1"></p><p class="ktrend" id="kt1"></p><div class="kmeta" id="km1"></div></div>
         <div class="kcard" id="kc2"><div class="kcard-hd"><p class="klbl">% Entrega</p><span id="ks2"></span></div><p class="kval" id="k2">—</p><p class="kdlt" id="kd2"></p><p class="ktrend" id="kt2"></p><div class="kmeta" id="km2"></div></div>
@@ -714,7 +714,7 @@
         <span class="kg-dot" id="kgdot-qual">🟢</span>
         Qualidade
       </div>
-      <span class="kg-desc">Qual o impacto na qualidade do produto?</span>
+      <span class="kg-desc">A qualidade entregue é sustentável ou exige intervenção agora?</span>
       <div class="kgrid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:0">
         <div class="kcard" id="kc4"><div class="kcard-hd"><p class="klbl">Bugs Abertos</p><button class="gh-btn" onclick="openMetricDetail('bo')" title="Ver no Glossário">?</button><span id="ks4"></span></div><p class="kval" id="k4">—</p><p class="kdlt" id="kd4"></p><p class="ktrend" id="kt4"></p><div class="kmeta" id="km4"></div></div>
         <div class="kcard kc-placeholder"><div class="kcard-hd"><p class="klbl">Bugs em Produção</p></div><p class="kval">—</p><div><span class="kbadge-soon">Em breve</span></div></div>
@@ -787,13 +787,31 @@
       <p class="cf-sub">Indicadores de eficiência do fluxo de trabalho, previsibilidade e capacidade de entrega — acompanhamento Sprint a Sprint.</p>
     </div>
 
-    <!-- KPI cards de fluxo -->
-    <div class="fkgrid">
-      <div class="fkcard" id="fk0"><p class="fklbl">Lead Time médio (p50)</p><p class="fkval" id="fv0">—</p><p class="fkdt" id="fd0"></p></div>
-      <div class="fkcard" id="fk1"><p class="fklbl">Cycle Time total</p><p class="fkval" id="fv1">—</p><p class="fkdt" id="fd1"></p></div>
-      <div class="fkcard" id="fk2"><p class="fklbl">Lead Time p85</p><p class="fkval" id="fv2">—</p><p class="fkdt" id="fd2"></p></div>
-      <div class="fkcard" id="fk3"><p class="fklbl">Throughput médio</p><p class="fkval" id="fv3">—</p><p class="fkdt" id="fd3"></p></div>
-      <div class="fkcard" id="fk4"><p class="fklbl">WIP total</p><p class="fkval" id="fv4">—</p><p class="fkdt" id="fd4"></p></div>
+    <!-- Grupo 1 — Saúde do fluxo -->
+    <div class="kg-section">
+      <div class="kg-label">
+        <span class="kg-dot" id="kgdot-pf-fluxo">🟢</span>
+        Saúde do fluxo
+      </div>
+      <span class="kg-desc">O fluxo de trabalho permite manter o ritmo de entregas sem acumular risco?</span>
+      <div class="fkgrid">
+        <div class="fkcard" id="fk0"><p class="fklbl">Lead Time médio (p50)</p><p class="fkval" id="fv0">—</p><p class="fkdt" id="fd0"></p></div>
+        <div class="fkcard" id="fk1"><p class="fklbl">Cycle Time total</p><p class="fkval" id="fv1">—</p><p class="fkdt" id="fd1"></p></div>
+        <div class="fkcard" id="fk2"><p class="fklbl">Lead Time p85</p><p class="fkval" id="fv2">—</p><p class="fkdt" id="fd2"></p></div>
+        <div class="fkcard" id="fk4"><p class="fklbl">WIP total</p><p class="fkval" id="fv4">—</p><p class="fkdt" id="fd4"></p></div>
+      </div>
+    </div>
+
+    <!-- Grupo 2 — Capacidade de entrega -->
+    <div class="kg-section">
+      <div class="kg-label">
+        <span class="kg-dot" id="kgdot-pf-cap">🟢</span>
+        Capacidade de entrega
+      </div>
+      <span class="kg-desc">A equipe possui capacidade para entregar o planejado com previsibilidade?</span>
+      <div class="fkgrid">
+        <div class="fkcard" id="fk3"><p class="fklbl">Throughput médio</p><p class="fkval" id="fv3">—</p><p class="fkdt" id="fd3"></p></div>
+      </div>
     </div>
 
     <!-- Alerta de gargalo automático -->
@@ -841,6 +859,16 @@
       </div>
     </div>
 
+    <!-- Recomendações da IA -->
+    <div class="cc" style="border-left:4px solid #7c3aed;margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <i class="ti ti-sparkles" style="color:#7c3aed;font-size:16px"></i>
+        <span style="font-size:13px;font-weight:600;color:#111827">💡 Recomendações da IA</span>
+        <span style="font-size:10px;color:#9ca3af;margin-left:auto">Baseadas nos indicadores de fluxo da sprint atual</span>
+      </div>
+      <div id="flowRecsList"></div>
+    </div>
+
   </div>
 
   <!-- DORA -->
@@ -848,6 +876,15 @@
     <div class="cf-header">
       <p class="cf-title">Eficiência de deploys</p>
       <p class="cf-sub">Monitore a eficiência das entregas por meio da frequência de deploy, lead time para mudanças, taxa de falhas e tempo médio de recuperação — visão Sprint a Sprint baseada nas métricas DORA.</p>
+    </div>
+
+    <!-- Grupo único — Eficiência de deploys -->
+    <div class="kg-section">
+      <div class="kg-label">
+        <span class="kg-dot" id="kgdot-pd-deploy">🟢</span>
+        Eficiência de deploys
+      </div>
+      <span class="kg-desc">As entregas em produção estão ocorrendo com velocidade, estabilidade e segurança?</span>
     </div>
 
     <!-- KPI Cards -->
@@ -919,6 +956,16 @@
         <p id="doraInsight" style="font-size:13px;color:#374151;line-height:1.75;margin:0"></p>
       </div>
     </div>
+
+    <!-- Recomendações da IA -->
+    <div class="cc" style="border-left:4px solid #7c3aed;margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <i class="ti ti-sparkles" style="color:#7c3aed;font-size:16px"></i>
+        <span style="font-size:13px;font-weight:600;color:#111827">💡 Recomendações da IA</span>
+        <span style="font-size:10px;color:#9ca3af;margin-left:auto">Baseadas nas métricas DORA da sprint atual</span>
+      </div>
+      <div id="doraRecsList"></div>
+    </div>
   </div>
 
   <!-- Saúde da Qualidade -->
@@ -934,7 +981,7 @@
         <span class="kg-dot" id="kgdot-risco">🟢</span>
         Riscos imediatos
       </div>
-      <span class="kg-desc">Quais indicadores exigem atenção imediata?</span>
+      <span class="kg-desc">Algum risco exige ação imediata antes do próximo deploy?</span>
     </div>
     <div class="kgrid">
       <div class="kcard cf-clickable" id="cfcard-crit" onclick="openCfDetail('crit')" title="Bugs classificados como Crítico ou Blocker ainda não resolvidos. Meta: 0. Fórmula: ~25–40% dos bugs abertos com retrabalho elevado. Clique para ver detalhes.">
@@ -975,7 +1022,7 @@
         <span class="kg-dot" id="kgdot-eficiencia">🟢</span>
         Eficiência operacional
       </div>
-      <span class="kg-desc">Como está a eficiência do time na resolução de defeitos?</span>
+      <span class="kg-desc">O time está resolvendo defeitos em ritmo suficiente para não comprometer a próxima sprint?</span>
     </div>
     <div class="kgrid">
       <div class="kcard cf-clickable" id="cfcard-rw" onclick="openCfDetail('rw')" title="% do esforço gasto em correções e refações. Meta: ≤ 10%. Fórmula: Itens reabertos ÷ Total entregues × 100. Clique para ver detalhes.">
@@ -1040,6 +1087,16 @@
         <p class="cs">Ações priorizadas para a próxima Sprint</p>
         <div id="cfActions"></div>
       </div>
+    </div>
+
+    <!-- Recomendações da IA -->
+    <div class="cc" style="border-left:4px solid #7c3aed;margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <i class="ti ti-sparkles" style="color:#7c3aed;font-size:16px"></i>
+        <span style="font-size:13px;font-weight:600;color:#111827">💡 Recomendações da IA</span>
+        <span style="font-size:10px;color:#9ca3af;margin-left:auto">Baseadas nos indicadores de qualidade da sprint atual</span>
+      </div>
+      <div id="qualityRecsList"></div>
     </div>
   </div>
 
@@ -1956,6 +2013,15 @@ function groupSinaleira(emojis){
   if(emojis.includes('🟡')) return '🟡';
   return '🟢';
 }
+function setGroupDot(id,emojis){const el=document.getElementById(id);if(el)el.textContent=groupSinaleira(emojis);}
+// status numérico genérico: ok = atinge a meta; warn = dentro de 20% da meta; bad = fora disso
+function metaStatus(val,meta,low){
+  const ok=low?(val<=meta):(val>=meta);
+  if(ok) return 'ok';
+  const diff=Math.abs(val-meta), near=meta>0&&diff<=meta*0.2;
+  return near?'warn':'bad';
+}
+function statusEmoji(st){return st==='bad'?'🔴':st==='warn'?'🟡':'🟢';}
 function updateKpiGroupDots(){
   const g=(ids)=>ids.map(idx=>{const el=document.getElementById('ks'+idx);return el?el.textContent:'🟢';});
   const setDot=(id,emojis)=>{const el=document.getElementById(id);if(el)el.textContent=groupSinaleira(emojis);};
@@ -4389,12 +4455,38 @@ function renderDora(){
     const mc=pctMeta>=100?'#059669':pctMeta>=60?'#d97706':'#dc2626';
     mEl.innerHTML=`<div class="dmeta-row"><span>${m.label}</span><span style="font-weight:600;color:${mc}">${pctMeta}%</span></div><div class="dmeta-track"><div class="dmeta-fill" style="width:${pctMeta}%;background:${mc}"></div></div>`;
     // Tier badge
-    setTier(m.val,document.getElementById('dt'+j),m.type);
+    const tier=setTier(m.val,document.getElementById('dt'+j),m.type);
+    m.emoji=(tier.c==='t-elite'||tier.c==='t-high')?'🟢':tier.c==='t-med'?'🟡':'🔴';
   });
+  setGroupDot('kgdot-pd-deploy', metrics.map(m=>m.emoji));
   renderDoraBands(d,i);
   renderDoraImpact(d,i);
   renderDoraInsight(d,i);
+  renderDoraRecs(d,i,metrics);
   if(document.getElementById('pd').classList.contains('on')) switchDoraChart(window._doraMetric||'df');
+}
+
+function renderDoraRecs(d,i,metrics){
+  const [df,ltc,mttr,cfr]=metrics;
+  const recs=[];
+
+  if(df.emoji==='🟢') recs.push({cls:'rec-ok',ico:'🟢',txt:`Deployment Frequency em ${df.val.toFixed(1)}/sem — cadência saudável de entregas, sustentando ciclos curtos e de baixo risco.`});
+  else if(df.emoji==='🟡') recs.push({cls:'rec-warn',ico:'🟡',txt:`Deployment Frequency em ${df.val.toFixed(1)}/sem está abaixo do ideal — investigue gargalos no pipeline de CI/CD antes de aumentar o escopo das entregas.`});
+  else recs.push({cls:'rec-bad',ico:'🔴',txt:`Deployment Frequency crítica (${df.val.toFixed(1)}/sem) — priorize automação de CI/CD e feature flags para destravar a cadência de deploys.`});
+
+  if(ltc.emoji==='🔴') recs.push({cls:'rec-bad',ico:'🔴',txt:`Lead Time for Changes de ${ltc.val.toFixed(1)}d está muito acima da meta — revise a fila de code review e os gates manuais de aprovação.`});
+  else if(ltc.emoji==='🟡') recs.push({cls:'rec-warn',ico:'🟡',txt:`Lead Time for Changes de ${ltc.val.toFixed(1)}d próximo do limite — monitore o tempo de revisão de código nas próximas sprints.`});
+
+  if(mttr.emoji==='🟢' && i>0) recs.push({cls:'rec-ok',ico:'🟢',txt:`MTTR de ${mttr.val.toFixed(1)}h indica boa capacidade de recuperação — manter runbooks atualizados e autonomia de rollback.`});
+  else if(mttr.emoji==='🔴') recs.push({cls:'rec-bad',ico:'🔴',txt:`MTTR de ${mttr.val.toFixed(1)}h está crítico — garanta autonomia de rollback e revise a observabilidade antes do próximo deploy em produção.`});
+  else if(mttr.emoji==='🟡') recs.push({cls:'rec-warn',ico:'🟡',txt:`MTTR de ${mttr.val.toFixed(1)}h está próximo do limite — revise runbooks de incidente para acelerar a recuperação.`});
+
+  if(cfr.emoji==='🟢' && df.emoji!=='🔴') recs.push({cls:'rec-info',ico:'💡',txt:`A baixa Change Failure Rate (${cfr.val.toFixed(1)}%) permite considerar uma estratégia de entregas mais frequentes, mantendo o equilíbrio entre velocidade e estabilidade.`});
+  else if(cfr.emoji==='🔴') recs.push({cls:'rec-bad',ico:'🔴',txt:`Change Failure Rate de ${cfr.val.toFixed(1)}% está acima do tolerável — reforce testes automatizados e critérios de qualidade antes do deploy.`});
+  else if(cfr.emoji==='🟡') recs.push({cls:'rec-warn',ico:'🟡',txt:`Change Failure Rate de ${cfr.val.toFixed(1)}% pede atenção — avalie feature flags ou canary release para reduzir o risco por deploy.`});
+
+  const el=document.getElementById('doraRecsList');
+  if(el) el.innerHTML=recs.map(r=>`<div class="ai-rec ${r.cls}"><span class="ai-rec-ico">${r.ico}</span><span>${r.txt}</span></div>`).join('');
 }
 
 function renderDoraBands(d,i){
@@ -4533,11 +4625,11 @@ function renderFlowMetrics(){
   const ctSum=parseFloat(ct.slice(1,4).reduce((a,b)=>a+b,0).toFixed(1));
   const wipSum=wips.slice(1,4).reduce((a,b)=>a+b.wip,0);
   const fkData=[
-    {val:d.p50[i]+'d', delta:d.p50[i]-d.p50[prevI], low:true},
-    {val:ctSum+'d',     delta:null,                   low:true},
-    {val:d.p85[i]+'d', delta:d.p85[i]-d.p85[prevI], low:true},
-    {val:d.en[i]+'',   delta:d.en[i]-d.en[prevI],   low:false},
-    {val:wipSum+'',     delta:null,                   low:true}
+    {val:d.p50[i]+'d', num:d.p50[i], meta:METAS.p85*0.5, delta:d.p50[i]-d.p50[prevI], low:true},
+    {val:ctSum+'d',     num:ctSum,    meta:METAS.p85*0.6, delta:null,                   low:true},
+    {val:d.p85[i]+'d', num:d.p85[i], meta:METAS.p85,      delta:d.p85[i]-d.p85[prevI], low:true},
+    {val:d.en[i]+'',   num:d.en[i],  meta:METAS.tp,       delta:d.en[i]-d.en[prevI],   low:false},
+    {val:wipSum+'',     num:wipSum,   meta:METAS.wip,      delta:null,                   low:true}
   ];
   fkData.forEach((k,j)=>{
     document.getElementById('fv'+j).textContent=k.val;
@@ -4550,7 +4642,12 @@ function renderFlowMetrics(){
       dEl.style.color=k.delta===0?'#9ca3af':good?'#059669':'#dc2626';
       dEl.className='fkdt';
     }
+    const st=metaStatus(k.num,k.meta,k.low);
+    k.emoji=statusEmoji(st);
+    document.getElementById('fk'+j).className='fkcard '+(st==='ok'?'fk-ok':st==='warn'?'fk-warn':'fk-bad');
   });
+  setGroupDot('kgdot-pf-fluxo', [fkData[0].emoji,fkData[1].emoji,fkData[2].emoji,fkData[4].emoji]);
+  setGroupDot('kgdot-pf-cap',   [fkData[3].emoji]);
 
   // Bottleneck alert badge
   const ba=document.getElementById('botAlert');
@@ -4593,6 +4690,29 @@ function renderFlowMetrics(){
 
   // Store for alert generation
   window._fmState={d,i,ct,wips,aging,bot,q};
+
+  renderFlowRecs(d,i,wipSum,aging,bot);
+}
+
+function renderFlowRecs(d,i,wip,aging,bot){
+  const p85=d.p85[i], highRisk=aging.filter(a=>a.risk==='alto').length;
+  const recs=[];
+
+  if(p85>METAS.p85*1.15) recs.push({cls:'rec-bad',ico:'🔴',txt:`Lead Time p85 crítico (${p85}d vs meta ${METAS.p85}d) — priorize a redução do WIP antes de iniciar novos itens e mapeie as etapas com maior Cycle Time.`});
+  else if(p85>METAS.p85) recs.push({cls:'rec-warn',ico:'🟡',txt:`Lead Time p85 (${p85}d) próximo do limite — monitore a evolução diária e evite ampliar o escopo da sprint atual.`});
+  else recs.push({cls:'rec-ok',ico:'🟢',txt:`Lead Time dentro da meta (${p85}d ≤ ${METAS.p85}d) — fluxo saudável; avalie reduzir ainda mais o WIP para ganhar margem de previsibilidade.`});
+
+  if(wip>METAS.wip*1.3) recs.push({cls:'rec-bad',ico:'🔴',txt:`WIP muito acima do limite (${wip} vs ${METAS.wip}) — interrompa novos starts e concentre o time na finalização dos itens em andamento.`});
+  else if(wip>METAS.wip) recs.push({cls:'rec-warn',ico:'🟡',txt:`WIP acima do recomendado (${wip} itens) — evite abrir novos itens até que os atuais avancem no fluxo.`});
+  else recs.push({cls:'rec-ok',ico:'🟢',txt:`WIP sob controle (${wip} ≤ ${METAS.wip}) — capacidade disponível para absorver novos itens sem comprometer o fluxo.`});
+
+  if(highRisk>1) recs.push({cls:'rec-bad',ico:'🔴',txt:`${highRisk} itens ultrapassaram o Percentil 85 e merecem atenção imediata — priorize o desbloqueio na próxima Daily.`});
+  else if(highRisk===1) recs.push({cls:'rec-warn',ico:'🟡',txt:`1 item ultrapassou o Percentil 85 — acompanhe de perto para evitar impacto no Lead Time da sprint.`});
+
+  recs.push({cls:'rec-info',ico:'⚙️',txt:`Gargalo identificado em "${bot.stage}" — considere limitar o WIP desse estágio para destravar o fluxo antes de agir nas demais etapas.`});
+
+  const el=document.getElementById('flowRecsList');
+  if(el) el.innerHTML=recs.map(r=>`<div class="ai-rec ${r.cls}"><span class="ai-rec-ico">${r.ico}</span><span>${r.txt}</span></div>`).join('');
 }
 
 function gerarAlertaFluxo(){
@@ -4781,6 +4901,7 @@ function renderCargaFalhas(){
   document.getElementById('cfm-qhs').innerHTML=`<div class="dmeta-row"><span>Índice de qualidade</span><span style="font-weight:600;color:${qhsMc}">${qhsPct}%</span></div><div class="dmeta-track"><div class="dmeta-fill" style="width:${qhsPct}%;background:${qhsMc}"></div></div>`;
 
   updateCfGroupDots();
+  renderQualityRecs(d,i,esc,reo,crit,aging,res,qhs);
   renderCfOrigin(d,i,esc);
   renderCfCauses(d,i,esc,reo,crit,aging,res);
   renderCfActions(d,i,esc,reo,crit,aging,res,qhs);
@@ -4788,6 +4909,33 @@ function renderCargaFalhas(){
     drawCfaChart(d);
     drawCfTrendSparkline(d,i);
   }
+}
+
+function renderQualityRecs(d,i,esc,reo,crit,aging,res,qhs){
+  const rw=d.rw[i], bo=d.bo[i];
+  const recs=[];
+
+  if(crit>0) recs.push({cls:'rec-bad',ico:'🔴',txt:`${crit} bug${crit>1?'s':''} crítico${crit>1?'s':''} pendente${crit>1?'s':''} — deve${crit>1?'m':''} ser resolvido${crit>1?'s':''} antes do próximo deploy em produção.`});
+  else recs.push({cls:'rec-ok',ico:'🟢',txt:`Nenhum bug crítico em aberto — ambiente seguro para o próximo deploy em produção.`});
+
+  if(esc>0) recs.push({cls:'rec-bad',ico:'🔴',txt:`${esc} defeito${esc>1?'s':''} escapado${esc>1?'s':''} para produção — reforce os critérios de teste antes da homologação.`});
+
+  if(rw<=10 && bo<=METAS.bo) recs.push({cls:'rec-ok',ico:'🟢',txt:`O índice de retrabalho (${rw}%) está dentro da meta, mas recomenda-se monitorar os bugs críticos remanescentes.`});
+  else if(rw>15) recs.push({cls:'rec-bad',ico:'🔴',txt:`Retrabalho de ${rw}% está acima do tolerável — revise critérios de aceite e cobertura de testes antes de novas entregas.`});
+  else recs.push({cls:'rec-warn',ico:'🟡',txt:`Retrabalho de ${rw}% pede atenção — acompanhe a causa raiz para evitar reincidência nas próximas sprints.`});
+
+  if(aging>10) recs.push({cls:'rec-bad',ico:'🔴',txt:`Bug Aging de ${aging}d está crítico — bugs antigos consomem capacidade; priorize o backlog de defeitos antes de novas features.`});
+  else if(aging>7) recs.push({cls:'rec-warn',ico:'🟡',txt:`Bug Aging de ${aging}d está próximo do limite — evite que defeitos se acumulem sem tratamento.`});
+
+  if(res<=3 && esc===0) recs.push({cls:'rec-info',ico:'💡',txt:`Tempo de Resolução em ${res}d e baixa taxa de escapados permitem considerar uma estratégia de entregas mais frequentes.`});
+
+  const qhsTxt=qhs>=80?`O índice de Saúde da Qualidade (${qhs}/100) confirma um cenário saudável — manter o ritmo atual de testes e revisões.`
+    :qhs>=60?`O índice de Saúde da Qualidade (${qhs}/100) indica atenção — reforce revisões antes da próxima Sprint Review.`
+    :`O índice de Saúde da Qualidade (${qhs}/100) está crítico — reserve capacidade dedicada para estabilização antes de assumir novo escopo.`;
+  recs.push({cls:qhs>=80?'rec-ok':qhs>=60?'rec-warn':'rec-bad',ico:qhs>=80?'🟢':qhs>=60?'🟡':'🔴',txt:qhsTxt});
+
+  const el=document.getElementById('qualityRecsList');
+  if(el) el.innerHTML=recs.map(r=>`<div class="ai-rec ${r.cls}"><span class="ai-rec-ico">${r.ico}</span><span>${r.txt}</span></div>`).join('');
 }
 
 function renderCfOrigin(d,i,esc){
