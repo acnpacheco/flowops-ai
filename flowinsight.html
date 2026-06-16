@@ -883,7 +883,7 @@
   <!-- DORA -->
   <div id="pd" class="fp">
     <div class="cf-header">
-      <div class="cf-title-row"><span class="cf-title-dot" id="cftd-pd">🟢</span><p class="cf-title">Eficiência de deploys</p></div>
+      <p class="cf-title">Eficiência de deploys</p>
       <p class="cf-sub">Monitore a eficiência das entregas por meio da frequência de deploy, lead time para mudanças, taxa de falhas e tempo médio de recuperação — visão Sprint a Sprint baseada nas métricas DORA.</p>
     </div>
 
@@ -893,7 +893,7 @@
         <span class="kg-dot" id="kgdot-pd-deploy">🟢</span>
         Eficiência de deploys
       </div>
-      <span class="kg-desc">Nossa performance de engenharia está alinhada às boas práticas do mercado?</span>
+      <span class="kg-desc">As entregas em produção estão ocorrendo com velocidade, estabilidade e segurança?</span>
     </div>
 
     <!-- KPI Cards -->
@@ -4476,7 +4476,6 @@ function renderDora(){
     m.emoji=(tier.c==='t-elite'||tier.c==='t-high')?'🟢':tier.c==='t-med'?'🟡':'🔴';
   });
   setGroupDot('kgdot-pd-deploy', metrics.map(m=>m.emoji));
-  setConsolidatedDot('cftd-pd', ['kgdot-pd-deploy']);
   renderDoraBands(d,i);
   renderDoraImpact(d,i);
   renderDoraInsight(d,i);
