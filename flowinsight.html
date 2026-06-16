@@ -5644,7 +5644,7 @@ const GL={
     insight:'Throughput caiu de 18 para 14 itens nas últimas 2 sprints. Coincide com aumento do retrabalho (atual: 18%). Itens reabertos consomem capacidade que seria usada em novas entregas.',
     why:'Throughput é a única métrica que prova que valor foi entregue — não o que foi iniciado ou estimado. É a base de todo forecast confiável e o principal argumento de desempenho para gestores executivos.'},
 
-  wip:{name:'WIP',namePT:'Work In Progress — Trabalho em Progresso',cat:'flow',catLabel:'Fluxo',catColor:'#185FA5',
+  wip:{name:'WIP',namePT:'Trabalho em Progresso',cat:'flow',catLabel:'Fluxo',catColor:'#185FA5',
     short:'Itens simultâneos em andamento — a principal alavanca de controle do Lead Time.',
     what:'WIP (Work In Progress) é o total de itens que foram iniciados mas ainda não foram concluídos. Representa o "inventário em processo" do time, distribuído entre os estágios ativos do fluxo.',
     measures:'A quantidade de trabalho simultâneo assumido pelo time. Alto WIP é o principal preditor de Lead Time elevado, conforme demonstrado pela Lei de Little.',
@@ -5734,7 +5734,7 @@ const GL={
     insight:'CFR aumentou de 8% para 14% enquanto a Frequência de Deploy cresceu. O time está deployando mais rápido, mas com menos qualidade. Revisar pipeline de testes antes de aumentar ainda mais a frequência.',
     why:'Velocidade sem qualidade é caos. Um time que deploya 5× por dia com CFR de 30% gera mais incidentes do que valor. O equilíbrio entre velocidade e estabilidade define uma esteira de entrega de elite.'},
 
-  mttr:{name:'MTTR',namePT:'Mean Time to Recovery — Tempo Médio de Recuperação',cat:'dora',catLabel:'DORA',catColor:'#7c3aed',
+  mttr:{name:'MTTR',namePT:'Tempo Médio de Recuperação',cat:'dora',catLabel:'DORA',catColor:'#7c3aed',
     short:'Tempo médio para restaurar o serviço após falha — mede resiliência e maturidade operacional.',
     what:'MTTR (Mean Time to Recovery) é o tempo médio entre a detecção de uma falha em produção e a restauração completa do serviço ao estado funcional para os usuários.',
     measures:'A capacidade de resposta e recuperação do time frente a incidentes, refletindo a qualidade de monitoramento, observabilidade e processos de resposta a falhas.',
@@ -5990,7 +5990,7 @@ const GL={
     insight:'Plano de rollback não registrado neste deploy. Segundo a Regra 7 do processo, toda implantação deve possuir estratégia de reversão documentada antes da execução.',
     why:'Um deploy sem rollback é como fazer uma cirurgia sem plano de emergência. A ausência de rollback transforma incidentes gerenciáveis em crises de horas ou dias. O custo de documentar é mínimo; o custo de não ter é potencialmente catastrófico.'},
 
-  rdm:{name:'RDM',namePT:'Registro de Mudança / Change Record',cat:'release',catLabel:'Release Management',catColor:'#0891b2',
+  rdm:{name:'RDM',namePT:'Registro de Mudança',cat:'release',catLabel:'Release Management',catColor:'#0891b2',
     short:'Documento formal que registra e rastreia uma mudança em sistema, com histórico completo de decisões e aprovações.',
     what:'RDM (Registro de Mudança) é o artefato formal que documenta uma mudança planejada em sistemas de produção. Inclui identificação única, objetivo, sistemas impactados, avaliação de risco, aprovações, plano de rollback e histórico de alterações.',
     measures:'A qualidade da governança de mudanças — rastreabilidade, controle de risco e accountability de decisões técnicas críticas.',
@@ -6035,7 +6035,7 @@ const GL={
     insight:'Nenhum período de Change Freeze configurado. Recomenda-se definir ao menos o freeze de encerramento de ano (20/12–02/01) e períodos de pico de negócio em BIZ_RULES.changeFreezes.',
     why:'Sem Change Freeze, deploys podem ocorrer em momentos de máximo risco e mínima capacidade de resposta — como na véspera do Natal, quando o time está reduzido e qualquer incidente tem impacto amplificado.'},
 
-  janelaImplantacao:{name:'Janela de Implantação',namePT:'Deploy Window / Maintenance Window',cat:'release',catLabel:'Release Management',catColor:'#0891b2',
+  janelaImplantacao:{name:'Janela de Implantação',namePT:'Janela de Implantação e Manutenção',cat:'release',catLabel:'Release Management',catColor:'#0891b2',
     short:'Período específico dentro da sprint em que deploys em produção são recomendados ou permitidos.',
     what:'Janela de Implantação é o intervalo de tempo (dias e horários) considerado seguro e recomendado para realizar deploys em produção. É definida com base nas regras de negócio do time e nas características do sistema implantado.',
     measures:'A aderência dos deploys às janelas recomendadas — indicador de maturidade do processo de gestão de mudanças.',
@@ -6050,7 +6050,7 @@ const GL={
     insight:'Deploy agendado para 15/05 (último dia útil da Sprint Q2 S3). Regra 2 violada. Antecipe para 13/05 para garantir tempo de validação e reduzir risco operacional.',
     why:'Deploys no 1º ou último dia da sprint não deixam tempo para validação adequada nem para rollback antes do encerramento. A janela recomendada maximiza o tempo de resposta e minimiza a pressão operacional.'},
 
-  mudancaEmergencial:{name:'Mudança Emergencial',namePT:'Emergency Change / Hotfix',cat:'release',catLabel:'Release Management',catColor:'#0891b2',
+  mudancaEmergencial:{name:'Mudança Emergencial',namePT:'Mudança de Emergência / Correção Urgente',cat:'release',catLabel:'Release Management',catColor:'#0891b2',
     short:'Deploy realizado fora da janela planejada para resolver incidente crítico ou vulnerabilidade urgente.',
     what:'Mudança Emergencial é um deploy não planejado realizado para resolver situações críticas que não podem aguardar a próxima janela de implantação: incidentes Sev1/Sev2, vulnerabilidades críticas de segurança ou obrigações regulatórias urgentes.',
     measures:'A frequência de mudanças emergenciais — indicador inverso de qualidade do processo de planejamento e da estabilidade do sistema.',
@@ -6065,7 +6065,7 @@ const GL={
     insight:'3 mudanças emergenciais registradas nesta sprint (taxa: 21%). Acima do limite aceitável de 15%. Recomenda-se post-mortem dos 3 incidentes para identificar causa raiz e prevenir recorrência.',
     why:'Mudanças emergenciais têm 3x mais chance de causar novos incidentes que mudanças planejadas (menor tempo de teste, maior pressão, equipe em modo reativo). Reduzi-las é investir em qualidade preventiva.'},
 
-  cab:{name:'CAB',namePT:'Change Advisory Board — Comitê de Aprovação de Mudanças',cat:'release',catLabel:'Release Management',catColor:'#0891b2',
+  cab:{name:'CAB',namePT:'Comitê de Aprovação de Mudanças',cat:'release',catLabel:'Release Management',catColor:'#0891b2',
     short:'Comitê multidisciplinar responsável por revisar e aprovar mudanças de alto impacto antes da implantação.',
     what:'CAB (Change Advisory Board) é um grupo formal de stakeholders que avalia e aprova mudanças significativas em sistemas de produção. Garante que mudanças de alto risco sejam analisadas por múltiplas perspectivas antes da execução.',
     measures:'A qualidade da governança de mudanças de alto impacto — presença do CAB reduz a taxa de mudanças emergenciais e de incidentes pós-deploy.',
@@ -6095,7 +6095,7 @@ const GL={
     insight:'3 deploys realizados sem registro formal neste quarter. Isso subestima o DF real e compromete o cálculo de CFR. Recomenda-se tornar o registro no GEMUD obrigatório no Definition of Done.',
     why:'Release Management profissional é o que separa times que "sobrevivem a cada deploy" de times que "deployam com confiança". É a disciplina que permite escalar a frequência de entrega sem escalar o risco.'},
 
-  calMudancas:{name:'Calendário de Mudanças',namePT:'Change Calendar / Release Calendar',cat:'release',catLabel:'Release Management',catColor:'#0891b2',
+  calMudancas:{name:'Calendário de Mudanças',namePT:'Calendário de Mudanças e Lançamentos',cat:'release',catLabel:'Release Management',catColor:'#0891b2',
     short:'Visão consolidada de todas as mudanças planejadas, sprints, quarters e períodos de freeze ao longo do ano.',
     what:'Calendário de Mudanças é a visão unificada de todos os eventos relevantes para o planejamento de implantações: sprints, quarters, semanas de planejamento, feriados, periods de Change Freeze e deploys agendados.',
     measures:'A organização e previsibilidade do processo de entrega — um calendário bem mantido elimina conflitos de agenda e surpresas operacionais.',
@@ -6111,7 +6111,7 @@ const GL={
     why:'Um calendário de mudanças é a diferença entre um deploy surpresa na véspera do Natal e uma entrega planejada com antecedência, aprovada e sem impacto operacional. A visibilidade compartilhada é a primeira defesa contra conflitos.'},
 
   // ── Sprint Tracking ───────────────────────────────────────
-  burndown:{name:'Burndown',namePT:'Sprint Burndown Chart',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  burndown:{name:'Burndown',namePT:'Gráfico de Queda da Sprint',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Gráfico que exibe o trabalho restante ao longo dos dias da sprint, comparando a linha real com a linha ideal de progresso.',
     what:'O Burndown é um gráfico de linha que mostra quanto trabalho ainda falta ser concluído na sprint. O eixo X representa os dias (D1 a D10) e o eixo Y representa os itens ou pontos restantes.',
     measures:'A velocidade de entrega e o risco de não conclusão da sprint — quanto mais próxima a linha real da linha ideal, menor o risco.',
@@ -6126,7 +6126,7 @@ const GL={
     insight:'Um Burndown saudável deve mostrar queda constante e diária. Quedas abruptas seguidas de estagnação indicam batching (entrega em lote ao final) — antipadrão que esconde bloqueios.',
     why:'O Burndown é o artefato de transparência mais direto do Scrum. Sem ele, o time navega às cegas e o risco de transbordo só é descoberto no último dia.'},
 
-  burnup:{name:'Burnup',namePT:'Sprint Burnup Chart',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  burnup:{name:'Burnup',namePT:'Gráfico de Acúmulo da Sprint',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Gráfico que exibe o trabalho concluído acumulado e o escopo total da sprint, tornando visíveis mudanças de escopo durante a execução.',
     what:'O Burnup mostra duas linhas: o escopo total planejado (linha de teto) e o trabalho acumulado concluído (linha de progresso). Quando as duas linhas se encontram, a sprint está completa.',
     measures:'O progresso acumulado de entregas e mudanças de escopo durante a sprint — sendo superior ao Burndown para detectar scope creep.',
@@ -6141,7 +6141,7 @@ const GL={
     insight:'O Burnup é especialmente valioso para times que frequentemente recebem demandas durante a sprint. A linha de escopo "suindo" é um sinal imediato para o PO.',
     why:'Times que usam apenas o Burndown não veem quando o escopo muda. O Burnup resolve esse ponto cego ao mostrar explicitamente que o alvo se moveu.'},
 
-  forecastSprint:{name:'Forecast da Sprint',namePT:'Sprint Forecast / Mid-Sprint Review',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  forecastSprint:{name:'Forecast da Sprint',namePT:'Previsão da Sprint / Revisão Intermediária da Sprint',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Cerimônia realizada no 5º dia útil para validar se a sprint será concluída conforme planejado e definir plano de ação se necessário.',
     what:'O Forecast da Sprint (Dia D) é uma cerimônia de inspeção realizada no 5º dia útil de uma sprint de 10 dias. Seu objetivo é avaliar a probabilidade de entrega do escopo e definir ações corretivas proativamente.',
     measures:'A probabilidade de entrega da sprint com base no progresso real no ponto médio — antecipando riscos com 5 dias de antecedência.',
@@ -6156,7 +6156,7 @@ const GL={
     insight:'Times que realizam o Forecast regularmente têm até 40% menos transbordos do que times que só descobrem problemas no Sprint Review.',
     why:'A antecipação é o maior diferencial do Forecast. Cinco dias de runway para corrigir o rumo é a diferença entre uma sprint bem gerenciada e uma sprint problemática.'},
 
-  capacidadeSprint:{name:'Capacidade da Sprint',namePT:'Sprint Capacity',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  capacidadeSprint:{name:'Capacidade da Sprint',namePT:'Capacidade da Sprint',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Total de horas produtivas disponíveis para desenvolvimento após descontar ausências, feriados e horas de ritos ágeis.',
     what:'A Capacidade da Sprint é a quantidade real de horas disponíveis para o time trabalhar em itens de desenvolvimento durante uma sprint, considerando: horas brutas menos ausências, menos horas de cerimônias.',
     measures:'A capacidade real de entrega do time — base para comprometer o escopo correto na Sprint Planning.',
@@ -6171,7 +6171,7 @@ const GL={
     insight:'Times com ocupação >90% consistentemente têm 3× mais transbordos. O buffer de capacidade não é ociosidade — é qualidade e resiliência.',
     why:'Planejar sem calcular a capacidade real é como embarcar numa viagem sem verificar o combustível. A capacidade é o contrato de realidade entre o time e o negócio.'},
 
-  capColaborador:{name:'Capacidade por Colaborador',namePT:'Individual Sprint Capacity',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  capColaborador:{name:'Capacidade por Colaborador',namePT:'Capacidade Individual na Sprint',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Visão individual da disponibilidade de cada membro do time, considerando ausências, jornada e horas comprometidas em ritos.',
     what:'A Capacidade por Colaborador é o detalhamento da capacidade a nível individual: quantas horas cada membro tem disponíveis, quantas foram comprometidas em tarefas e qual o percentual de ocupação.',
     measures:'O balanceamento de carga entre os membros do time e os riscos individuais de sobrecarga.',
@@ -6186,7 +6186,7 @@ const GL={
     insight:'QAs e Tech Leads frequentemente aparecem superdimensionados por acumularem tarefas de desenvolvimento + cerimônias + code review + mentoria. O cálculo individual revela essa sobrecarga invisível.',
     why:'O planejamento coletivo sem visão individual é uma das principais causas de burnout técnico. Ninguém planeja sobrecarregar — mas sem dados individuais, isso acontece sistematicamente.'},
 
-  plxrealizado:{name:'Planejado × Realizado',namePT:'Planned vs Actual',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  plxrealizado:{name:'Planejado × Realizado',namePT:'Planejado versus Realizado',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Comparativo entre o que foi planejado na Sprint Planning e o que efetivamente foi executado ao longo e ao final da sprint.',
     what:'O Planejado × Realizado é uma análise comparativa que confronta o baseline da Sprint Planning (itens, horas, capacidade) com os valores reais de execução, permitindo calcular a variação e o percentual de aderência.',
     measures:'A eficácia do planejamento e a previsibilidade do time — quanto maior a aderência, mais maduro o processo de planejamento.',
@@ -6201,7 +6201,7 @@ const GL={
     insight:'Times com aderência consistentemente abaixo de 80% geralmente têm um problema de refinamento, não de execução. Itens mal refinados são estimados incorretamente e geram surpresas durante a sprint.',
     why:'Sem comparar planejado vs realizado, o time repete os mesmos erros de estimativa indefinidamente. Essa métrica é o feedback loop do processo de planejamento.'},
 
-  demandaEmergencial:{name:'Demanda Emergencial',namePT:'Unplanned Work / Emergency Demand',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  demandaEmergencial:{name:'Demanda Emergencial',namePT:'Trabalho Não Planejado / Demanda de Emergência',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Trabalho não planejado que surge durante a sprint e precisa ser absorvido pela equipe, consumindo capacidade prevista para desenvolvimento.',
     what:'Demandas Emergenciais são itens que surgem após a Sprint Planning e que precisam ser executados imediatamente — bugs críticos em produção, incidentes, solicitações urgentes de stakeholders ou dependências externas que se concretizaram.',
     measures:'O impacto de trabalho não planejado na capacidade da sprint e na entrega dos itens comprometidos.',
@@ -6216,7 +6216,7 @@ const GL={
     insight:'Times que não criam buffer para emergências têm 2× mais transbordos. A reserva operacional não é desperdício — é o amortecedor entre a organização e o time.',
     why:'Nenhuma sprint existe em um vácuo. Bugs de produção, incidentes e stakeholders criam pressão constante. Sem buffer, cada emergência é uma ameaça ao compromisso da sprint.'},
 
-  reservaOperacional:{name:'Reserva Operacional',namePT:'Operational Buffer / Capacity Buffer',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  reservaOperacional:{name:'Reserva Operacional',namePT:'Reserva de Capacidade Operacional',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Percentual da capacidade da sprint reservado deliberadamente para absorver imprevistos, bugs urgentes e demandas emergenciais.',
     what:'A Reserva Operacional é a fração de capacidade que o time não compromete na Sprint Planning, criando um buffer para imprevistos sem comprometer o objetivo da sprint.',
     measures:'A resiliência do time diante de imprevistos e sua capacidade de honrar compromissos mesmo com demandas não planejadas.',
@@ -6246,7 +6246,7 @@ const GL={
     insight:'O transbordo não é necessariamente um sinal de falha — pode ser uma decisão consciente de qualidade. O problema é quando ocorre sistematicamente sem análise de causa raiz.',
     why:'O transbordo é o sintoma mais visível de planejamento impreciso. Rastrear sua causa — super-comprometimento, bloqueios, estimativas ruins — é o primeiro passo para eliminá-lo.'},
 
-  linhaIdeal:{name:'Linha Ideal',namePT:'Ideal Burndown Line',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  linhaIdeal:{name:'Linha Ideal',namePT:'Linha Ideal de Queda',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Linha de referência no Burndown que representa o ritmo perfeito e linear de entrega para concluir exatamente o escopo no último dia da sprint.',
     what:'A Linha Ideal é uma representação teórica do progresso esperado se o time entregasse exatamente a mesma quantidade de trabalho a cada dia durante toda a sprint.',
     measures:'O ritmo esperado de entrega — é o padrão contra o qual o ritmo real é comparado diariamente.',
@@ -6261,7 +6261,7 @@ const GL={
     insight:'A linha ideal não deve ser interpretada literalmente — times raramente entregam de forma linear. O que importa é a tendência: a linha real está convergindo ou divergindo da ideal?',
     why:'Sem uma referência de progresso esperado, o time não tem como saber se está bem ou mal. A linha ideal transforma o progresso em uma pergunta simples: estamos acima ou abaixo?'},
 
-  linhaReal:{name:'Linha Real',namePT:'Actual Burndown Line',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  linhaReal:{name:'Linha Real',namePT:'Linha Real de Queda',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Linha do Burndown que representa o trabalho restante real a cada dia da sprint, baseada nos itens efetivamente concluídos.',
     what:'A Linha Real é o progresso efetivo do time registrado dia a dia: quantos itens ainda faltam ser concluídos, após contabilizar todas as entregas realizadas até aquele ponto.',
     measures:'O ritmo real de entrega do time e a variação em relação ao planejado — é a única linha do Burndown baseada em dados reais.',
@@ -6276,7 +6276,7 @@ const GL={
     insight:'Uma linha real que fica flat por 2 dias consecutivos é um sinal de alerta — algo está bloqueado. A Daily deve se concentrar nesse bloqueio até que ele seja resolvido.',
     why:'A linha real é o dado mais honesto da sprint. Ela não mente: ou o trabalho foi feito ou não foi. Usá-la diariamente é o que diferencia agilidade real de agilidade em relatório.'},
 
-  baselinePlanejamento:{name:'Baseline de Planejamento',namePT:'Planning Baseline',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
+  baselinePlanejamento:{name:'Baseline de Planejamento',namePT:'Linha de Base do Planejamento',cat:'sprint',catLabel:'Acompanhamento da Sprint',catColor:'#dc2626',
     short:'Registro imutável do escopo, capacidade e compromissos definidos na Sprint Planning, usado como referência para comparar com a execução real.',
     what:'O Baseline de Planejamento é o "fotograma" do que foi acordado na Sprint Planning: escopo, pontos, capacidade, responsáveis e objetivo. Ele é bloqueado ao início da sprint e serve como referência fixa para qualquer análise comparativa.',
     measures:'A variação entre o que foi planejado e o que foi executado — qualquer desvio em relação ao baseline é rastreável e analisável.',
