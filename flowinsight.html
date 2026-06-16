@@ -70,6 +70,10 @@
   .cc{background:#fff;border-radius:12px;border:1px solid #e5e5e3;padding:18px;margin-bottom:16px}
   .ct{font-size:13px;font-weight:600;color:#111827;margin-bottom:4px}
   .cs{font-size:11px;color:#9ca3af;margin-bottom:12px}
+  /* Cabeçalho executivo de gráficos: semáforo + título + explicação */
+  .cgh{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+  .cgh-dot{font-size:12px;flex-shrink:0;line-height:1}
+  .cgh .ct{margin:0}
   .leg{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:11px;color:#6b7280}
   .leg span{display:flex;align-items:center;gap:5px}
   .leg b{width:10px;height:10px;border-radius:2px;display:inline-block;flex-shrink:0}
@@ -294,10 +298,6 @@
   .ai-recs-hd i{color:#7c3aed;font-size:16px}
   .ai-recs-title{font-size:13px;font-weight:600;color:#111827;display:flex;align-items:center;gap:6px}
   .ai-recs-meta{font-size:10px;color:#9ca3af;margin-left:auto}
-  .lt-status-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 9px;border-radius:12px}
-  .lts-ok{background:#dcfce7;color:#166534}
-  .lts-warn{background:#fef3c7;color:#92400e}
-  .lts-bad{background:#fee2e2;color:#991b1b}
   .cfd-diag{border-radius:8px;padding:13px 15px;border-left:3px solid #185FA5;background:#f9fafb;margin-top:14px;font-size:12px;color:#374151;line-height:1.7}
   .cfd-diag-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#185FA5;margin-bottom:3px}
   .cfd-diag-sect{margin-bottom:10px}
@@ -734,7 +734,8 @@
 
     <!-- 7. Chart: Planejado vs Entregue + linha de meta -->
     <div class="cc">
-      <p class="ct">Comparativo sprint a sprint — planejado vs entregue</p>
+      <div class="cgh"><span class="cgh-dot" id="cgd-ov">🟢</span><p class="ct">Planejado × entregue — evolução por sprint</p></div>
+      <p class="cs">Comparativo entre o que foi planejado, entregue e transbordado em cada sprint.</p>
       <div class="leg">
         <span><b style="background:#185FA5"></b> Planejado</span>
         <span><b style="background:#059669"></b> Entregue</span>
@@ -750,11 +751,8 @@
 
     <!-- 8. Chart: Lead Time + indicador de status -->
     <div class="cc">
-      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:4px">
-        <p class="ct" style="margin:0">Lead time — evolução por sprint (dias)</p>
-        <span id="ltStatusBadge" class="lt-status-badge"></span>
-      </div>
-      <p class="cs">Percentis p50 · p85 · p95 — quanto menor, melhor</p>
+      <div class="cgh"><span class="cgh-dot" id="cgd-lt">🟢</span><p class="ct">Lead time — evolução por sprint</p></div>
+      <p class="cs">Percentis p50, p85 e p95 em dias — quanto menor, melhor.</p>
       <div style="position:relative;width:100%;height:220px">
         <canvas id="cLT" role="img" aria-label="Lead time por percentil">Lead time p50, p85, p95 por sprint.</canvas>
       </div>
@@ -762,8 +760,8 @@
 
     <!-- 9. Chart: CFD — com diagnóstico estruturado -->
     <div class="cc">
-      <p class="ct">CFD — Diagrama de Fluxo Cumulativo</p>
-      <p class="cs">Itens acumulados por etapa · dia a dia da sprint atual &mdash; <span id="cfdBottleneck" style="font-weight:600"></span></p>
+      <div class="cgh"><span class="cgh-dot" id="cgd-cfd">🟢</span><p class="ct">Diagrama de fluxo cumulativo (CFD)</p></div>
+      <p class="cs">Itens acumulados por etapa, dia a dia da sprint atual — <span id="cfdBottleneck" style="font-weight:600"></span></p>
       <div class="leg">
         <span><b style="background:#9ca3af"></b> Backlog</span>
         <span><b style="background:#185FA5"></b> Em Progresso</span>
@@ -852,22 +850,22 @@
 
     <div class="g2">
       <div class="cc">
-        <p class="ct">Cycle time por etapa (dias)</p>
-        <p class="cs">Tempo médio por estágio &mdash; <span id="ctGargalo" style="font-weight:500"></span></p>
+        <div class="cgh"><span class="cgh-dot" id="cgd-cy">🟢</span><p class="ct">Cycle time por etapa</p></div>
+        <p class="cs">Tempo médio por estágio em dias — <span id="ctGargalo" style="font-weight:500"></span></p>
         <div style="position:relative;width:100%;height:220px">
           <canvas id="cCy" role="img" aria-label="Cycle time por etapa"></canvas>
         </div>
       </div>
       <div class="cc">
-        <p class="ct">WIP por etapa vs limite</p>
-        <p class="cs">Barra = atual · linha vermelha = limite recomendado</p>
+        <div class="cgh"><span class="cgh-dot" id="cgd-wipbars">🟢</span><p class="ct">Evolução do WIP por etapa</p></div>
+        <p class="cs">Barra mostra o valor atual; a linha vermelha marca o limite recomendado.</p>
         <div id="wipBars" style="padding:4px 0"></div>
       </div>
     </div>
 
     <div class="cc">
-      <p class="ct">Throughput semanal — últimas 6 sprints</p>
-      <p class="cs">Itens entregues por sprint · meta do time: <strong id="tpMetaLabel">—</strong></p>
+      <div class="cgh"><span class="cgh-dot" id="cgd-th">🟢</span><p class="ct">Throughput semanal — últimas 6 sprints</p></div>
+      <p class="cs">Itens entregues por sprint, comparados à meta do time (<strong id="tpMetaLabel">—</strong>).</p>
       <div style="position:relative;width:100%;height:220px">
         <canvas id="cTh" role="img" aria-label="Throughput por sprint"></canvas>
       </div>
@@ -964,8 +962,8 @@
 
     <!-- Chart with metric selector -->
     <div class="cc" style="margin-bottom:12px">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
-        <p class="ct" style="margin:0">Evolução por sprint</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+        <div class="cgh" style="margin-bottom:0"><span class="cgh-dot" id="cgd-do">🟢</span><p class="ct">Evolução por sprint</p></div>
         <div class="dsel-row" id="doraSelRow">
           <button class="dsel-btn on" onclick="switchDoraChart('df',this)">Deploy Freq.</button>
           <button class="dsel-btn" onclick="switchDoraChart('lc',this)">Lead Time</button>
@@ -974,6 +972,7 @@
           <button class="dsel-btn" onclick="switchDoraChart('all',this)">Todas</button>
         </div>
       </div>
+      <p class="cs">Acompanhe a evolução de cada métrica DORA sprint a sprint.</p>
       <div id="doraLeg" class="leg" style="margin-bottom:8px"></div>
       <div style="position:relative;width:100%;height:240px"><canvas id="cDo"></canvas></div>
     </div>
@@ -1093,7 +1092,8 @@
     <!-- ── 📊 Evolução + 📍 Distribuição por Ambiente ── -->
     <div class="g2" style="margin-bottom:12px">
       <div class="cc">
-        <p class="ct">📊 Evolução Sprint a Sprint</p>
+        <div class="cgh"><span class="cgh-dot" id="cgd-fa">🟢</span><p class="ct">📊 Evolução sprint a sprint</p></div>
+        <p class="cs">Bugs abertos, fechados e retrabalho ao longo das últimas sprints.</p>
         <div class="leg">
           <span><b style="background:#dc2626"></b> Bugs abertos</span>
           <span><b style="background:#059669"></b> Bugs fechados</span>
@@ -1159,13 +1159,13 @@
     <div id="as-bd" class="asp">
       <div class="bd-grid">
         <div class="cc">
-          <p class="ct">Burndown — trabalho restante por dia</p>
-          <p class="cs">Linha ideal vs real · tendência de conclusão</p>
+          <div class="cgh"><span class="cgh-dot" id="cgd-bd">🟢</span><p class="ct">Burndown — trabalho restante por dia</p></div>
+          <p class="cs">Compara a linha ideal com o ritmo real de conclusão da sprint.</p>
           <div style="position:relative;width:100%;height:240px"><canvas id="cBD"></canvas></div>
         </div>
         <div class="cc">
-          <p class="ct">Burnup — trabalho concluído vs escopo</p>
-          <p class="cs">Progresso acumulado · mudanças de escopo</p>
+          <div class="cgh"><span class="cgh-dot" id="cgd-bu">🟢</span><p class="ct">Burnup — trabalho concluído vs escopo</p></div>
+          <p class="cs">Progresso acumulado da entrega, incluindo eventuais mudanças de escopo.</p>
           <div style="position:relative;width:100%;height:240px"><canvas id="cBU"></canvas></div>
         </div>
       </div>
@@ -2070,6 +2070,7 @@ function updateCfGroupDots(){
   const setDot=(id,emojis)=>{const el=document.getElementById(id);if(el)el.textContent=groupSinaleira(emojis);};
   setDot('kgdot-risco',      g(['crit','esc','bo','reo','bc']));
   setDot('kgdot-eficiencia', g(['rw','aging','res','trend','qhs']));
+  setDot('cgd-fa',           g(['crit','esc','bo','reo','bc','rw','aging','res','trend','qhs']));
 }
 
 function setKpi(id,val,delta,unit,invGood){
@@ -2103,6 +2104,9 @@ function upd(){
   updateKpi(6,agArr[i],agArr,i,METAS.aging,'',true,'',
     agArr[i]>0?`${agArr[i]}${aboveP85>0?' (⚠ '+aboveP85+' >p85)':''}`:' 0');
   updateKpiGroupDots();
+  // Sinaleiras dos gráficos — reaproveitam os status já calculados acima
+  setGroupDot('cgd-ov', [document.getElementById('ks2').textContent]);
+  setGroupDot('cgd-cfd', [document.getElementById('kgdot-fluxo').textContent]);
 
   // Transbordo summary line
   const trEl=document.getElementById('trSummary');
@@ -2266,8 +2270,8 @@ function drawCharts(){
     {label:'p95',data:d.p95,borderColor:'#dc2626',backgroundColor:'transparent',tension:.35,pointRadius:5,pointBackgroundColor:'#dc2626',borderDash:[5,4]},
     {label:`Meta p85 (≤${METAS.p85}d)`,data:Array(sp.length).fill(METAS.p85),borderColor:'#ef4444',borderDash:[6,3],backgroundColor:'transparent',pointRadius:0,borderWidth:1.5}
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,font:{size:11},padding:14}}},scales:{y:{title:{display:true,text:'dias',font:{size:11}},grid:{color:'#f3f4f6'}}}}});
-  // Lead Time status badge
-  (function(){const ltNow=d.p85[gi()],el=document.getElementById('ltStatusBadge');if(!el)return;if(ltNow<=METAS.p85){el.textContent='🟢 Abaixo da meta';el.className='lt-status-badge lts-ok';}else if(ltNow<=METAS.p85*1.15){el.textContent='🟡 Próximo da meta';el.className='lt-status-badge lts-warn';}else{el.textContent='🔴 Acima da meta';el.className='lt-status-badge lts-bad';}})();
+  // Sinaleira do gráfico de Lead Time — mesma regra de meta usada no card p85
+  setGroupDot('cgd-lt', [statusEmoji(metaStatus(d.p85[gi()], METAS.p85, true))]);
   // Cycle time — dynamic based on p85, with bottleneck highlight
   const ctLabels=['A fazer','Em prog.','Revisão','Teste','Pronto'];
   const ctProps=[0.08,0.45,0.22,0.20,0.05];
@@ -3352,6 +3356,8 @@ function drawBurndownBurnup(){
   if(bdIns){
     const lastReal=real[real.length-1];
     const trend=lastReal<=undelivered?'✅ No ritmo esperado':lastReal<=undelivered+Math.round(total*0.15)?'⚠️ Ligeiramente atrasado':'🔴 Atraso significativo detectado';
+    const bdEmoji=lastReal<=undelivered?'🟢':lastReal<=undelivered+Math.round(total*0.15)?'🟡':'🔴';
+    setGroupDot('cgd-bd',[bdEmoji]); setGroupDot('cgd-bu',[bdEmoji]);
     bdIns.innerHTML=`<div style="display:flex;align-items:flex-start;gap:10px">
       <div style="flex:1"><p class="ct">📈 Análise do Burndown</p>
       <p style="font-size:12px;color:#374151;line-height:1.7;margin-top:6px"><strong>${trend}</strong> — ${lastReal} itens restantes ao final da sprint (${undelivered} eram esperados). ${scopeAdd>0?`Escopo aumentou em ${scopeAdd} itens no D6. `:''}${lastReal>undelivered?`Risco de transbordo de ${lastReal-undelivered} itens adicionais.`:'Sprint dentro do planejado.'}</p></div>
@@ -3808,13 +3814,13 @@ function renderMultiTeam(){
 
     <div class="g2">
       <div class="cc">
-        <p class="ct">Throughput — evolução por sprint</p>
-        <p class="cs">Itens entregues sprint a sprint · ${q}</p>
+        <div class="cgh"><span class="cgh-dot">${groupSinaleira(metrics[0].vals.map(v=>statusEmoji(metaStatus(v,METAS.tp,false))))}</span><p class="ct">Throughput — evolução por sprint</p></div>
+        <p class="cs">Itens entregues por sprint, comparados entre squads — ${q}.</p>
         <div style="position:relative;width:100%;height:220px"><canvas id="cMTtp"></canvas></div>
       </div>
       <div class="cc">
-        <p class="ct">Lead Time p85 — evolução por sprint</p>
-        <p class="cs">Dias · quanto menor, melhor · ${q}</p>
+        <div class="cgh"><span class="cgh-dot">${groupSinaleira(metrics[1].vals.map(v=>statusEmoji(metaStatus(v,METAS.p85,true))))}</span><p class="ct">Lead time p85 — evolução por sprint</p></div>
+        <p class="cs">Dias até concluir 85% das entregas — quanto menor, melhor — ${q}.</p>
         <div style="position:relative;width:100%;height:220px"><canvas id="cMTlt"></canvas></div>
       </div>
     </div>
@@ -4492,6 +4498,7 @@ function renderDora(){
     m.emoji=(tier.c==='t-elite'||tier.c==='t-high')?'🟢':tier.c==='t-med'?'🟡':'🔴';
   });
   setGroupDot('kgdot-pd-deploy', metrics.map(m=>m.emoji));
+  setGroupDot('cgd-do', metrics.map(m=>m.emoji));
   renderDoraBands(d,i);
   renderDoraImpact(d,i);
   renderDoraInsight(d,i);
@@ -4687,6 +4694,10 @@ function renderFlowMetrics(){
   });
   setGroupDot('kgdot-pf-fluxo', [fkData[0].emoji,fkData[1].emoji,fkData[2].emoji,fkData[4].emoji]);
   setGroupDot('kgdot-pf-cap',   [fkData[3].emoji,fkData[5].emoji]);
+  // Sinaleiras dos gráficos — reaproveitam os status já calculados dos cards correspondentes
+  setGroupDot('cgd-cy',      [fkData[1].emoji]);
+  setGroupDot('cgd-wipbars', [fkData[4].emoji]);
+  setGroupDot('cgd-th',      [fkData[3].emoji]);
 
   // Bottleneck alert badge
   const ba=document.getElementById('botAlert');
