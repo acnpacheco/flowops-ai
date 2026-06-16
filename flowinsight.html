@@ -639,7 +639,7 @@
 <nav class="main-nav">
   <button class="ntab on" onclick="tab(this,'v')"><i class="ti ti-layout-dashboard"></i> Visão geral</button>
   <button class="ntab" onclick="tab(this,'f')"><i class="ti ti-wave-sine"></i> Métricas de fluxo</button>
-  <button class="ntab" onclick="tab(this,'d')"><i class="ti ti-rocket"></i> DORA</button>
+  <button class="ntab" onclick="tab(this,'d')"><i class="ti ti-rocket"></i> Eficiência de Deploys</button>
   <button class="ntab" onclick="tab(this,'c')"><i class="ti ti-shield-check"></i> Saúde da Qualidade</button>
   <button class="ntab" onclick="tab(this,'r')"><i class="ti ti-file-analytics"></i> Relatório de quarter</button>
   <button class="ntab" onclick="tab(this,'as')"><i class="ti ti-activity"></i> Acompanhamento</button>
@@ -837,35 +837,40 @@
 
   <!-- DORA -->
   <div id="pd" class="fp">
+    <div class="cf-header">
+      <p class="cf-title">Eficiência de Deploys</p>
+      <p class="cf-sub">Monitore a eficiência das entregas por meio da frequência de deploy, lead time para mudanças, taxa de falhas e tempo médio de recuperação — visão Sprint a Sprint baseada nas métricas DORA.</p>
+    </div>
+
     <!-- KPI Cards -->
     <div class="dora-g">
-      <div class="dc">
+      <div class="dc" title="Deployment Frequency (Frequência de Deploy): mede a frequência com que o time entrega código em produção. Quanto maior, melhor — indica maturidade DevOps e capacidade de entregar valor em ciclos curtos e de baixo risco.">
         <button class="gh-btn dc-help" onclick="openMetricDetail('df')" title="Ver no Glossário">?</button>
-        <p class="dl">Deployment Frequency</p>
+        <p class="dl">Deployment Frequency <span class="dl-sub">Frequency of Deployments</span></p>
         <p class="dv" id="d0">—</p>
         <p class="ddelta" id="ddelta0">—</p>
         <div id="dmeta0"></div>
         <span class="tier" id="dt0">—</span>
       </div>
-      <div class="dc">
+      <div class="dc" title="Lead Time for Changes (Lead Time para Mudanças): mede o tempo entre o commit do código e sua chegada em produção. Quanto menor, melhor — indica uma esteira de entrega contínua eficiente e rápida geração de valor.">
         <button class="gh-btn dc-help" onclick="openMetricDetail('ltc')" title="Ver no Glossário">?</button>
-        <p class="dl">Lead Time for Changes</p>
+        <p class="dl">Lead Time for Changes <span class="dl-sub">Time from Code Commit to Production</span></p>
         <p class="dv" id="d1">—</p>
         <p class="ddelta" id="ddelta1">—</p>
         <div id="dmeta1"></div>
         <span class="tier" id="dt1">—</span>
       </div>
-      <div class="dc">
+      <div class="dc" title="Mean Time to Recovery (MTTR): representa o tempo médio necessário para restaurar um serviço após uma falha em produção. Quanto menor o valor, maior a capacidade de recuperação e resiliência operacional da equipe.">
         <button class="gh-btn dc-help" onclick="openMetricDetail('mttr')" title="Ver no Glossário">?</button>
-        <p class="dl">MTTR <span class="dl-sub">Mean Time To Recovery</span></p>
+        <p class="dl">MTTR <span class="dl-sub">Mean Time to Recovery</span></p>
         <p class="dv" id="d2">—</p>
         <p class="ddelta" id="ddelta2">—</p>
         <div id="dmeta2"></div>
         <span class="tier" id="dt2">—</span>
       </div>
-      <div class="dc">
+      <div class="dc" title="Change Failure Rate (Taxa de Falha de Mudanças): mede o percentual de deploys que resultam em falha em produção. Quanto menor, melhor — indica entregas mais confiáveis e processos de qualidade robustos.">
         <button class="gh-btn dc-help" onclick="openMetricDetail('cfr')" title="Ver no Glossário">?</button>
-        <p class="dl">Change Failure Rate</p>
+        <p class="dl">Change Failure Rate <span class="dl-sub">Percentage of Deployments Resulting in Failure</span></p>
         <p class="dv" id="d3">—</p>
         <p class="ddelta" id="ddelta3">—</p>
         <div id="dmeta3"></div>
