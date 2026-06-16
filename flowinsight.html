@@ -221,9 +221,6 @@
   /* Carga de Falhas v2 */
   .cf-header{margin-bottom:14px}
   .cf-title{font-size:15px;font-weight:600;color:#111827;margin:0 0 3px}
-  .cf-title-row{display:flex;align-items:center;gap:8px}
-  .cf-title-row .cf-title{margin:0}
-  .cf-title-dot{font-size:14px;line-height:1}
   .cf-sub{font-size:11px;color:#9ca3af;margin:0}
   .cfst{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
   .cfst-ok{background:#dcfce7;color:#166534}
@@ -664,7 +661,7 @@
   <!-- Visão Geral -->
   <div id="pv" class="fp on">
     <div class="cf-header">
-      <div class="cf-title-row"><span class="cf-title-dot" id="cftd-pv">🟢</span><p class="cf-title">Visão geral</p></div>
+      <p class="cf-title">Visão geral</p>
       <p class="cf-sub">Panorama executivo das principais métricas de fluxo, qualidade e eficiência operacional — visão consolidada da Sprint atual.</p>
     </div>
 
@@ -792,7 +789,7 @@
   <!-- Métricas de Fluxo -->
   <div id="pf" class="fp">
     <div class="cf-header">
-      <div class="cf-title-row"><span class="cf-title-dot" id="cftd-pf">🟢</span><p class="cf-title">Métricas de fluxo</p></div>
+      <p class="cf-title">Métricas de fluxo</p>
       <p class="cf-sub">Indicadores de eficiência do fluxo de trabalho, previsibilidade e capacidade de entrega — acompanhamento Sprint a Sprint.</p>
     </div>
 
@@ -893,7 +890,7 @@
         <span class="kg-dot" id="kgdot-pd-deploy">🟢</span>
         Eficiência de deploys
       </div>
-      <span class="kg-desc">As entregas em produção estão ocorrendo com velocidade, estabilidade e segurança?</span>
+      <span class="kg-desc">Nossa performance de engenharia está alinhada às boas práticas do mercado?</span>
     </div>
 
     <!-- KPI Cards -->
@@ -980,7 +977,7 @@
   <!-- Saúde da Qualidade -->
   <div id="pc" class="fp">
     <div class="cf-header">
-      <div class="cf-title-row"><span class="cf-title-dot" id="cftd-pc">🟢</span><p class="cf-title">Saúde da qualidade</p></div>
+      <p class="cf-title">Saúde da qualidade</p>
       <p class="cf-sub">Indicadores de defeitos, retrabalho e eficiência operacional — Sprint a Sprint · 10 métricas consolidadas</p>
     </div>
 
@@ -2037,13 +2034,6 @@ function updateKpiGroupDots(){
   setDot('kgdot-fluxo', g([0,5,6]));
   setDot('kgdot-cap',   g([1,2,3]));
   setDot('kgdot-qual',  g([4]));
-  setConsolidatedDot('cftd-pv', ['kgdot-fluxo','kgdot-cap','kgdot-qual']);
-}
-
-// Sinaleira consolidada do cabeçalho principal = pior estado entre os dots de grupo da página
-function setConsolidatedDot(titleDotId, groupDotIds){
-  const emojis=groupDotIds.map(id=>{const el=document.getElementById(id);return el?el.textContent:'🟢';});
-  setGroupDot(titleDotId, emojis);
 }
 
 // Sinaleira dos agrupadores de Saúde da Qualidade, a partir das classes cfst-ok/warn/bad de cada card
@@ -2053,7 +2043,6 @@ function updateCfGroupDots(){
   const setDot=(id,emojis)=>{const el=document.getElementById(id);if(el)el.textContent=groupSinaleira(emojis);};
   setDot('kgdot-risco',      g(['crit','esc','bo','reo','bc']));
   setDot('kgdot-eficiencia', g(['rw','aging','res','trend','qhs']));
-  setConsolidatedDot('cftd-pc', ['kgdot-risco','kgdot-eficiencia']);
 }
 
 function setKpi(id,val,delta,unit,invGood){
@@ -4665,7 +4654,6 @@ function renderFlowMetrics(){
   });
   setGroupDot('kgdot-pf-fluxo', [fkData[0].emoji,fkData[1].emoji,fkData[2].emoji,fkData[4].emoji]);
   setGroupDot('kgdot-pf-cap',   [fkData[3].emoji]);
-  setConsolidatedDot('cftd-pf', ['kgdot-pf-fluxo','kgdot-pf-cap']);
 
   // Bottleneck alert badge
   const ba=document.getElementById('botAlert');
