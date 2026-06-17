@@ -393,10 +393,30 @@
   .mt-tbl{width:100%;border-collapse:collapse;font-size:12px}
   .mt-tbl th{padding:6px 10px;text-align:center;font-size:11px;color:#6b7280;font-weight:600;border-bottom:1px solid #e5e7eb;text-transform:uppercase;letter-spacing:.04em}
   .mt-tbl th:first-child{text-align:left}
-  .mt-tbl td{padding:7px 10px;border-bottom:1px solid #f3f4f6;text-align:center;color:#374151}
+  .mt-tbl td{padding:8px 10px;border-bottom:1px solid #f3f4f6;text-align:center;color:#374151}
   .mt-tbl td:first-child{text-align:left;color:#6b7280}
   .mt-tbl tr:last-child td{border-bottom:none}
   .mt-tbl td.win{font-weight:600}
+  /* ── Multi-time v2 ────────────────────────────────────── */
+  .mt-sec-desc{font-size:11.5px;color:#6b7280;line-height:1.6;margin:-4px 0 14px}
+  .mtc-v2{background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:20px 18px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);position:relative;transition:box-shadow .15s}
+  .mtc-v2:hover{box-shadow:0 4px 18px rgba(0,0,0,.10)}
+  .mtc-icon-box{width:54px;height:54px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .mtc-v2-body{flex:1;min-width:0}
+  .mtc-v2-name{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+  .mtc-v2-score{font-size:30px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .mtc-v2-score span{font-size:13px;font-weight:400;color:#9ca3af}
+  .mtc-status{display:inline-block;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px}
+  .mtc-ref{position:absolute;top:10px;right:10px;font-size:9px;font-weight:700;padding:2px 9px;border-radius:6px;letter-spacing:.05em;text-transform:uppercase}
+  .mtr-cell{display:flex;align-items:center;gap:10px}
+  .mtr-icon-box{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .mtr-lbl{font-size:12px;font-weight:600;color:#111827;line-height:1.2}
+  .mtr-sub{font-size:10px;color:#9ca3af;margin-top:1px}
+  .mt-ref-td{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:8px}
+  .cgh-mt{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .cgh-mt-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .cgh-mt-title{font-size:13px;font-weight:700;color:#111827}
+  .cgh-mt-sub{font-size:11px;color:#6b7280;margin-top:2px}
 
   /* ── Calendário Corporativo ─────────────────────────── */
   .ccal-header{margin-bottom:0}
@@ -3952,47 +3972,51 @@ Responda APENAS com o relatório aprimorado, sem comentários adicionais.`;
 function renderMultiTeam(){
   const q=gq(), i=gi();
   const teams=[
-    {name:'Time Alpha', d:D[q],  color:'#185FA5', bg:'rgba(24,95,165,.15)'},
-    {name:'Time Beta',  d:DB[q], color:'#059669', bg:'rgba(5,150,105,.15)'},
-    {name:'Time Gamma', d:DG[q], color:'#7c3aed', bg:'rgba(124,58,237,.15)'},
+    {name:'Time Alpha', d:D[q],  color:'#185FA5', bg:'rgba(24,95,165,.15)', cardBg:'linear-gradient(135deg,#f0f7ff,#dbeafe)', cardBorder:'#bfdbfe', iconBg:'#dbeafe', icon:'ti-activity'},
+    {name:'Time Beta',  d:DB[q], color:'#059669', bg:'rgba(5,150,105,.15)',  cardBg:'linear-gradient(135deg,#f0fdf4,#dcfce7)', cardBorder:'#bbf7d0', iconBg:'#dcfce7', icon:'ti-trending-up'},
+    {name:'Time Gamma', d:DG[q], color:'#7c3aed', bg:'rgba(124,58,237,.15)',cardBg:'linear-gradient(135deg,#faf5ff,#ede9fe)', cardBorder:'#ddd6fe', iconBg:'#ede9fe', icon:'ti-chart-arrows-vertical'},
   ];
 
-  // destroy previous charts
   Object.values(_mtCh).forEach(c=>{try{c.destroy()}catch(_){}});
   _mtCh={};
 
-  // health for each team (using quarter-level data)
   teams.forEach(t=>{ t.h=calcHealthFrom(t.d); });
 
   const hVals=teams.map(t=>t.h.total);
   const hWin=hVals.indexOf(Math.max(...hVals));
   const sp=teams[0].d.sp[i];
 
-  // sprint metrics to compare
+  const scoreStyle=s=>s>=85?'background:#dcfce7;color:#166534':s>=70?'background:#fef9c3;color:#854d0e':s>=55?'background:#ffedd5;color:#9a3412':'background:#fee2e2;color:#991b1b';
+
   const metrics=[
-    {lbl:'Throughput',      vals:teams.map(t=>t.d.en[i]),                           unit:' itens', better:'high'},
-    {lbl:'Lead Time p85',   vals:teams.map(t=>t.d.p85[i]),                          unit:'d',      better:'low'},
-    {lbl:'Capacity × Velocity (%)', vals:teams.map(t=>Math.round(t.d.en[i]/t.d.pl[i]*100)),unit:'%',      better:'high'},
-    {lbl:'Deployment Frequency (DF)',vals:teams.map(t=>+t.d.df[i].toFixed(1)),               unit:'/sem',   better:'high'},
-    {lbl:'Mean Time to Recovery (MTTR)',vals:teams.map(t=>+t.d.mt[i].toFixed(1)),            unit:'h',      better:'low'},
-    {lbl:'Bugs abertos',    vals:teams.map(t=>t.d.bo[i]),                           unit:'',       better:'low'},
+    {lbl:'Throughput',                   icon:'ti-chart-bar', iconBg:'#eff6ff', iconColor:'#185FA5', desc:'Itens concluídos no sprint',        vals:teams.map(t=>t.d.en[i]),                                   unit:' itens', better:'high'},
+    {lbl:'Lead Time p85',                icon:'ti-clock',     iconBg:'#f0fdf4', iconColor:'#059669', desc:'Dias até 85% das entregas',          vals:teams.map(t=>t.d.p85[i]),                                  unit:'d',      better:'low'},
+    {lbl:'Capacity × Velocity (%)',      icon:'ti-bolt',      iconBg:'#fffbeb', iconColor:'#d97706', desc:'Aderência capacidade × entrega',     vals:teams.map(t=>Math.round(t.d.en[i]/t.d.pl[i]*100)),         unit:'%',      better:'high'},
+    {lbl:'Deployment Frequency (DF)',    icon:'ti-rocket',    iconBg:'#eff6ff', iconColor:'#185FA5', desc:'Frequência de deploys/semana',       vals:teams.map(t=>+t.d.df[i].toFixed(1)),                       unit:'/sem',   better:'high'},
+    {lbl:'Mean Time to Recovery (MTTR)', icon:'ti-refresh',   iconBg:'#fdf4ff', iconColor:'#7c3aed', desc:'Tempo médio de recuperação',         vals:teams.map(t=>+t.d.mt[i].toFixed(1)),                       unit:'h',      better:'low'},
+    {lbl:'Bugs abertos',                 icon:'ti-bug',       iconBg:'#fff1f2', iconColor:'#dc2626', desc:'Defeitos ativos na sprint',           vals:teams.map(t=>t.d.bo[i]),                                   unit:'',       better:'low'},
   ];
   metrics.forEach(m=>{
     const n=m.vals.map(Number);
     m.winIdx=m.better==='high'?n.indexOf(Math.max(...n)):n.indexOf(Math.min(...n));
   });
 
-  // DORA rows
   const doraRows=[
-    {lbl:'Deployment Frequency (DF)',    vals:teams.map(t=>`${t.d.df[i].toFixed(1)}/sem`), num:teams.map(t=>t.d.df[i]), better:'high'},
-    {lbl:'Lead Time for Changes (LTC)', vals:teams.map(t=>`${t.d.lc[i].toFixed(1)}d`),   num:teams.map(t=>t.d.lc[i]), better:'low'},
-    {lbl:'Mean Time to Recovery (MTTR)',vals:teams.map(t=>`${t.d.mt[i].toFixed(1)}h`),   num:teams.map(t=>t.d.mt[i]), better:'low'},
-    {lbl:'Change Failure Rate (CFR)',   vals:teams.map(t=>`${t.d.cf[i].toFixed(1)}%`),   num:teams.map(t=>t.d.cf[i]), better:'low'},
+    {lbl:'Deployment Frequency (DF)',    icon:'ti-rocket',  iconBg:'#eff6ff', iconColor:'#185FA5', desc:'Deploys por semana',         vals:teams.map(t=>`${t.d.df[i].toFixed(1)}/sem`), num:teams.map(t=>t.d.df[i]), better:'high'},
+    {lbl:'Lead Time for Changes (LTC)', icon:'ti-code',    iconBg:'#f0fdf4', iconColor:'#059669', desc:'Tempo commit → produção',    vals:teams.map(t=>`${t.d.lc[i].toFixed(1)}d`),   num:teams.map(t=>t.d.lc[i]), better:'low'},
+    {lbl:'Mean Time to Recovery (MTTR)',icon:'ti-refresh', iconBg:'#fdf4ff', iconColor:'#7c3aed', desc:'Restauração após falha',     vals:teams.map(t=>`${t.d.mt[i].toFixed(1)}h`),   num:teams.map(t=>t.d.mt[i]), better:'low'},
+    {lbl:'Change Failure Rate (CFR)',   icon:'ti-shield',  iconBg:'#fff1f2', iconColor:'#dc2626', desc:'Taxa de deploy com falha',   vals:teams.map(t=>`${t.d.cf[i].toFixed(1)}%`),   num:teams.map(t=>t.d.cf[i]), better:'low'},
   ].map(r=>{
     const n=r.num.map(Number);
     const w=r.better==='high'?n.indexOf(Math.max(...n)):n.indexOf(Math.min(...n));
-    const tds=r.vals.map((v,k)=>`<td class="${k===w?'win':''}" style="${k===w?'color:'+teams[k].color:''}">${k===w?'🏆 ':''}${v}</td>`).join('');
-    return`<tr><td>${r.lbl}</td>${tds}</tr>`;
+    const tds=r.vals.map((v,k)=>`<td style="text-align:center">${k===w?`<span class="mt-ref-td" style="background:${teams[k].color}18;color:${teams[k].color}">${v}</span>`:v}</td>`).join('');
+    return`<tr>
+      <td style="text-align:left">
+        <div class="mtr-cell">
+          <div class="mtr-icon-box" style="background:${r.iconBg}"><i class="ti ${r.icon}" style="color:${r.iconColor};font-size:15px"></i></div>
+          <div><div class="mtr-lbl">${r.lbl}</div><div class="mtr-sub">${r.desc}</div></div>
+        </div>
+      </td>${tds}</tr>`;
   }).join('');
 
   document.getElementById('pm').innerHTML=`
@@ -4002,13 +4026,19 @@ function renderMultiTeam(){
     </div>
 
     <p class="mt-sec">Índice de saúde do quarter</p>
+    <p class="mt-sec-desc">Visão consolidada da saúde dos times no Quarter, permitindo identificar rapidamente oportunidades de melhoria e tendências operacionais.</p>
     <div class="mt3">
       ${teams.map((t,k)=>`
-        <div class="mtc${k===hWin?' best':''}">
-          ${k===hWin?'<span class="mtc-crown">🏆</span>':''}
-          <div class="mtc-team" style="color:${t.color}">${t.name}</div>
-          <div class="mtc-val">${t.h.total}<span style="font-size:13px;font-weight:400;color:#9ca3af">/100</span></div>
-          <div class="mtc-lbl">${tierLabel(t.h.total)}</div>
+        <div class="mtc-v2" style="background:${t.cardBg};border-color:${t.cardBorder}">
+          ${k===hWin?`<span class="mtc-ref" style="background:${t.color}18;color:${t.color}">Referência</span>`:''}
+          <div class="mtc-icon-box" style="background:${t.iconBg}">
+            <i class="ti ${t.icon}" style="color:${t.color};font-size:26px"></i>
+          </div>
+          <div class="mtc-v2-body">
+            <div class="mtc-v2-name" style="color:${t.color}">${t.name}</div>
+            <div class="mtc-v2-score">${t.h.total}<span>/100</span></div>
+            <span class="mtc-status" style="${scoreStyle(t.h.total)}">${tierLabel(t.h.total)}</span>
+          </div>
         </div>`).join('')}
     </div>
 
@@ -4016,13 +4046,18 @@ function renderMultiTeam(){
     <div class="cc" style="padding:4px 0">
       <table class="mt-tbl">
         <thead><tr>
-          <th>Métrica</th>
+          <th style="text-align:left">Métrica</th>
           ${teams.map(t=>`<th style="color:${t.color}">${t.name}</th>`).join('')}
         </tr></thead>
         <tbody>
           ${metrics.map(m=>`<tr>
-            <td>${m.lbl}</td>
-            ${m.vals.map((v,k)=>`<td class="${k===m.winIdx?'win':''}" style="${k===m.winIdx?'color:'+teams[k].color:''}">${k===m.winIdx?'🏆 ':''}${v}${m.unit}</td>`).join('')}
+            <td style="text-align:left">
+              <div class="mtr-cell">
+                <div class="mtr-icon-box" style="background:${m.iconBg}"><i class="ti ${m.icon}" style="color:${m.iconColor};font-size:15px"></i></div>
+                <div><div class="mtr-lbl">${m.lbl}</div><div class="mtr-sub">${m.desc}</div></div>
+              </div>
+            </td>
+            ${m.vals.map((v,k)=>`<td style="text-align:center">${k===m.winIdx?`<span class="mt-ref-td" style="background:${teams[k].color}18;color:${teams[k].color}">${v}${m.unit}</span>`:`${v}${m.unit}`}</td>`).join('')}
           </tr>`).join('')}
         </tbody>
       </table>
@@ -4030,23 +4065,33 @@ function renderMultiTeam(){
 
     <div class="g2">
       <div class="cc">
-        <div class="cgh"><span class="cgh-dot">${groupSinaleira(metrics[0].vals.map(v=>statusEmoji(metaStatus(v,METAS.tp,false))))}</span><p class="ct">Throughput — evolução por sprint</p></div>
-        <p class="cs">Itens entregues por sprint, comparados entre squads — ${q}.</p>
+        <div class="cgh-mt">
+          <div class="cgh-mt-icon" style="background:#eff6ff"><i class="ti ti-chart-bar" style="color:#185FA5;font-size:20px"></i></div>
+          <div>
+            <div class="cgh-mt-title">Throughput — Evolução por Sprint</div>
+            <div class="cgh-mt-sub">Itens entregues por sprint, comparados entre squads — ${q}.</div>
+          </div>
+        </div>
         <div style="position:relative;width:100%;height:220px"><canvas id="cMTtp"></canvas></div>
       </div>
       <div class="cc">
-        <div class="cgh"><span class="cgh-dot">${groupSinaleira(metrics[1].vals.map(v=>statusEmoji(metaStatus(v,METAS.p85,true))))}</span><p class="ct">Lead time p85 — evolução por sprint</p></div>
-        <p class="cs">Dias até concluir 85% das entregas — quanto menor, melhor — ${q}.</p>
+        <div class="cgh-mt">
+          <div class="cgh-mt-icon" style="background:#f0fdf4"><i class="ti ti-clock" style="color:#059669;font-size:20px"></i></div>
+          <div>
+            <div class="cgh-mt-title">Lead Time p85 — Evolução por Sprint</div>
+            <div class="cgh-mt-sub">Dias até 85% das entregas — quanto menor, melhor — ${q}.</div>
+          </div>
+        </div>
         <div style="position:relative;width:100%;height:220px"><canvas id="cMTlt"></canvas></div>
       </div>
     </div>
 
     <div class="cc">
       <p class="ct">📊 DORA — Eficiência de deploys</p>
-      <p class="cs">Sprint atual · 🏆 = melhor resultado entre os times</p>
+      <p class="cs">Comparativo entre squads na sprint atual · <span style="font-size:10px;background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:6px;font-weight:600">Referência</span> = melhor resultado</p>
       <table class="mt-tbl">
         <thead><tr>
-          <th>Métrica</th>
+          <th style="text-align:left">Métrica</th>
           ${teams.map(t=>`<th style="color:${t.color}">${t.name}</th>`).join('')}
         </tr></thead>
         <tbody>${doraRows}</tbody>
