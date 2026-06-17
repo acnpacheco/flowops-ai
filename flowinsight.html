@@ -110,6 +110,22 @@
   .t-high{background:#d1fae5;color:#065f46}
   .t-med{background:#fef3c7;color:#92400e}
   .t-low{background:#fee2e2;color:#991b1b}
+  /* Eficiência de deploys — refactored benchmark & health */
+  .dc-health{border:2px solid #86efac!important;background:linear-gradient(135deg,#f0fdf4,#f7fffe)!important}
+  .dc-health.h-warn{border-color:#fcd34d!important;background:linear-gradient(135deg,#fffbeb,#fffef7)!important}
+  .dc-health.h-crit{border-color:#fca5a5!important;background:linear-gradient(135deg,#fef2f2,#fff5f5)!important}
+  .dband-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f3f4f6}
+  .dband-row:last-child{border-bottom:none}
+  .dband-info{min-width:150px;flex-shrink:0}
+  .dband-name{font-size:11px;font-weight:700;color:#111827;margin:0 0 2px}
+  .dband-dir{font-size:10px;color:#9ca3af;margin:0}
+  .dband-scale-wrap{flex:1;min-width:0}
+  .dband-scale{display:flex;height:22px;border-radius:4px;overflow:hidden;gap:1px;margin-bottom:3px}
+  .dband-seg{flex:1;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#374151}
+  .dband-marker-row{position:relative;height:14px}
+  .dband-marker{position:absolute;transform:translateX(-50%);font-size:9px;font-weight:700;color:#1e3a5f;white-space:nowrap}
+  .dband-right{min-width:70px;text-align:right;flex-shrink:0}
+  .dband-val{font-size:13px;font-weight:700;color:#111827;margin:0 0 3px}
 
   /* Status Reports */
   .sr-card{background:#fff;border-radius:12px;border:1px solid #e5e5e3;padding:18px;margin-bottom:16px}
@@ -905,86 +921,138 @@
   <div id="pd" class="fp">
     <div class="cf-header">
       <p class="cf-title">Eficiência de deploys</p>
-      <p class="cf-sub">Monitore a eficiência das entregas por meio da frequência de deploy, lead time para mudanças, taxa de falhas e tempo médio de recuperação — visão Sprint a Sprint baseada nas métricas DORA.</p>
+      <p class="cf-sub">Monitore a eficiência das entregas por meio das métricas DORA — frequência de deploy, lead time, taxa de falhas, recuperação e confiabilidade operacional, por Sprint.</p>
     </div>
 
-    <!-- Grupo único — Eficiência de deploys -->
+    <!-- 1.1 Visão geral dos deploys -->
     <div class="kg-section">
       <div class="kg-label">
         <span class="kg-dot" id="kgdot-pd-deploy">🟢</span>
-        Eficiência de deploys
+        Visão geral dos deploys
       </div>
       <span class="kg-desc">Nossa performance de engenharia está alinhada às boas práticas do mercado?</span>
     </div>
 
-    <!-- KPI Cards -->
-    <div class="dora-g">
-      <div class="dc" title="Deployment Frequency (Frequência de Deploy): mede a frequência com que o time entrega código em produção. Quanto maior, melhor — indica maturidade DevOps e capacidade de entregar valor em ciclos curtos e de baixo risco.">
+    <!-- Saúde consolidada + 5 cards resumo executivo DORA -->
+    <div class="dora-g" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:14px">
+      <div class="dc dc-health" id="dc-health">
+        <p class="dl">Saúde dos deploys<span class="dl-sub">Estado consolidado DORA</span></p>
+        <p class="dv" id="d-health-emoji" style="font-size:28px;margin:4px 0 2px">—</p>
+        <p id="d-health-label" class="ddelta" style="font-weight:700;font-size:13px">—</p>
+        <div id="d-health-desc" style="font-size:10px;color:#6b7280;margin-top:4px;line-height:1.4"></div>
+      </div>
+      <div class="dc" title="Deployment Frequency: frequência de deploys em produção. Quanto maior, melhor.">
         <button class="gh-btn dc-help" onclick="openMetricDetail('df')" title="Ver no Glossário">?</button>
-        <p class="dl">Deployment Frequency <span class="dl-sub">Frequency of Deployments</span></p>
+        <p class="dl">Deployment Frequency<span class="dl-sub">↑ quanto maior, melhor</span></p>
         <p class="dv" id="d0">—</p>
         <p class="ddelta" id="ddelta0">—</p>
         <div id="dmeta0"></div>
         <span class="tier" id="dt0">—</span>
       </div>
-      <div class="dc" title="Lead Time for Changes (Lead Time para Mudanças): mede o tempo entre o commit do código e sua chegada em produção. Quanto menor, melhor — indica uma esteira de entrega contínua eficiente e rápida geração de valor.">
+      <div class="dc" title="Lead Time for Changes: tempo entre commit e deploy em produção. Quanto menor, melhor.">
         <button class="gh-btn dc-help" onclick="openMetricDetail('ltc')" title="Ver no Glossário">?</button>
-        <p class="dl">Lead Time for Changes <span class="dl-sub">Time from Code Commit to Production</span></p>
+        <p class="dl">Lead Time for Changes<span class="dl-sub">↓ quanto menor, melhor</span></p>
         <p class="dv" id="d1">—</p>
         <p class="ddelta" id="ddelta1">—</p>
         <div id="dmeta1"></div>
         <span class="tier" id="dt1">—</span>
       </div>
-      <div class="dc" title="Mean Time to Recovery (MTTR): representa o tempo médio necessário para restaurar um serviço após uma falha em produção. Quanto menor o valor, maior a capacidade de recuperação e resiliência operacional da equipe.">
-        <button class="gh-btn dc-help" onclick="openMetricDetail('mttr')" title="Ver no Glossário">?</button>
-        <p class="dl">MTTR <span class="dl-sub">Mean Time to Recovery</span></p>
+      <div class="dc" title="Change Failure Rate: percentual de deploys que causaram falha em produção. Quanto menor, melhor.">
+        <button class="gh-btn dc-help" onclick="openMetricDetail('cfr')" title="Ver no Glossário">?</button>
+        <p class="dl">Change Failure Rate<span class="dl-sub">↓ quanto menor, melhor</span></p>
         <p class="dv" id="d2">—</p>
         <p class="ddelta" id="ddelta2">—</p>
         <div id="dmeta2"></div>
         <span class="tier" id="dt2">—</span>
       </div>
-      <div class="dc" title="Change Failure Rate (Taxa de Falha de Mudanças): mede o percentual de deploys que resultam em falha em produção. Quanto menor, melhor — indica entregas mais confiáveis e processos de qualidade robustos.">
-        <button class="gh-btn dc-help" onclick="openMetricDetail('cfr')" title="Ver no Glossário">?</button>
-        <p class="dl">Change Failure Rate <span class="dl-sub">Percentage of Deployments Resulting in Failure</span></p>
+      <div class="dc" title="MTTR: tempo médio de recuperação após falha. Quanto menor, melhor.">
+        <button class="gh-btn dc-help" onclick="openMetricDetail('mttr')" title="Ver no Glossário">?</button>
+        <p class="dl">MTTR<span class="dl-sub">↓ quanto menor, melhor</span></p>
         <p class="dv" id="d3">—</p>
         <p class="ddelta" id="ddelta3">—</p>
         <div id="dmeta3"></div>
         <span class="tier" id="dt3">—</span>
       </div>
+      <div class="dc" title="Reliability: índice de confiabilidade operacional 0–100. Combina Change Failure Rate e MTTR. Quanto maior, melhor.">
+        <button class="gh-btn dc-help" onclick="openMetricDetail('reliability')" title="Ver no Glossário">?</button>
+        <p class="dl">Reliability<span class="dl-sub">↑ quanto maior, melhor</span></p>
+        <p class="dv" id="d4">—</p>
+        <p class="ddelta" id="ddelta4">—</p>
+        <div id="dmeta4"></div>
+        <span class="tier" id="dt4">—</span>
+      </div>
     </div>
 
-    <!-- DORA Benchmark bands -->
-    <div class="cc" style="margin-bottom:12px">
-      <p class="ct">Classificação DORA — benchmark de mercado</p>
+    <!-- Benchmark DORA — visual com faixas por tier -->
+    <div class="cc" style="margin-bottom:14px">
+      <div class="cgh" style="margin-bottom:6px">
+        <span class="cgh-dot" id="cgd-do">🟢</span>
+        <p class="ct">Classificação DORA — benchmark de mercado</p>
+      </div>
+      <p class="cs">Posição de cada métrica nas faixas Elite, Alto, Médio e Baixo desempenho do benchmark global.</p>
       <div id="doraBands"></div>
     </div>
 
-    <!-- Chart with metric selector -->
-    <div class="cc" style="margin-bottom:12px">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px">
-        <div class="cgh" style="margin-bottom:0"><span class="cgh-dot" id="cgd-do">🟢</span><p class="ct">Evolução por sprint</p></div>
-        <div class="dsel-row" id="doraSelRow">
-          <button class="dsel-btn on" onclick="switchDoraChart('df',this)">Deploy Freq.</button>
-          <button class="dsel-btn" onclick="switchDoraChart('lc',this)">Lead Time</button>
-          <button class="dsel-btn" onclick="switchDoraChart('mt',this)">MTTR</button>
-          <button class="dsel-btn" onclick="switchDoraChart('cf',this)">Failure Rate</button>
-          <button class="dsel-btn" onclick="switchDoraChart('all',this)">Todas</button>
-        </div>
+    <!-- 1.2 Métricas de velocidade -->
+    <div class="kg-section">
+      <div class="kg-label">
+        <span class="kg-dot" id="kgdot-pd-vel">🟢</span>
+        Métricas de velocidade
       </div>
-      <p class="cs">Acompanhe a evolução de cada métrica DORA sprint a sprint.</p>
-      <div id="doraLeg" class="leg" style="margin-bottom:8px"></div>
-      <div style="position:relative;width:100%;height:240px"><canvas id="cDo"></canvas></div>
+      <span class="kg-desc">O time entrega mudanças com frequência e fluidez suficientes?</span>
+    </div>
+    <div class="g2" style="margin-bottom:14px">
+      <div class="cc">
+        <div class="cgh"><span class="cgh-dot" id="cgd-df">🟢</span><p class="ct">Deployment Frequency — frequência de implantação</p></div>
+        <p class="cs">Quanto maior e mais sustentável, melhor — maturidade DevOps e ciclos de entrega curtos.</p>
+        <div style="position:relative;width:100%;height:200px"><canvas id="cDf" role="img" aria-label="Deployment Frequency por sprint"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="cgh"><span class="cgh-dot" id="cgd-ltc">🟢</span><p class="ct">Lead Time for Changes — tempo de implementação</p></div>
+        <p class="cs">Quanto menor, mais rápido o valor chega ao usuário — eficiência do pipeline CI/CD.</p>
+        <div style="position:relative;width:100%;height:200px"><canvas id="cLtc" role="img" aria-label="Lead Time for Changes por sprint"></canvas></div>
+      </div>
     </div>
 
-    <!-- Impact & Insight (2-col) -->
-    <div class="g2">
+    <!-- 1.3 Estabilidade e qualidade -->
+    <div class="kg-section">
+      <div class="kg-label">
+        <span class="kg-dot" id="kgdot-pd-stab">🟢</span>
+        Estabilidade e qualidade
+      </div>
+      <span class="kg-desc">A velocidade de entrega está sendo sustentada com qualidade?</span>
+    </div>
+    <div class="g2" style="margin-bottom:14px">
       <div class="cc">
-        <p class="ct">Impacto no negócio</p>
-        <div id="doraImpact"></div>
+        <div class="cgh"><span class="cgh-dot" id="cgd-cfr">🟢</span><p class="ct">Change Failure Rate — taxa de falha de alterações</p></div>
+        <p class="cs">Quanto menor, mais confiável o processo de deploy — picos indicam qualidade comprometida.</p>
+        <div style="position:relative;width:100%;height:200px"><canvas id="cCfr" role="img" aria-label="Change Failure Rate por sprint"></canvas></div>
       </div>
       <div class="cc">
-        <p class="ct">💡 Insight automático</p>
-        <p id="doraInsight" style="font-size:13px;color:#374151;line-height:1.75;margin:0"></p>
+        <div class="cgh"><span class="cgh-dot" id="cgd-mttr">🟢</span><p class="ct">MTTR — tempo médio de recuperação</p></div>
+        <p class="cs">Quanto menor, maior a resiliência — capacidade do time de responder a incidentes rapidamente.</p>
+        <div style="position:relative;width:100%;height:200px"><canvas id="cMttrD" role="img" aria-label="MTTR por sprint"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 1.4 Confiabilidade operacional -->
+    <div class="kg-section">
+      <div class="kg-label">
+        <span class="kg-dot" id="kgdot-pd-rel">🟢</span>
+        Confiabilidade operacional
+      </div>
+      <span class="kg-desc">A operação permanece estável mesmo com o aumento da frequência de deploys?</span>
+    </div>
+    <div class="g2" style="margin-bottom:14px">
+      <div class="cc">
+        <div class="cgh"><span class="cgh-dot" id="cgd-rel">🟢</span><p class="ct">Reliability — confiabilidade operacional</p></div>
+        <p class="cs">Score 0–100 que combina estabilidade e disponibilidade — quanto maior, mais confiável a operação.</p>
+        <div style="position:relative;width:100%;height:200px"><canvas id="cRel" role="img" aria-label="Reliability por sprint"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="cgh"><span class="cgh-dot" id="cgd-inc">🟢</span><p class="ct">Incidentes críticos por sprint</p></div>
+        <p class="cs">Incidentes críticos vinculados a deploys — ideal é zero ou tendência decrescente.</p>
+        <div style="position:relative;width:100%;height:200px"><canvas id="cInc" role="img" aria-label="Incidentes críticos por sprint"></canvas></div>
       </div>
     </div>
 
@@ -2301,7 +2369,7 @@ function drawCharts(){
   ch['cy']=new Chart(document.getElementById('cCy'),{type:'bar',data:{labels:ctLabels,datasets:[{data:ctTimes,backgroundColor:ctBg,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y}d${ctx.dataIndex===ctMax?' ← gargalo':''}`}}},scales:{y:{title:{display:true,text:'dias',font:{size:11}},grid:{color:'#f3f4f6'}}}}});
   // Throughput with meta line
   ch['th']=new Chart(document.getElementById('cTh'),{type:'line',data:{labels:sp,datasets:[{label:'Entregue',data:d.en,borderColor:'#185FA5',backgroundColor:'rgba(24,95,165,.08)',fill:true,tension:.35,pointRadius:5,pointBackgroundColor:'#185FA5'},{label:`Meta (${METAS.tp})`,data:Array(sp.length).fill(METAS.tp),borderColor:'#059669',borderDash:[5,4],backgroundColor:'transparent',pointRadius:0,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,font:{size:11},padding:12}}},scales:{y:{beginAtZero:false,grid:{color:'#f3f4f6'}}}}});
-  if(document.getElementById('pd').classList.contains('on')) switchDoraChart(window._doraMetric||'df');
+  if(document.getElementById('pd').classList.contains('on')) renderDoraCharts(d,q);
   if(document.getElementById('pc').classList.contains('on')) drawCfaChart(d);
   drawCFD(d,gi());
 }
@@ -4477,7 +4545,8 @@ function setTier(val,el,type){
     df:[{v:1,l:'Low',c:'t-low'},{v:3,l:'Medium',c:'t-med'},{v:6,l:'High',c:'t-high'},{v:999,l:'Elite',c:'t-elite'}],
     lc:[{v:1,l:'Elite',c:'t-elite'},{v:3,l:'High',c:'t-high'},{v:7,l:'Medium',c:'t-med'},{v:999,l:'Low',c:'t-low'}],
     mt:[{v:4,l:'Elite',c:'t-elite'},{v:24,l:'High',c:'t-high'},{v:168,l:'Medium',c:'t-med'},{v:999,l:'Low',c:'t-low'}],
-    cf:[{v:5,l:'Elite',c:'t-elite'},{v:15,l:'High',c:'t-high'},{v:45,l:'Medium',c:'t-med'},{v:999,l:'Low',c:'t-low'}]
+    cf:[{v:5,l:'Elite',c:'t-elite'},{v:15,l:'High',c:'t-high'},{v:45,l:'Medium',c:'t-med'},{v:999,l:'Low',c:'t-low'}],
+    rel:[{v:50,l:'Low',c:'t-low'},{v:70,l:'Medium',c:'t-med'},{v:90,l:'High',c:'t-high'},{v:100,l:'Elite',c:'t-elite'}]
   };
   const tiers=tbl[type]||tbl.lc;
   let r=tiers[tiers.length-1];
@@ -4487,17 +4556,35 @@ function setTier(val,el,type){
 }
 function doraClassify(val,type){return setTier(val,document.createElement('span'),type);}
 
+function calcReliability(d,i){
+  const cfrScore=Math.max(0,60-d.cf[i]*2);
+  const mttrScore=Math.max(0,40-Math.min(40,d.mt[i]*0.5));
+  return Math.round(cfrScore+mttrScore);
+}
+function calcCritIncidents(d,i){
+  return Math.max(0,Math.round(d.cf[i]*0.15+(d.mt[i]>24?2:d.mt[i]>4?1:0)));
+}
+function doraHealthStatus(emojis){
+  const reds=emojis.filter(e=>e==='🔴').length;
+  const yellows=emojis.filter(e=>e==='🟡').length;
+  if(reds>=2) return {emoji:'🔴',label:'Crítico',cls:'h-crit'};
+  if(reds>=1) return {emoji:'🟡',label:'Atenção',cls:'h-warn'};
+  if(yellows>=2) return {emoji:'🟡',label:'Atenção',cls:'h-warn'};
+  return {emoji:'🟢',label:'Saudável',cls:''};
+}
+
 function renderDora(){
   const q=gq(),d=gd()[q],i=gi(),p=Math.max(0,i-1);
+  const rel=calcReliability(d,i),relPrv=calcReliability(d,p);
   const metrics=[
-    {target:2,  label:'Meta ≥ 2/sem', better:true,  type:'df', val:d.df[i], prv:d.df[p], fmt:v=>v.toFixed(1)+'/sem'},
-    {target:3,  label:'Meta ≤ 3d',    better:false, type:'lc', val:d.lc[i], prv:d.lc[p], fmt:v=>v.toFixed(1)+'d'},
-    {target:4,  label:'Meta ≤ 4h',    better:false, type:'mt', val:d.mt[i], prv:d.mt[p], fmt:v=>v.toFixed(1)+'h'},
-    {target:10, label:'Meta ≤ 10%',   better:false, type:'cf', val:d.cf[i], prv:d.cf[p], fmt:v=>v.toFixed(1)+'%'}
+    {target:2,  label:'Meta ≥ 2/sem', better:true,  type:'df',  val:d.df[i],  prv:d.df[p],  fmt:v=>v.toFixed(1)+'/sem'},
+    {target:3,  label:'Meta ≤ 3d',    better:false, type:'lc',  val:d.lc[i],  prv:d.lc[p],  fmt:v=>v.toFixed(1)+'d'},
+    {target:10, label:'Meta ≤ 10%',   better:false, type:'cf',  val:d.cf[i],  prv:d.cf[p],  fmt:v=>v.toFixed(1)+'%'},
+    {target:4,  label:'Meta ≤ 4h',    better:false, type:'mt',  val:d.mt[i],  prv:d.mt[p],  fmt:v=>v.toFixed(1)+'h'},
+    {target:90, label:'Meta ≥ 90',    better:true,  type:'rel', val:rel,       prv:relPrv,   fmt:v=>v+' pts'}
   ];
   metrics.forEach((m,j)=>{
     document.getElementById('d'+j).textContent=m.fmt(m.val);
-    // Delta vs previous sprint
     const dEl=document.getElementById('ddelta'+j);
     if(i===0){dEl.textContent='sprint inicial';dEl.style.color='#9ca3af';}
     else{
@@ -4507,26 +4594,52 @@ function renderDora(){
       dEl.textContent=(delta>0?'↑ +':'↓ ')+pct+'% vs S'+i;
       dEl.style.color=delta===0?'#9ca3af':good?'#059669':'#dc2626';
     }
-    // Meta progress bar
     const mEl=document.getElementById('dmeta'+j);
     const pctMeta=m.better?Math.min(100,Math.round(m.val/m.target*100)):(m.val<=m.target?100:Math.round(m.target/m.val*100));
     const mc=pctMeta>=100?'#059669':pctMeta>=60?'#d97706':'#dc2626';
     mEl.innerHTML=`<div class="dmeta-row"><span>${m.label}</span><span style="font-weight:600;color:${mc}">${pctMeta}%</span></div><div class="dmeta-track"><div class="dmeta-fill" style="width:${pctMeta}%;background:${mc}"></div></div>`;
-    // Tier badge
     const tier=setTier(m.val,document.getElementById('dt'+j),m.type);
     m.emoji=(tier.c==='t-elite'||tier.c==='t-high')?'🟢':tier.c==='t-med'?'🟡':'🔴';
   });
+  // Health card
+  const health=doraHealthStatus(metrics.map(m=>m.emoji));
+  const hCard=document.getElementById('dc-health');
+  if(hCard) hCard.className='dc dc-health'+(health.cls?' '+health.cls:'');
+  const hEmoji=document.getElementById('d-health-emoji');
+  if(hEmoji) hEmoji.textContent=health.emoji;
+  const hLabel=document.getElementById('d-health-label');
+  if(hLabel){hLabel.textContent=health.label;hLabel.style.color=health.cls==='h-crit'?'#dc2626':health.cls==='h-warn'?'#d97706':'#059669';}
+  const hDesc=document.getElementById('d-health-desc');
+  if(hDesc){
+    const reds=metrics.filter(m=>m.emoji==='🔴').map(m=>m.type.toUpperCase());
+    const yellows=metrics.filter(m=>m.emoji==='🟡').map(m=>m.type.toUpperCase());
+    let desc;
+    if(reds.length) desc=`Métricas críticas: ${reds.join(', ')}. Ação imediata recomendada.`;
+    else if(yellows.length) desc=`Métricas em atenção: ${yellows.join(', ')}. Monitorar e priorizar melhoria.`;
+    else desc='Todas as métricas dentro dos parâmetros esperados.';
+    hDesc.textContent=desc;
+  }
+  // Section sinaleiras
   setGroupDot('kgdot-pd-deploy', metrics.map(m=>m.emoji));
   setGroupDot('cgd-do', metrics.map(m=>m.emoji));
+  setGroupDot('kgdot-pd-vel',  [metrics[0].emoji, metrics[1].emoji]);
+  setGroupDot('cgd-df',        [metrics[0].emoji]);
+  setGroupDot('cgd-ltc',       [metrics[1].emoji]);
+  setGroupDot('kgdot-pd-stab', [metrics[2].emoji, metrics[3].emoji]);
+  setGroupDot('cgd-cfr',       [metrics[2].emoji]);
+  setGroupDot('cgd-mttr',      [metrics[3].emoji]);
+  setGroupDot('kgdot-pd-rel',  [metrics[4].emoji]);
+  setGroupDot('cgd-rel',       [metrics[4].emoji]);
+  const inc=calcCritIncidents(d,i);
+  const incEmoji=inc===0?'🟢':inc<=1?'🟡':'🔴';
+  setGroupDot('cgd-inc', [incEmoji]);
   renderDoraBands(d,i);
-  renderDoraImpact(d,i);
-  renderDoraInsight(d,i);
   renderDoraRecs(d,i,metrics);
-  if(document.getElementById('pd').classList.contains('on')) switchDoraChart(window._doraMetric||'df');
+  renderDoraCharts(d,q);
 }
 
 function renderDoraRecs(d,i,metrics){
-  const [df,ltc,mttr,cfr]=metrics;
+  const [df,ltc,cfr,mttr,rel]=metrics;
   const recs=[];
 
   if(df.emoji==='🟢') recs.push({cls:'rec-ok',ico:'🟢',txt:`Deployment Frequency em ${df.val.toFixed(1)}/sem — cadência saudável de entregas, sustentando ciclos curtos e de baixo risco.`});
@@ -4536,96 +4649,86 @@ function renderDoraRecs(d,i,metrics){
   if(ltc.emoji==='🔴') recs.push({cls:'rec-bad',ico:'🔴',txt:`Lead Time for Changes de ${ltc.val.toFixed(1)}d está muito acima da meta — revise a fila de code review e os gates manuais de aprovação.`});
   else if(ltc.emoji==='🟡') recs.push({cls:'rec-warn',ico:'🟡',txt:`Lead Time for Changes de ${ltc.val.toFixed(1)}d próximo do limite — monitore o tempo de revisão de código nas próximas sprints.`});
 
+  if(cfr.emoji==='🟢' && df.emoji!=='🔴') recs.push({cls:'rec-info',ico:'💡',txt:`A baixa Change Failure Rate (${cfr.val.toFixed(1)}%) permite considerar uma estratégia de entregas mais frequentes, mantendo o equilíbrio entre velocidade e estabilidade.`});
+  else if(cfr.emoji==='🔴') recs.push({cls:'rec-bad',ico:'🔴',txt:`Change Failure Rate de ${cfr.val.toFixed(1)}% está acima do tolerável — reforce testes automatizados e critérios de qualidade antes do deploy.`});
+  else if(cfr.emoji==='🟡') recs.push({cls:'rec-warn',ico:'🟡',txt:`Change Failure Rate de ${cfr.val.toFixed(1)}% pede atenção — avalie feature flags ou canary release para reduzir o risco por deploy.`});
+
   if(mttr.emoji==='🟢' && i>0) recs.push({cls:'rec-ok',ico:'🟢',txt:`MTTR de ${mttr.val.toFixed(1)}h indica boa capacidade de recuperação — manter runbooks atualizados e autonomia de rollback.`});
   else if(mttr.emoji==='🔴') recs.push({cls:'rec-bad',ico:'🔴',txt:`MTTR de ${mttr.val.toFixed(1)}h está crítico — garanta autonomia de rollback e revise a observabilidade antes do próximo deploy em produção.`});
   else if(mttr.emoji==='🟡') recs.push({cls:'rec-warn',ico:'🟡',txt:`MTTR de ${mttr.val.toFixed(1)}h está próximo do limite — revise runbooks de incidente para acelerar a recuperação.`});
 
-  if(cfr.emoji==='🟢' && df.emoji!=='🔴') recs.push({cls:'rec-info',ico:'💡',txt:`A baixa Change Failure Rate (${cfr.val.toFixed(1)}%) permite considerar uma estratégia de entregas mais frequentes, mantendo o equilíbrio entre velocidade e estabilidade.`});
-  else if(cfr.emoji==='🔴') recs.push({cls:'rec-bad',ico:'🔴',txt:`Change Failure Rate de ${cfr.val.toFixed(1)}% está acima do tolerável — reforce testes automatizados e critérios de qualidade antes do deploy.`});
-  else if(cfr.emoji==='🟡') recs.push({cls:'rec-warn',ico:'🟡',txt:`Change Failure Rate de ${cfr.val.toFixed(1)}% pede atenção — avalie feature flags ou canary release para reduzir o risco por deploy.`});
+  if(rel.emoji==='🟢') recs.push({cls:'rec-ok',ico:'🟢',txt:`Reliability em ${rel.val} pts — excelente confiabilidade operacional. Manter as boas práticas de observabilidade e resposta a incidentes.`});
+  else if(rel.emoji==='🟡') recs.push({cls:'rec-warn',ico:'🟡',txt:`Reliability em ${rel.val} pts — há espaço para melhorar a estabilidade. Reduza a taxa de falhas e o tempo de recuperação para elevar o score.`});
+  else recs.push({cls:'rec-bad',ico:'🔴',txt:`Reliability em ${rel.val} pts está crítico — foque em reduzir CFR e MTTR como prioridades imediatas para restaurar a confiabilidade da operação.`});
 
   const el=document.getElementById('doraRecsList');
   if(el) el.innerHTML=recs.map(r=>`<div class="ai-rec ${r.cls}"><span class="ai-rec-ico">${r.ico}</span><span>${r.txt}</span></div>`).join('');
 }
 
 function renderDoraBands(d,i){
-  const DC={'Elite':'#059669','High':'#185FA5','Medium':'#d97706','Low':'#dc2626'};
+  const rel=calcReliability(d,i);
   const bands=[
-    {name:'Deployment Frequency',val:d.df[i],unit:'/sem',type:'df',max:10},
-    {name:'Lead Time for Changes',val:d.lc[i],unit:'d',  type:'lc',max:14},
-    {name:'MTTR',                  val:d.mt[i],unit:'h',  type:'mt',max:240},
-    {name:'Change Failure Rate',   val:d.cf[i],unit:'%',  type:'cf',max:60}
+    {name:'Deployment Frequency',dir:'Quanto maior, melhor',val:d.df[i],unit:'/sem',type:'df',better:true,
+     segs:[{lbl:'Low',bg:'#fca5a5'},{lbl:'Med',bg:'#fde68a'},{lbl:'High',bg:'#86efac'},{lbl:'Elite',bg:'#6ee7b7'}],
+     refs:[{pct:25,lbl:'1/sem'},{pct:50,lbl:'3/sem'},{pct:75,lbl:'6/sem'}]},
+    {name:'Lead Time for Changes',dir:'Quanto menor, melhor',val:d.lc[i],unit:'d',type:'lc',better:false,
+     segs:[{lbl:'Elite',bg:'#6ee7b7'},{lbl:'High',bg:'#86efac'},{lbl:'Med',bg:'#fde68a'},{lbl:'Low',bg:'#fca5a5'}],
+     refs:[{pct:25,lbl:'≤1d'},{pct:50,lbl:'≤3d'},{pct:75,lbl:'≤7d'}]},
+    {name:'Change Failure Rate',dir:'Quanto menor, melhor',val:d.cf[i],unit:'%',type:'cf',better:false,
+     segs:[{lbl:'Elite',bg:'#6ee7b7'},{lbl:'High',bg:'#86efac'},{lbl:'Med',bg:'#fde68a'},{lbl:'Low',bg:'#fca5a5'}],
+     refs:[{pct:25,lbl:'≤5%'},{pct:50,lbl:'≤15%'},{pct:75,lbl:'≤45%'}]},
+    {name:'MTTR',dir:'Quanto menor, melhor',val:d.mt[i],unit:'h',type:'mt',better:false,
+     segs:[{lbl:'Elite',bg:'#6ee7b7'},{lbl:'High',bg:'#86efac'},{lbl:'Med',bg:'#fde68a'},{lbl:'Low',bg:'#fca5a5'}],
+     refs:[{pct:25,lbl:'≤4h'},{pct:50,lbl:'≤24h'},{pct:75,lbl:'≤1sem'}]},
+    {name:'Reliability',dir:'Quanto maior, melhor',val:rel,unit:' pts',type:'rel',better:true,
+     segs:[{lbl:'Low',bg:'#fca5a5'},{lbl:'Med',bg:'#fde68a'},{lbl:'High',bg:'#86efac'},{lbl:'Elite',bg:'#6ee7b7'}],
+     refs:[{pct:25,lbl:'50'},{pct:50,lbl:'70'},{pct:75,lbl:'90'}]}
   ];
+  const tierPos={better:{'t-low':8,'t-med':33,'t-high':62,'t-elite':88},worse:{'t-elite':8,'t-high':33,'t-med':62,'t-low':88}};
   document.getElementById('doraBands').innerHTML=bands.map(b=>{
-    const cls=doraClassify(b.val,b.type);
-    const pct=Math.min(95,Math.round(b.val/b.max*100));
-    return`<div class="dbrow"><span class="dbname">${b.name}</span><div class="dbtrack"><div class="dbfill" style="width:${pct}%;background:${DC[cls.l]||'#9ca3af'}"></div></div><span class="dbval">${b.val.toFixed(1)}${b.unit}&ensp;<span class="tier ${cls.c}" style="font-size:10px;padding:1px 6px">${cls.l}</span></span></div>`;
+    const cls=doraClassify(b.type==='rel'?b.val:b.val,b.type);
+    const markerPct=tierPos[b.better?'better':'worse'][cls.c]||50;
+    const segsHtml=b.segs.map(s=>`<div class="dband-seg" style="background:${s.bg}">${s.lbl}</div>`).join('');
+    const refsHtml=b.refs.map(r=>`<div style="position:absolute;left:${r.pct}%;transform:translateX(-50%);font-size:9px;color:#9ca3af">${r.lbl}</div>`).join('');
+    const tierColor=cls.c==='t-elite'?'#059669':cls.c==='t-high'?'#185FA5':cls.c==='t-med'?'#d97706':'#dc2626';
+    return`<div class="dband-row">
+      <div class="dband-info"><p class="dband-name">${b.name}</p><p class="dband-dir">${b.dir}</p></div>
+      <div class="dband-scale-wrap">
+        <div class="dband-scale">${segsHtml}</div>
+        <div class="dband-marker-row" style="position:relative;height:18px">${refsHtml}
+          <div class="dband-marker" style="position:absolute;left:${markerPct}%;transform:translateX(-50%);top:3px">▲</div>
+        </div>
+      </div>
+      <div class="dband-right">
+        <p class="dband-val">${b.val.toFixed(b.type==='rel'?0:1)}${b.unit}</p>
+        <span class="tier ${cls.c}" style="font-size:10px;padding:1px 6px;color:#fff;background:${tierColor}">${cls.l}</span>
+      </div>
+    </div>`;
   }).join('');
 }
 
-function renderDoraImpact(d,i){
-  const df=d.df[i],lc=d.lc[i],mt=d.mt[i],cf=d.cf[i];
-  const items=[
-    {ico:'🚀',lbl:'Velocidade de entrega',   val:df>=6?'Elite':df>=4?'Alta':df>=2?'Moderada':'Em desenvolvimento'},
-    {ico:'⚡',lbl:'Agilidade nas mudanças',  val:lc<=1?'Excelente':lc<=3?'Alta':lc<=7?'Moderada':'Precisa atenção'},
-    {ico:'🛡️',lbl:'Resiliência operacional', val:mt<=4?'Excelente':mt<=24?'Alta':mt<=168?'Moderada':'Precisa atenção'},
-    {ico:'🎯',lbl:'Qualidade das entregas',  val:cf<=5?'Excelente':cf<=15?'Alta':cf<=45?'Moderada':'Precisa atenção'},
-    {ico:'📊',lbl:'Risco operacional',       val:(cf<=10&&mt<=24)?'Baixo':(cf<=25||mt<=72)?'Médio':'Elevado'}
-  ];
-  document.getElementById('doraImpact').innerHTML=items.map(it=>`<div class="d-imp"><span class="d-imp-ico">${it.ico}</span><div><p class="d-imp-lbl">${it.lbl}</p><p class="d-imp-val">${it.val}</p></div></div>`).join('');
-}
+function renderDoraCharts(d,q){
+  const sp=d.sp;
+  const relData=sp.map((_,k)=>calcReliability(d,k));
+  const incData=sp.map((_,k)=>calcCritIncidents(d,k));
+  const incColors=incData.map(v=>v===0?'#86efac':v<=1?'#fde68a':'#fca5a5');
+  const opts=(yLabel,color)=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:yLabel,font:{size:10}},grid:{color:'#f3f4f6'}}}});
 
-function renderDoraInsight(d,i){
-  const p=Math.max(0,i-1);
-  const df=d.df[i],lc=d.lc[i],mt=d.mt[i],cf=d.cf[i];
-  const dfCh=i>0?Math.round((df-d.df[p])/Math.max(.01,d.df[p])*100):0;
-  const lcCh=i>0?Math.round((lc-d.lc[p])/Math.max(.01,d.lc[p])*100):0;
-  const parts=[];
-  if(i>0&&dfCh>0&&lcCh<0) parts.push(`Deployment Frequency cresceu ${dfCh}% enquanto o Lead Time for Changes caiu ${Math.abs(lcCh)}% — sinal de maturidade DevOps sem perda de estabilidade.`);
-  else if(i>0&&dfCh>0) parts.push(`Deployment Frequency aumentou ${dfCh}% neste sprint, indicando maior cadência de entregas.`);
-  else if(i>0&&lcCh<0) parts.push(`Lead Time for Changes reduziu ${Math.abs(lcCh)}%, mostrando melhoria no fluxo de entrega.`);
-  if(cf<=10&&mt<=24) parts.push(`Change Failure Rate de ${cf}% e MTTR de ${mt}h demonstram alta confiabilidade operacional.`);
-  else if(cf>15) parts.push(`⚠ Change Failure Rate de ${cf}% está acima do ideal — revisar testes e critérios de qualidade antes do deploy.`);
-  const tier=doraClassify(df,'df');
-  const tierLabel={'Elite':'🟣 Elite','High':'🟢 High Performer','Medium':'🟡 Intermediate','Low':'🔴 Em atenção'}[tier.l]||tier.l;
-  parts.push(`Classificação do time: ${tierLabel}.`);
-  document.getElementById('doraInsight').textContent=parts.join(' ');
-}
+  ['cDf','cLtc','cCfr','cMttrD','cRel','cInc'].forEach(id=>{if(ch[id]){ch[id].destroy();delete ch[id];}});
 
-function switchDoraChart(metric,btn){
-  window._doraMetric=metric;
-  document.querySelectorAll('.dsel-btn').forEach(b=>b.classList.remove('on'));
-  if(btn) btn.classList.add('on');
-  if(ch['do']){ch['do'].destroy();delete ch['do'];}
-  const q=gq(),d=gd()[q],sp=d.sp;
-  const CM={
-    df:{label:'Deployment Frequency (deploys/sem)',data:d.df,color:'#185FA5',yLabel:'deploys/sem',meta:2},
-    lc:{label:'Lead Time for Changes (dias)',      data:d.lc,color:'#059669',yLabel:'dias',       meta:3},
-    mt:{label:'MTTR (horas)',                      data:d.mt,color:'#7c3aed',yLabel:'horas',      meta:4},
-    cf:{label:'Change Failure Rate (%)',           data:d.cf,color:'#dc2626',yLabel:'%',           meta:10}
+  const mkLine=(id,label,data,color,meta,metaLabel,yLabel)=>{
+    const ds=[{label,data,borderColor:color,backgroundColor:color+'18',fill:true,tension:.35,pointRadius:5,pointBackgroundColor:color}];
+    if(meta!=null) ds.push({label:metaLabel,data:Array(sp.length).fill(meta),borderColor:color+'88',borderDash:[5,4],backgroundColor:'transparent',pointRadius:0,borderWidth:1.5});
+    ch[id]=new Chart(document.getElementById(id),{type:'line',data:{labels:sp,datasets:ds},options:opts(yLabel,color)});
   };
-  let datasets,scales,legHtml;
-  if(metric==='all'){
-    datasets=[
-      {label:'Deploy Freq.',data:d.df,borderColor:'#185FA5',yAxisID:'yL',tension:.35,pointRadius:4,pointBackgroundColor:'#185FA5',backgroundColor:'transparent'},
-      {label:'Lead Time (d)',data:d.lc,borderColor:'#059669',yAxisID:'yR',tension:.35,pointRadius:4,pointBackgroundColor:'#059669',backgroundColor:'transparent',borderDash:[5,4]},
-      {label:'MTTR (h)',    data:d.mt,borderColor:'#7c3aed',yAxisID:'yR',tension:.35,pointRadius:4,pointBackgroundColor:'#7c3aed',backgroundColor:'transparent',borderDash:[2,3]},
-      {label:'CFR (%)',     data:d.cf,borderColor:'#dc2626',yAxisID:'yR',tension:.35,pointRadius:4,pointBackgroundColor:'#dc2626',backgroundColor:'transparent',borderDash:[8,3]}
-    ];
-    scales={yL:{position:'left',title:{display:true,text:'deploys/sem',font:{size:10}},grid:{color:'#f3f4f6'}},yR:{position:'right',title:{display:true,text:'dias / h / %',font:{size:10}},grid:{drawOnChartArea:false}}};
-    legHtml=[['#185FA5','Deploy Freq.'],['#059669','Lead Time'],['#7c3aed','MTTR'],['#dc2626','CFR']].map(([c,t])=>`<span><b style="background:${c}"></b> ${t}</span>`).join('');
-  } else {
-    const c=CM[metric];
-    datasets=[
-      {label:c.label,data:c.data,borderColor:c.color,backgroundColor:c.color+'18',fill:true,tension:.35,pointRadius:5,pointBackgroundColor:c.color,yAxisID:'y'},
-      {label:`Meta (${c.meta})`,data:Array(sp.length).fill(c.meta),borderColor:c.color+'99',borderDash:[5,4],backgroundColor:'transparent',pointRadius:0,borderWidth:1.5,yAxisID:'y'}
-    ];
-    scales={y:{title:{display:true,text:c.yLabel,font:{size:11}},grid:{color:'#f3f4f6'}}};
-    legHtml=`<span><b style="background:${c.color}"></b> ${c.label}</span><span><b style="background:${c.color};opacity:.5"></b> Meta</span>`;
-  }
-  const legEl=document.getElementById('doraLeg');
-  if(legEl) legEl.innerHTML=legHtml;
-  ch['do']=new Chart(document.getElementById('cDo'),{type:'line',data:{labels:sp,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales}});
+
+  mkLine('cDf',   'Deploy Freq. (dep/sem)', d.df, '#185FA5', 2,  'Meta ≥ 2',   'deploys/sem');
+  mkLine('cLtc',  'Lead Time (dias)',        d.lc, '#059669', 3,  'Meta ≤ 3d',  'dias');
+  mkLine('cCfr',  'Change Failure Rate (%)', d.cf, '#dc2626', 10, 'Meta ≤ 10%', '%');
+  mkLine('cMttrD','MTTR (horas)',            d.mt, '#7c3aed', 4,  'Meta ≤ 4h',  'horas');
+  mkLine('cRel',  'Reliability (pts)',       relData,'#0891b2',90,'Meta ≥ 90',  'pts (0–100)');
+
+  ch['cInc']=new Chart(document.getElementById('cInc'),{type:'bar',data:{labels:sp,datasets:[{label:'Incidentes críticos',data:incData,backgroundColor:incColors,borderRadius:4,borderSkipped:false}]},options:{...opts('incidentes'),plugins:{legend:{display:false}}}});
 }
 // ───────────────────────────────────────────────────────────────────
 
@@ -6039,6 +6142,21 @@ const GL={
     example:'Time Alpha Q1 S3: MTTR=3,5h. Meta ≤ 4h. Classificação: High. 2 incidentes: 2h e 5h. O incidente de 5h foi causado por dependência de aprovação externa — ação: autonomia de rollback.',
     insight:'MTTR aumentou de 2,1h para 6,8h nesta sprint. Combinado com CFR de 18%, indica mais incidentes e mais tempo de recuperação. Prioridade: revisar runbooks e garantir autonomia de rollback sem aprovação.',
     why:'Incidentes em produção são inevitáveis. O que diferencia times de alta performance não é não ter falhas — é se recuperar rápido. MTTR baixo minimiza impacto para o usuário e reduz o custo financeiro e reputacional dos incidentes.'},
+
+  reliability:{name:'Reliability',namePT:'Confiabilidade Operacional',cat:'dora',catLabel:'DORA',catColor:'#7c3aed',
+    short:'Score 0–100 que sintetiza estabilidade e recuperação — quanto maior, mais confiável a operação em produção.',
+    what:'Reliability é um índice composto (0–100 pontos) que combina Change Failure Rate e MTTR em um único score de confiabilidade operacional. Representa a capacidade do time de entregar com estabilidade e se recuperar rapidamente de falhas.',
+    measures:'A saúde operacional integrada: considera tanto a frequência com que deploys causam problemas (CFR) quanto a velocidade de recuperação quando algo falha (MTTR). É o termômetro executivo da confiabilidade.',
+    goal:'Fornecer uma visão consolidada e comparável da confiabilidade operacional, eliminando a necessidade de interpretar CFR e MTTR isoladamente.',
+    formula:'Reliability = max(0, 60 − CFR×2) + max(0, 40 − min(40, MTTR×0,5))\n\n• Componente CFR: contribui até 60 pts. Zero pontos quando CFR ≥ 30%.\n• Componente MTTR: contribui até 40 pts. Zero pontos quando MTTR ≥ 80h.',
+    howCalc:'O sistema calcula automaticamente o score a partir dos campos cf (Change Failure Rate em %) e mt (MTTR em horas) de cada sprint. Não há entrada manual.',
+    interpret:[{lbl:'Elite (≥ 90 pts)',cls:'ok',txt:'Operação altamente confiável — CFR ≤ 5% e MTTR ≤ 4h. Referência de mercado.'},{lbl:'High (70–89 pts)',cls:'ok',txt:'Boa confiabilidade com espaço para melhoria — acompanhar tendência.'},{lbl:'Medium (50–69 pts)',cls:'warn',txt:'Confiabilidade razoável, mas há risco perceptível. Investigar CFR ou MTTR elevado.'},{lbl:'Low (< 50 pts)',cls:'bad',txt:'Operação instável. Ação imediata: revisar testes, observabilidade e processo de rollback.'}],
+    questions:['O score está melhorando sprint a sprint ou oscilando?','Qual componente mais puxa o score para baixo — CFR ou MTTR?','Times com Reliability < 50 têm plano de estabilização para o próximo quarter?','Há correlação entre aumento de Deployment Frequency e queda de Reliability?'],
+    who:['Engineering Manager','Tech Lead','SRE','DevOps Engineer','Gerente de Tecnologia','CTO'],
+    when:['Sprint Review','Encerramento do Quarter','Avaliação de SLA','Planejamento de roadmap de confiabilidade'],
+    example:'Time Alpha Q2 S5: CFR=6%, MTTR=5h. Reliability = max(0,60−12) + max(0,40−2,5) = 48+37,5 ≈ 86 pts. Classificação: High. Próxima meta: reduzir CFR para < 5% para atingir Elite.',
+    insight:'Reliability caiu de 82 para 71 pts nesta sprint. A queda foi puxada pelo aumento de MTTR (de 4h para 8h). Recomendação: revisar runbooks e garantir capacidade de rollback autônomo para recuperar os 11 pontos perdidos.',
+    why:'Um score único de confiabilidade permite comparação entre times, acompanhamento de tendência e comunicação clara com stakeholders sem exigir que entendam os detalhes de CFR e MTTR separadamente. É o KPI executivo da saúde operacional.'},
 
   bo:{name:'Bugs Abertos',namePT:'Bugs Abertos por Sprint',cat:'falhas',catLabel:'Saúde da Qualidade',catColor:'#dc2626',
     short:'Defeitos registrados e ainda não corrigidos — representa a dívida de qualidade acumulada.',
