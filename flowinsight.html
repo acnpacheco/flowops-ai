@@ -83,13 +83,33 @@
 
   /* DORA */
   .dora-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+  /* 2×3 grid for the overview section */
+  .dora-g2x3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+  @media(max-width:720px){.dora-g2x3{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.dora-g2x3{grid-template-columns:1fr}}
   .dc{background:#fff;border-radius:10px;border:1px solid #e5e5e3;padding:16px;text-align:center}
+  /* Expanded card style for 2×3 grid */
+  .dc-x{background:#fff;border-radius:10px;border:1px solid #e5e5e3;padding:18px 18px 14px;text-align:left;position:relative}
+  .dc-x-sig-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+  .dc-x-sig{font-size:15px;font-weight:800;color:#1e3a5f;letter-spacing:.02em}
+  .dc-x-dir{font-size:10px;color:#6b7280;font-weight:500}
+  .dc-x-name{font-size:12px;font-weight:700;color:#374151;margin:0 0 1px;line-height:1.3}
+  .dc-x-namept{font-size:10px;color:#9ca3af;margin:0 0 10px;line-height:1.3}
+  .dc-x-val{font-size:30px;font-weight:700;color:#111827;margin:0 0 4px;line-height:1}
+  .dc-x-delta{font-size:11px;margin:0 0 8px;font-weight:600}
   .dl{font-size:11px;color:#9ca3af;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;line-height:1.4}
   .dl-sub{display:block;font-size:9px;color:#c4c4c4;font-weight:400;text-transform:none;letter-spacing:0;margin-top:2px}
   .ddelta{font-size:11px;margin:3px 0 6px;font-weight:500}
   .dmeta-row{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#6b7280;margin-bottom:3px}
   .dmeta-track{height:5px;background:#f3f4f6;border-radius:3px;margin-bottom:8px}
   .dmeta-fill{height:5px;border-radius:3px;transition:width .4s}
+  /* Health card expanded */
+  .dc-health-x{border:2px solid #86efac!important;background:linear-gradient(135deg,#f0fdf4,#f7fffe)!important}
+  .dc-health-x.h-warn{border-color:#fcd34d!important;background:linear-gradient(135deg,#fffbeb,#fffef7)!important}
+  .dc-health-x.h-crit{border-color:#fca5a5!important;background:linear-gradient(135deg,#fef2f2,#fff5f5)!important}
+  .dc-health-x .dc-x-emoji{font-size:32px;line-height:1;margin-bottom:6px;display:block}
+  .dc-health-x .dc-x-hlabel{font-size:16px;font-weight:700;margin:0 0 6px}
+  .dc-health-x .dc-x-hdesc{font-size:11px;color:#6b7280;line-height:1.5;margin:0}
   .dsel-row{display:flex;gap:4px;flex-wrap:wrap}
   .dsel-btn{padding:4px 10px;font-size:11px;font-weight:500;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;transition:all .15s;color:#6b7280}
   .dsel-btn.on{background:#185FA5;color:#fff;border-color:#185FA5}
@@ -933,54 +953,88 @@
       <span class="kg-desc">Nossa performance de engenharia está alinhada às boas práticas do mercado?</span>
     </div>
 
-    <!-- Saúde consolidada + 5 cards resumo executivo DORA -->
-    <div class="dora-g" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:14px">
-      <div class="dc dc-health" id="dc-health">
-        <p class="dl">Saúde dos deploys<span class="dl-sub">Estado consolidado DORA</span></p>
-        <p class="dv" id="d-health-emoji" style="font-size:28px;margin:4px 0 2px">—</p>
-        <p id="d-health-label" class="ddelta" style="font-weight:700;font-size:13px">—</p>
-        <div id="d-health-desc" style="font-size:10px;color:#6b7280;margin-top:4px;line-height:1.4"></div>
+    <!-- Saúde consolidada + 5 cards DORA — 2 linhas × 3 colunas -->
+    <div class="dora-g2x3">
+
+      <!-- Linha 1: Saúde, DF, LTC -->
+      <div class="dc-x dc-health-x" id="dc-health">
+        <span class="dc-x-emoji" id="d-health-emoji">—</span>
+        <p class="dc-x-name" style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:2px">Saúde dos Deploys</p>
+        <p class="dc-x-hlabel" id="d-health-label">—</p>
+        <p class="dc-x-hdesc" id="d-health-desc"></p>
       </div>
-      <div class="dc" title="Deployment Frequency: frequência de deploys em produção. Quanto maior, melhor.">
+
+      <div class="dc-x" title="Deployment Frequency: frequência de deploys em produção. Quanto maior, melhor.">
         <button class="gh-btn dc-help" onclick="openMetricDetail('df')" title="Ver no Glossário">?</button>
-        <p class="dl">Deployment Frequency<span class="dl-sub">↑ quanto maior, melhor</span></p>
-        <p class="dv" id="d0">—</p>
-        <p class="ddelta" id="ddelta0">—</p>
+        <div class="dc-x-sig-row">
+          <span class="dc-x-sig">DF</span>
+          <span class="dc-x-dir">↑ Quanto maior, melhor</span>
+        </div>
+        <p class="dc-x-name">Deployment Frequency</p>
+        <p class="dc-x-namept">Frequência de Implantação</p>
+        <p class="dc-x-val" id="d0">—</p>
+        <p class="dc-x-delta" id="ddelta0">—</p>
         <div id="dmeta0"></div>
         <span class="tier" id="dt0">—</span>
       </div>
-      <div class="dc" title="Lead Time for Changes: tempo entre commit e deploy em produção. Quanto menor, melhor.">
+
+      <div class="dc-x" title="Lead Time for Changes: tempo entre commit e deploy em produção. Quanto menor, melhor.">
         <button class="gh-btn dc-help" onclick="openMetricDetail('ltc')" title="Ver no Glossário">?</button>
-        <p class="dl">Lead Time for Changes<span class="dl-sub">↓ quanto menor, melhor</span></p>
-        <p class="dv" id="d1">—</p>
-        <p class="ddelta" id="ddelta1">—</p>
+        <div class="dc-x-sig-row">
+          <span class="dc-x-sig">LTC</span>
+          <span class="dc-x-dir">↓ Quanto menor, melhor</span>
+        </div>
+        <p class="dc-x-name">Lead Time for Changes</p>
+        <p class="dc-x-namept">Tempo de Implementação de Alterações</p>
+        <p class="dc-x-val" id="d1">—</p>
+        <p class="dc-x-delta" id="ddelta1">—</p>
         <div id="dmeta1"></div>
         <span class="tier" id="dt1">—</span>
       </div>
-      <div class="dc" title="Change Failure Rate: percentual de deploys que causaram falha em produção. Quanto menor, melhor.">
+
+      <!-- Linha 2: CFR, MTTR, Reliability -->
+      <div class="dc-x" title="Change Failure Rate: percentual de deploys que causaram falha em produção. Quanto menor, melhor.">
         <button class="gh-btn dc-help" onclick="openMetricDetail('cfr')" title="Ver no Glossário">?</button>
-        <p class="dl">Change Failure Rate<span class="dl-sub">↓ quanto menor, melhor</span></p>
-        <p class="dv" id="d2">—</p>
-        <p class="ddelta" id="ddelta2">—</p>
+        <div class="dc-x-sig-row">
+          <span class="dc-x-sig">CFR</span>
+          <span class="dc-x-dir">↓ Quanto menor, melhor</span>
+        </div>
+        <p class="dc-x-name">Change Failure Rate</p>
+        <p class="dc-x-namept">Taxa de Falha de Alterações</p>
+        <p class="dc-x-val" id="d2">—</p>
+        <p class="dc-x-delta" id="ddelta2">—</p>
         <div id="dmeta2"></div>
         <span class="tier" id="dt2">—</span>
       </div>
-      <div class="dc" title="MTTR: tempo médio de recuperação após falha. Quanto menor, melhor.">
+
+      <div class="dc-x" title="MTTR: tempo médio de recuperação após falha em produção. Quanto menor, melhor.">
         <button class="gh-btn dc-help" onclick="openMetricDetail('mttr')" title="Ver no Glossário">?</button>
-        <p class="dl">MTTR<span class="dl-sub">↓ quanto menor, melhor</span></p>
-        <p class="dv" id="d3">—</p>
-        <p class="ddelta" id="ddelta3">—</p>
+        <div class="dc-x-sig-row">
+          <span class="dc-x-sig">MTTR</span>
+          <span class="dc-x-dir">↓ Quanto menor, melhor</span>
+        </div>
+        <p class="dc-x-name">Mean Time to Recovery</p>
+        <p class="dc-x-namept">Tempo Médio de Recuperação</p>
+        <p class="dc-x-val" id="d3">—</p>
+        <p class="dc-x-delta" id="ddelta3">—</p>
         <div id="dmeta3"></div>
         <span class="tier" id="dt3">—</span>
       </div>
-      <div class="dc" title="Reliability: índice de confiabilidade operacional 0–100. Combina Change Failure Rate e MTTR. Quanto maior, melhor.">
+
+      <div class="dc-x" title="Reliability: índice de confiabilidade operacional 0–100. Combina CFR e MTTR. Quanto maior, melhor.">
         <button class="gh-btn dc-help" onclick="openMetricDetail('reliability')" title="Ver no Glossário">?</button>
-        <p class="dl">Reliability<span class="dl-sub">↑ quanto maior, melhor</span></p>
-        <p class="dv" id="d4">—</p>
-        <p class="ddelta" id="ddelta4">—</p>
+        <div class="dc-x-sig-row">
+          <span class="dc-x-sig">REL</span>
+          <span class="dc-x-dir">↑ Quanto maior, melhor</span>
+        </div>
+        <p class="dc-x-name">Reliability</p>
+        <p class="dc-x-namept">Confiabilidade Operacional</p>
+        <p class="dc-x-val" id="d4">—</p>
+        <p class="dc-x-delta" id="ddelta4">—</p>
         <div id="dmeta4"></div>
         <span class="tier" id="dt4">—</span>
       </div>
+
     </div>
 
     <!-- Benchmark DORA — visual com faixas por tier -->
@@ -4586,7 +4640,7 @@ function renderDora(){
   metrics.forEach((m,j)=>{
     document.getElementById('d'+j).textContent=m.fmt(m.val);
     const dEl=document.getElementById('ddelta'+j);
-    if(i===0){dEl.textContent='sprint inicial';dEl.style.color='#9ca3af';}
+    if(i===0){dEl.textContent='Sprint inicial';dEl.style.color='#9ca3af';}
     else{
       const delta=m.val-m.prv;
       const pct=m.prv>0?Math.round(Math.abs(delta)/m.prv*100):0;
@@ -4604,19 +4658,30 @@ function renderDora(){
   // Health card
   const health=doraHealthStatus(metrics.map(m=>m.emoji));
   const hCard=document.getElementById('dc-health');
-  if(hCard) hCard.className='dc dc-health'+(health.cls?' '+health.cls:'');
+  if(hCard) hCard.className='dc-x dc-health-x'+(health.cls?' '+health.cls:'');
   const hEmoji=document.getElementById('d-health-emoji');
   if(hEmoji) hEmoji.textContent=health.emoji;
   const hLabel=document.getElementById('d-health-label');
   if(hLabel){hLabel.textContent=health.label;hLabel.style.color=health.cls==='h-crit'?'#dc2626':health.cls==='h-warn'?'#d97706':'#059669';}
   const hDesc=document.getElementById('d-health-desc');
   if(hDesc){
-    const reds=metrics.filter(m=>m.emoji==='🔴').map(m=>m.type.toUpperCase());
-    const yellows=metrics.filter(m=>m.emoji==='🟡').map(m=>m.type.toUpperCase());
+    const reds=metrics.filter(m=>m.emoji==='🔴');
+    const yellows=metrics.filter(m=>m.emoji==='🟡');
+    const greens=metrics.filter(m=>m.emoji==='🟢');
     let desc;
-    if(reds.length) desc=`Métricas críticas: ${reds.join(', ')}. Ação imediata recomendada.`;
-    else if(yellows.length) desc=`Métricas em atenção: ${yellows.join(', ')}. Monitorar e priorizar melhoria.`;
-    else desc='Todas as métricas dentro dos parâmetros esperados.';
+    if(reds.length){
+      const rNames={'df':'DF','lc':'LTC','cf':'CFR','mt':'MTTR','rel':'Reliability'};
+      desc=`${reds.map(m=>rNames[m.type]||m.type.toUpperCase()).join(' e ')} ${reds.length===1?'está':'estão'} em nível crítico e ${reds.length===1?'exige':'exigem'} ação imediata.`;
+      if(greens.length) desc+=` ${greens.map(m=>rNames[m.type]||m.type.toUpperCase()).join(', ')} ${greens.length===1?'permanece':'permanecem'} saudável.`;
+    } else if(yellows.length){
+      const yNames={'df':'DF','lc':'LTC','cf':'CFR','mt':'MTTR','rel':'Reliability'};
+      const yList=yellows.map(m=>yNames[m.type]||m.type.toUpperCase()).join(' e ');
+      const gList=greens.map(m=>yNames[m.type]||m.type.toUpperCase()).join(', ');
+      desc=`${yList} ${yellows.length===1?'apresenta':'apresentam'} oportunidades de melhoria.`;
+      if(gList) desc+=` ${gList} ${greens.length===1?'permanece':'permanecem'} em nível saudável.`;
+    } else {
+      desc='Todas as métricas estão nos parâmetros esperados. Operação saudável.';
+    }
     hDesc.textContent=desc;
   }
   // Section sinaleiras
