@@ -196,6 +196,8 @@
 
   /* Footer */
   .footer{text-align:center;padding:16px 24px;font-size:11px;color:#9ca3af;border-top:1px solid #e5e5e3;background:#fff;margin-top:auto}
+  .footer-visits{display:inline-flex;align-items:center;gap:5px;margin-top:5px;font-size:10px;color:#c4c9d4;letter-spacing:.02em}
+  .footer-visits-val{font-variant-numeric:tabular-nums;color:#9ca3af;font-weight:500}
 
   /* Quarter Report */
   .q-status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:4px 12px;border-radius:20px;margin-bottom:16px}
@@ -637,7 +639,7 @@
 
   /* ── Sobre a Autora ── */
   .ab-hero{background:linear-gradient(135deg,#1e3a5f 0%,#185FA5 60%,#2563eb 100%);border-radius:16px;padding:36px 32px;margin-bottom:20px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;color:#fff}
-  .ab-avatar{width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.15);border:3px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:-1px}
+  .ab-avatar{width:160px;height:160px;border-radius:50%;object-fit:cover;object-position:center;border:3px solid #fff;box-shadow:0 6px 24px rgba(0,0,0,.28);flex-shrink:0;display:block}
   .ab-hero-txt{flex:1;min-width:220px}
   .ab-hero-name{font-size:22px;font-weight:700;margin-bottom:4px;line-height:1.2}
   .ab-hero-role{font-size:13px;font-weight:500;color:rgba(255,255,255,.75);margin-bottom:14px;letter-spacing:.01em}
@@ -837,10 +839,10 @@
       <p class="cs">Itens acumulados por etapa, dia a dia da sprint atual — <span id="cfdBottleneck" style="font-weight:600"></span></p>
       <div class="leg">
         <span><b style="background:#9ca3af"></b> Backlog</span>
-        <span><b style="background:#185FA5"></b> Em Progresso</span>
-        <span><b style="background:#d97706"></b> Revisão</span>
-        <span><b style="background:#8b5cf6"></b> Teste</span>
-        <span><b style="background:#059669"></b> Concluído</span>
+        <span><b style="background:#185FA5"></b> In Progress</span>
+        <span><b style="background:#d97706"></b> Code Review</span>
+        <span><b style="background:#8b5cf6"></b> Testing</span>
+        <span><b style="background:#059669"></b> Done</span>
       </div>
       <div style="position:relative;width:100%;height:280px">
         <canvas id="cCFD" role="img" aria-label="Diagrama de Fluxo Cumulativo"></canvas>
@@ -944,15 +946,15 @@
 
     <div class="g2">
       <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-cy">🟢</span><p class="ct">Cycle time por etapa</p></div>
-        <p class="cs">Tempo médio por estágio em dias — <span id="ctGargalo" style="font-weight:500"></span></p>
+        <div class="cgh"><span class="cgh-dot" id="cgd-cy">🟢</span><p class="ct">Cycle Time — por Fase</p></div>
+        <p class="cs">Tempo médio por fase em dias — <span id="ctGargalo" style="font-weight:500"></span></p>
         <div style="position:relative;width:100%;height:220px">
-          <canvas id="cCy" role="img" aria-label="Cycle time por etapa"></canvas>
+          <canvas id="cCy" role="img" aria-label="Cycle Time por Fase"></canvas>
         </div>
       </div>
       <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-wipbars">🟢</span><p class="ct">Evolução do WIP por etapa</p></div>
-        <p class="cs">Barra mostra o valor atual; a linha vermelha marca o limite recomendado.</p>
+        <div class="cgh"><span class="cgh-dot" id="cgd-wipbars">🟢</span><p class="ct">WIP Atual × Limite — por Fase</p></div>
+        <p class="cs">Compare o WIP atual de cada fase com o limite recomendado para identificar gargalos e excesso de trabalho em andamento.</p>
         <div id="wipBars" style="padding:4px 0"></div>
       </div>
     </div>
@@ -970,7 +972,7 @@
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:8px">
         <div class="cgh" style="margin:0">
           <span class="cgh-dot" id="cgd-aging">🟢</span>
-          <p class="ct" style="margin:0">Saúde do Aging — Itens em risco</p>
+          <p class="ct" style="margin:0">Saúde do Aging — Itens em Risco</p>
         </div>
         <button class="alert-btn" onclick="gerarAlertaFluxo()"><i class="ti ti-bell-ringing"></i> Gerar alerta para Status Report</button>
       </div>
@@ -1117,12 +1119,12 @@
     </div>
     <div class="g2" style="margin-bottom:14px">
       <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-df">🟢</span><p class="ct">Deployment Frequency — frequência de implantação</p></div>
+        <div class="cgh"><span class="cgh-dot" id="cgd-df">🟢</span><p class="ct">Deployment Frequency (DF)</p></div>
         <p class="cs">Quanto maior e mais sustentável, melhor — maturidade DevOps e ciclos de entrega curtos.</p>
         <div style="position:relative;width:100%;height:200px"><canvas id="cDf" role="img" aria-label="Deployment Frequency por sprint"></canvas></div>
       </div>
       <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-ltc">🟢</span><p class="ct">Lead Time for Changes — tempo de implementação</p></div>
+        <div class="cgh"><span class="cgh-dot" id="cgd-ltc">🟢</span><p class="ct">Lead Time for Changes (LTC)</p></div>
         <p class="cs">Quanto menor, mais rápido o valor chega ao usuário — eficiência do pipeline CI/CD.</p>
         <div style="position:relative;width:100%;height:200px"><canvas id="cLtc" role="img" aria-label="Lead Time for Changes por sprint"></canvas></div>
       </div>
@@ -1138,12 +1140,12 @@
     </div>
     <div class="g2" style="margin-bottom:14px">
       <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-cfr">🟢</span><p class="ct">Change Failure Rate — taxa de falha de alterações</p></div>
+        <div class="cgh"><span class="cgh-dot" id="cgd-cfr">🟢</span><p class="ct">Change Failure Rate (CFR)</p></div>
         <p class="cs">Quanto menor, mais confiável o processo de deploy — picos indicam qualidade comprometida.</p>
         <div style="position:relative;width:100%;height:200px"><canvas id="cCfr" role="img" aria-label="Change Failure Rate por sprint"></canvas></div>
       </div>
       <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-mttr">🟢</span><p class="ct">MTTR — tempo médio de recuperação</p></div>
+        <div class="cgh"><span class="cgh-dot" id="cgd-mttr">🟢</span><p class="ct">Mean Time to Recovery (MTTR)</p></div>
         <p class="cs">Quanto menor, maior a resiliência — capacidade do time de responder a incidentes rapidamente.</p>
         <div style="position:relative;width:100%;height:200px"><canvas id="cMttrD" role="img" aria-label="MTTR por sprint"></canvas></div>
       </div>
@@ -1336,8 +1338,8 @@
       <button class="as-tab on" onclick="asTab(this,'as-resumo')"><i class="ti ti-layout-dashboard" style="font-size:13px"></i> Resumo executivo</button>
       <button class="as-tab" onclick="asTab(this,'as-bd')"><i class="ti ti-chart-line" style="font-size:13px"></i> Burndown &amp; Burnup</button>
       <button class="as-tab" onclick="asTab(this,'as-forecast')"><i class="ti ti-chart-arrows-vertical" style="font-size:13px"></i> Forecast da sprint</button>
-      <button class="as-tab" onclick="asTab(this,'as-cap')"><i class="ti ti-users" style="font-size:13px"></i> Capacidade</button>
-      <button class="as-tab" onclick="asTab(this,'as-plxr')"><i class="ti ti-scale" style="font-size:13px"></i> Planejado × realizado</button>
+      <button class="as-tab" onclick="asTab(this,'as-cap')"><i class="ti ti-users" style="font-size:13px"></i> Capacity</button>
+      <button class="as-tab" onclick="asTab(this,'as-plxr')"><i class="ti ti-scale" style="font-size:13px"></i> Capacity × Velocity</button>
       <button class="as-tab" onclick="asTab(this,'as-tl')"><i class="ti ti-timeline" style="font-size:13px"></i> Timeline</button>
       <button class="as-tab" onclick="asTab(this,'as-al')"><i class="ti ti-bell-ringing" style="font-size:13px"></i> Alertas</button>
     </div>
@@ -1617,7 +1619,7 @@
         </div>
 
         <!-- Distribuição Planejada -->
-        <p class="stitle">📊 Distribuição Planejada da Capacidade</p>
+        <p class="stitle">📊 Distribuição Planejada da Capacity</p>
         <div class="g2" style="margin-bottom:16px">
           <div>
             <div id="spDistBars"></div>
@@ -2018,7 +2020,7 @@
 
     <!-- Seção 1 — Apresentação -->
     <div class="ab-hero">
-      <div class="ab-avatar">ACP</div>
+      <img class="ab-avatar" src="AnaPachecco.jpg" alt="Ana Cristina Nunes Pacheco">
       <div class="ab-hero-txt">
         <p class="ab-hero-name">Ana Cristina Nunes Pacheco</p>
         <p class="ab-hero-role"><i class="ti ti-sparkles" style="font-size:13px;margin-right:4px"></i>Agile Master · Scrum Master · Gestão de Processos e Melhoria Contínua</p>
@@ -2132,6 +2134,8 @@
 
 <footer class="footer">
   FlowOps AI MVP v1.0 · Gestão ágil com IA · FlowOps AI · 2026
+  <br>
+  <span class="footer-visits">👀 Visitas ao FlowOps AI: <span id="visitCount" class="footer-visits-val">—</span></span>
 </footer>
 </div>
 
@@ -2383,9 +2387,9 @@ function drawCFD(d,i){
   // Band widths at midpoint
   const bands=[
     {name:'Backlog',      w:cfd.committed[mid] -cfd.startedCum[mid], icon:'📥', color:'#9ca3af'},
-    {name:'Em Progresso', w:cfd.startedCum[mid]-cfd.reviewCum[mid],  icon:'⚙️',  color:'#185FA5'},
-    {name:'Revisão',      w:cfd.reviewCum[mid] -cfd.testCum[mid],    icon:'🔍', color:'#d97706'},
-    {name:'Teste',        w:cfd.testCum[mid]   -cfd.doneCum[mid],    icon:'🧪', color:'#8b5cf6'},
+    {name:'In Progress',  w:cfd.startedCum[mid]-cfd.reviewCum[mid],  icon:'⚙️',  color:'#185FA5'},
+    {name:'Code Review',  w:cfd.reviewCum[mid] -cfd.testCum[mid],    icon:'🔍', color:'#d97706'},
+    {name:'Testing',      w:cfd.testCum[mid]   -cfd.doneCum[mid],    icon:'🧪', color:'#8b5cf6'},
   ];
   const bot=bands.reduce((a,b)=>b.w>a.w?b:a);
 
@@ -2396,21 +2400,21 @@ function drawCFD(d,i){
   // Structured diagnostic
   const situacaoMap={
     'Backlog':      `Foram identificados <strong>${bands[0].w} itens</strong> acumulados no <strong>Backlog</strong> sem entrada em progresso no D7 da sprint. O fluxo não está absorvendo os itens refinados no ritmo esperado.`,
-    'Em Progresso': `Alto WIP em <strong>Em Progresso</strong> — <strong>${bands[1].w} itens</strong> iniciados simultaneamente sem finalização no D7. Limite recomendado para este escopo: ${Math.round(d.pl[i]/3)} itens.`,
-    'Revisão':      `Foram identificados <strong>${bands[2].w} itens</strong> represados em <strong>Revisão / Code Review</strong> no D7. O índice de retrabalho atual é de ${d.rw[i]}%, amplificando a fila.`,
-    'Teste':        `Foram identificados <strong>${bands[3].w} itens</strong> represados em <strong>Teste / QA</strong> no D7, impedindo o avanço para Concluído e comprimindo a janela de entrega.`,
+    'In Progress':  `Alto WIP em <strong>In Progress</strong> — <strong>${bands[1].w} itens</strong> iniciados simultaneamente sem finalização no D7. Limite recomendado para este escopo: ${Math.round(d.pl[i]/3)} itens.`,
+    'Code Review':  `Foram identificados <strong>${bands[2].w} itens</strong> represados em <strong>Code Review</strong> no D7. O índice de retrabalho atual é de ${d.rw[i]}%, amplificando a fila.`,
+    'Testing':      `Foram identificados <strong>${bands[3].w} itens</strong> represados em <strong>Testing / QA</strong> no D7, impedindo o avanço para Done e comprimindo a janela de entrega.`,
   };
   const impactoMap={
     'Backlog':      `Itens sem início aumentam o Lead Time geral e podem comprometer a previsibilidade da Sprint caso não entrem em progresso até o D10.`,
-    'Em Progresso': `Excesso de WIP eleva o Lead Time, aumenta o risco de transbordo e reduz a previsibilidade — cada item adicional além do limite tende a aumentar o Cycle Time em cascata.`,
-    'Revisão':      `Atrasos em Code Review geram retrabalho tardio, ampliam o Lead Time total e podem impedir a entrega dos itens no prazo, aumentando a taxa de transbordo.`,
-    'Teste':        `Gargalo em QA amplia o risco de defeitos escapados para produção, compromete a taxa de entrega da Sprint e pode impactar negativamente a Change Failure Rate.`,
+    'In Progress':  `Excesso de WIP eleva o Lead Time, aumenta o risco de transbordo e reduz a previsibilidade — cada item adicional além do limite tende a aumentar o Cycle Time em cascata.`,
+    'Code Review':  `Atrasos em Code Review geram retrabalho tardio, ampliam o Lead Time total e podem impedir a entrega dos itens no prazo, aumentando a taxa de transbordo.`,
+    'Testing':      `Gargalo em QA amplia o risco de defeitos escapados para produção, compromete a taxa de entrega da Sprint e pode impactar negativamente a Change Failure Rate.`,
   };
   const acaoMap={
     'Backlog':      `Verificar se os itens estão refinados e prontos para início; identificar dependências ou bloqueadores na reunião diária; considerar re-priorização caso o escopo esteja superdimensionado.`,
-    'Em Progresso': `Aplicar limite de WIP (máx ${Math.round(d.pl[i]/3)} itens simultâneos), pausar novos starts e mobilizar o time para finalizar os itens em andamento antes de iniciar outros.`,
-    'Revisão':      `Reduzir o tamanho dos PRs, estabelecer SLA de revisão de 1 dia útil, implementar pair review e considerar automação de checagens de qualidade para acelerar o processo.`,
-    'Teste':        `Antecipar validações (Shift Left Testing), parear QA com desenvolvedores nos itens críticos e ampliar a cobertura de testes automatizados de regressão para liberar capacidade.`,
+    'In Progress':  `Aplicar limite de WIP (máx ${Math.round(d.pl[i]/3)} itens simultâneos), pausar novos starts e mobilizar o time para finalizar os itens em andamento antes de iniciar outros.`,
+    'Code Review':  `Reduzir o tamanho dos PRs, estabelecer SLA de revisão de 1 dia útil, implementar pair review e considerar automação de checagens de qualidade para acelerar o processo.`,
+    'Testing':      `Antecipar validações (Shift Left Testing), parear QA com desenvolvedores nos itens críticos e ampliar a cobertura de testes automatizados de regressão para liberar capacidade.`,
   };
   const insEl=document.getElementById('cfdInsight');
   if(insEl) insEl.innerHTML=`<div class="cfd-diag"><div class="cfd-diag-sect"><div class="cfd-diag-lbl" style="color:${bot.color}">&#9654; Situação identificada</div>${situacaoMap[bot.name]}</div><div class="cfd-diag-sect"><div class="cfd-diag-lbl" style="color:#d97706">&#9654; Possível impacto</div>${impactoMap[bot.name]}</div><div class="cfd-diag-sect"><div class="cfd-diag-lbl" style="color:#059669">&#9654; Recomendação</div>${acaoMap[bot.name]}</div><div class="cfd-edu">💡 <strong>Como ler o CFD:</strong> Bandas largas representam acúmulo ou filas — quanto maior a banda, mais itens presos naquela etapa. Bandas estreitas e paralelas indicam fluxo saudável com progressão constante.</div></div>`;
@@ -2423,10 +2427,10 @@ function drawCFD(d,i){
       labels:cfd.labels,
       datasets:[
         {label:'Backlog',      data:cfd.committed,  borderColor:'#9ca3af', backgroundColor:'rgba(156,163,175,.25)', fill:'+1', tension:.4, pointRadius:0, borderWidth:1.5},
-        {label:'Em Progresso', data:cfd.startedCum, borderColor:'#185FA5', backgroundColor:'rgba(24,95,165,.20)',   fill:'+1', tension:.4, pointRadius:0, borderWidth:1.5},
-        {label:'Revisão',      data:cfd.reviewCum,  borderColor:'#d97706', backgroundColor:'rgba(217,119,6,.22)',   fill:'+1', tension:.4, pointRadius:0, borderWidth:1.5},
-        {label:'Teste',        data:cfd.testCum,    borderColor:'#8b5cf6', backgroundColor:'rgba(139,92,246,.18)',  fill:'+1', tension:.4, pointRadius:0, borderWidth:1.5},
-        {label:'Concluído',    data:cfd.doneCum,    borderColor:'#059669', backgroundColor:'rgba(5,150,105,.30)',   fill:'origin', tension:.4, pointRadius:0, borderWidth:2},
+        {label:'In Progress',  data:cfd.startedCum, borderColor:'#185FA5', backgroundColor:'rgba(24,95,165,.20)',   fill:'+1', tension:.4, pointRadius:0, borderWidth:1.5},
+        {label:'Code Review',  data:cfd.reviewCum,  borderColor:'#d97706', backgroundColor:'rgba(217,119,6,.22)',   fill:'+1', tension:.4, pointRadius:0, borderWidth:1.5},
+        {label:'Testing',      data:cfd.testCum,    borderColor:'#8b5cf6', backgroundColor:'rgba(139,92,246,.18)',  fill:'+1', tension:.4, pointRadius:0, borderWidth:1.5},
+        {label:'Done',         data:cfd.doneCum,    borderColor:'#059669', backgroundColor:'rgba(5,150,105,.30)',   fill:'origin', tension:.4, pointRadius:0, borderWidth:2},
       ]
     },
     options:{
@@ -2485,7 +2489,7 @@ function drawCharts(){
   // Sinaleira do gráfico de Lead Time — mesma regra de meta usada no card p85
   setGroupDot('cgd-lt', [statusEmoji(metaStatus(d.p85[gi()], METAS.p85, true))]);
   // Cycle time — dynamic based on p85, with bottleneck highlight
-  const ctLabels=['A fazer','Em prog.','Revisão','Teste','Pronto'];
+  const ctLabels=['Backlog','In Progress','Code Review','Testing','Done'];
   const ctProps=[0.08,0.45,0.22,0.20,0.05];
   const ctTotal=d.p85[gi()]*0.75;
   const ctTimes=ctProps.map(p=>parseFloat((p*ctTotal).toFixed(1)));
@@ -2848,7 +2852,7 @@ function renderQuarterReport(){
   // SEC 2 — Planejado x Entregue
   const rows2=d.sp.map((s,i)=>[s,d.pl[i],d.en[i],d.tr[i],`<span class="metric-pill ${d.en[i]>=d.pl[i]*.9?'mp-up':d.en[i]>=d.pl[i]*.7?'mp-nu':'mp-dn'}">${Math.round(d.en[i]/d.pl[i]*100)}%</span>`]);
   rows2.push([`<strong>Total</strong>`,`<strong>${totPlan}</strong>`,`<strong>${totDel}</strong>`,`<strong>${totTr}</strong>`,`<strong>${h.adherence}%</strong>`]);
-  html+=sect(2,'Planejado x Entregue','Comparativo do escopo comprometido vs entregas realizadas, sprint a sprint.',tbl(['Sprint','Planejado','Entregue','Transbordo','Aderência'],rows2));
+  html+=sect(2,'Capacity × Velocity','Comparativo do escopo comprometido vs entregas realizadas, sprint a sprint.',tbl(['Sprint','Planejado','Entregue','Transbordo','Aderência'],rows2));
 
   // SEC 3 — Fluxo
   html+=sect(3,'Visão Geral das Métricas de Fluxo','Evolução do Lead Time, Throughput e comportamento do fluxo ao longo do quarter.',
@@ -2871,10 +2875,10 @@ function renderQuarterReport(){
   const doraC=(v,type)=>{const t=doraT(v,type);return t==='Elite'?'t-elite':t==='High'?'t-high':t==='Medium'?'t-med':'t-low';};
   html+=sect(4,'Visão Geral das Métricas DORA','Performance de entrega de software — velocidade, estabilidade e capacidade de recuperação.',
     tbl(['Métrica','Início ('+d.sp[0]+')','Fim ('+d.sp[n-1]+')','Variação','Classificação'],[
-      ['Deploy Frequency',d.df[0].toFixed(1)+'/sem',d.df[n-1].toFixed(1)+'/sem',`+${(d.df[n-1]-d.df[0]).toFixed(1)}/sem`,`<span class="tier ${doraC(d.df[n-1],'df')}">${doraT(d.df[n-1],'df')}</span>`],
-      ['Lead Time for Changes',d.lc[0].toFixed(1)+'d',d.lc[n-1].toFixed(1)+'d',`↓${(d.lc[0]-d.lc[n-1]).toFixed(1)}d`,`<span class="tier ${doraC(d.lc[n-1],'lc')}">${doraT(d.lc[n-1],'lc')}</span>`],
-      ['MTTR',d.mt[0].toFixed(1)+'h',d.mt[n-1].toFixed(1)+'h',`↓${(d.mt[0]-d.mt[n-1]).toFixed(1)}h`,`<span class="tier ${doraC(d.mt[n-1],'mt')}">${doraT(d.mt[n-1],'mt')}</span>`],
-      ['Change Failure Rate',d.cf[0].toFixed(1)+'%',d.cf[n-1].toFixed(1)+'%',`↓${(d.cf[0]-d.cf[n-1]).toFixed(1)}%`,`<span class="tier ${doraC(d.cf[n-1],'cf')}">${doraT(d.cf[n-1],'cf')}</span>`],
+      ['Deployment Frequency (DF)',    d.df[0].toFixed(1)+'/sem',d.df[n-1].toFixed(1)+'/sem',`+${(d.df[n-1]-d.df[0]).toFixed(1)}/sem`,`<span class="tier ${doraC(d.df[n-1],'df')}">${doraT(d.df[n-1],'df')}</span>`],
+      ['Lead Time for Changes (LTC)',  d.lc[0].toFixed(1)+'d',d.lc[n-1].toFixed(1)+'d',`↓${(d.lc[0]-d.lc[n-1]).toFixed(1)}d`,`<span class="tier ${doraC(d.lc[n-1],'lc')}">${doraT(d.lc[n-1],'lc')}</span>`],
+      ['Mean Time to Recovery (MTTR)', d.mt[0].toFixed(1)+'h',d.mt[n-1].toFixed(1)+'h',`↓${(d.mt[0]-d.mt[n-1]).toFixed(1)}h`,`<span class="tier ${doraC(d.mt[n-1],'mt')}">${doraT(d.mt[n-1],'mt')}</span>`],
+      ['Change Failure Rate (CFR)',    d.cf[0].toFixed(1)+'%',d.cf[n-1].toFixed(1)+'%',`↓${(d.cf[0]-d.cf[n-1]).toFixed(1)}%`,`<span class="tier ${doraC(d.cf[n-1],'cf')}">${doraT(d.cf[n-1],'cf')}</span>`],
     ])
   );
 
@@ -3423,7 +3427,7 @@ function renderAsPlxR(d,i,q){
   ];
 
   el.innerHTML=`<div class="cc">
-    <p class="ct" style="margin-bottom:12px">⚖️ Planejado × realizado — ${q} · S${i+1}</p>
+    <p class="ct" style="margin-bottom:12px">⚖️ Capacity × Velocity — ${q} · S${i+1}</p>
     <div style="overflow-x:auto">
       <table style="width:100%;border-collapse:collapse;font-size:12px">
         <thead><tr style="background:#f9fafb">
@@ -3559,7 +3563,7 @@ function drawBurndownBurnup(){
     type:'line',
     data:{labels:days,datasets:[
       {label:'Escopo',data:scope,borderColor:'#9ca3af',borderDash:[5,4],backgroundColor:'transparent',pointRadius:0,borderWidth:1.5},
-      {label:'Concluído',data:burnup,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.12)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:'#059669',borderWidth:2},
+      {label:'Done',data:burnup,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.12)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:'#059669',borderWidth:2},
     ]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,font:{size:11},padding:12}},annotation:{annotations:{scopeChange:{type:'line',xMin:'D6',xMax:'D6',borderColor:'#d97706',borderDash:[4,3],borderWidth:1.5,label:{content:'Scope+',display:true,position:'end',font:{size:9},color:'#d97706'}}}}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,title:{display:true,text:'itens',font:{size:10}},grid:{color:'#f3f4f6'}}}}
   });
@@ -3877,9 +3881,9 @@ function generateFromData(){
     `• Throughput: *${d.en[i]} itens*${delta(tpD,false,' itens')}`,
     '',
     `🚀 *DORA — ${doraT(d.df[i],'df')} performance:*`,
-    `• Deploy Frequency: *${d.df[i].toFixed(1)}/sem* (${doraT(d.df[i],'df')})`,
-    `• Lead Time for Changes: *${d.lc[i].toFixed(1)}d* | MTTR: *${d.mt[i].toFixed(1)}h*`,
-    `• Change Failure Rate: *${d.cf[i].toFixed(1)}%* (${doraT(d.cf[i],'cf')})`,
+    `• Deployment Frequency (DF): *${d.df[i].toFixed(1)}/sem* (${doraT(d.df[i],'df')})`,
+    `• Lead Time for Changes (LTC): *${d.lc[i].toFixed(1)}d* | MTTR: *${d.mt[i].toFixed(1)}h*`,
+    `• Change Failure Rate (CFR): *${d.cf[i].toFixed(1)}%* (${doraT(d.cf[i],'cf')})`,
     '',
     `🐛 *Qualidade:*`,
     `• Bugs abertos: *${d.bo[i]}*${delta(boD,true)} | Fechados: *${d.bc[i]}*`,
@@ -3968,9 +3972,9 @@ function renderMultiTeam(){
   const metrics=[
     {lbl:'Throughput',      vals:teams.map(t=>t.d.en[i]),                           unit:' itens', better:'high'},
     {lbl:'Lead Time p85',   vals:teams.map(t=>t.d.p85[i]),                          unit:'d',      better:'low'},
-    {lbl:'Aderência %',     vals:teams.map(t=>Math.round(t.d.en[i]/t.d.pl[i]*100)),unit:'%',      better:'high'},
-    {lbl:'Deploy/semana',   vals:teams.map(t=>+t.d.df[i].toFixed(1)),               unit:'/sem',   better:'high'},
-    {lbl:'MTTR',            vals:teams.map(t=>+t.d.mt[i].toFixed(1)),               unit:'h',      better:'low'},
+    {lbl:'Capacity × Velocity (%)', vals:teams.map(t=>Math.round(t.d.en[i]/t.d.pl[i]*100)),unit:'%',      better:'high'},
+    {lbl:'Deployment Frequency (DF)',vals:teams.map(t=>+t.d.df[i].toFixed(1)),               unit:'/sem',   better:'high'},
+    {lbl:'Mean Time to Recovery (MTTR)',vals:teams.map(t=>+t.d.mt[i].toFixed(1)),            unit:'h',      better:'low'},
     {lbl:'Bugs abertos',    vals:teams.map(t=>t.d.bo[i]),                           unit:'',       better:'low'},
   ];
   metrics.forEach(m=>{
@@ -3980,10 +3984,10 @@ function renderMultiTeam(){
 
   // DORA rows
   const doraRows=[
-    {lbl:'Deploy Frequency', vals:teams.map(t=>`${t.d.df[i].toFixed(1)}/sem`), num:teams.map(t=>t.d.df[i]), better:'high'},
-    {lbl:'LT for Changes',   vals:teams.map(t=>`${t.d.lc[i].toFixed(1)}d`),   num:teams.map(t=>t.d.lc[i]), better:'low'},
-    {lbl:'MTTR',             vals:teams.map(t=>`${t.d.mt[i].toFixed(1)}h`),   num:teams.map(t=>t.d.mt[i]), better:'low'},
-    {lbl:'Change Fail Rate', vals:teams.map(t=>`${t.d.cf[i].toFixed(1)}%`),   num:teams.map(t=>t.d.cf[i]), better:'low'},
+    {lbl:'Deployment Frequency (DF)',    vals:teams.map(t=>`${t.d.df[i].toFixed(1)}/sem`), num:teams.map(t=>t.d.df[i]), better:'high'},
+    {lbl:'Lead Time for Changes (LTC)', vals:teams.map(t=>`${t.d.lc[i].toFixed(1)}d`),   num:teams.map(t=>t.d.lc[i]), better:'low'},
+    {lbl:'Mean Time to Recovery (MTTR)',vals:teams.map(t=>`${t.d.mt[i].toFixed(1)}h`),   num:teams.map(t=>t.d.mt[i]), better:'low'},
+    {lbl:'Change Failure Rate (CFR)',   vals:teams.map(t=>`${t.d.cf[i].toFixed(1)}%`),   num:teams.map(t=>t.d.cf[i]), better:'low'},
   ].map(r=>{
     const n=r.num.map(Number);
     const w=r.better==='high'?n.indexOf(Math.max(...n)):n.indexOf(Math.min(...n));
@@ -4038,7 +4042,7 @@ function renderMultiTeam(){
     </div>
 
     <div class="cc">
-      <p class="ct">DORA — métricas de engenharia</p>
+      <p class="ct">📊 DORA — Eficiência de deploys</p>
       <p class="cs">Sprint atual · 🏆 = melhor resultado entre os times</p>
       <table class="mt-tbl">
         <thead><tr>
@@ -4999,10 +5003,10 @@ function renderDoraCharts(d,q){
     ch[id]=new Chart(document.getElementById(id),{type:'line',data:{labels:sp,datasets:ds},options:opts(yLabel,color)});
   };
 
-  mkLine('cDf',   'Deploy Freq. (dep/sem)', d.df, '#185FA5', 2,  'Meta ≥ 2',   'deploys/sem');
-  mkLine('cLtc',  'Lead Time (dias)',        d.lc, '#059669', 3,  'Meta ≤ 3d',  'dias');
-  mkLine('cCfr',  'Change Failure Rate (%)', d.cf, '#dc2626', 10, 'Meta ≤ 10%', '%');
-  mkLine('cMttrD','MTTR (horas)',            d.mt, '#7c3aed', 4,  'Meta ≤ 4h',  'horas');
+  mkLine('cDf',   'Deployment Frequency (DF)',    d.df, '#185FA5', 2,  'Meta ≥ 2',   'deploys/sem');
+  mkLine('cLtc',  'Lead Time for Changes (LTC)', d.lc, '#059669', 3,  'Meta ≤ 3d',  'dias');
+  mkLine('cCfr',  'Change Failure Rate (CFR)',   d.cf, '#dc2626', 10, 'Meta ≤ 10%', '%');
+  mkLine('cMttrD','Mean Time to Recovery (MTTR)',d.mt, '#7c3aed', 4,  'Meta ≤ 4h',  'horas');
   mkLine('cRel',  'Reliability (pts)',       relData,'#0891b2',90,'Meta ≥ 90',  'pts (0–100)');
 
   ch['cInc']=new Chart(document.getElementById('cInc'),{type:'bar',data:{labels:sp,datasets:[{label:'Incidentes críticos',data:incData,backgroundColor:incColors,borderRadius:4,borderSkipped:false}]},options:{...opts('incidentes'),plugins:{legend:{display:false}}}});
@@ -5010,7 +5014,7 @@ function renderDoraCharts(d,q){
 // ───────────────────────────────────────────────────────────────────
 
 // ── Métricas de Fluxo helpers ──────────────────────────────────────
-const STAGES=['A fazer','Em prog.','Revisão','Teste','Pronto'];
+const STAGES=['Backlog','In Progress','Code Review','Testing','Done'];
 const STAGE_PROPS=[0.08,0.45,0.22,0.20,0.05];
 const WIP_LIMITS=[null,5,3,4,null]; // null = no limit for backlog/done
 
@@ -5038,7 +5042,7 @@ function genAgingItems(d,i){
   const factors=[0.55,0.72,0.88,1.05,1.22,1.40,1.65,1.90];
   const names=['API Gateway','Auth Service','Data Pipeline','UI Dashboard',
                'Reports Module','Notification Svc','Cache Layer','Search Index'];
-  const stages=['Em prog.','Em prog.','Revisão','Em prog.','Revisão','Teste','Em prog.','Revisão'];
+  const stages=['In Progress','In Progress','Code Review','In Progress','Code Review','Testing','In Progress','Code Review'];
   const count=Math.min(d.rw[i]>20?6:d.rw[i]>10?5:4, 8);
   return Array.from({length:count},(_,k)=>({
     name:names[k], stage:stages[k],
@@ -5118,10 +5122,9 @@ function renderFlowMetrics(){
     `<div class="gc-stat"><strong>~${ltPct}%</strong><br>do Lead Time</div>`;
   document.getElementById('gc-pct').textContent=botPct+'%';
   const recMap={
-    'Em Desenvolvimento':'A concentração no desenvolvimento indica possível acúmulo de trabalho ou capacidade insuficiente. Avalie redução do WIP, redistribuição de tarefas ou remoção de bloqueios antes de iniciar novos itens.',
-    'Em Revisão':'O tempo elevado em revisão indica fila de code review. Reduza o tamanho dos PRs, implemente revisão em par e considere dedicar horários fixos para revisão no dia.',
-    'Em Teste':'O gargalo em testes indica possível escassez de QA ou ausência de automação. Priorize testes automatizados e considere o modelo "shift-left" para antecipar a validação.',
-    'Aguardando':'Itens parados em espera indicam dependências externas ou falta de clareza de prioridade. Mapeie os bloqueadores na próxima Daily e defina um responsável por cada dependência.'
+    'In Progress':'A concentração em In Progress indica possível acúmulo de trabalho ou capacidade insuficiente. Avalie redução do WIP, redistribuição de tarefas ou remoção de bloqueios antes de iniciar novos itens.',
+    'Code Review':'O tempo elevado em Code Review indica fila de revisão. Reduza o tamanho dos PRs, implemente revisão em par e considere dedicar horários fixos para revisão no dia.',
+    'Testing':'O gargalo em Testing indica possível escassez de QA ou ausência de automação. Priorize testes automatizados e considere o modelo "shift-left" para antecipar a validação.',
   };
   const recDefault='Concentração excessiva nesta etapa indica gargalo de fluxo. Avalie limites de WIP, redistribuição de tarefas e remoção de impedimentos antes de puxar novos itens.';
   document.getElementById('gc-rec').textContent=recMap[bot.stage]||recDefault;
@@ -5466,7 +5469,7 @@ function renderCfOrigin(d,i,esc){
   const inHom=Math.max(0,Math.round(bo*homP));
   const inProd=Math.max(0,bo-inDev-inHom);
   const rows=[
-    {lbl:'Em desenvolvimento', val:inDev,  color:'#d97706'},
+    {lbl:'In Progress',        val:inDev,  color:'#d97706'},
     {lbl:'Em homologação',     val:inHom,  color:'#7c3aed'},
     {lbl:'Em produção',        val:inProd, color:'#dc2626'},
     {lbl:'Defeitos escapados', val:esc,    color:'#111827'}
@@ -5560,8 +5563,8 @@ function openCfDetail(type){
   // Gerar lista de bugs simulada
   const sevOptions=['Crítico','Blocker','Alto','Médio','Baixo'];
   const statusOptions=[
-    {cls:'sta-open',lbl:'Aberto'},{cls:'sta-prog',lbl:'Em desenvolvimento'},
-    {cls:'sta-rev', lbl:'Em revisão'},{cls:'sta-rev',lbl:'Aguardando validação'}
+    {cls:'sta-open',lbl:'Aberto'},{cls:'sta-prog',lbl:'In Progress'},
+    {cls:'sta-rev', lbl:'Code Review'},{cls:'sta-rev',lbl:'Awaiting Validation'}
   ];
   const statusDone={cls:'sta-done',lbl:'Fechado'};
   const titles=[
@@ -6342,7 +6345,7 @@ const GL={
 
   ct:{name:'Cycle Time',namePT:'Tempo de Ciclo por Estágio',cat:'flow',catLabel:'Fluxo',catColor:'#185FA5',
     short:'Tempo que um item permanece em cada etapa do fluxo — revela onde o trabalho está travado.',
-    what:'Cycle Time é o tempo de permanência em um estágio específico (A Fazer, Em Progresso, Revisão, Teste, Pronto). Diferente do Lead Time total, decompõe o tempo por fase, revelando onde o trabalho aguarda mais.',
+    what:'Cycle Time é o tempo de permanência em um estágio específico (Backlog, In Progress, Code Review, Testing, Done). Diferente do Lead Time total, decompõe o tempo por fase, revelando onde o trabalho aguarda mais.',
     measures:'Onde o trabalho acumula e onde o fluxo trava. O estágio com maior Cycle Time relativo é o gargalo da sprint.',
     goal:'Identificar cirurgicamente o gargalo do processo para que o time possa agir de forma precisa, sem precisar rever todo o fluxo.',
     formula:'CT por estágio = Soma do tempo dos itens no estágio ÷ Qtd. de itens\nCT Total = Soma dos CTs de todos os estágios ativos',
@@ -6351,8 +6354,8 @@ const GL={
     questions:['Qual estágio está consumindo mais tempo?','O gargalo está em desenvolvimento, revisão ou teste?','O WIP limit do estágio gargalo está sendo respeitado?','O Cycle Time de Teste cresce junto com o retrabalho?'],
     who:['Scrum Master','Agile Coach','Tech Lead','QA Lead'],
     when:['Daily (monitoramento do gargalo)','Sprint Retrospective','Refinamento (calibrar capacidade)'],
-    example:'Q1 S3: Gargalo em "Teste" com 4,2d (38% do Lead Time total). WIP no estágio: 4/4 (no limite). Sistema alerta: "Considere reforço de QA para reduzir acúmulo neste estágio."',
-    insight:'O estágio Revisão teve Cycle Time 40% acima da média das últimas 3 sprints. Possível causa: pull requests acumulando sem reviewers disponíveis. Recomendação: SLA de revisão de código máx. 24h.',
+    example:'Q1 S3: Gargalo em "Testing" com 4,2d (38% do Lead Time total). WIP no estágio: 4/4 (no limite). Sistema alerta: "Considere reforço de QA para reduzir acúmulo neste estágio."',
+    insight:'O estágio Code Review teve Cycle Time 40% acima da média das últimas 3 sprints. Possível causa: pull requests acumulando sem reviewers disponíveis. Recomendação: SLA de revisão de código máx. 24h.',
     why:'Sem Cycle Time por estágio, o time vê apenas o sintoma (Lead Time alto) sem saber a causa. Com ele, a ação fica precisa: se o gargalo é em Teste, a solução é QA — não contratar mais desenvolvedores.'},
 
   tp:{name:'Throughput',namePT:'Vazão de Entrega',cat:'flow',catLabel:'Fluxo',catColor:'#185FA5',
@@ -6391,12 +6394,12 @@ const GL={
     measures:'A quantidade de trabalho simultâneo assumido pelo time. Alto WIP é o principal preditor de Lead Time elevado, conforme demonstrado pela Lei de Little.',
     goal:'Garantir que o time não assumiu mais trabalho do que consegue processar simultaneamente, evitando o aumento do Lead Time e a criação de gargalos por estágio.',
     formula:'Lei de Little: Lead Time = WIP ÷ Throughput\nWIP atual = Itens iniciados − Itens concluídos (no período)',
-    howCalc:'O sistema soma itens nos estágios Em Progresso, Revisão e Teste. Compara com o limite global configurado (default: 9) e com WIP Limits por estágio (Em Prog: 5, Revisão: 3, Teste: 4).',
+    howCalc:'O sistema soma itens nos estágios In Progress, Code Review e Testing. Compara com o limite global configurado (default: 9) e com WIP Limits por estágio (In Progress: 5, Code Review: 3, Testing: 4).',
     interpret:[{lbl:'Saudável',cls:'ok',txt:'WIP ≤ 9. Nenhum estágio acima do WIP Limit configurado.'},{lbl:'Atenção',cls:'warn',txt:'WIP entre 9 e 12. Pelo menos 1 estágio próximo do limite.'},{lbl:'Risco',cls:'bad',txt:'WIP > 12 ou algum estágio acima do WIP Limit — gargalo ativo.'}],
     questions:['Estamos iniciando mais itens do que conseguimos terminar?','Existe estágio com WIP acima do limite configurado?','O WIP cresceu junto com o Lead Time? (Lei de Little)','Pausar novos inícios resolveria o acúmulo?'],
     who:['Scrum Master','Agile Coach','Tech Lead'],
     when:['Daily (monitorar diariamente — o mais importante)','Sprint Planning (definir WIP Limits)','Sprint Retrospective'],
-    example:'WIP=11, limite=9. Estágio "Revisão": 4 itens / limite 3 (acima). Sistema: "Pausar novos inícios em Em Progresso. Lei de Little: WIP 11 / Throughput 17 = Lead Time projetado ~9,4d."',
+    example:'WIP=11, limite=9. Estágio "Code Review": 4 itens / limite 3 (acima). Sistema: "Pausar novos inícios em In Progress. Lei de Little: WIP 11 / Throughput 17 = Lead Time projetado ~9,4d."',
     insight:'WIP cresceu de 8 para 13 nas últimas 2 sprints. Pela Lei de Little, isso implica aumento proporcional do Lead Time. Recomendação: pausar novos inícios e priorizar conclusão dos itens mais antigos.',
     why:'Controlar WIP é a intervenção de maior impacto e menor custo para reduzir Lead Time. A Lei de Little é matemática — não uma opinião: reduzir WIP de 12 para 8 reduz o Lead Time em ~33% sem nenhuma mudança de equipe ou processo.'},
 
@@ -6412,7 +6415,7 @@ const GL={
     who:['Scrum Master','Agile Master','Tech Lead','Product Owner'],
     when:['Daily (monitoramento diário obrigatório)','Mid-Sprint (revisão da metade da sprint)','Sprint Review'],
     example:'P85 do time = 18d. Item "Feature X" está no fluxo há 21d (116% do P85). Classificação: ALTO RISCO. Sistema: "1 item acima do P85 em andamento — risco alto de transbordo nesta sprint."',
-    insight:'2 itens com Aging acima do P85 identificados — ambos no estágio "Revisão" há mais de 12 dias. Sugestão: review colaborativo ou escalada do bloqueio de aprovação técnica.',
+    insight:'2 itens com Aging acima do P85 identificados — ambos no estágio "Code Review" há mais de 12 dias. Sugestão: review colaborativo ou escalada do bloqueio de aprovação técnica.',
     why:'Problemas de entrega raramente surgem do nada na última hora — existem há dias, mas são invisíveis sem o Aging. Este indicador transforma o invisível em visível, permitindo ação preventiva ao invés de surpresas no encerramento da sprint.'},
 
   p85:{name:'Percentil 85 (P85)',namePT:'Referência de Previsibilidade',cat:'flow',catLabel:'Fluxo',catColor:'#185FA5',
@@ -6445,7 +6448,7 @@ const GL={
     insight:'Deployment Frequency caiu para 1,1/semana. Times com DF baixo acumulam mudanças maiores por deploy, aumentando o risco de incidentes. Verificar gargalo no CI/CD ou no processo de revisão.',
     why:'Pesquisa DORA (Google): times Elite fazem 208× mais deploys que times Low. Maior frequência = mudanças menores = menor risco por deploy = feedback mais rápido do usuário = time mais ágil e resiliente.'},
 
-  ltc:{name:'Lead Time for Changes',namePT:'Lead Time para Mudanças',cat:'dora',catLabel:'DORA',catColor:'#7c3aed',
+  ltc:{name:'Lead Time for Changes (LTC)',namePT:'Lead Time para Mudanças',cat:'dora',catLabel:'DORA',catColor:'#7c3aed',
     short:'Tempo entre o commit de código e o deploy em produção — eficiência da esteira de entrega contínua.',
     what:'LTC mede o tempo de uma mudança desde o commit até estar disponível em produção. Diferente do Lead Time de Fluxo (perspectiva do produto), este mede a perspectiva da engenharia e do pipeline CI/CD.',
     measures:'A eficiência do pipeline CI/CD, o tempo de revisão de código, os processos de aprovação e a qualidade da automação de testes.',
@@ -6460,7 +6463,7 @@ const GL={
     insight:'Lead Time for Changes aumentou de 1,8d para 3,4d — acima da meta (3d). Possível causa: aumento de pull requests em revisão simultânea. Verificar fila de code review no repositório.',
     why:'Código pronto mas aguardando semanas para chegar em produção não gera valor durante esse período. Reduzir o LTC é reduzir o "tempo morto do código" e acelerar o ciclo de aprendizado do produto.'},
 
-  cfr:{name:'Change Failure Rate',namePT:'Taxa de Falha de Mudanças',cat:'dora',catLabel:'DORA',catColor:'#7c3aed',
+  cfr:{name:'Change Failure Rate (CFR)',namePT:'Taxa de Falha de Mudanças',cat:'dora',catLabel:'DORA',catColor:'#7c3aed',
     short:'Proporção de deploys que causam falhas em produção — mede a qualidade da esteira de entrega.',
     what:'CFR é o percentual de deploys que resultaram em incidente em produção, rollback ou necessidade de hotfix urgente. Indica a confiabilidade do processo de entrega do time.',
     measures:'A qualidade do processo de validação (testes automatizados, code review, feature flags) e a confiabilidade das entregas em produção.',
@@ -6475,7 +6478,7 @@ const GL={
     insight:'CFR aumentou de 8% para 14% enquanto a Frequência de Deploy cresceu. O time está deployando mais rápido, mas com menos qualidade. Revisar pipeline de testes antes de aumentar ainda mais a frequência.',
     why:'Velocidade sem qualidade é caos. Um time que deploya 5× por dia com CFR de 30% gera mais incidentes do que valor. O equilíbrio entre velocidade e estabilidade define uma esteira de entrega de elite.'},
 
-  mttr:{name:'MTTR',namePT:'Tempo Médio de Recuperação',cat:'dora',catLabel:'DORA',catColor:'#7c3aed',
+  mttr:{name:'Mean Time to Recovery (MTTR)',namePT:'Tempo Médio de Recuperação',cat:'dora',catLabel:'DORA',catColor:'#7c3aed',
     short:'Tempo médio para restaurar o serviço após falha — mede resiliência e maturidade operacional.',
     what:'MTTR (Mean Time to Recovery) é o tempo médio entre a detecção de uma falha em produção e a restauração completa do serviço ao estado funcional para os usuários.',
     measures:'A capacidade de resposta e recuperação do time frente a incidentes, refletindo a qualidade de monitoramento, observabilidade e processos de resposta a falhas.',
@@ -7162,6 +7165,39 @@ window.onload=function(){ updateSprintOptions(); upd(); markSelects(); };
     </div>
   </div>
 </div>
+
+<!-- ──────────────────────────────────────────────────────────────────
+     CONTADOR DE VISITAS
+     Serviço: counterapi.dev — gratuito, sem cadastro, CORS aberto.
+     Endpoint: GET https://api.counterapi.dev/v1/{namespace}/{key}/up
+       · Cada chamada incrementa +1 e retorna {"value": N, ...}.
+       · Namespace único por projeto para evitar conflito com outros sites.
+     Fallback: se a API falhar por qualquer motivo (offline, CORS, timeout),
+       o elemento #visitCount exibe "—" e nenhuma exceção é lançada.
+     ────────────────────────────────────────────────────────────────── -->
+<script>
+(function () {
+  var NAMESPACE = 'flowops-ai-acnpacheco';
+  var KEY       = 'visitas';
+  var el        = document.getElementById('visitCount');
+
+  if (!el) return;
+
+  fetch('https://api.counterapi.dev/v1/' + NAMESPACE + '/' + KEY + '/up')
+    .then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function (data) {
+      if (data && typeof data.count === 'number') {
+        el.textContent = data.count.toLocaleString('pt-BR');
+      }
+    })
+    .catch(function () {
+      // API indisponível — mantém "—", não quebra a aplicação
+    });
+}());
+</script>
 
 </body>
 </html>
