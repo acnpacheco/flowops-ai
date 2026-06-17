@@ -136,16 +136,37 @@
   .dc-health.h-crit{border-color:#fca5a5!important;background:linear-gradient(135deg,#fef2f2,#fff5f5)!important}
   .dband-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f3f4f6}
   .dband-row:last-child{border-bottom:none}
-  .dband-info{min-width:150px;flex-shrink:0}
-  .dband-name{font-size:11px;font-weight:700;color:#111827;margin:0 0 2px}
-  .dband-dir{font-size:10px;color:#9ca3af;margin:0}
+  .dband-info{min-width:160px;flex-shrink:0}
+  .dband-sig{font-size:13px;font-weight:800;color:#1e3a5f;margin:0 0 1px;line-height:1.2}
+  .dband-fullname{font-size:10px;color:#374151;font-weight:500;margin:0 0 2px;line-height:1.3}
+  .dband-dir{font-size:10px;font-weight:600;margin:0;line-height:1.2}
+  .dband-dir.d-up{color:#059669}.dband-dir.d-down{color:#dc2626}
   .dband-scale-wrap{flex:1;min-width:0}
   .dband-scale{display:flex;height:22px;border-radius:4px;overflow:hidden;gap:1px;margin-bottom:3px}
   .dband-seg{flex:1;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#374151}
-  .dband-marker-row{position:relative;height:14px}
-  .dband-marker{position:absolute;transform:translateX(-50%);font-size:9px;font-weight:700;color:#1e3a5f;white-space:nowrap}
-  .dband-right{min-width:70px;text-align:right;flex-shrink:0}
-  .dband-val{font-size:13px;font-weight:700;color:#111827;margin:0 0 3px}
+  .dband-marker-row{position:relative;height:22px}
+  .dband-marker-pin{position:absolute;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;top:0;gap:0}
+  .dband-marker-tri{font-size:13px;line-height:1;font-weight:900}
+  .dband-marker-lbl{font-size:8px;font-weight:700;white-space:nowrap;line-height:1;margin-top:1px}
+  .dband-right{min-width:76px;text-align:right;flex-shrink:0}
+  .dband-val{font-size:14px;font-weight:700;color:#111827;margin:0 0 3px}
+  /* Benchmark reading */
+  .db-reading{margin-top:16px;padding:14px 16px;background:#f8fafc;border-radius:8px;border:1px solid #e5e7eb}
+  .db-reading-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#374151;margin:0 0 10px}
+  .db-reading-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:11px;line-height:1.45}
+  .db-reading-row:last-child{border-bottom:none}
+  .db-reading-sig{font-size:11px;font-weight:700;min-width:36px;flex-shrink:0}
+  .db-reading-txt{color:#4b5563;flex:1}
+  .db-conclusion{margin-top:10px;padding:10px 13px;background:#fff;border-radius:7px;border-left:3px solid #185FA5;font-size:11px;color:#1e3a5f;line-height:1.6;font-weight:500}
+  /* Legend */
+  .db-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;padding:10px 12px;background:#f9fafb;border-radius:7px;border:1px solid #f3f4f6;align-items:center}
+  .db-leg-title{font-size:10px;font-weight:700;color:#6b7280;margin-right:2px}
+  .db-leg-item{display:flex;align-items:center;gap:5px;font-size:10px;color:#4b5563}
+  .db-leg-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+  /* Source footer */
+  .db-footer{margin-top:12px;padding:9px 12px;border-radius:7px;background:#f1f5f9;border:1px solid #e2e8f0;font-size:10px;color:#64748b;line-height:1.55;display:flex;gap:8px;align-items:flex-start}
+  .db-footer-ico{font-size:14px;flex-shrink:0;line-height:1.4}
+  .db-notice{margin-top:10px;padding:9px 12px;border-radius:7px;background:#fffbeb;border:1px solid #fde68a;font-size:10px;color:#92400e;line-height:1.55;display:flex;gap:8px;align-items:flex-start}
 
   /* Status Reports */
   .sr-card{background:#fff;border-radius:12px;border:1px solid #e5e5e3;padding:18px;margin-bottom:16px}
@@ -1080,9 +1101,9 @@
     <div class="cc" style="margin-bottom:14px">
       <div class="cgh" style="margin-bottom:6px">
         <span class="cgh-dot" id="cgd-do">🟢</span>
-        <p class="ct">Classificação DORA — benchmark de mercado</p>
+        <p class="ct">Classificação DORA — Benchmark de Mercado</p>
       </div>
-      <p class="cs">Posição de cada métrica nas faixas Elite, Alto, Médio e Baixo desempenho do benchmark global.</p>
+      <p class="cs">Compare o desempenho atual da equipe com faixas de referência amplamente utilizadas pelo modelo DORA. Essas classificações ajudam a identificar oportunidades de evolução na velocidade, estabilidade e confiabilidade das entregas.</p>
       <div id="doraBands"></div>
     </div>
 
@@ -4771,44 +4792,185 @@ function renderDoraRecs(d,i,metrics){
 
 function renderDoraBands(d,i){
   const rel=calcReliability(d,i);
+
+  const SIGLA={df:'DF',lc:'LTC',cf:'CFR',mt:'MTTR',rel:'REL'};
+  const FULLNAME={df:'Deployment Frequency',lc:'Lead Time for Changes',cf:'Change Failure Rate',mt:'Mean Time to Recovery',rel:'Reliability'};
+  const TOOLTIP={
+    df:'Mede quantas vezes a equipe realiza deploys em produção ou ambientes operacionais.',
+    lc:'Mede o tempo necessário para que uma alteração saia do desenvolvimento e chegue à produção.',
+    cf:'Mede o percentual de deploys que resultam em falhas, rollback ou necessidade de correção emergencial.',
+    mt:'Mede quanto tempo a equipe leva para restaurar o serviço após uma falha em produção.',
+    rel:'Mede a estabilidade operacional e a capacidade de manter um serviço confiável para o usuário final.'
+  };
+  const READING={
+    df:{
+      't-elite':'desempenho elite — cadência de entregas excelente, sustentando ciclos curtos e de baixo risco operacional.',
+      't-high':'bom desempenho — frequência de deploy adequada. Avaliar oportunidade de aumentar ainda mais a cadência.',
+      't-med':'desempenho intermediário — oportunidade de aumentar a frequência de entregas para reduzir o risco por deploy.',
+      't-low':'desempenho abaixo do esperado — priorize automação de CI/CD e feature flags para destravar a cadência.'
+    },
+    lc:{
+      't-elite':'desempenho elite — alterações chegam à produção com extrema agilidade, maximizando o valor entregue.',
+      't-high':'bom desempenho — fluxo de entrega eficiente. Avaliar reduções pontuais no processo de aprovação.',
+      't-med':'ainda pode ser reduzido — identificar gargalos no pipeline CI/CD para acelerar a disponibilização de valor.',
+      't-low':'acima do limite recomendado — revisar a fila de code review e os gates manuais de aprovação.'
+    },
+    cf:{
+      't-elite':'excelente qualidade — baixíssima taxa de falhas nas implantações, indicando processo maduro de testes.',
+      't-high':'boa qualidade nas mudanças implantadas — manter cobertura de testes e critérios de validação atuais.',
+      't-med':'atenção à taxa de falhas — avaliar feature flags ou canary releases para reduzir o risco por deploy.',
+      't-low':'taxa de falhas acima do tolerável — reforçar testes automatizados antes de cada deploy em produção.'
+    },
+    mt:{
+      't-elite':'boa capacidade de recuperação — incidentes resolvidos rapidamente, minimizando impacto ao usuário.',
+      't-high':'recuperação eficiente — manter runbooks atualizados e autonomia de rollback sem aprovação externa.',
+      't-med':'tempo de recuperação próximo do limite — revisar runbooks e automação de rollback.',
+      't-low':'tempo de recuperação crítico — garantir autonomia de rollback e revisar observabilidade urgentemente.'
+    },
+    rel:{
+      't-elite':'operação altamente confiável — excelente equilíbrio entre CFR e MTTR. Referência de mercado.',
+      't-high':'boa confiabilidade operacional — há espaço para melhoria; acompanhar tendência nas próximas sprints.',
+      't-med':'confiabilidade razoável — foco em reduzir CFR ou MTTR para elevar o score de estabilidade.',
+      't-low':'operação instável — ação imediata: revisar testes, observabilidade e processo de rollback.'
+    }
+  };
+
   const bands=[
-    {name:'Deployment Frequency',dir:'Quanto maior, melhor',val:d.df[i],unit:'/sem',type:'df',better:true,
+    {type:'df',val:d.df[i],unit:'/sem',better:true,
      segs:[{lbl:'Low',bg:'#fca5a5'},{lbl:'Med',bg:'#fde68a'},{lbl:'High',bg:'#86efac'},{lbl:'Elite',bg:'#6ee7b7'}],
      refs:[{pct:25,lbl:'1/sem'},{pct:50,lbl:'3/sem'},{pct:75,lbl:'6/sem'}]},
-    {name:'Lead Time for Changes',dir:'Quanto menor, melhor',val:d.lc[i],unit:'d',type:'lc',better:false,
+    {type:'lc',val:d.lc[i],unit:'d',better:false,
      segs:[{lbl:'Elite',bg:'#6ee7b7'},{lbl:'High',bg:'#86efac'},{lbl:'Med',bg:'#fde68a'},{lbl:'Low',bg:'#fca5a5'}],
      refs:[{pct:25,lbl:'≤1d'},{pct:50,lbl:'≤3d'},{pct:75,lbl:'≤7d'}]},
-    {name:'Change Failure Rate',dir:'Quanto menor, melhor',val:d.cf[i],unit:'%',type:'cf',better:false,
+    {type:'cf',val:d.cf[i],unit:'%',better:false,
      segs:[{lbl:'Elite',bg:'#6ee7b7'},{lbl:'High',bg:'#86efac'},{lbl:'Med',bg:'#fde68a'},{lbl:'Low',bg:'#fca5a5'}],
      refs:[{pct:25,lbl:'≤5%'},{pct:50,lbl:'≤15%'},{pct:75,lbl:'≤45%'}]},
-    {name:'MTTR',dir:'Quanto menor, melhor',val:d.mt[i],unit:'h',type:'mt',better:false,
+    {type:'mt',val:d.mt[i],unit:'h',better:false,
      segs:[{lbl:'Elite',bg:'#6ee7b7'},{lbl:'High',bg:'#86efac'},{lbl:'Med',bg:'#fde68a'},{lbl:'Low',bg:'#fca5a5'}],
      refs:[{pct:25,lbl:'≤4h'},{pct:50,lbl:'≤24h'},{pct:75,lbl:'≤1sem'}]},
-    {name:'Reliability',dir:'Quanto maior, melhor',val:rel,unit:' pts',type:'rel',better:true,
+    {type:'rel',val:rel,unit:' pts',better:true,
      segs:[{lbl:'Low',bg:'#fca5a5'},{lbl:'Med',bg:'#fde68a'},{lbl:'High',bg:'#86efac'},{lbl:'Elite',bg:'#6ee7b7'}],
      refs:[{pct:25,lbl:'50'},{pct:50,lbl:'70'},{pct:75,lbl:'90'}]}
   ];
+
   const tierPos={better:{'t-low':8,'t-med':33,'t-high':62,'t-elite':88},worse:{'t-elite':8,'t-high':33,'t-med':62,'t-low':88}};
-  document.getElementById('doraBands').innerHTML=bands.map(b=>{
-    const cls=doraClassify(b.type==='rel'?b.val:b.val,b.type);
+  const tierColor=c=>c==='t-elite'?'#059669':c==='t-high'?'#185FA5':c==='t-med'?'#d97706':'#dc2626';
+  const tierEmoji=c=>(c==='t-elite'||c==='t-high')?'🟢':c==='t-med'?'🟡':'🔴';
+
+  const bRows=bands.map(b=>{
+    const cls=doraClassify(b.val,b.type);
     const markerPct=tierPos[b.better?'better':'worse'][cls.c]||50;
+    const tc=tierColor(cls.c);
     const segsHtml=b.segs.map(s=>`<div class="dband-seg" style="background:${s.bg}">${s.lbl}</div>`).join('');
-    const refsHtml=b.refs.map(r=>`<div style="position:absolute;left:${r.pct}%;transform:translateX(-50%);font-size:9px;color:#9ca3af">${r.lbl}</div>`).join('');
-    const tierColor=cls.c==='t-elite'?'#059669':cls.c==='t-high'?'#185FA5':cls.c==='t-med'?'#d97706':'#dc2626';
-    return`<div class="dband-row">
-      <div class="dband-info"><p class="dband-name">${b.name}</p><p class="dband-dir">${b.dir}</p></div>
+    const refsHtml=b.refs.map(r=>`<div style="position:absolute;left:${r.pct}%;transform:translateX(-50%);font-size:9px;color:#c4c4c4">${r.lbl}</div>`).join('');
+    const dirCls=b.better?'d-up':'d-down';
+    const dirTxt=b.better?'⬆ Quanto maior, melhor':'⬇ Quanto menor, melhor';
+    return`<div class="dband-row" title="${TOOLTIP[b.type]}">
+      <div class="dband-info">
+        <p class="dband-sig">${SIGLA[b.type]}</p>
+        <p class="dband-fullname">${FULLNAME[b.type]}</p>
+        <p class="dband-dir ${dirCls}">${dirTxt}</p>
+      </div>
       <div class="dband-scale-wrap">
         <div class="dband-scale">${segsHtml}</div>
-        <div class="dband-marker-row" style="position:relative;height:18px">${refsHtml}
-          <div class="dband-marker" style="position:absolute;left:${markerPct}%;transform:translateX(-50%);top:3px">▲</div>
+        <div class="dband-marker-row" style="position:relative;height:22px">${refsHtml}
+          <div class="dband-marker-pin" style="position:absolute;left:${markerPct}%;transform:translateX(-50%);top:0">
+            <span class="dband-marker-tri" style="color:${tc}">▲</span>
+            <span class="dband-marker-lbl" style="color:${tc}">${b.val.toFixed(b.type==='rel'?0:1)}${b.unit}</span>
+          </div>
         </div>
       </div>
       <div class="dband-right">
         <p class="dband-val">${b.val.toFixed(b.type==='rel'?0:1)}${b.unit}</p>
-        <span class="tier ${cls.c}" style="font-size:10px;padding:1px 6px;color:#fff;background:${tierColor}">${cls.l}</span>
+        <span class="tier ${cls.c}" style="font-size:10px;padding:1px 6px;color:#fff;background:${tc}">${cls.l}</span>
+      </div>
+    </div>`;
+    b._cls=cls; return '';
+  });
+
+  // Re-run to collect cls for reading section
+  const bData=bands.map(b=>({...b,cls:doraClassify(b.val,b.type)}));
+
+  // Leitura do Benchmark
+  const readingRows=bData.map(b=>{
+    const em=tierEmoji(b.cls.c);
+    const txt=READING[b.type][b.cls.c]||'';
+    return`<div class="db-reading-row"><span class="db-reading-sig" style="color:${tierColor(b.cls.c)}">${em} ${SIGLA[b.type]}</span><span class="db-reading-txt"><strong>${FULLNAME[b.type]}:</strong> ${txt}</span></div>`;
+  }).join('');
+
+  const greens=bData.filter(b=>b.cls.c==='t-elite'||b.cls.c==='t-high');
+  const reds=bData.filter(b=>b.cls.c==='t-low');
+  const yellows=bData.filter(b=>b.cls.c==='t-med');
+  let conclusion='';
+  if(reds.length===0&&yellows.length===0){
+    conclusion='De forma geral, a equipe demonstra excelente maturidade DevOps em todas as dimensões avaliadas. Mantenha as boas práticas e considere compartilhar os aprendizados com outros times.';
+  } else if(reds.length>=3){
+    conclusion='A equipe enfrenta desafios significativos em múltiplas dimensões do DORA. Priorize ações de melhoria nas métricas críticas antes de expandir o escopo de entregas.';
+  } else {
+    const goodList=greens.map(b=>SIGLA[b.type]).join(', ');
+    const improvList=[...yellows,...reds].map(b=>SIGLA[b.type]).join(' e ');
+    const goodPart=goodList?`A equipe demonstra alta ${greens.length>2?'maturidade':'estabilidade'} operacional em ${goodList}. `:'';
+    conclusion=`${goodPart}As principais oportunidades de evolução concentram-se em ${improvList}, com potencial de ganho significativo em velocidade de entrega.`;
+  }
+
+  // Legend
+  const legend=`<div class="db-legend">
+    <span class="db-leg-title">Faixas:</span>
+    <span class="db-leg-item"><span class="db-leg-dot" style="background:#fca5a5"></span>Low — abaixo do esperado</span>
+    <span class="db-leg-item"><span class="db-leg-dot" style="background:#fde68a"></span>Medium — intermediário</span>
+    <span class="db-leg-item"><span class="db-leg-dot" style="background:#86efac"></span>High — bom desempenho</span>
+    <span class="db-leg-item"><span class="db-leg-dot" style="background:#6ee7b7"></span>Elite — excelência</span>
+  </div>`;
+
+  // Footer (DORA source)
+  const footer=`<div class="db-footer">
+    <span class="db-footer-ico">ℹ️</span>
+    <span>As faixas de classificação são baseadas em benchmarks públicos do modelo <strong>DORA (DevOps Research and Assessment)</strong>, amplamente utilizados na indústria de tecnologia como referência comparativa. Esses valores servem como orientação e podem variar conforme o contexto e a maturidade de cada organização.</span>
+  </div>`;
+
+  // Important notice
+  const notice=`<div class="db-notice">
+    <span style="font-size:14px;flex-shrink:0">⚠️</span>
+    <span><strong>Importante:</strong> o objetivo das métricas DORA é apoiar a melhoria contínua do fluxo de entrega e da confiabilidade operacional. Elas não devem ser utilizadas para medir produtividade individual ou comparar pessoas.</span>
+  </div>`;
+
+  // Re-render bands rows properly (fix the broken map above)
+  const bandsHtml=bData.map(b=>{
+    const cls=b.cls;
+    const markerPct=tierPos[b.better?'better':'worse'][cls.c]||50;
+    const tc=tierColor(cls.c);
+    const segsHtml=b.segs.map(s=>`<div class="dband-seg" style="background:${s.bg}">${s.lbl}</div>`).join('');
+    const refsHtml=b.refs.map(r=>`<div style="position:absolute;left:${r.pct}%;transform:translateX(-50%);font-size:9px;color:#c4c4c4">${r.lbl}</div>`).join('');
+    const dirCls=b.better?'d-up':'d-down';
+    const dirTxt=b.better?'⬆ Quanto maior, melhor':'⬇ Quanto menor, melhor';
+    return`<div class="dband-row" title="${TOOLTIP[b.type]}">
+      <div class="dband-info">
+        <p class="dband-sig">${SIGLA[b.type]}</p>
+        <p class="dband-fullname">${FULLNAME[b.type]}</p>
+        <p class="dband-dir ${dirCls}">${dirTxt}</p>
+      </div>
+      <div class="dband-scale-wrap">
+        <div class="dband-scale">${segsHtml}</div>
+        <div class="dband-marker-row" style="position:relative;height:22px">${refsHtml}
+          <div class="dband-marker-pin" style="position:absolute;left:${markerPct}%;transform:translateX(-50%);top:0">
+            <span class="dband-marker-tri" style="color:${tc}">▲</span>
+            <span class="dband-marker-lbl" style="color:${tc}">${b.val.toFixed(b.type==='rel'?0:1)}${b.unit}</span>
+          </div>
+        </div>
+      </div>
+      <div class="dband-right">
+        <p class="dband-val">${b.val.toFixed(b.type==='rel'?0:1)}${b.unit}</p>
+        <span class="tier ${cls.c}" style="font-size:10px;padding:1px 6px;color:#fff;background:${tc}">${cls.l}</span>
       </div>
     </div>`;
   }).join('');
+
+  document.getElementById('doraBands').innerHTML=
+    bandsHtml+
+    legend+
+    `<div class="db-reading"><p class="db-reading-title">📊 Leitura do Benchmark</p>${readingRows}<div class="db-conclusion">${conclusion}</div></div>`+
+    footer+
+    notice;
 }
 
 function renderDoraCharts(d,q){
