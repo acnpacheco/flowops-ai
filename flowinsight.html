@@ -245,6 +245,23 @@
   .bot-title{font-size:12px;font-weight:600;color:#92400e;margin-bottom:3px}
   .bot-alert.ok .bot-title{color:#065f46}
   .bot-body{font-size:11px;color:#6b7280;line-height:1.6}
+  /* Gargalo card — Principal Gargalo do Fluxo */
+  .gc{border-radius:10px;padding:16px 18px;margin-bottom:14px;border:1px solid #fde68a;border-left:4px solid #d97706;background:linear-gradient(135deg,#fffbeb,#fff9f0)}
+  .gc.gc-bad{border-color:#fca5a5;border-left-color:#dc2626;background:linear-gradient(135deg,#fef2f2,#fff5f0)}
+  .gc.gc-ok{border-color:#bbf7d0;border-left-color:#059669;background:linear-gradient(135deg,#f0fdf4,#f7fffe)}
+  .gc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .gc-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#92400e}
+  .gc.gc-bad .gc-label{color:#991b1b}.gc.gc-ok .gc-label{color:#065f46}
+  .gc-body{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start}
+  .gc-stage{font-size:17px;font-weight:700;color:#111827;margin:0 0 6px}
+  .gc-stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+  .gc-stat{font-size:11px;color:#6b7280;line-height:1.4}
+  .gc-stat strong{color:#374151;font-weight:600}
+  .gc-rec{font-size:11px;color:#6b7280;line-height:1.55;border-top:1px solid rgba(0,0,0,.07);padding-top:8px;margin-top:2px}
+  .gc-pct-box{text-align:right;flex-shrink:0}
+  .gc-pct{font-size:26px;font-weight:700;color:#d97706;line-height:1}
+  .gc.gc-bad .gc-pct{color:#dc2626}.gc.gc-ok .gc-pct{color:#059669}
+  .gc-pct-sub{font-size:10px;color:#9ca3af;margin-top:3px}
   .wip-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f3f4f6}
   .wip-row:last-child{border-bottom:none}
   .wip-stage{width:105px;flex-shrink:0;color:#374151;font-weight:500;font-size:12px}
@@ -867,21 +884,42 @@
       </div>
       <span class="kg-desc">A equipe possui capacidade para entregar o planejado com previsibilidade?</span>
       <div class="fkgrid">
+        <div class="fkcard" id="fk6">
+          <div class="fkcard-hd"><p class="fklbl">Capacity da Sprint</p><button class="gh-btn" onclick="openMetricDetail('velocity')" title="Ver no Glossário">?</button></div>
+          <p class="fkval" id="fv6">—</p><p class="fkdt" id="fd6"></p>
+          <p class="fk-question">Qual é a capacidade planejada da equipe para esta Sprint?</p>
+        </div>
         <div class="fkcard" id="fk3">
-          <div class="fkcard-hd"><p class="fklbl">Throughput médio</p><button class="gh-btn" onclick="openMetricDetail('tp')" title="Ver no Glossário">?</button></div>
+          <div class="fkcard-hd"><p class="fklbl">Throughput</p><button class="gh-btn" onclick="openMetricDetail('tp')" title="Ver no Glossário">?</button></div>
           <p class="fkval" id="fv3">—</p><p class="fkdt" id="fd3"></p>
-          <p class="fk-question">Quantos itens estamos entregando por Sprint?</p>
+          <p class="fk-question">Quantos itens estamos entregando por Sprint, independente de pontos?</p>
         </div>
         <div class="fkcard" id="fk5">
           <div class="fkcard-hd"><p class="fklbl">Velocity</p><button class="gh-btn" onclick="openMetricDetail('velocity')" title="Ver no Glossário">?</button></div>
           <p class="fkval" id="fv5">—</p><p class="fkdt" id="fd5"></p>
-          <p class="fk-question">Qual foi nossa capacidade de entrega em Story Points nesta Sprint?</p>
+          <p class="fk-question">Quantos Story Points foram efetivamente concluídos nesta Sprint?</p>
         </div>
       </div>
     </div>
 
-    <!-- Alerta de gargalo automático -->
-    <div id="botAlert" class="bot-alert" style="display:none"></div>
+    <!-- Principal Gargalo do Fluxo -->
+    <div id="gargaloCard" class="gc" style="display:none">
+      <div class="gc-top">
+        <span class="gc-label" id="gc-label">🚧 Principal Gargalo do Fluxo</span>
+        <button class="gh-btn" onclick="openMetricDetail('ct')" title="Ver Cycle Time no Glossário">?</button>
+      </div>
+      <div class="gc-body">
+        <div>
+          <p class="gc-stage" id="gc-stage">—</p>
+          <div class="gc-stats" id="gc-stats"></div>
+          <p class="gc-rec" id="gc-rec"></p>
+        </div>
+        <div class="gc-pct-box">
+          <p class="gc-pct" id="gc-pct">—</p>
+          <p class="gc-pct-sub">do Lead Time</p>
+        </div>
+      </div>
+    </div>
 
     <div class="g2">
       <div class="cc">
@@ -908,13 +946,14 @@
 
     <!-- Aging dos itens -->
     <div class="cc">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-        <div>
-          <p class="ct" style="margin:0">Itens em risco por Aging</p>
-          <p class="cs" style="margin:0">Tempo de cada item na etapa atual vs limiar baseado no p85 da sprint</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:8px">
+        <div class="cgh" style="margin:0">
+          <span class="cgh-dot" id="cgd-aging">🟢</span>
+          <p class="ct" style="margin:0">Saúde do Aging — Itens em risco</p>
         </div>
         <button class="alert-btn" onclick="gerarAlertaFluxo()"><i class="ti ti-bell-ringing"></i> Gerar alerta para Status Report</button>
       </div>
+      <p class="cs" style="margin-bottom:12px">Os itens em andamento apresentam risco de envelhecimento excessivo? Tempo de cada item vs limiar p85 da sprint.</p>
       <div id="agingList"></div>
       <div id="alertOutput" style="display:none;margin-top:14px;background:#f9fafb;border-radius:8px;padding:12px 14px;border:1px solid #e5e5e3">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
@@ -4848,27 +4887,33 @@ function renderFlowMetrics(){
   const bot=detectBottleneck(ct);
   const prevI=Math.max(0,i-1);
 
-  // Flow KPI cards — índice do array corresponde ao sufixo do id (fk0..fk5)
+  // Flow KPI cards — índice do array corresponde ao sufixo do id (fk0..fk6)
   const ctSum=parseFloat(ct.slice(1,4).reduce((a,b)=>a+b,0).toFixed(1));
   const wipSum=wips.slice(1,4).reduce((a,b)=>a+b.wip,0);
   const velocity=d.vl[i];
   const velocityPrev=d.vl[prevI];
+  // Capacity: efficiency score drives sinaleira; displayed value is raw SP
+  const capVal=d.cap[i], capPrev=d.cap[prevI];
+  const capEff=Math.round(velocity/capVal*100);
   const fkData=[
     {val:d.p50[i]+'d', num:d.p50[i], meta:METAS.p85*0.5, delta:d.p50[i]-d.p50[prevI], low:true},
     {val:ctSum+'d',     num:ctSum,    meta:METAS.p85*0.6, delta:null,                   low:true},
     {val:d.p85[i]+'d', num:d.p85[i], meta:METAS.p85,      delta:d.p85[i]-d.p85[prevI], low:true},
     {val:d.en[i]+'',   num:d.en[i],  meta:METAS.tp,       delta:d.en[i]-d.en[prevI],   low:false},
     {val:wipSum+'',     num:wipSum,   meta:METAS.wip,      delta:null,                   low:true},
-    {val:velocity+' SP',num:velocity, meta:METAS.vl, delta:velocity-velocityPrev, low:false}
+    {val:velocity+' SP',num:velocity, meta:METAS.vl,       delta:velocity-velocityPrev,  low:false},
+    {val:capVal+' SP',  num:capEff,   meta:85,             delta:capVal-capPrev,          low:false, deltaUnit:' SP'}
   ];
   fkData.forEach((k,j)=>{
-    document.getElementById('fv'+j).textContent=k.val;
+    const el=document.getElementById('fv'+j);
+    if(!el) return;
+    el.textContent=k.val;
     const dEl=document.getElementById('fd'+j);
     if(k.delta===null||i===0){dEl.textContent='—';dEl.className='fkdt';}
     else{
       const good=k.low?(k.delta<=0):(k.delta>=0);
       const s=k.delta>0?'▲ ':'▼ ';
-      dEl.textContent=s+Math.abs(k.delta);
+      dEl.textContent=s+Math.abs(k.delta)+(k.deltaUnit||'');
       dEl.style.color=k.delta===0?'#9ca3af':good?'#059669':'#dc2626';
       dEl.className='fkdt';
     }
@@ -4877,21 +4922,46 @@ function renderFlowMetrics(){
     document.getElementById('fk'+j).className='fkcard '+(st==='ok'?'fk-ok':st==='warn'?'fk-warn':'fk-bad');
   });
   setGroupDot('kgdot-pf-fluxo', [fkData[0].emoji,fkData[1].emoji,fkData[2].emoji,fkData[4].emoji]);
-  setGroupDot('kgdot-pf-cap',   [fkData[3].emoji,fkData[5].emoji]);
-  // Sinaleiras dos gráficos — reaproveitam os status já calculados dos cards correspondentes
+  setGroupDot('kgdot-pf-cap',   [fkData[6].emoji,fkData[3].emoji,fkData[5].emoji]);
+  // Sinaleiras dos gráficos
   setGroupDot('cgd-cy',      [fkData[1].emoji]);
   setGroupDot('cgd-wipbars', [fkData[4].emoji]);
   setGroupDot('cgd-th',      [fkData[3].emoji]);
 
-  // Bottleneck alert badge
-  const ba=document.getElementById('botAlert');
-  ba.style.display='block';
+  // Principal Gargalo do Fluxo — card enriquecido
+  const gc=document.getElementById('gargaloCard');
+  const ltTotal=d.p85[i]||1;
   const botPct=Math.round(bot.time/ct.reduce((a,b)=>a+b)*100);
-  ba.innerHTML=`<span class="bot-icon">⚠</span><div><p class="bot-title">Gargalo detectado: ${bot.stage}</p><p class="bot-body">${bot.time}d de cycle time — representa ${botPct}% do tempo total de fluxo. Considere reduzir WIP neste estágio.</p></div>`;
+  const ltPct=Math.round(bot.time/ltTotal*100);
+  const gcCls=botPct>=50?'gc-bad':botPct>=35?'':'gc-ok';
+  gc.className='gc'+(gcCls?' '+gcCls:'');
+  gc.style.display='block';
+  const gcLabelMap={'gc-bad':'🚨 Maior Oportunidade de Melhoria','':'🚧 Principal Gargalo do Fluxo','gc-ok':'✅ Fluxo Equilibrado'};
+  document.getElementById('gc-label').textContent=gcLabelMap[gcCls]||gcLabelMap[''];
+  document.getElementById('gc-stage').textContent=bot.stage;
+  document.getElementById('gc-stats').innerHTML=
+    `<div class="gc-stat"><strong>${bot.time}d</strong><br>tempo médio</div>`+
+    `<div class="gc-stat"><strong>${botPct}%</strong><br>do CT total</div>`+
+    `<div class="gc-stat"><strong>~${ltPct}%</strong><br>do Lead Time</div>`;
+  document.getElementById('gc-pct').textContent=botPct+'%';
+  const recMap={
+    'Em Desenvolvimento':'A concentração no desenvolvimento indica possível acúmulo de trabalho ou capacidade insuficiente. Avalie redução do WIP, redistribuição de tarefas ou remoção de bloqueios antes de iniciar novos itens.',
+    'Em Revisão':'O tempo elevado em revisão indica fila de code review. Reduza o tamanho dos PRs, implemente revisão em par e considere dedicar horários fixos para revisão no dia.',
+    'Em Teste':'O gargalo em testes indica possível escassez de QA ou ausência de automação. Priorize testes automatizados e considere o modelo "shift-left" para antecipar a validação.',
+    'Aguardando':'Itens parados em espera indicam dependências externas ou falta de clareza de prioridade. Mapeie os bloqueadores na próxima Daily e defina um responsável por cada dependência.'
+  };
+  const recDefault='Concentração excessiva nesta etapa indica gargalo de fluxo. Avalie limites de WIP, redistribuição de tarefas e remoção de impedimentos antes de puxar novos itens.';
+  document.getElementById('gc-rec').textContent=recMap[bot.stage]||recDefault;
+
+  // Sinaleira do Aging
+  const highRiskCount=aging.filter(a=>a.risk==='alto').length;
+  const medRiskCount=aging.filter(a=>a.risk==='médio').length;
+  const agingSt=highRiskCount>=2?'bad':highRiskCount===1?'warn':medRiskCount>=3?'warn':'ok';
+  setGroupDot('cgd-aging',[statusEmoji(agingSt)]);
 
   // Cycle time chart subtitle
-  const cg=document.getElementById('ctGargalo');
-  if(cg) cg.textContent=`Gargalo: ${bot.stage} (${bot.time}d)`;
+  const cg2=document.getElementById('ctGargalo');
+  if(cg2) cg2.textContent=`Gargalo: ${bot.stage} (${bot.time}d)`;
 
   // Throughput meta label
   const tl=document.getElementById('tpMetaLabel');
