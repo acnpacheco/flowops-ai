@@ -1237,6 +1237,7 @@
       </div>
       <span class="kg-desc">O time está resolvendo defeitos em ritmo suficiente para não comprometer a próxima sprint?</span>
     </div>
+    <!-- Linha 2a — cards de eficiência (4 cards) -->
     <div class="kgrid">
       <div class="kcard cf-clickable" id="cfcard-rw" onclick="openCfDetail('rw')" title="% do esforço gasto em correções e refações. Meta: ≤ 10%. Fórmula: Itens reabertos ÷ Total entregues × 100. Clique para ver detalhes.">
         <div class="kcard-hd"><p class="klbl">♻️ Retrabalho</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('txdef')" title="Ver no Glossário">?</button><span id="cfst-rw" class="cfst cfst-warn">—</span></div>
@@ -1256,18 +1257,28 @@
         <p class="kdlt" id="cfd-res"></p>
         <div id="cfm-res"></div>
       </div>
-      <div class="kcard" id="cfcard-trend">
-        <div class="kcard-hd"><p class="klbl">📈 Tendência de Bugs</p><button class="gh-btn" onclick="openMetricDetail('bugtrend')" title="Ver no Glossário">?</button><span id="cfst-trend" class="cfst cfst-ok">—</span></div>
-        <div style="position:relative;width:100%;height:58px;margin:4px 0 2px"><canvas id="cCfTrend"></canvas></div>
-        <p class="kdlt" id="cfd-trend" style="font-size:10px;margin-top:2px"></p>
-        <div id="cfm-trend"></div>
-      </div>
       <div class="kcard cf-clickable" id="cfcard-qhs" onclick="openCfDetail('qhs')" title="Índice consolidado de saúde da qualidade (0–100). Ponderação: Bugs Críticos 25%, Escapados 25%, Abertos 20%, Retrabalho 20%, Reabertos 10%. Clique para ver detalhes.">
         <div class="kcard-hd"><p class="klbl">🎯 Saúde da Qualidade</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('qhs')" title="Ver no Glossário">?</button><span id="cfst-qhs" class="cfst cfst-warn">—</span></div>
         <p class="cf-qhs-score" id="cfk-qhs">—</p>
         <p class="kdlt" id="cfd-qhs"></p>
         <div id="cfm-qhs"></div>
       </div>
+    </div>
+
+    <!-- Linha 2b — Tendência de Bugs (100% largura) -->
+    <div class="cc" id="cfcard-trend" style="margin-bottom:14px">
+      <div class="cgh">
+        <span class="cgh-dot" id="cgd-bugtrend">🟢</span>
+        <p class="ct">📈 Tendência de Bugs — evolução por sprint</p>
+        <button class="gh-btn" onclick="openMetricDetail('bugtrend')" title="Ver no Glossário" style="margin-left:auto">?</button>
+      </div>
+      <p class="cs">A qualidade está melhorando ou acumulando problemas ao longo das sprints?</p>
+      <p class="kdlt" id="cfd-trend" style="font-size:11px;margin:0 0 8px;font-weight:500"></p>
+      <div class="leg" id="cftrend-leg"></div>
+      <div style="position:relative;width:100%;height:260px;margin-top:6px">
+        <canvas id="cCfTrend" role="img" aria-label="Tendência de bugs por sprint"></canvas>
+      </div>
+      <div id="cfm-trend" style="margin-top:8px"></div>
     </div>
 
     <!-- ── 📊 Evolução + 📍 Distribuição por Ambiente ── -->
@@ -5280,28 +5291,67 @@ function drawCfaChart(d){
 
 function drawCfTrendSparkline(d,i){
   if(ch['cft']){ch['cft'].destroy();delete ch['cft'];}
-  const cv=document.getElementById('cCfTrend'); if(!cv)return;
-  const n=i+1, labels=d.sp.slice(0,n), vals=d.bo.slice(0,n);
-  const falling=n>=2&&vals[n-1]<vals[0];
-  const color=falling?'#059669':'#dc2626';
-  ch['cft']=new Chart(cv,{type:'line',data:{labels,datasets:[{data:vals,borderColor:color,backgroundColor:color+'33',borderWidth:2,pointRadius:n>1?3:4,pointBackgroundColor:color,fill:true,tension:.35}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},
-      scales:{x:{display:false},y:{display:false,beginAtZero:true}}}});
-  // trend badge
-  const trendEl=document.getElementById('cfst-trend');
-  if(n<2){trendEl.textContent='— sprint inicial';trendEl.className='cfst cfst-warn';return;}
-  const dir=vals[n-1]<vals[0]?'↘ Reduzindo':'↗ Crescendo';
-  const cls=vals[n-1]<vals[0]?'cfst-ok':'cfst-bad';
-  trendEl.textContent=dir; trendEl.className='cfst '+cls;
-  // delta text
+  const cv=document.getElementById('cCfTrend'); if(!cv) return;
+  const n=i+1;
+  const labels=d.sp.slice(0,n);
+  const boVals=d.bo.slice(0,n);
+  const bcVals=d.bc.slice(0,n);
+  const reoVals=d.rw.slice(0,n).map((_,k)=>cfReopened(d,k));
+
+  // Sinaleira: tendência dos últimos 2+ sprints de bugs abertos
+  let trendSt='ok';
+  if(n>=2){
+    const recentUp=boVals[n-1]>boVals[n-2];
+    const overallUp=boVals[n-1]>boVals[0];
+    if(recentUp&&overallUp) trendSt='bad';
+    else if(recentUp||overallUp) trendSt='warn';
+    else trendSt='ok';
+  }
+  setGroupDot('cgd-bugtrend',[statusEmoji(trendSt)]);
+
+  // Delta text
   const dEl=document.getElementById('cfd-trend');
-  const diff=vals[n-1]-vals[0];
-  dEl.textContent=(diff===0?'Estável':diff>0?`▲ +${diff} vs S1`:`▼ ${diff} vs S1`)+' · últimas '+n+' sprints';
-  dEl.style.color=diff<=0?'#059669':'#dc2626';
-  // meta bar (just shows direction)
-  const pct=Math.max(0,Math.min(100,100-Math.round((vals[n-1]/Math.max(1,vals[0]))*100)+100));
-  const mc=pct>=100?'#059669':pct>=50?'#d97706':'#dc2626';
-  document.getElementById('cfm-trend').innerHTML=`<div class="dmeta-row"><span>Tendência de redução</span><span style="font-weight:600;color:${mc}">${pct}%</span></div><div class="dmeta-track"><div class="dmeta-fill" style="width:${Math.min(100,pct)}%;background:${mc}"></div></div>`;
+  const diff=n>=2?boVals[n-1]-boVals[0]:0;
+  const diffTxt=diff===0?'Estável desde S1':diff>0?`▲ +${diff} bugs vs S1 — backlog crescendo`:`▼ ${Math.abs(diff)} bugs vs S1 — backlog reduzindo`;
+  dEl.textContent=diffTxt+` · ${n} sprint${n>1?'s':''} analisada${n>1?'s':''}`;
+  dEl.style.color=diff<=0?'#059669':diff>0&&diff<=2?'#d97706':'#dc2626';
+
+  // Legenda
+  const legEl=document.getElementById('cftrend-leg');
+  if(legEl) legEl.innerHTML=
+    `<span><b style="background:#dc2626"></b> Bugs abertos</span>`+
+    `<span><b style="background:#059669"></b> Bugs fechados</span>`+
+    `<span><b style="background:#f59e0b"></b> Bugs reabertos</span>`;
+
+  ch['cft']=new Chart(cv,{
+    type:'line',
+    data:{labels,datasets:[
+      {label:'Bugs abertos',   data:boVals,  borderColor:'#dc2626',backgroundColor:'#dc262618',fill:true, tension:.35,pointRadius:5,pointBackgroundColor:'#dc2626',borderWidth:2.5,yAxisID:'y'},
+      {label:'Bugs fechados',  data:bcVals,  borderColor:'#059669',backgroundColor:'transparent',fill:false,tension:.35,pointRadius:5,pointBackgroundColor:'#059669',borderWidth:2,  yAxisID:'y'},
+      {label:'Bugs reabertos', data:reoVals, borderColor:'#f59e0b',backgroundColor:'transparent',fill:false,tension:.35,pointRadius:5,pointBackgroundColor:'#f59e0b',borderWidth:2,  borderDash:[4,3],yAxisID:'y'}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{mode:'index',intersect:false,callbacks:{
+          label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y}`
+        }}
+      },
+      scales:{
+        x:{grid:{color:'#f3f4f6'},ticks:{font:{size:11}}},
+        y:{beginAtZero:true,grid:{color:'#f3f4f6'},title:{display:true,text:'bugs',font:{size:10}},ticks:{stepSize:1,font:{size:11}}}
+      }
+    }
+  });
+
+  // Barra de tendência
+  const pct=n<2?50:Math.max(0,Math.min(100,Math.round(100-(boVals[n-1]/Math.max(1,boVals[0]))*100)+50));
+  const mc=pct>=75?'#059669':pct>=45?'#d97706':'#dc2626';
+  const pctLabel=diff<0?`Redução de ${Math.abs(Math.round((diff/Math.max(1,boVals[0]))*100))}% no backlog`:diff===0?'Backlog estável':'Backlog crescendo';
+  document.getElementById('cfm-trend').innerHTML=
+    `<div class="dmeta-row"><span>${pctLabel}</span><span style="font-weight:600;color:${mc}">${trendSt==='ok'?'🟢 Saudável':trendSt==='warn'?'🟡 Atenção':'🔴 Crítico'}</span></div>`+
+    `<div class="dmeta-track"><div class="dmeta-fill" style="width:${Math.min(100,pct)}%;background:${mc}"></div></div>`;
 }
 
 function renderCargaFalhas(){
