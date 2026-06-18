@@ -16,9 +16,13 @@
   .brand{font-size:15px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;white-space:nowrap}
   .brand i{color:#185FA5;font-size:20px}
   .filters{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;align-items:center}
-  .filters select{font-size:12px;padding:5px 10px;border-radius:8px;border:1px solid #d1d5db;background:#f9fafb;color:#374151;cursor:pointer;outline:none;font-weight:400;transition:border-color .15s,font-weight 0s}
-  .filters select:focus{border-color:#185FA5;box-shadow:0 0 0 2px rgba(24,95,165,.15)}
-  .filters select.sel-active{font-weight:700;color:#111827;border-color:#185FA5;background:#eff6ff}
+  .flt-wrap{position:relative;display:flex;align-items:center}
+  .flt-icon-l{position:absolute;left:11px;font-size:14px;color:var(--flt-c,#6b7280);pointer-events:none;z-index:1;line-height:1}
+  .flt-icon-r{position:absolute;right:10px;font-size:12px;color:var(--flt-c,#9ca3af);pointer-events:none;z-index:1;line-height:1}
+  .filters select{font-size:12px;padding:7px 30px 7px 34px;border-radius:11px;border:1.5px solid var(--flt-c,#d1d5db);background:#fff;color:var(--flt-c,#374151);cursor:pointer;outline:none;font-weight:500;transition:all .15s;box-shadow:0 1px 4px rgba(0,0,0,.05);-webkit-appearance:none;appearance:none;min-width:130px}
+  .filters select:hover{background:var(--flt-bg,#f9fafb);box-shadow:0 2px 8px rgba(0,0,0,.09)}
+  .filters select:focus{border-color:var(--flt-c,#185FA5);box-shadow:0 0 0 3px var(--flt-bgh,rgba(24,95,165,.15))}
+  .filters select.sel-active{font-weight:600}
 
   /* Main nav */
   .main-nav{background:#fff;border-bottom:1px solid #e5e5e3;padding:0 24px;display:flex;gap:2px;overflow-x:auto;position:sticky;top:52px;z-index:99}
@@ -715,25 +719,37 @@
     <span style="font-size:11px;font-weight:400;color:#9ca3af;margin-left:4px">MVP v1.0</span>
   </div>
   <div class="filters">
-    <select id="sTeam" onchange="upd()">
-      <option>Time Alpha</option>
-      <option>Time Beta</option>
-      <option>Time Gamma</option>
-    </select>
-    <select id="sQ" onchange="updateSprintOptions();upd()">
-      <option value="Q1">Q1 2026 — Lead Time 90d</option>
-      <option value="Q2">Q2 2026 — Lead Time 82d</option>
-      <option value="Q3">Q3 2026 — Lead Time 74d</option>
-      <option value="Q4">Q4 2026 — Lead Time 64d</option>
-    </select>
-    <select id="sS" onchange="upd()">
-      <option value="5">🟢 S6</option>
-      <option value="4">S5</option>
-      <option value="3">S4</option>
-      <option value="2">S3</option>
-      <option value="1">S2</option>
-      <option value="0">S1</option>
-    </select>
+    <div class="flt-wrap">
+      <i class="ti ti-users flt-icon-l"></i>
+      <select id="sTeam" onchange="upd()">
+        <option>Time Alpha</option>
+        <option>Time Beta</option>
+        <option>Time Gamma</option>
+      </select>
+      <i class="ti ti-chevron-down flt-icon-r"></i>
+    </div>
+    <div class="flt-wrap">
+      <i class="ti ti-calendar flt-icon-l"></i>
+      <select id="sQ" onchange="updateSprintOptions();upd()">
+        <option value="Q1">Q1 2026 — Lead Time 90d</option>
+        <option value="Q2">Q2 2026 — Lead Time 82d</option>
+        <option value="Q3">Q3 2026 — Lead Time 74d</option>
+        <option value="Q4">Q4 2026 — Lead Time 64d</option>
+      </select>
+      <i class="ti ti-chevron-down flt-icon-r"></i>
+    </div>
+    <div class="flt-wrap">
+      <i class="ti ti-calendar-stats flt-icon-l"></i>
+      <select id="sS" onchange="upd()">
+        <option value="5">S6</option>
+        <option value="4">S5</option>
+        <option value="3">S4</option>
+        <option value="2">S3</option>
+        <option value="1">S2</option>
+        <option value="0">S1</option>
+      </select>
+      <i class="ti ti-chevron-down flt-icon-r"></i>
+    </div>
     <button class="btn-export" onclick="exportHTML(this)" title="Baixar snapshot HTML para apresentar offline">
       <i class="ti ti-download"></i> Exportar HTML
     </button>
@@ -2199,6 +2215,19 @@ function gq(){return document.getElementById('sQ').value}
 function gi(){return parseInt(document.getElementById('sS').value)}
 function gd(){const t=document.getElementById('sTeam').value;return t==='Time Beta'?DB:t==='Time Gamma'?DG:D;}
 function markSelects(){document.querySelectorAll('.filters select').forEach(s=>s.classList.add('sel-active'));}
+function applyTeamColor(){
+  const t=document.getElementById('sTeam').value;
+  const map={
+    'Time Alpha':{c:'#185FA5',bg:'rgba(24,95,165,.07)',bgh:'rgba(24,95,165,.18)'},
+    'Time Beta': {c:'#059669',bg:'rgba(5,150,105,.07)', bgh:'rgba(5,150,105,.18)'},
+    'Time Gamma':{c:'#7c3aed',bg:'rgba(124,58,237,.07)',bgh:'rgba(124,58,237,.18)'},
+  };
+  const tc=map[t]||map['Time Alpha'];
+  const r=document.documentElement;
+  r.style.setProperty('--flt-c',tc.c);
+  r.style.setProperty('--flt-bg',tc.bg);
+  r.style.setProperty('--flt-bgh',tc.bgh);
+}
 
 function kc(id){if(ch[id]){ch[id].destroy();delete ch[id]}}
 function allKc(){Object.keys(ch).forEach(kc)}
@@ -2299,6 +2328,7 @@ function setKpi(id,val,delta,unit,invGood){
 }
 
 function upd(){
+  applyTeamColor();
   const q=gq(),d=gd()[q],i=gi();
 
   // ── KPI cards ─────────────────────────────────────────────
@@ -3972,9 +4002,9 @@ Responda APENAS com o relatório aprimorado, sem comentários adicionais.`;
 function renderMultiTeam(){
   const q=gq(), i=gi();
   const teams=[
-    {name:'Time Alpha', d:D[q],  color:'#185FA5', bg:'rgba(24,95,165,.15)', cardBg:'linear-gradient(135deg,#f0f7ff,#dbeafe)', cardBorder:'#bfdbfe', iconBg:'#dbeafe', icon:'ti-activity'},
-    {name:'Time Beta',  d:DB[q], color:'#059669', bg:'rgba(5,150,105,.15)',  cardBg:'linear-gradient(135deg,#f0fdf4,#dcfce7)', cardBorder:'#bbf7d0', iconBg:'#dcfce7', icon:'ti-trending-up'},
-    {name:'Time Gamma', d:DG[q], color:'#7c3aed', bg:'rgba(124,58,237,.15)',cardBg:'linear-gradient(135deg,#faf5ff,#ede9fe)', cardBorder:'#ddd6fe', iconBg:'#ede9fe', icon:'ti-chart-arrows-vertical'},
+    {name:'Time Alpha', d:D[q],  color:'#185FA5', bg:'rgba(24,95,165,.15)', cardBg:'linear-gradient(135deg,#f0f7ff,#dbeafe)', cardBorder:'#bfdbfe', iconBg:'#dbeafe', icon:'ti-users'},
+    {name:'Time Beta',  d:DB[q], color:'#059669', bg:'rgba(5,150,105,.15)',  cardBg:'linear-gradient(135deg,#f0fdf4,#dcfce7)', cardBorder:'#bbf7d0', iconBg:'#dcfce7', icon:'ti-users'},
+    {name:'Time Gamma', d:DG[q], color:'#7c3aed', bg:'rgba(124,58,237,.15)',cardBg:'linear-gradient(135deg,#faf5ff,#ede9fe)', cardBorder:'#ddd6fe', iconBg:'#ede9fe', icon:'ti-users'},
   ];
 
   Object.values(_mtCh).forEach(c=>{try{c.destroy()}catch(_){}});
@@ -4087,8 +4117,13 @@ function renderMultiTeam(){
     </div>
 
     <div class="cc">
-      <p class="ct">📊 DORA — Eficiência de deploys</p>
-      <p class="cs">Comparativo entre squads na sprint atual · <span style="font-size:10px;background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:6px;font-weight:600">Referência</span> = melhor resultado</p>
+      <div class="cgh-mt" style="margin-bottom:10px">
+        <div class="cgh-mt-icon" style="background:#eff6ff"><i class="ti ti-chart-histogram" style="color:#185FA5;font-size:20px"></i></div>
+        <div>
+          <div class="cgh-mt-title">DORA — Eficiência de deploys</div>
+          <div class="cgh-mt-sub">Comparativo entre squads na sprint atual · <span style="font-size:10px;background:#f1f5f9;color:#475569;padding:1px 7px;border-radius:6px;font-weight:600">Referência</span> = melhor resultado</div>
+        </div>
+      </div>
       <table class="mt-tbl">
         <thead><tr>
           <th style="text-align:left">Métrica</th>
@@ -7181,7 +7216,7 @@ function closeGlossModal(){
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeGlossModal();closeDepModal();}});
 // ─────────────────────────────────────────────────────────────────────
 
-window.onload=function(){ updateSprintOptions(); upd(); markSelects(); };
+window.onload=function(){ updateSprintOptions(); applyTeamColor(); upd(); markSelects(); };
 </script>
 
 <!-- Glossário Modal -->
