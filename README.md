@@ -16,13 +16,13 @@ FlowOps AI elimina esse trabalho manual: dashboards automáticos, interpretaçã
 |---|---|
 | **Visão Geral** | Health Score do time com leitura executiva de 10 segundos |
 | **Métricas de Fluxo** | Lead Time (P50/P85/P95), Cycle Time, WIP, Aging e CFD, com identificação automática de gargalo |
-| **DORA** | Deployment Frequency, Lead Time for Changes, MTTR e Change Failure Rate com benchmark de mercado |
-| **Carga de Falhas** | Bugs abertos/fechados, retrabalho e origem de defeitos |
-| **Acompanhamento da Sprint** | Burndown, distribuição por status, bloqueios ativos e capacidade do time em tempo real |
+| **Eficiência de Deploys** | Deployment Frequency, Lead Time for Changes, MTTR e Change Failure Rate com benchmark de mercado |
+| **Saúde da Qualidade** | Bugs abertos/fechados, retrabalho e origem de defeitos |
 | **Relatório de Quarter** | Consolidação automática da performance do quarter |
+| **Acompanhamento da Sprint** | Burndown, distribuição por status, bloqueios ativos e capacidade do time em tempo real |
 | **Status Reports via IA** | Geração de status report a partir da transcrição de reuniões, usando a API do Claude (Anthropic) |
 | **Multi-time** | Comparação de Health Score e métricas entre squads |
-| **Calendário de Sprints** | Visão consolidada das sprints do quarter |
+| **Calendário Corporativo** | Planejamento anual de Quarters, Sprints, ritos ágeis e janelas de implantação |
 | **Glossário** | Dicionário integrado de métricas e conceitos ágeis |
 
 ## Como executar
