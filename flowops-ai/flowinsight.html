@@ -12,7 +12,8 @@
 
   /* Layout */
   .app{display:flex;flex-direction:column;min-height:100vh}
-  .topbar{background:#fff;border-bottom:1px solid #e5e5e3;padding:0 24px;display:flex;align-items:center;gap:16px;height:52px;position:sticky;top:0;z-index:100;flex-wrap:wrap}
+  .site-header{position:sticky;top:0;z-index:100}
+  .topbar{background:#fff;border-bottom:1px solid #e5e5e3;padding:0 24px;display:flex;align-items:center;gap:16px;height:52px;flex-wrap:wrap}
   .brand{font-size:15px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;white-space:nowrap}
   .brand i{color:#185FA5;font-size:20px}
   .filters{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;align-items:center}
@@ -25,7 +26,7 @@
   .filters select.sel-active{font-weight:600}
 
   /* Main nav */
-  .main-nav{background:#fff;border-bottom:1px solid #e5e5e3;padding:0 24px;display:flex;gap:2px;overflow-x:auto;position:sticky;top:52px;z-index:99}
+  .main-nav{background:#fff;border-bottom:1px solid #e5e5e3;padding:0 24px;display:flex;gap:2px;overflow-x:auto}
   .ntab{padding:10px 16px;font-size:13px;color:#6b7280;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:color .15s}
   .ntab.on{color:#185FA5;font-weight:500;border-bottom-color:#185FA5}
   .ntab:hover:not(.on){color:#374151}
@@ -712,6 +713,8 @@
 <body>
 <div class="app">
 
+<div class="site-header">
+
 <header class="topbar">
   <div class="brand">
     <i class="ti ti-chart-dots-3"></i>
@@ -769,6 +772,8 @@
   <button class="ntab" onclick="tab(this,'g')"><i class="ti ti-books"></i> Glossário</button>
   <button class="ntab" onclick="tab(this,'ab')"><i class="ti ti-user-circle"></i> Sobre a autora</button>
 </nav>
+
+</div><!-- /.site-header -->
 
 <main class="content">
 
