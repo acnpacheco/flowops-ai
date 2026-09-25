@@ -2,7 +2,7 @@
 **Documento:** `REFATORACAO_01_DECISOES.md`  
 **Data:** 2026-09-24  
 **Referência:** `REFATORACAO_00_DIAGNOSTICO.md`  
-**Revisão:** Decisões consolidadas — D1–D5 aprovadas · D6 adiada
+**Revisão:** Decisões consolidadas — D1–D4 aprovadas · D5 absorvida por D3 · D6 adiada
 
 ---
 
@@ -246,54 +246,55 @@ Mínima mudança, zero risco para as funções de render. Padrão esperado em mo
 
 ---
 
-## 7. D5 — Botões de export e Status no topbar em mobile
+## 7. D5 — Tratamento responsivo do botão Exportar HTML
 
-### Problema
+### Problema — revisado após investigação factual
 
-Botões **Exportar HTML**, **Exportar MD** e **Status** competem com `.brand` e `.filters` pelo espaço horizontal do topbar em mobile.
+A definição anterior de D5 presumia 3 botões no topbar (Exportar HTML, Exportar MD e Status). A investigação confirmou que:
 
-### Estado atual
+- O topbar contém **apenas um botão**: `.btn-export` ("Exportar HTML")
+- **Exportar Markdown** está dentro dos painéis de conteúdo de cada aba, como `.btn-md` — não pertence ao topbar
+- **Status Reports** é uma aba de conteúdo normal (`#ps`) com sub-navegação — não pertence ao topbar
+- Não existe `openStatusModal()` no código; a premissa era incorreta
+
+O problema real identificado: com `height:52px` no `.topbar` e `flex-wrap:wrap`, o `.btn-export` renderiza fora da caixa do topbar em mobile — visualmente abaixo do `.main-nav`, portanto fora da região sticky. O botão fica inacessível após qualquer scroll.
+
+### Estado atual (pós-Lote 1)
 
 ```html
-<!-- linha ~740–756 -->
-<button class="exp-btn" onclick="exportHTML(this)">
+<!-- linha ~756 — único botão no topbar -->
+<button class="btn-export" onclick="exportHTML(this)"
+  title="Baixar snapshot HTML para apresentar offline">
   <i class="ti ti-download"></i> Exportar HTML
-</button>
-<button class="exp-btn" onclick="exportMd('md')">
-  <i class="ti ti-markdown"></i> Exportar MD
-</button>
-<button class="ai-btn" onclick="openStatusModal()">
-  <i class="ti ti-sparkles"></i> Status
 </button>
 ```
 
-`exportHTML()` (linha 4706) e `exportMd()` (linha 4175) são chamadas via `onclick` inline — não dependem do texto do botão.
+```css
+/* CSS atual do botão — sem aria-label, área de toque ~26px de altura */
+.btn-export { white-space:nowrap; padding:5px 12px; font-size:12px; }
+```
 
-### Decisão adotada
+### Decisão adotada — ABSORVIDA POR D3
 
-Em mobile, apresentação **icon-only** via CSS puro. Requisitos:
+D5 é absorvida pelo Lote 2 como complemento a D3. D3 (remoção do `height:52px` + `height:auto` + `flex-direction:column`) já resolve o problema estrutural — o `.btn-export` passará a ficar dentro da região sticky naturalmente.
 
-- Preservar as funções atuais integralmente
-- Não criar menus adicionais
-- Não adicionar JavaScript
-- Adicionar `aria-label` em cada botão (ex: `aria-label="Exportar HTML"`)
-- Adicionar `title` como apoio adicional
-- Garantir área de toque confortável (mínimo 40×40px)
-- Preservar indicação visual do botão
-- **Não utilizar apenas `title` como mecanismo de acessibilidade**
+O que permanece de D5, implementado **dentro do Lote 2**:
+
+- Adicionar `aria-label="Exportar HTML"` ao botão (acessibilidade obrigatória)
+- Garantir área de toque confortável (padding vertical → altura efetiva ≥ 40px em mobile)
+- **Não converter para icon-only** — com D3, o botão fica em linha própria e o texto cabe sem problema
 
 ### Justificativa
 
-CSS puro, funcionalidade intacta. Ícones de `ti-download`, `ti-markdown` e `ti-sparkles` são suficientemente expressivos. `aria-label` cobre acessibilidade onde `title` não funciona em touch.
+D3 já resolve o posicionamento. Icon-only seria uma mudança estética sem necessidade funcional. Texto + ícone preservados mantêm a clareza do botão para o perfil do produto.
 
 ### Riscos
 
 | Risco | Nível |
 |-------|-------|
-| Botão muito pequeno em mobile sem texto | Baixo — resolver com `min-width/min-height` |
-| Perda de acessibilidade sem texto visível | Mitigado pelo `aria-label` obrigatório |
+| Área de toque insuficiente sem ajuste de padding | Baixo — resolver com `padding` em media query |
 
-**Status: APROVADA COM AJUSTE**
+**Status: ABSORVIDA POR D3**
 
 ---
 
@@ -334,7 +335,7 @@ A padronização geral fica registrada como dívida técnica futura a ser tratad
 | D2 | Nav mobile: icon-only | Icon-only via CSS + `aria-label` + overflow fallback | Baixo | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTE** |
 | D3 | Filtros mobile | `flex-direction:column` + `height:auto` + selects encolhíveis | Médio | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTE** |
 | D4 | Tabelas: `overflow-x:auto` | Wrapper nos containers pai, preservar internos | Baixo | Baixa | **RECOMENDADA** | **APROVADA** |
-| D5 | Botões export: icon-only mobile | Icon-only + `aria-label` + `title` + área de toque | Baixo | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTE** |
+| D5 | `.btn-export`: `aria-label` + área de toque | Absorvida por D3 — sem icon-only; texto preservado; `aria-label` + padding mobile dentro do Lote 2 | Baixo | Mínima | **ABSORVIDA POR D3** | **ABSORVIDA POR D3** |
 | D6 | Breakpoints canônicos | Adiar — sem defeito funcional comprovado | Muito baixo | Baixa | **PODE ESPERAR** | **ADIADA** |
 
 ---
@@ -345,7 +346,7 @@ A padronização geral fica registrada como dívida técnica futura a ser tratad
 D1 (wrapper sticky)
   └── deve ser implementada PRIMEIRO — pré-requisito estrutural
         ├── D3 (filtros mobile) — D1 garante que topbar pode crescer sem quebrar nav
-        │     └── D5 (botões export) — atuam na mesma região; implementar juntas
+        │     └── D5 (absorvida por D3) — `aria-label` e área de toque do `.btn-export` implementados dentro do Lote 2
         ├── D2 (nav icon-only) — implementar após D1; independente de D3/D5
         └── D4 (overflow tabelas) — independente; pode ocorrer em qualquer ordem após D1
 ```

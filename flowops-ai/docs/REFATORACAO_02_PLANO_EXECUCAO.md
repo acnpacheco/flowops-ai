@@ -2,7 +2,7 @@
 **Documento:** `REFATORACAO_02_PLANO_EXECUCAO.md`  
 **Data:** 2026-09-24  
 **Referência:** `REFATORACAO_01_DECISOES.md`  
-**Status:** Plano definido · Aguardando autorização para Lote 1
+**Status:** Lote 1 concluído (commit b1759f3) · Lote 2 aguardando autorização
 
 ---
 
@@ -13,7 +13,7 @@ A refatoração está dividida em **4 lotes sequenciais**. Cada lote é implemen
 | Lote | Decisões | Região afetada | Sequência |
 |------|----------|----------------|-----------|
 | **Lote 1** | D1 | Wrapper sticky `.site-header` | 1º — pré-requisito |
-| **Lote 2** | D3 + D5 | Topbar mobile (filtros + botões) | 2º — mesma região |
+| **Lote 2** | D3 + D5 absorvida | Topbar mobile (filtros + `.btn-export`) | 2º — mesma região |
 | **Lote 3** | D2 | Navegação mobile (nav icon-only) | 3º — separado para rollback independente |
 | **Lote 4** | D4 | Overflow de tabelas | 4º — independente |
 
@@ -113,21 +113,42 @@ Eliminar o acoplamento `main-nav → top:52px` criando um wrapper `.site-header`
 | Export HTML | desktop | Arquivo gerado funciona ao abrir no browser |
 | Tela estreita (pré-Lote 2) | 480px | Header pode quebrar para 2 linhas — **aceitável neste lote**; o problema visual de mobile é resolvido nos Lotes 2–3 |
 
-### Estratégia de rollback
+### Resultado
 
-Git: o Lote 1 será um commit atômico. Para reverter:
+**Status: CONCLUÍDO**
+
+Commit `b1759f3` — "refactor(lote-1): implementa wrapper sticky .site-header (D1)"
+
+Este commit é o **baseline da refatoração** — inclui também os três documentos de diagnóstico e planejamento criados antes da implementação (`REFATORACAO_00_DIAGNOSTICO.md`, `REFATORACAO_01_DECISOES.md`, `REFATORACAO_02_PLANO_EXECUCAO.md`). Não é um commit exclusivo da D1, mas marca a linha de partida da refatoração.
+
+### Regra de pré-staging — válida a partir do Lote 2
+
+Antes de qualquer `git add` nos próximos lotes, documentar obrigatoriamente:
+
 ```bash
-git revert HEAD
+git status --short
+git diff
+git diff --cached
 ```
-Ou restaurar o arquivo diretamente do commit anterior. Nenhuma outra dependência — os Lotes 2–4 ainda não foram aplicados.
+
+Revisar o diff completo antes de staged. Não fazer staging antes da revisão.
 
 ---
 
-## Lote 2 — Topbar mobile (D3 + D5)
+## Lote 2 — Topbar mobile — D3 + D5 absorvida
 
 ### Objetivo
 
-Tornar o topbar funcional em telas mobile. Filtros se empilham de forma controlada. Botões de export e Status apresentam versão icon-only em mobile com acessibilidade adequada.
+Tornar o topbar funcional em telas mobile. Os filtros se empilham em coluna de forma controlada. O `.btn-export` fica dentro da região sticky com texto preservado, `aria-label` e área de toque adequada.
+
+**Escopo corrigido:** o topbar contém apenas `.brand`, `.filters` (3 selects) e `.btn-export`. Não há Exportar MD, não há botão Status no topbar.
+
+**D5 absorvida aqui:** `aria-label` e ajuste de área de toque do `.btn-export` são implementados neste lote, dentro das mudanças de D3.
+
+**Fora do escopo deste lote:**
+- Exportar Markdown (`.btn-md`, `exportMd()`) — pertence ao conteúdo das abas
+- Status Reports — aba de conteúdo normal (`#ps`)
+- Claude API / Gerador IA — sub-painel dentro da aba Status Reports
 
 ### Arquivos afetados
 
@@ -135,8 +156,8 @@ Tornar o topbar funcional em telas mobile. Filtros se empilham de forma controla
 |---------|--------|-----------------|
 | `flowops-ai/flowinsight.html` | CSS: `.topbar` | Remover `height:52px`; adicionar `height:auto`; media query para `flex-direction:column` |
 | `flowops-ai/flowinsight.html` | CSS: `.filters` | Media query para `width:100%` + ajuste dos selects individuais |
-| `flowops-ai/flowinsight.html` | CSS: `.exp-btn`, `.ai-btn` | Media query para icon-only |
-| `flowops-ai/flowinsight.html` | HTML: botões | Adicionar `aria-label` e `title` nos 3 botões |
+| `flowops-ai/flowinsight.html` | CSS: `.btn-export` | Media query para padding vertical (área de toque ≥ 40px) — manter texto |
+| `flowops-ai/flowinsight.html` | HTML: `.btn-export` | Adicionar `aria-label="Exportar HTML"` |
 
 ### Mudanças previstas
 
@@ -152,76 +173,75 @@ Tornar o topbar funcional em telas mobile. Filtros se empilham de forma controla
   }
   .filters {
     width: 100%;
-    /* ajuste dos selects para encolher sem overflow */
   }
   .flt-wrap select {
-    /* max-width ou flex:1 para dividir espaço disponível */
+    /* flex:1 ou max-width para dividir espaço — a definir na implementação */
   }
 }
 ```
 
-**CSS — botões icon-only mobile:**
+**CSS — área de toque do botão (D5 absorvida):**
 ```css
 @media (max-width: 600px) {
-  .exp-btn .btn-text,
-  .ai-btn .btn-text {
-    display: none;
-  }
-  /* garantir área de toque mínima */
-  .exp-btn, .ai-btn {
-    min-width: 40px;
-    min-height: 40px;
+  .btn-export {
+    padding: 10px 12px;  /* aumenta área de toque sem remover texto */
   }
 }
 ```
 
-**HTML — acessibilidade dos botões** (independente de breakpoint):
+**HTML — acessibilidade do botão (D5 absorvida):**
 ```html
-<button class="exp-btn" onclick="exportHTML(this)"
-  aria-label="Exportar HTML" title="Exportar HTML">
-  <i class="ti ti-download"></i>
-  <span class="btn-text">Exportar HTML</span>
+<!-- Adicionar aria-label ao elemento existente — sem alterar texto ou ícone -->
+<button class="btn-export" onclick="exportHTML(this)"
+  title="Baixar snapshot HTML para apresentar offline"
+  aria-label="Exportar HTML">
+  <i class="ti ti-download"></i> Exportar HTML
 </button>
 ```
 
 ### O que NÃO pode ser alterado
 
 - `applyTeamColor()` e CSS custom properties `--flt-c`, `--flt-bg`, `--flt-bgh`
-- `exportHTML()` e `exportMd()` (funções JS)
-- `openStatusModal()` (função JS)
+- `exportHTML(this)` — função JS e atributo onclick
+- Texto "Exportar HTML" e ícone `ti-download` no `.btn-export`
+- Os 3 selects de filtro (`#sTeam`, `#sQ`, `#sS`) e seus eventos `onchange`
 - Comportamento desktop do topbar
-- Os 3 selects de filtro e seus eventos
+- `exportMd()` — não pertence ao topbar; não será tocada
+- Quaisquer elementos fora do `<header class="topbar">` e `<div class="site-header">`
 
 ### Riscos
 
 | Risco | Probabilidade | Mitigação |
 |-------|--------------|-----------|
-| Selects causando overflow em 320px | Média | Testar com `flex:1; min-width:0` nos selects individuais |
-| Ícone custom do select (`.flt-wrap` com `::after`) desalinhando em coluna | Baixa | Testar posicionamento do ícone após mudança de layout |
-| `height:auto` quebrando visual em desktop | Muito baixa | Media query limita a `max-width:600px` |
+| Selects causando overflow em 320px | Média | Testar com `flex:1; min-width:0` nos selects individuais; tratar `#sQ` se largura mínima causar problema |
+| Ícone custom do select (`.flt-wrap` com ícone posicionado) desalinhando em coluna | Baixa | Testar posicionamento após mudança de layout |
+| `height:auto` quebrando visual em desktop | Muito baixa | Media query limitada a `max-width:600px` — desktop não é afetado |
 
 ### Critérios de aceite
 
 - [ ] Em 600px+: topbar visualmente idêntico ao estado pós-Lote 1
-- [ ] Em ≤ 600px: topbar em coluna, sem overflow horizontal
-- [ ] Em 320px, 360px, 390px: filtros visíveis e operáveis
-- [ ] Selects de filtro funcionam normalmente em mobile
+- [ ] Em ≤ 600px: topbar em coluna, sem overflow horizontal da página
+- [ ] Nenhum filho do topbar ultrapassa verticalmente o box do `.site-header`
+- [ ] Os 3 selects de filtro visíveis e operáveis em mobile
 - [ ] Troca de time altera cores corretamente (`applyTeamColor()`)
-- [ ] Botões de export e Status visíveis e clicáveis
-- [ ] `aria-label` presente nos 3 botões
-- [ ] Área de toque ≥ 40×40px em mobile
+- [ ] `.btn-export` visível, clicável, com texto e ícone preservados
+- [ ] `aria-label="Exportar HTML"` presente no `.btn-export`
+- [ ] Área de toque do `.btn-export` ≥ 40px de altura em mobile
+- [ ] `exportHTML()` funciona normalmente após as mudanças
 
 ### Cenários de teste
 
-| Cenário | Largura | Esperado |
-|---------|---------|----------|
-| Desktop | 1280px | Topbar igual ao Lote 1 |
-| Mobile padrão | 390px | Topbar em coluna, sem scroll horizontal |
-| Mobile estreito | 360px | Filtros operáveis, sem overflow |
-| Mobile muito estreito | 320px | Filtros operáveis, sem overflow |
-| Troca de time | 390px | Cores mudam corretamente |
-| Clique em Exportar | 390px | Export funciona, `aria-label` presente |
-| Inspeção de acessibilidade | qualquer | `aria-label` e `title` nos 3 botões |
+| Cenário | Largura | Status | Esperado |
+|---------|---------|--------|----------|
+| Desktop | 1280px | Validar na implementação | Topbar igual ao Lote 1 |
+| Mobile padrão | 600px | Validar na implementação | Topbar em coluna, sem scroll horizontal |
+| Mobile padrão | 390px | **VALIDAÇÃO PENDENTE APÓS IMPLEMENTAÇÃO** | Filtros visíveis, botão acessível |
+| Mobile estreito | 360px | **VALIDAÇÃO PENDENTE APÓS IMPLEMENTAÇÃO** | Filtros operáveis, sem overflow |
+| Mobile muito estreito | 320px | **VALIDAÇÃO PENDENTE APÓS IMPLEMENTAÇÃO** | Filtros operáveis, sem overflow |
+| Troca de time | 600px | Validar na implementação | Cores mudam corretamente |
+| Clique em Exportar HTML | 600px | Validar na implementação | Export funciona, `aria-label` presente |
+
+> **Nota:** Larguras 390px, 360px e 320px não puderam ser validadas no ambiente de investigação pré-Lote 2 — o viewport da pane ficou limitado a aproximadamente 557px. Esses cenários devem ser testados após a implementação usando ferramentas externas (DevTools do navegador ou dispositivo físico). Não registrar sucesso por inferência.
 
 ### Estratégia de rollback
 
@@ -433,4 +453,4 @@ Durante toda a refatoração, os seguintes elementos **nunca podem ser alterados
 
 ---
 
-*Documento criado a partir das decisões aprovadas em `REFATORACAO_01_DECISOES.md`. Nenhum arquivo de código foi alterado.*
+*Documento atualizado após investigação factual pré-Lote 2 (2026-09-25). D5 absorvida por D3 — escopo do Lote 2 corrigido. Lote 1 concluído em b1759f3. Nenhum arquivo de código foi alterado.*
