@@ -2,7 +2,7 @@
 **Documento:** `REFATORACAO_01_DECISOES.md`  
 **Data:** 2026-09-24  
 **Referência:** `REFATORACAO_00_DIAGNOSTICO.md`  
-**Revisão:** Decisões consolidadas — D1–D3 aprovadas · D4 aprovada com ajustes · D5 absorvida por D3 · D6 adiada
+**Revisão:** Decisões consolidadas — D1–D5 concluídas · D6 adiada · Refatoração responsiva encerrada (2026-09-30)
 
 ---
 
@@ -96,7 +96,7 @@ A altura do cabeçalho passa a ser determinada naturalmente pelo conteúdo.
 | Modal sobreposta pelo header | Baixo — verificar z-index antes de implementar |
 | CSS inline com `position` nos filhos do topbar | Baixo — auditar antes |
 
-**Status: APROVADA**
+**Status: CONCLUÍDA** — commit `b1759f3`
 
 ---
 
@@ -161,7 +161,7 @@ CSS puro, zero impacto em `tab()`, usa os ícones Tabler já presentes em todos 
 | Ícone ambíguo sem texto para usuário novo | Baixo — produto demonstrado em contexto profissional; risco residual de aprendizado dos ícones é aceito |
 | `aria-label` e `title` em ambientes touch | Baixo — `aria-label` fornece nome acessível para tecnologias assistivas; `title` auxilia em hover; nenhum dos dois garante que o ícone seja visualmente autoexplicativo em touch |
 
-**Status: APROVADA COM AJUSTES**
+**Status: CONCLUÍDA** — commit `30b6591`
 
 ---
 
@@ -209,13 +209,13 @@ CSS puro, layout previsível, nenhum risco para as funções de filtro (`gq()`, 
 | Selects individuais causando overflow em 320px | Médio — requer validação em implementação |
 | `.brand` empurrado para coluna quebra identidade visual | Baixo — layout ainda reconhecível |
 
-**Status: APROVADA COM AJUSTE**
+**Status: CONCLUÍDA** — commit `6404235`
 
 ---
 
 ## 6. D4 — Tabelas e elementos com largura fixa
 
-**Status: APROVADA COM AJUSTES**
+**Status: CONCLUÍDA** — commit `739b94d`
 
 > Decisão original aprovada. Escopo corrigido após investigação factual (2026-09-30): os componentes originalmente listados não correspondem aos problemas reais encontrados. Os quatro problemas comprovados substituem as premissas anteriores.
 
@@ -475,7 +475,7 @@ D3 já resolve o posicionamento. Icon-only seria uma mudança estética sem nece
 |-------|-------|
 | Área de toque insuficiente sem ajuste de padding | Baixo — resolver com `padding` em media query |
 
-**Status: ABSORVIDA POR D3**
+**Status: CONCLUÍDA** — absorvida por D3 (commit `6404235`)
 
 ---
 
@@ -512,11 +512,11 @@ A padronização geral fica registrada como dívida técnica futura a ser tratad
 
 | ID | Decisão | Recomendação adotada | Risco | Complexidade | Prioridade | Status |
 |----|---------|----------------------|-------|--------------|------------|--------|
-| D1 | Wrapper sticky único (`.site-header`) | CSS puro — wrapper agrupa topbar + nav | Baixo | Baixa | **OBRIGATÓRIA** — pré-requisito para todas as demais | **APROVADA** |
-| D2 | Nav mobile: icon-only | Icon-only via CSS + `aria-label` + `title` + overflow fallback | Baixo | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTES** |
-| D3 | Filtros mobile | `flex-direction:column` + `height:auto` + selects encolhíveis | Médio | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTE** |
-| D4 | Tabelas: `overflow-x:auto` nos containers reais | 3 regras CSS + 1 linha JS em `renderCalendario()` — escopo corrigido após investigação factual | Baixo | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTES** |
-| D5 | `.btn-export`: `aria-label` + área de toque | Absorvida por D3 — sem icon-only; texto preservado; `aria-label` + padding mobile dentro do Lote 2 | Baixo | Mínima | **ABSORVIDA POR D3** | **ABSORVIDA POR D3** |
+| D1 | Wrapper sticky único (`.site-header`) | CSS puro — wrapper agrupa topbar + nav | Baixo | Baixa | **OBRIGATÓRIA** — pré-requisito para todas as demais | **CONCLUÍDA** |
+| D2 | Nav mobile: icon-only | Icon-only via CSS + `aria-label` + `title` + overflow fallback | Baixo | Baixa | **RECOMENDADA** | **CONCLUÍDA** |
+| D3 | Filtros mobile | `flex-direction:column` + `height:auto` + selects encolhíveis | Médio | Baixa | **RECOMENDADA** | **CONCLUÍDA** |
+| D4 | Tabelas: `overflow-x:auto` nos containers reais | 3 regras CSS + 1 linha JS em `renderCalendario()` — escopo corrigido após investigação factual | Baixo | Baixa | **RECOMENDADA** | **CONCLUÍDA** |
+| D5 | `.btn-export`: `aria-label` + área de toque | Absorvida por D3 — sem icon-only; texto preservado; `aria-label` + padding mobile dentro do Lote 2 | Baixo | Mínima | **ABSORVIDA POR D3** | **CONCLUÍDA** |
 | D6 | Breakpoints canônicos | Adiar — sem defeito funcional comprovado | Muito baixo | Baixa | **PODE ESPERAR** | **ADIADA** |
 
 ---
@@ -560,3 +560,5 @@ D6 foi removida da cadeia de dependências — era mencionada erroneamente como 
 *Documento atualizado após investigação factual pré-Lote 3 (2026-09-29): cálculo de largura icon-only corrigido (460px, não 220px); tab() documentada com 8 lazy renders (não 2); estratégia D2 complementada com fallback de cor, área de toque como requisito interno e limites de aria-label/title. Nenhum arquivo de código foi alterado.*
 
 *Documento atualizado após investigação factual e validação da solução mínima do Lote 4 (2026-09-30): D4 revisada com escopo real — premissas antigas de `.dbname`, `.hs-label` e DORA corrigidas; quatro problemas comprovados documentados (Aging, Quarter Report, Calendário, Multi-time); bug responsivo Canvas/Chart.js registrado como frente separada. Nenhum arquivo de código foi alterado.*
+
+*Fechamento formal (2026-09-30): D1–D5 concluídas · D6 adiada · refatoração responsiva encerrada. Ver `REFATORACAO_03_FECHAMENTO.md`.*

@@ -2,7 +2,7 @@
 **Documento:** `REFATORACAO_02_PLANO_EXECUCAO.md`  
 **Data:** 2026-09-24  
 **Referência:** `REFATORACAO_01_DECISOES.md`  
-**Status:** Lote 1 concluído (commit b1759f3) · Lote 2 concluído (commit 6404235) · Lote 3 concluído (commit 30b6591) · Lote 4 aguardando autorização
+**Status:** Lote 1 concluído (commit b1759f3) · Lote 2 concluído (commit 6404235) · Lote 3 concluído (commit 30b6591) · Lote 4 concluído (commit 739b94d) · Refatoração responsiva encerrada (2026-09-30)
 
 ---
 
@@ -524,6 +524,14 @@ Justificativa: quatro intervenções pequenas e independentes; três são CSS pu
 
 Commit atômico. `git revert HEAD` reverte apenas o Lote 4. Lotes 1–3 permanecem.
 
+### Resultado
+
+**Status: CONCLUÍDO**
+
+Commit `739b94d` — `refactor(flowops): improve table overflow handling`
+
+Validações: Aging (page_overflow 0 em 390/360/320px) · Quarter Report (scroll interno em `.rpt-body`; `.rpt-sec{overflow:hidden}` preservado) · Calendário (`.cal-tbl` isolada em `.cal-table-scroll`; page_overflow 0) · Multi-time (scroll nas `.mt-tbl` via `:has()`; overflow residual canvases documentado separadamente) · Desktop 1280px sem regressões.
+
 ---
 
 ## Regras de proteção — válidas para todos os lotes
@@ -563,3 +571,5 @@ Durante toda a refatoração, os seguintes elementos **nunca podem ser alterados
 *Documento atualizado após investigação factual pré-Lote 3 (2026-09-29). Lote 2 concluído em commit 6404235. Cálculo de largura icon-only corrigido: ~460px (não ~220px). Documentação de tab() corrigida: 8 lazy renders (não 2). CSS do estado ativo atualizado com fallback de cor. Nenhum arquivo de código foi alterado.*
 
 *Documento atualizado após Lote 3 concluído (commit 30b6591) e validação da solução mínima do Lote 4 (2026-09-30). Lote 4 reescrito com escopo real: 4 problemas comprovados, 3 regras CSS + 1 linha JS. Bug Canvas/Chart.js registrado separadamente. Nenhum arquivo de código foi alterado.*
+
+*Fechamento formal (2026-09-30): Lote 4 concluído (commit 739b94d). Refatoração responsiva D1–D5 encerrada. D6 adiada. Ver `REFATORACAO_03_FECHAMENTO.md`.*
