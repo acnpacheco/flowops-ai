@@ -119,14 +119,21 @@ O `main-nav` contém 11 `<button class="ntab">` com ícone + texto. Em telas ≤
 ```
 
 ```js
-// linha ~3102 — tab() depende apenas da classe .on; não depende do texto
+// linha ~3116 — tab() depende apenas da classe .on; não depende do texto
+// Código real verificado em 2026-09-29: a função possui 8 renderizações lazy (não 2)
 function tab(el,id){
-  document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('on'));
-  document.querySelectorAll('.fp').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
+  document.querySelectorAll('.fp').forEach(p=>p.classList.remove('on'));
   document.getElementById('p'+id).classList.add('on');
+  if(id==='r') renderQuarterReport();
   if(id==='m') renderMultiTeam();
   if(id==='f') renderFlowMetrics();
+  if(id==='d') renderDora();
+  if(id==='c') renderCargaFalhas();
+  if(id==='cal') renderCalendario();
+  if(id==='g') renderGlossario();
+  if(id==='as') renderAcompanhamento();
 }
 ```
 
@@ -134,26 +141,27 @@ function tab(el,id){
 
 Em telas mobile, aplicar **versão icon-only** via CSS puro:
 
-- Ocultar o texto dos botões com `font-size:0` no texto (ou `display:none` no nó de texto)
-- Preservar `overflow-x:auto` como fallback para telas muito estreitas (~320px)
+- Ocultar o texto dos botões com `font-size:0`; restaurar ícone com `font-size:16px` no `<i>`
+- Preservar `overflow-x:auto` como fallback para telas estreitas (390px, 360px, 320px)
 - Não criar hamburger, não criar drawer, não adicionar JavaScript
-- Preservar `tab()` integralmente
-- Manter indicação visual clara da aba ativa (cor via `--flt-c`)
-- Adicionar `aria-label` em cada botão para acessibilidade
-- Garantir funcionamento em 320–360px
+- Preservar `tab()` integralmente — nenhuma alteração JavaScript
+- Manter indicação visual da aba ativa: cor diferenciada do ícone + borda inferior com `var(--flt-c, #185FA5)` (fallback evita perda da borda caso a variável ainda não esteja definida)
+- Adicionar `aria-label` obrigatório em cada botão (nome acessível para tecnologias assistivas)
+- Adicionar `title` como auxílio em ambientes com hover (recomendado, não obrigatório)
+- Área de toque mínima: aproximadamente 40×40px — requisito interno de usabilidade do FlowOps AI (não é declaração de conformidade WCAG)
 
 ### Justificativa
 
-CSS puro, zero impacto em `tab()`, usa os ícones Tabler já presentes em todos os botões. A largura do nav cai de ~900px para ~220px — cabe em qualquer tela. Para o perfil do produto (demonstração, uso por profissional familiarizado), ícones sem texto são suficientes com o botão ativo destacado.
+CSS puro, zero impacto em `tab()`, usa os ícones Tabler já presentes em todos os botões. A largura do nav cai de ~1591px (scrollWidth medido) para aproximadamente 460px com icon-only (11 abas × ~40px + gaps). Essa largura cabe no espaço interno disponível em 600px (~552px disponíveis). Em 390px, 360px e 320px o scroll horizontal continua necessário para parte das abas — isso é esperado e aceitável. Para o perfil do produto (demonstração, uso por profissional familiarizado), ícones sem texto são suficientes com o botão ativo destacado.
 
 ### Riscos
 
 | Risco | Nível |
 |-------|-------|
-| Ícone ambíguo sem texto para usuário novo | Baixo — produto demonstrado em contexto profissional |
-| Tooltip não aparece em touch | Muito baixo — `aria-label` cobre acessibilidade |
+| Ícone ambíguo sem texto para usuário novo | Baixo — produto demonstrado em contexto profissional; risco residual de aprendizado dos ícones é aceito |
+| `aria-label` e `title` em ambientes touch | Baixo — `aria-label` fornece nome acessível para tecnologias assistivas; `title` auxilia em hover; nenhum dos dois garante que o ícone seja visualmente autoexplicativo em touch |
 
-**Status: APROVADA COM AJUSTE**
+**Status: APROVADA COM AJUSTES**
 
 ---
 
@@ -332,7 +340,7 @@ A padronização geral fica registrada como dívida técnica futura a ser tratad
 | ID | Decisão | Recomendação adotada | Risco | Complexidade | Prioridade | Status |
 |----|---------|----------------------|-------|--------------|------------|--------|
 | D1 | Wrapper sticky único (`.site-header`) | CSS puro — wrapper agrupa topbar + nav | Baixo | Baixa | **OBRIGATÓRIA** — pré-requisito para todas as demais | **APROVADA** |
-| D2 | Nav mobile: icon-only | Icon-only via CSS + `aria-label` + overflow fallback | Baixo | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTE** |
+| D2 | Nav mobile: icon-only | Icon-only via CSS + `aria-label` + `title` + overflow fallback | Baixo | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTES** |
 | D3 | Filtros mobile | `flex-direction:column` + `height:auto` + selects encolhíveis | Médio | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTE** |
 | D4 | Tabelas: `overflow-x:auto` | Wrapper nos containers pai, preservar internos | Baixo | Baixa | **RECOMENDADA** | **APROVADA** |
 | D5 | `.btn-export`: `aria-label` + área de toque | Absorvida por D3 — sem icon-only; texto preservado; `aria-label` + padding mobile dentro do Lote 2 | Baixo | Mínima | **ABSORVIDA POR D3** | **ABSORVIDA POR D3** |
@@ -376,4 +384,4 @@ D6 foi removida da cadeia de dependências — era mencionada erroneamente como 
 
 ---
 
-*Documento atualizado a partir da consolidação das decisões arquiteturais. Nenhum arquivo de código foi alterado.*
+*Documento atualizado após investigação factual pré-Lote 3 (2026-09-29): cálculo de largura icon-only corrigido (460px, não 220px); tab() documentada com 8 lazy renders (não 2); estratégia D2 complementada com fallback de cor, área de toque como requisito interno e limites de aria-label/title. Nenhum arquivo de código foi alterado.*

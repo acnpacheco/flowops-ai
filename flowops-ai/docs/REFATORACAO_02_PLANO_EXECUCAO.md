@@ -2,7 +2,7 @@
 **Documento:** `REFATORACAO_02_PLANO_EXECUCAO.md`  
 **Data:** 2026-09-24  
 **Referência:** `REFATORACAO_01_DECISOES.md`  
-**Status:** Lote 1 concluído (commit b1759f3) · Lote 2 aguardando autorização
+**Status:** Lote 1 concluído (commit b1759f3) · Lote 2 concluído (commit 6404235) · Lote 3 aguardando autorização
 
 ---
 
@@ -266,10 +266,12 @@ Tornar a navegação por abas utilizável em mobile com apresentação icon-only
 
 **HTML — `aria-label` nos botões** (ex):
 ```html
-<button class="ntab on" onclick="tab(this,'v')" aria-label="Visão geral">
+<button class="ntab on" onclick="tab(this,'v')" aria-label="Visão geral" title="Visão geral">
   <i class="ti ti-layout-dashboard"></i> Visão geral
 </button>
 ```
+
+`aria-label` é obrigatório e garante o nome acessível para tecnologias assistivas. `title` é recomendado para ambientes com hover. Nenhum dos dois torna automaticamente um ícone visualmente autoexplicativo em touch — o risco residual de aprendizado dos ícones é aceito para este produto.
 
 **CSS — icon-only mobile:**
 ```css
@@ -284,12 +286,17 @@ Tornar a navegação por abas utilizável em mobile com apresentação icon-only
     font-size: 16px;     /* restaura ícone */
   }
   .ntab.on {
-    border-bottom: 2px solid var(--flt-c);
+    border-bottom: 2px solid var(--flt-c, #185FA5); /* fallback caso --flt-c não esteja definido */
   }
 }
 ```
 
-O `overflow-x:auto` do `.main-nav` já existente garante que mesmo com icon-only, telas de 320px ainda podem rolar para encontrar abas menos visíveis.
+O `overflow-x:auto` do `.main-nav` já existente garante que mesmo com icon-only, telas de 390px, 360px e 320px ainda podem rolar para encontrar abas menos visíveis.
+
+**Estado da aba ativa em mobile:**
+- Cor diferenciada do ícone (herdada de `.ntab.on{color:#185FA5}`)
+- Borda inferior: `var(--flt-c, #185FA5)` — o fallback `#185FA5` evita perda da borda caso `applyTeamColor()` ainda não tenha definido `--flt-c`
+- Indicação visível mesmo sem texto ✓
 
 ### O que NÃO pode ser alterado
 
@@ -305,7 +312,7 @@ O `overflow-x:auto` do `.main-nav` já existente garante que mesmo com icon-only
 |-------|--------------|-----------|
 | `font-size:0` afetando o ícone `<i>` | Baixa | `font-size:16px` explícito no `<i>` restaura o ícone |
 | Aba ativa não visível ao carregar em mobile | Baixa | Scroll automático pode ser adicionado como JS mínimo se necessário |
-| 11 ícones ainda não cabem em 320px | Baixa | `overflow-x:auto` garante scroll; icon-only é ~220px total |
+| 11 ícones ainda não cabem em 390px, 360px, 320px | Baixa | `overflow-x:auto` garante scroll; icon-only é ~460px (11 × ~40px + gaps) — cabe em 600px; scroll esperado e aceitável em 390px/360px/320px |
 
 ### Critérios de aceite
 
@@ -319,14 +326,18 @@ O `overflow-x:auto` do `.main-nav` já existente garante que mesmo com icon-only
 
 ### Cenários de teste
 
-| Cenário | Largura | Esperado |
-|---------|---------|----------|
-| Desktop | 1280px | Nav com ícone + texto — idêntico ao Lote 2 |
-| Mobile | 390px | Nav icon-only, aba ativa com destaque |
-| Mobile estreito | 320px | Nav rola horizontalmente, abas operáveis |
-| Troca de aba | 390px | Conteúdo correto, renderização das abas lazy (m, f) |
-| Troca de time | 390px | Cor da aba ativa segue `--flt-c` |
-| Acessibilidade | qualquer | `aria-label` presente em todos os botões |
+| Cenário | Largura | Status | Esperado |
+|---------|---------|--------|----------|
+| Desktop | 1280px | Validar na implementação | Nav com ícone + texto — idêntico ao Lote 2 |
+| Mobile | 600px | Validável no ambiente | Nav icon-only, todas as 11 abas visíveis sem scroll |
+| Mobile | 390px | **VALIDAÇÃO MANUAL PENDENTE** | Nav icon-only, aba ativa com destaque |
+| Mobile estreito | 360px | **VALIDAÇÃO MANUAL PENDENTE** | Nav rola horizontalmente, abas operáveis |
+| Mobile muito estreito | 320px | **VALIDAÇÃO MANUAL PENDENTE** | Nav rola horizontalmente, abas operáveis |
+| Troca de aba | 390px | **VALIDAÇÃO MANUAL PENDENTE** | Conteúdo correto; 8 lazy renders funcionando |
+| Troca de time | 390px | **VALIDAÇÃO MANUAL PENDENTE** | Cor da aba ativa segue `var(--flt-c, #185FA5)` |
+| Acessibilidade | qualquer | Validar na implementação | `aria-label` e `title` presentes em todos os 11 botões |
+
+> **Nota:** Larguras 390px, 360px e 320px não são validáveis no ambiente de desenvolvimento atual (viewport mínimo da pane ~550px). Esses cenários devem ser testados após a implementação com DevTools do navegador ou dispositivo físico. Estimativas matemáticas não substituem validação executada.
 
 ### Estratégia de rollback
 
@@ -453,4 +464,4 @@ Durante toda a refatoração, os seguintes elementos **nunca podem ser alterados
 
 ---
 
-*Documento atualizado após investigação factual pré-Lote 2 (2026-09-25). D5 absorvida por D3 — escopo do Lote 2 corrigido. Lote 1 concluído em b1759f3. Nenhum arquivo de código foi alterado.*
+*Documento atualizado após investigação factual pré-Lote 3 (2026-09-29). Lote 2 concluído em commit 6404235. Cálculo de largura icon-only corrigido: ~460px (não ~220px). Documentação de tab() corrigida: 8 lazy renders (não 2). CSS do estado ativo atualizado com fallback de cor. Nenhum arquivo de código foi alterado.*
