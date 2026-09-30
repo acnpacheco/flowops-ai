@@ -238,7 +238,7 @@
   .rpt-num{background:#185FA5;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
   .rpt-title{font-size:13px;font-weight:600;color:#111827;margin:0 0 2px}
   .rpt-obj{font-size:11px;color:#9ca3af;margin:0}
-  .rpt-body{padding:14px 16px}
+  .rpt-body{padding:14px 16px;overflow-x:auto}
   .rpt-table{width:100%;border-collapse:collapse;font-size:12px;margin:4px 0}
   .rpt-table th{background:#f9fafb;color:#6b7280;font-weight:500;padding:6px 10px;text-align:left;border-bottom:1px solid #e5e7eb;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
   .rpt-table td{padding:7px 10px;border-bottom:1px solid #f3f4f6;color:#374151;vertical-align:top}
@@ -720,6 +720,11 @@
     .ntab i{font-size:16px}
     .ntab.on{border-bottom:2px solid var(--flt-c,#185FA5)}
   }
+
+  /* Lote 4 — D4 — Overflow de tabelas */
+  #agingList{overflow-x:auto}
+  .cal-table-scroll{overflow-x:auto}
+  #pm .cc:has(> .mt-tbl){overflow-x:auto}
 </style>
 </head>
 <body>
@@ -5994,7 +5999,7 @@ function renderCalQuarters(){
   });
   tbl+='</tbody></table>';
 
-  document.getElementById('calContent').innerHTML=legend+yearGrid+tbl;
+  document.getElementById('calContent').innerHTML=legend+yearGrid+'<div class="cal-table-scroll">'+tbl+'</div>';
 }
 
 // ── ABA: SPRINTS ─────────────────────────────────────────────────
