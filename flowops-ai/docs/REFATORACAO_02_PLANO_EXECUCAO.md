@@ -2,7 +2,7 @@
 **Documento:** `REFATORACAO_02_PLANO_EXECUCAO.md`  
 **Data:** 2026-09-24  
 **Referência:** `REFATORACAO_01_DECISOES.md`  
-**Status:** Lote 1 concluído (commit b1759f3) · Lote 2 concluído (commit 6404235) · Lote 3 aguardando autorização
+**Status:** Lote 1 concluído (commit b1759f3) · Lote 2 concluído (commit 6404235) · Lote 3 concluído (commit 30b6591) · Lote 4 aguardando autorização
 
 ---
 
@@ -345,84 +345,180 @@ Commit atômico. `git revert HEAD` reverte apenas o Lote 3. Lotes 1 e 2 permanec
 
 ---
 
-## Lote 4 — Overflow de tabelas (D4)
+## Lote 4 — Overflow de tabelas e componentes tabulares (D4)
+
+> **Escopo corrigido após investigação factual e validação de solução mínima (2026-09-30).** As premissas originais foram revisadas. Ver `REFATORACAO_01_DECISOES.md` § 6 para detalhes completos da investigação.
 
 ### Objetivo
 
-Evitar que tabelas e elementos com largura fixa causem overflow horizontal da página em mobile, adicionando wrappers com `overflow-x:auto` nos containers pai estáticos.
+Eliminar o overflow horizontal da página causado por quatro componentes tabulares em viewports mobile (390px, 360px, 320px). Solução cirúrgica: três regras CSS + uma alteração estrutural mínima em `renderCalendario()`.
+
+### Contexto — o que foi descartado
+
+As premissas originais do Lote 4 foram invalidadas pela investigação factual:
+
+| Premissa original | Realidade encontrada |
+|---|---|
+| `.dbname{width:180px}` causa overflow | CSS morto — nunca referenciado no HTML/JS |
+| `.hs-label{width:170px}` problema no Multi-time | `.hs-label` está em `renderQuarterReport()`, não Multi-time; sem overflow |
+| DORA precisa de wrapper | `.dband-*` medido; sem overflow em nenhum viewport |
 
 ### Arquivos afetados
 
 | Arquivo | Região | Tipo de mudança |
 |---------|--------|-----------------|
-| `flowops-ai/flowinsight.html` | HTML: containers de DORA, Métricas de fluxo, CFD, Health bars | Adicionar classe `tbl-scroll` nos wrappers adequados |
-| `flowops-ai/flowinsight.html` | CSS | Adicionar `.tbl-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }` |
+| `flowops-ai/flowinsight.html` | CSS: nova regra `#agingList` | 1 linha |
+| `flowops-ai/flowinsight.html` | CSS: nova propriedade em `.rpt-body` | 1 linha |
+| `flowops-ai/flowinsight.html` | CSS: nova regra `.cal-table-scroll` | 2 linhas |
+| `flowops-ai/flowinsight.html` | CSS: nova regra `#pm .cc:has(> .mt-tbl)` | 1 linha |
+| `flowops-ai/flowinsight.html` | JS: `renderCalendario()` linha 5997 | 1 linha alterada |
 
-### Elementos com largura fixa (a preservar internamente)
+**Total: 5 linhas de mudança no arquivo HTML.**
 
-| Classe | Largura | Seção | Função de render |
-|--------|---------|-------|-----------------|
-| `.dbname` | 180px | DORA benchmark | `renderDora()` linha ~4785 |
-| `.wip-stage` | 105px | Métricas de fluxo | `renderFlowMetrics()` linha ~5139 |
-| `.cf-orig-lbl` | 150px | CFD origem | `renderFlowMetrics()` |
-| `.hs-label` | 170px | Health bars Multi-time | `renderMultiTeam()` linha ~4002 |
+### Mudanças previstas — CSS
 
-### Mudanças previstas
-
-**CSS — nova regra:**
 ```css
-.tbl-scroll {
+/* Aging — Métricas de fluxo */
+#agingList {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+}
+
+/* Quarter Report — scroll interno sem remover o clip do card */
+.rpt-body {
+  overflow-x: auto;
+}
+
+/* Calendário — classe para wrapper exclusivo da tabela */
+.cal-table-scroll {
+  overflow-x: auto;
+}
+
+/* Multi-time — apenas .cc com .mt-tbl como filha direta */
+#pm .cc:has(> .mt-tbl) {
+  overflow-x: auto;
 }
 ```
 
-**HTML — adicionar classe nos wrappers pai** (sem alterar elementos internos):
-```html
-<!-- DORA benchmark rows -->
-<div class="tbl-scroll">
-  <!-- renderDora() injeta aqui — não alterar -->
-</div>
+### Mudança prevista — JavaScript
 
-<!-- Métricas de fluxo — WIP/Aging table -->
-<div class="tbl-scroll">
-  <!-- renderFlowMetrics() injeta aqui — não alterar -->
-</div>
+Somente em `renderCalendario()`, linha 5997. Alterar apenas a composição do `innerHTML`:
+
+```js
+// ANTES:
+document.getElementById('calContent').innerHTML = legend + yearGrid + tbl;
+
+// DEPOIS:
+document.getElementById('calContent').innerHTML =
+  legend + yearGrid + '<div class="cal-table-scroll">' + tbl + '</div>';
 ```
+
+Nenhuma lógica da função é alterada. `legend`, `yearGrid` e o conteúdo de `.cal-tbl` permanecem intocados. `renderCalSprints()` e `renderCalDeploys()` não são afetadas.
 
 ### O que NÃO pode ser alterado
 
-- Nenhuma das 4 classes com largura fixa (`.dbname`, `.wip-stage`, `.cf-orig-lbl`, `.hs-label`)
-- `renderDora()`, `renderFlowMetrics()`, `renderMultiTeam()` — nenhuma mudança em JS
-- Templates HTML dentro das funções de renderização
-- Estrutura interna das tabelas
-- Comportamento desktop
+| Item | Motivo |
+|------|--------|
+| `.rpt-sec { overflow: hidden; }` | Preserva border-radius do card — NÃO remover |
+| `renderDora()` | DORA não tem problema de overflow |
+| `renderFlowMetrics()` templates | Aging resolvido no container HTML, não no template |
+| `renderMultiTeam()` | Multi-time resolvido por CSS `:has()`, sem JS |
+| `.dbname`, `.wip-stage`, `.cf-orig-lbl`, `.hs-label` | Larguras internas preservadas |
+| Todos os dados e lógica de negócio | Fora do escopo da refatoração |
+| Canvas / Chart.js | Bug separado — não tratar aqui |
+| Larguras internas das colunas de qualquer tabela | Nenhuma conversão para cards |
 
-### Riscos
+### O que explicitamente NÃO entra no Lote 4
 
-| Risco | Probabilidade | Mitigação |
-|-------|--------------|-----------|
-| Wrapper `tbl-scroll` quebrando seletor CSS pai existente | Baixa | Usar classe genérica nova; verificar se há seletores com `>` direto |
-| Gráfico Chart.js dentro de wrapper com `overflow:auto` causando resize incorreto | Muito baixa | Gráficos ficam em containers `.cc`, não dentro de tabelas |
-| Wrapper adicionado em seção errada (dentro de elemento dinâmico) | Baixa | Verificar que o wrapper é elemento **estático** no HTML, externo à área de inject do JS |
+- Chart.js, canvases, configuração de gráficos
+- `.dbname` e demais CSS legado
+- `.hs-label`, DORA, WIP, CFD Origin
+- Tabelas de Status (`#ps`) — já protegidas
+- Tabelas de Acompanhamento (`#pas`) — já protegidas
+- Conversão de tabelas para cards
+- Alterações nas larguras internas das colunas
+- Alterações nos dados ou funções de negócio
+
+### Bug Chart.js registrado — não pertence ao Lote 4
+
+**BUG RESPONSIVO — CANVAS / CHART.JS**
+
+Canvases com largura não responsiva identificados:
+
+| Canvas | Aba | Overflow a 390px |
+|--------|-----|-----------------|
+| `#cOv` | Visão geral | contribui para +167px |
+| `#cLT` | Visão geral | contribui para +167px |
+| `#cCFD` | Visão geral | contribui para +167px |
+| `#cMTtp` | Multi-time | contribui para residual a 320px |
+| `#cMTlt` | Multi-time | contribui para residual a 320px |
+
+Requer investigação dedicada sobre configuração responsiva do Chart.js (`responsive`, `maintainAspectRatio`, containers). **Não corrigir no Lote 4.**
 
 ### Critérios de aceite
 
-- [ ] Em mobile: tabelas das 4 seções afetadas rolam horizontalmente sem vazar a página
-- [ ] Em desktop: nenhuma diferença visual
-- [ ] `renderDora()`, `renderFlowMetrics()`, `renderMultiTeam()` continuam funcionando
-- [ ] Gráficos Chart.js não apresentam deformação
-- [ ] Larguras internas (`.dbname`, `.wip-stage`, `.cf-orig-lbl`, `.hs-label`) preservadas
+**Aging — 390px, 360px, 320px:**
+- [ ] Página não ganha overflow horizontal por causa da tabela Aging
+- [ ] `#agingList` possui scroll horizontal interno quando necessário
+- [ ] Todas as colunas (Item, Estágio, Dias, vs p85, Risco) acessíveis via scroll
+
+**Quarter Report — 390px, 360px, 320px:**
+- [ ] `.rpt-table` não é mais cortada silenciosamente
+- [ ] `.rpt-body` permite scroll interno horizontal
+- [ ] `.rpt-sec { overflow: hidden; }` permanece inalterado
+- [ ] Border-radius e aparência do card preservados visualmente
+
+**Calendário — 600px, 390px, 360px, 320px:**
+- [ ] `.cal-tbl` acessível em todos esses viewports com scroll horizontal
+- [ ] Scroll ocorre exclusivamente na região da tabela
+- [ ] `legend` não se desloca ao scrollar a tabela
+- [ ] `yearGrid` (mini-calendários anuais) não se desloca ao scrollar a tabela
+- [ ] Página não ganha overflow horizontal
+
+**Multi-time — 360px, 320px:**
+- [ ] Contribuição das `.mt-tbl` para page overflow eliminada
+- [ ] Scroll funciona nos cards das tabelas Multi-time
+- [ ] Overflow residual dos canvases Chart.js pode permanecer — registrado como bug separado
+- [ ] A 390px+: comportamento inalterado (sem overflow antes, sem scroll desnecessário depois)
+
+**Desktop — todos os viewports ≥ 768px:**
+- [ ] Nenhuma das quatro correções causa diferença visual perceptível
+- [ ] Nenhum scrollbar horizontal visível quando não há overflow
 
 ### Cenários de teste
 
-| Cenário | Largura | Esperado |
-|---------|---------|----------|
-| Aba DORA em mobile | 390px | Tabela benchmark rola horizontalmente |
-| Aba Métricas de fluxo em mobile | 390px | Tabela WIP/Aging rola horizontalmente |
-| Aba Multi-time em mobile | 390px | Health bars roláveis |
-| Desktop — todas as abas | 1280px | Nenhuma diferença visual |
-| Troca de filtro em mobile | 390px | Re-render das seções mantém funcionamento |
+| Cenário | Viewport | Esperado |
+|---------|----------|----------|
+| Aging — aba Métricas de fluxo | 390px | Tabela rola internamente, página não overflow |
+| Aging | 360px | Idem |
+| Aging | 320px | Idem |
+| Quarter Report — todas as seções | 390px | Tabelas roláveis, cards sem distorção |
+| Quarter Report | 320px | Nenhuma coluna cortada invisível |
+| Calendário — aba Quarters | 600px | Tabela rola, yearGrid estático |
+| Calendário | 390px | Idem |
+| Calendário | 320px | Idem |
+| Multi-time — tabela Métricas | 360px | Scroll interno no card |
+| Multi-time — tabela DORA | 320px | Scroll interno no card |
+| Desktop | 1280px | Todas as abas visualmente idênticas ao Lote 3 |
+| Troca de filtro em mobile | 390px | Re-render de `renderFlowMetrics()`, `renderMultiTeam()`, `renderCalendario()` mantém funcionamento |
+| `renderQuarterReport()` | 390px | Seções do report com scroll interno; `.rpt-sec` intacto |
+
+### Pré-staging obrigatório
+
+Antes de qualquer `git add`:
+
+```bash
+git status --short
+git diff
+git diff --cached
+```
+
+Somente `flowops-ai/flowinsight.html` pode ser adicionado neste lote. Nenhum documento.
+
+### Estratégia de execução
+
+**Um único lote** — não dividir em 4A/4B/4C/4D.
+
+Justificativa: quatro intervenções pequenas e independentes; três são CSS puro; somente uma linha JS muda; componentes em abas distintas; baixo risco de regressão; custo de quatro ciclos separados seria desproporcional.
 
 ### Estratégia de rollback
 
@@ -465,3 +561,5 @@ Durante toda a refatoração, os seguintes elementos **nunca podem ser alterados
 ---
 
 *Documento atualizado após investigação factual pré-Lote 3 (2026-09-29). Lote 2 concluído em commit 6404235. Cálculo de largura icon-only corrigido: ~460px (não ~220px). Documentação de tab() corrigida: 8 lazy renders (não 2). CSS do estado ativo atualizado com fallback de cor. Nenhum arquivo de código foi alterado.*
+
+*Documento atualizado após Lote 3 concluído (commit 30b6591) e validação da solução mínima do Lote 4 (2026-09-30). Lote 4 reescrito com escopo real: 4 problemas comprovados, 3 regras CSS + 1 linha JS. Bug Canvas/Chart.js registrado separadamente. Nenhum arquivo de código foi alterado.*

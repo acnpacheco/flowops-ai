@@ -2,7 +2,7 @@
 **Documento:** `REFATORACAO_01_DECISOES.md`  
 **Data:** 2026-09-24  
 **Referência:** `REFATORACAO_00_DIAGNOSTICO.md`  
-**Revisão:** Decisões consolidadas — D1–D4 aprovadas · D5 absorvida por D3 · D6 adiada
+**Revisão:** Decisões consolidadas — D1–D3 aprovadas · D4 aprovada com ajustes · D5 absorvida por D3 · D6 adiada
 
 ---
 
@@ -215,42 +215,215 @@ CSS puro, layout previsível, nenhum risco para as funções de filtro (`gq()`, 
 
 ## 6. D4 — Tabelas e elementos com largura fixa
 
-### Problema
+**Status: APROVADA COM AJUSTES**
 
-Quatro classes possuem `width` fixo que causam overflow horizontal em mobile. Os containers pai não têm `overflow-x:auto`.
+> Decisão original aprovada. Escopo corrigido após investigação factual (2026-09-30): os componentes originalmente listados não correspondem aos problemas reais encontrados. Os quatro problemas comprovados substituem as premissas anteriores.
 
-### Estado atual
+---
+
+### 6.1 Correção de premissas antigas
+
+#### CSS legado — `.dbname`, `.dbrow`, `.dbval`, `.dbtrack`, `.dbfill`
+
+As classes abaixo estão definidas no CSS do produto mas **nunca são referenciadas no HTML estático nem nos templates JavaScript**. São CSS morto — código legado substituído pelas classes `dband-*` na versão atual.
 
 ```css
-.dbname    { width:180px }   /* linha ~157 — DORA benchmark */
-.wip-stage { width:105px }   /* linha ~247 — Métricas de fluxo */
-.cf-orig-lbl { width:150px } /* linha ~275 — CFD origem */
-.hs-label  { width:170px }   /* linha ~316 — Health score bars */
+.dbrow   { display:flex; ... }
+.dbname  { width:180px; ... }   /* era listado como "DORA benchmark" — INATIVO */
+.dbtrack { flex:1; ... }
+.dbfill  { height:10px; ... }
+.dbval   { width:100px; ... }
 ```
 
-Seções afetadas: DORA (`renderDora`), Métricas de fluxo (`renderFlowMetrics`), CFD, Health Score em Multi-time (`renderMultiTeam`). As funções geram HTML dinamicamente — os containers pai estão no HTML estático.
+**Constatação:** nenhuma dessas classes causa overflow em mobile porque nenhuma delas é renderizada.  
+**Decisão:** não remover esse CSS nesta refatoração. Não faz parte do Lote 4. Registrar como dívida técnica futura.
 
-### Decisão adotada
+#### `.hs-label` — atribuição corrigida
 
-Adicionar wrapper com `overflow-x:auto` nos containers pai das seções afetadas. Preservar:
+A documentação anterior associava `.hs-label{width:170px}` ao Multi-time (`renderMultiTeam`). A investigação factual confirma:
 
-- Larguras internas atuais (não alterar `.dbname`, `.wip-stage`, `.cf-orig-lbl`, `.hs-label`)
-- Templates JavaScript das funções de renderização
-- Comportamento desktop integralmente
-- Não converter tabelas para cards
+- `.hs-label` é utilizada exclusivamente pela função `scoreBar()`, chamada apenas de `renderQuarterReport()`.
+- Multi-time **não usa** `.hs-label`.
+- `.hs-label` **não apresentou overflow** em nenhum dos viewports testados (390px, 360px, 320px).
+- **Nenhuma alteração** será feita em `.hs-label` no Lote 4.
 
-### Justificativa
+#### DORA — `.dband-row`, `.dband-info`, `.dband-right`
 
-Mínima mudança, zero risco para as funções de render. Padrão esperado em mobile. Containers estáticos podem receber a classe sem tocar nos templates JS.
+As classes com `min-width` na aba DORA foram medidas em todos os viewports:
 
-### Riscos
+| Classe | Valor | Viewports testados | Resultado |
+|--------|-------|-------------------|-----------|
+| `.dband-info` | `min-width:160px` | 390px, 360px, 320px | Sem overflow |
+| `.dband-right` | `min-width:76px` | 390px, 360px, 320px | Sem overflow |
+| `.dband-row` | — | 390px, 360px, 320px | Page overflow: 0 |
+
+**Constatação:** DORA não apresenta problema de overflow em mobile.  
+**Decisão:** nenhuma correção DORA entra no Lote 4.
+
+---
+
+### 6.2 Componentes já protegidos — sem ação necessária
+
+Os seguintes componentes foram verificados e já possuem `overflow-x:auto` nos containers adequados, ou não apresentaram overflow:
+
+| Componente | Aba | Proteção existente | Resultado |
+|---|---|---|---|
+| Tabela "Itens Planejados" | Status (`#ps`) | `<div style="overflow-x:auto">` linha 1498 | ✅ Protegido |
+| Tabela "Transbordo sprint anterior" | Status (`#ps`) | `<div style="overflow-x:auto">` linha 1524 | ✅ Protegido |
+| Tabela `.cap-tbl` "Capacidade" | Status (`#ps`) | `<div style="overflow-x:auto">` linha 1662 | ✅ Protegido |
+| Tabela `.rit-tbl` "Ritos e Cerimônias" | Status (`#ps`) | `<div style="overflow-x:auto">` linha 1685 | ✅ Protegido |
+| Tabela `.cap-tbl` individual | Acompanhamento (`#pas`) | `<div style="overflow-x:auto">` linha 3449 | ✅ Protegido |
+| Tabela "Capacity × Velocity" | Acompanhamento (`#pas`) | `<div style="overflow-x:auto">` linha 3498 | ✅ Protegido |
+| `#wipBars` (`.wip-stage{105px}`) | Métricas de fluxo | — | ✅ Sem overflow |
+| `#cfOrigin` (`.cf-orig-lbl{150px}`) | Saúde da qualidade | — | ✅ Sem overflow |
+| `.hs-row` / `.hs-label{170px}` | Quarter Report | — | ✅ Sem overflow |
+| `.dband-*` | DORA | — | ✅ Sem overflow |
+
+---
+
+### 6.3 Quatro problemas comprovados — escopo real do Lote 4
+
+#### Problema 1 — Aging (`#agingList`, aba Métricas de fluxo)
+
+**Elemento:** `#agingList` — DIV container da tabela `.mt-tbl` de aging  
+**Causa:** tabela com coluna `vs p85` (barra interna `width:90px`) excede o container em mobile  
+**Medições:** overflow de página de +39px (390px), +68px (360px), +108px (320px)
+
+**Solução aprovada — CSS puro, sem wrapper, sem JS:**
+
+```css
+#agingList {
+  overflow-x: auto;
+}
+```
+
+Validado em runtime: `pageOvf` passa de 39px → 0. `#agingList` é o único elemento no seu `.cc` pai que transborda. Nenhuma alteração em `renderFlowMetrics()`.
+
+---
+
+#### Problema 2 — Quarter Report (`.rpt-table`, aba Quarter Report)
+
+**Elementos envolvidos:**
+- `.rpt-sec{overflow:hidden}` — container de cada seção do report (linhas 236, 2827)
+- `.rpt-body` — container imediato da tabela, entre a tabela e `.rpt-sec`
+- `.rpt-table` — a tabela propriamente dita (~403px em viewports estreitos)
+
+**Causa:** `.rpt-sec{overflow:hidden}` é necessário para preservar o `border-radius:12px` do card. Em mobile, o `overflow:hidden` corta silenciosamente os conteúdos que transbordam, tornando colunas da tabela inacessíveis (82px cortados a 390px, 136px cortados a 320px).
+
+**Solução aprovada — CSS puro, sem wrapper, sem JS:**
+
+```css
+.rpt-body {
+  overflow-x: auto;
+}
+```
+
+**Preservar obrigatoriamente:**
+
+```css
+.rpt-sec {
+  overflow: hidden;   /* NÃO remover — preserva border-radius do card */
+}
+```
+
+Validado em runtime: `pageOvf` passa a 0. Todos os 20 `.rpt-body` ficam com scroll interno independente. `.rpt-sec.scrollWidth` normaliza para igual ao `clientWidth` — o `overflow:hidden` não clipa mais nada; mantém apenas o recorte visual do card.
+
+---
+
+#### Problema 3 — Calendário (`.cal-tbl`, aba Calendário)
+
+**Elemento:** `<table class="cal-tbl">` — tabela de 7 colunas (Quarter, Início, Encerramento, Sprints, Dias Úteis, Semana Planejamento, Status)  
+**Causa:** tabela com largura mínima de conteúdo ~597px; excede qualquer container até ≥600px  
+**Medições:** overflow de +41px (600px), +250px (390px), +280px (360px), +320px (320px)
+
+**Cadeia DOM:**
+```
+#pcal.fp
+  div.cc (cabeçalho com abas de calendário)
+  div#calContent.cc
+    div (legend — responsivo, NÃO overflow)
+    div.cal-year-grid (mini-calendários — responsivo, 2 cols a ≤600px, NÃO overflow)
+    table.cal-tbl  ← causa do overflow
+```
+
+**Por que `#calContent{overflow-x:auto}` foi descartado:** `#calContent` contém também `legend` e `yearGrid`. Com overflow no container pai, scrollar para acessar colunas da tabela deslocaria o calendário visual inteiro para fora do viewport — UX inaceitável.
+
+**Solução aprovada — CSS + 1 linha em `renderCalendario()`:**
+
+```css
+.cal-table-scroll {
+  overflow-x: auto;
+}
+```
+
+Alteração estrutural autorizada em `renderCalendario()` (linha 5997):
+
+```js
+// Envolver somente `tbl` — legend e yearGrid permanecem sem scroll
+document.getElementById('calContent').innerHTML =
+  legend + yearGrid + '<div class="cal-table-scroll">' + tbl + '</div>';
+```
+
+**Não usar `style="overflow-x:auto"` inline no template.** A responsabilidade de apresentação permanece no CSS.  
+**Não alterar** `legend`, `yearGrid`, conteúdo da `.cal-tbl`, nem `renderCalSprints()` / `renderCalDeploys()`.
+
+---
+
+#### Problema 4 — Multi-time (`.mt-tbl` #1 e #2, aba Multi-time)
+
+**Elementos:**
+- `.mt-tbl` #1 — "Métricas da sprint atual", linha 4094 (container `.cc` com tabela como único filho)
+- `.mt-tbl` #2 — "DORA comparativo", linha 4144 (container `.cc` com `div.cgh-mt` + tabela)
+
+**Causa:** 4 colunas com conteúdo mínimo ≥332px em viewports 360px e 320px; os containers `.cc` ficam menores que a tabela  
+**Medições:** overflow de página de +19px (360px), +59px (320px). Sem overflow a 390px+.
+
+**Observação importante:** a 320px existe overflow residual de ~42px após correção das tabelas, causado pelos canvases Chart.js (`#cMTtp`, `#cMTlt`) dentro do `.g2` na mesma aba — mesma origem do bug canvas da Visão Geral. **Esse overflow residual não pertence ao Lote 4.**
+
+**Confirmado:** ambas as `.mt-tbl` são filhas DIRETAS de seus `.cc` — o seletor `:has()` funciona corretamente e não afeta o `.cc` pai do `#agingList` (onde `.mt-tbl` é neta, não filha direta).
+
+**Solução aprovada — CSS puro com `:has()`, sem alteração em `renderMultiTeam()`:**
+
+```css
+#pm .cc:has(> .mt-tbl) {
+  overflow-x: auto;
+}
+```
+
+Suporte: Chrome 105+, Safari 15.4+, Firefox 121+. Compatível com o perfil de uso do produto.  
+Não afeta outros `.cc` no painel (chart cards não contêm `.mt-tbl` como filha direta).  
+Não altera `renderMultiTeam()`.
+
+---
+
+### 6.4 Bug responsivo separado — Canvas / Chart.js
+
+**Classificação: BUG RESPONSIVO — CANVAS / CHART.JS — FORA DO LOTE 4**
+
+**Elementos encontrados:**
+
+| Canvas | Aba | Largura fixa observada | Page overflow a 390px |
+|--------|-----|----------------------|----------------------|
+| `#cOv` | Visão geral | ~514px | +167px (com outros) |
+| `#cLT` | Visão geral | ~514px | +167px (com outros) |
+| `#cCFD` | Visão geral | ~514px | +167px (com outros) |
+| `#cMTtp` | Multi-time | ~300px (320px) | contribui para residual |
+| `#cMTlt` | Multi-time | ~300px (320px) | contribui para residual |
+
+**Problema:** os canvases não se ajustam ao viewport em mobile, causando overflow horizontal da página. A configuração responsiva do Chart.js (`responsive`, `maintainAspectRatio`, containers com `position:relative; width:100%`) provavelmente requer revisão.
+
+**Decisão:** não corrigir no Lote 4. Requer investigação dedicada antes da implementação. Não registrar solução definitiva neste documento.
+
+---
+
+### 6.5 Riscos atualizados
 
 | Risco | Nível |
 |-------|-------|
-| Wrapper quebrando seletores CSS existentes | Baixo — usar classe nova, não alterar estrutura interna |
-| Gráficos Chart.js dentro de containers com overflow | Muito baixo — Chart.js é responsivo por padrão |
-
-**Status: APROVADA**
+| `.rpt-sec{overflow:hidden}` removido acidentalmente | Baixo — documentado explicitamente como protegido |
+| `:has()` sem suporte no ambiente de visualização | Muito baixo — Chrome/Safari/Firefox modernos suportam |
+| Overflow residual Multi-time (canvases) confundido com regressão do Lote 4 | Médio — documentado separadamente; esperado e aceito |
+| `#agingList{overflow-x:auto}` afetando `#alertOutput` (sibling) | Baixo — `#alertOutput` não overflow; medido: só `#agingList` transborda no `.cc` pai |
 
 ---
 
@@ -342,7 +515,7 @@ A padronização geral fica registrada como dívida técnica futura a ser tratad
 | D1 | Wrapper sticky único (`.site-header`) | CSS puro — wrapper agrupa topbar + nav | Baixo | Baixa | **OBRIGATÓRIA** — pré-requisito para todas as demais | **APROVADA** |
 | D2 | Nav mobile: icon-only | Icon-only via CSS + `aria-label` + `title` + overflow fallback | Baixo | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTES** |
 | D3 | Filtros mobile | `flex-direction:column` + `height:auto` + selects encolhíveis | Médio | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTE** |
-| D4 | Tabelas: `overflow-x:auto` | Wrapper nos containers pai, preservar internos | Baixo | Baixa | **RECOMENDADA** | **APROVADA** |
+| D4 | Tabelas: `overflow-x:auto` nos containers reais | 3 regras CSS + 1 linha JS em `renderCalendario()` — escopo corrigido após investigação factual | Baixo | Baixa | **RECOMENDADA** | **APROVADA COM AJUSTES** |
 | D5 | `.btn-export`: `aria-label` + área de toque | Absorvida por D3 — sem icon-only; texto preservado; `aria-label` + padding mobile dentro do Lote 2 | Baixo | Mínima | **ABSORVIDA POR D3** | **ABSORVIDA POR D3** |
 | D6 | Breakpoints canônicos | Adiar — sem defeito funcional comprovado | Muito baixo | Baixa | **PODE ESPERAR** | **ADIADA** |
 
@@ -377,7 +550,7 @@ D6 foi removida da cadeia de dependências — era mencionada erroneamente como 
 | Fallback CDN offline | Mudança de arquitetura — escopo separado |
 | CSS inline (`style=""`) | Limpeza de código — frente separada |
 | Dados mockados (Q3/Q4, sprints, datas) | Atualização de dados — frente separada |
-| Gráficos Chart.js (responsividade interna) | Responsivos por padrão; D4 trata containers |
+| Gráficos Chart.js (responsividade interna) | Bug responsivo confirmado em Visão Geral e Multi-time — requer investigação dedicada separada; não pertence ao Lote 4 |
 | Separação do arquivo HTML em múltiplos arquivos | Quebra característica de arquivo único |
 | TypeScript, bundler, framework CSS | YAGNI |
 | OKRs, forecast, IA preditiva, integrações | Evolução funcional — roadmap Fase 2–4 |
@@ -385,3 +558,5 @@ D6 foi removida da cadeia de dependências — era mencionada erroneamente como 
 ---
 
 *Documento atualizado após investigação factual pré-Lote 3 (2026-09-29): cálculo de largura icon-only corrigido (460px, não 220px); tab() documentada com 8 lazy renders (não 2); estratégia D2 complementada com fallback de cor, área de toque como requisito interno e limites de aria-label/title. Nenhum arquivo de código foi alterado.*
+
+*Documento atualizado após investigação factual e validação da solução mínima do Lote 4 (2026-09-30): D4 revisada com escopo real — premissas antigas de `.dbname`, `.hs-label` e DORA corrigidas; quatro problemas comprovados documentados (Aging, Quarter Report, Calendário, Multi-time); bug responsivo Canvas/Chart.js registrado como frente separada. Nenhum arquivo de código foi alterado.*
