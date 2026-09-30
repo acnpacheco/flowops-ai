@@ -709,13 +709,16 @@
   .ab-linkedin{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 18px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:8px;color:#fff;font-size:12px;font-weight:600;text-decoration:none;transition:background .15s}
   .ab-linkedin:hover{background:rgba(255,255,255,.25)}
 
-  /* Lote 2 — D3+D5 — Topbar mobile */
+  /* Lote 2 — D3+D5 — Topbar mobile | Lote 3 — D2 — Navegação icon-only */
   @media(max-width:600px){
     .topbar{height:auto;flex-direction:column;align-items:flex-start;padding:8px 16px;gap:8px}
     .filters{width:100%;margin-left:0}
     .flt-wrap{flex:1;min-width:0}
     .filters select{min-width:0;width:100%}
     .btn-export{width:100%;justify-content:center;padding:10px 12px;min-height:40px}
+    .ntab{font-size:0;padding:0 10px;min-width:40px;min-height:40px}
+    .ntab i{font-size:16px}
+    .ntab.on{border-bottom:2px solid var(--flt-c,#185FA5)}
   }
 </style>
 </head>
@@ -769,17 +772,17 @@
 </header>
 
 <nav class="main-nav">
-  <button class="ntab on" onclick="tab(this,'v')"><i class="ti ti-layout-dashboard"></i> Visão geral</button>
-  <button class="ntab" onclick="tab(this,'f')"><i class="ti ti-wave-sine"></i> Métricas de fluxo</button>
-  <button class="ntab" onclick="tab(this,'d')"><i class="ti ti-rocket"></i> Eficiência de deploys</button>
-  <button class="ntab" onclick="tab(this,'c')"><i class="ti ti-shield-check"></i> Saúde da qualidade</button>
-  <button class="ntab" onclick="tab(this,'r')"><i class="ti ti-file-analytics"></i> Relatório de quarter</button>
-  <button class="ntab" onclick="tab(this,'as')"><i class="ti ti-activity"></i> Acompanhamento</button>
-  <button class="ntab" onclick="tab(this,'s')"><i class="ti ti-clipboard-text"></i> Status reports</button>
-  <button class="ntab" onclick="tab(this,'m')"><i class="ti ti-users-group"></i> Multi-time</button>
-  <button class="ntab" onclick="tab(this,'cal')"><i class="ti ti-calendar-stats"></i> Calendário</button>
-  <button class="ntab" onclick="tab(this,'g')"><i class="ti ti-books"></i> Glossário</button>
-  <button class="ntab" onclick="tab(this,'ab')"><i class="ti ti-user-circle"></i> Sobre a autora</button>
+  <button class="ntab on" onclick="tab(this,'v')" aria-label="Visão geral" title="Visão geral"><i class="ti ti-layout-dashboard"></i> Visão geral</button>
+  <button class="ntab" onclick="tab(this,'f')" aria-label="Métricas de fluxo" title="Métricas de fluxo"><i class="ti ti-wave-sine"></i> Métricas de fluxo</button>
+  <button class="ntab" onclick="tab(this,'d')" aria-label="Eficiência de deploys" title="Eficiência de deploys"><i class="ti ti-rocket"></i> Eficiência de deploys</button>
+  <button class="ntab" onclick="tab(this,'c')" aria-label="Saúde da qualidade" title="Saúde da qualidade"><i class="ti ti-shield-check"></i> Saúde da qualidade</button>
+  <button class="ntab" onclick="tab(this,'r')" aria-label="Relatório de quarter" title="Relatório de quarter"><i class="ti ti-file-analytics"></i> Relatório de quarter</button>
+  <button class="ntab" onclick="tab(this,'as')" aria-label="Acompanhamento" title="Acompanhamento"><i class="ti ti-activity"></i> Acompanhamento</button>
+  <button class="ntab" onclick="tab(this,'s')" aria-label="Status reports" title="Status reports"><i class="ti ti-clipboard-text"></i> Status reports</button>
+  <button class="ntab" onclick="tab(this,'m')" aria-label="Multi-time" title="Multi-time"><i class="ti ti-users-group"></i> Multi-time</button>
+  <button class="ntab" onclick="tab(this,'cal')" aria-label="Calendário" title="Calendário"><i class="ti ti-calendar-stats"></i> Calendário</button>
+  <button class="ntab" onclick="tab(this,'g')" aria-label="Glossário" title="Glossário"><i class="ti ti-books"></i> Glossário</button>
+  <button class="ntab" onclick="tab(this,'ab')" aria-label="Sobre a autora" title="Sobre a autora"><i class="ti ti-user-circle"></i> Sobre a autora</button>
 </nav>
 
 </div><!-- /.site-header -->
