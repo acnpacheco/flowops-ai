@@ -6,6 +6,23 @@
 <title>FlowOps AI — Gestão Ágil com IA</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
+  :root{
+    /* ─── Design System — Tipografia ─── */
+    --fs-page-title:20px;--fw-page-title:700;
+    --fs-section-hd:14px;--fw-section-hd:600;
+    --fs-body:13px;--fw-body:400;
+    --fs-kpi-value:26px;--fw-kpi-value:700;
+    --fs-kpi-label:11px;--fw-kpi-label:500;
+    --fs-caption:11px;--fw-caption:400;
+    --fs-badge:11px;--fw-badge:600;
+    /* ─── Design System — Espaçamento ─── */
+    --sp-card-pad:16px;--sp-card-gap:12px;--sp-section-gap:20px;
+    /* ─── Design System — Estados semânticos ─── */
+    --clr-ok:#059669;--clr-warn:#d97706;--clr-bad:#dc2626;
+    --clr-info:#185FA5;--clr-neutral:#6b7280;
+    /* ─── Design System — Origens de dado ─── */
+    --bg-insight:rgba(24,95,165,.04);--bg-forecast:rgba(124,58,237,.04);
+  }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f4;color:#1c1c1a;font-size:14px;line-height:1.5}
   a{color:inherit}
@@ -736,7 +753,6 @@
   <div class="brand">
     <i class="ti ti-chart-dots-3"></i>
     FlowOps AI
-    <span style="font-size:11px;font-weight:400;color:#9ca3af;margin-left:4px">MVP v1.0</span>
   </div>
   <div class="filters">
     <div class="flt-wrap">
@@ -2191,7 +2207,7 @@
 </main>
 
 <footer class="footer">
-  FlowOps AI MVP v1.0 · Gestão ágil com IA · FlowOps AI · 2026
+  FlowOps AI · Gestão de Fluxo e Entrega · 2026
   <br>
   <span class="footer-visits">👀 Visitas ao FlowOps AI: <span id="visitCount" class="footer-visits-val">—</span></span>
 </footer>
@@ -4215,7 +4231,7 @@ function _mdSprintPlanning(team,q,sp,spLabel,spDate,now,d,i){
   const pl=d.pl[i], en=d.en[i], p85=d.p85[i];
   return`# Sprint Planning — ${team} · ${spLabel}
 
-> **Gerado pelo FlowOps AI MVP v1.0** · ${now}
+> **Gerado pelo FlowOps AI** · ${now}
 
 ---
 
@@ -4344,7 +4360,7 @@ Sprint ${spLabel} planejada com ${pl} pontos de capacidade e 5 itens priorizados
 
 ---
 
-*Gerado pelo FlowOps AI MVP v1.0 · ${team} · ${now}*
+*Gerado pelo FlowOps AI · ${team} · ${now}*
 `;}
 
 function _mdForecast(team,q,sp,spLabel,spDate,now,d,i){
@@ -4353,7 +4369,7 @@ function _mdForecast(team,q,sp,spLabel,spDate,now,d,i){
   const forecast=Math.round((pl-atRisk)/pl*100);
   return`# Forecast — ${team} · ${spLabel}
 
-> **Gerado pelo FlowOps AI MVP v1.0** · ${now}
+> **Gerado pelo FlowOps AI** · ${now}
 
 ---
 
@@ -4445,7 +4461,7 @@ Forecast de ${forecast}% para ${spLabel}. ${done} de ${pl} itens concluídos na 
 
 ---
 
-*Gerado pelo FlowOps AI MVP v1.0 · ${team} · ${now}*
+*Gerado pelo FlowOps AI · ${team} · ${now}*
 `;}
 
 function _mdFinalSprint(team,q,sp,spLabel,spDate,now,d,i){
@@ -4453,7 +4469,7 @@ function _mdFinalSprint(team,q,sp,spLabel,spDate,now,d,i){
   const pct=Math.round(en/pl*100);
   return`# Final de Sprint — ${team} · ${spLabel}
 
-> **Gerado pelo FlowOps AI MVP v1.0** · ${now}
+> **Gerado pelo FlowOps AI** · ${now}
 
 ---
 
@@ -4525,14 +4541,14 @@ Sprint ${spLabel} encerrada com ${pct}% de aderência ao planejado (${en}/${pl} 
 
 ---
 
-*Gerado pelo FlowOps AI MVP v1.0 · ${team} · ${now}*
+*Gerado pelo FlowOps AI · ${team} · ${now}*
 `;}
 
 function _mdDailyDigest(team,q,sp,spLabel,spDate,now,d,i){
   const p85=d.p85[i];
   return`# Daily Digest — ${team} · ${spLabel}
 
-> **Gerado pelo FlowOps AI MVP v1.0** · ${now}
+> **Gerado pelo FlowOps AI** · ${now}
 
 ---
 
@@ -4601,7 +4617,7 @@ Daily de ${now} com 1 blocker ativo (US-007 · licença de lib). 6 itens em anda
 
 ---
 
-*Gerado pelo FlowOps AI MVP v1.0 · ${team} · ${now}*
+*Gerado pelo FlowOps AI · ${team} · ${now}*
 `;}
 
 function _mdQuarterReport(team,q,now,d){
@@ -4614,7 +4630,7 @@ function _mdQuarterReport(team,q,now,d){
   const h=calcHealth(q);
   return`# Relatório de Quarter — ${team} · ${q} 2026
 
-> **Gerado pelo FlowOps AI MVP v1.0** · ${now}
+> **Gerado pelo FlowOps AI** · ${now}
 
 ---
 
@@ -4692,15 +4708,15 @@ ${q} 2026 encerrado com índice de saúde de ${h.total}/100 (${h.total>=85?'Elit
 
 ---
 
-*Gerado pelo FlowOps AI MVP v1.0 · ${team} · ${now}*
+*Gerado pelo FlowOps AI · ${team} · ${now}*
 `;}
 
 function _mdAIReport(team,q,sp,spLabel,now){
   const raw=(document.getElementById('aiOutput')||{innerText:''}).innerText.trim();
-  if(!raw) return`# Relatório IA — ${team} · ${spLabel}\n\n> Nenhum relatório gerado ainda.\n\n*Gerado pelo FlowOps AI MVP v1.0 · ${team} · ${now}*\n`;
+  if(!raw) return`# Relatório IA — ${team} · ${spLabel}\n\n> Nenhum relatório gerado ainda.\n\n*Gerado pelo FlowOps AI · ${team} · ${now}*\n`;
   return`# Relatório Gerado por IA — ${team} · ${spLabel}
 
-> **Gerado pelo FlowOps AI MVP v1.0 + Claude AI** · ${now}
+> **Gerado pelo FlowOps AI** · ${now}
 
 ---
 
@@ -4720,7 +4736,7 @@ ${raw.split('\n').map(l=>l.trim()).join('\n')}
 
 ---
 
-*Gerado pelo FlowOps AI MVP v1.0 · ${team} · ${now}*
+*Gerado pelo FlowOps AI · ${team} · ${now}*
 `;}
 
 // ─── Exportar HTML standalone ─────────────────────────────────
