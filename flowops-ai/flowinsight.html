@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FlowOps AI — Gestão Ágil com IA</title>
+<title>FlowOps AI — Gestão de Fluxo e Entrega</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
   :root{
@@ -45,8 +45,8 @@
   /* Main nav */
   .main-nav{background:#fff;border-bottom:1px solid #e5e5e3;padding:0 24px;display:flex;gap:2px;overflow-x:auto}
   .ntab{padding:10px 16px;font-size:13px;color:#6b7280;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:color .15s}
-  .ntab.on{color:#185FA5;font-weight:500;border-bottom-color:#185FA5}
-  .ntab:hover:not(.on){color:#374151}
+  .ntab.on{color:var(--clr-info);font-weight:500;border-bottom-color:var(--clr-info)}
+  .ntab:hover:not(.on){color:#374151;background:var(--bg-insight)}
 
   /* Content */
   .content{padding:24px;max-width:1200px;width:100%;margin:0 auto;flex:1}
@@ -217,7 +217,10 @@
   .stitle{font-size:12px;font-weight:600;color:#374151;margin:14px 0 8px;text-transform:uppercase;letter-spacing:.05em}
 
   /* Footer */
-  .footer{text-align:center;padding:16px 24px;font-size:11px;color:#9ca3af;border-top:1px solid #e5e5e3;background:#fff;margin-top:auto}
+  .footer{text-align:center;padding:16px 24px;font-size:11px;color:var(--clr-neutral);border-top:1px solid #e5e5e3;background:#fff;margin-top:auto}
+  .footer-links{display:inline-block;margin-top:6px;font-size:10px}
+  .footer-links a{color:var(--clr-info);text-decoration:none;cursor:pointer}
+  .footer-links a:hover{text-decoration:underline}
   .footer-visits{display:inline-flex;align-items:center;gap:5px;margin-top:5px;font-size:10px;color:#c4c9d4;letter-spacing:.02em}
   .footer-visits-val{font-variant-numeric:tabular-nums;color:#9ca3af;font-weight:500}
 
@@ -735,7 +738,7 @@
     .btn-export{width:100%;justify-content:center;padding:10px 12px;min-height:40px}
     .ntab{font-size:0;padding:0 10px;min-width:40px;min-height:40px}
     .ntab i{font-size:16px}
-    .ntab.on{border-bottom:2px solid var(--flt-c,#185FA5)}
+    .ntab.on{border-bottom:2px solid var(--flt-c,var(--clr-info))}
   }
 
   /* Lote 4 — D4 — Overflow de tabelas */
@@ -793,17 +796,15 @@
 </header>
 
 <nav class="main-nav">
-  <button class="ntab on" onclick="tab(this,'v')" aria-label="Visão geral" title="Visão geral"><i class="ti ti-layout-dashboard"></i> Visão geral</button>
-  <button class="ntab" onclick="tab(this,'f')" aria-label="Métricas de fluxo" title="Métricas de fluxo"><i class="ti ti-wave-sine"></i> Métricas de fluxo</button>
-  <button class="ntab" onclick="tab(this,'d')" aria-label="Eficiência de deploys" title="Eficiência de deploys"><i class="ti ti-rocket"></i> Eficiência de deploys</button>
-  <button class="ntab" onclick="tab(this,'c')" aria-label="Saúde da qualidade" title="Saúde da qualidade"><i class="ti ti-shield-check"></i> Saúde da qualidade</button>
-  <button class="ntab" onclick="tab(this,'r')" aria-label="Relatório de quarter" title="Relatório de quarter"><i class="ti ti-file-analytics"></i> Relatório de quarter</button>
-  <button class="ntab" onclick="tab(this,'as')" aria-label="Acompanhamento" title="Acompanhamento"><i class="ti ti-activity"></i> Acompanhamento</button>
-  <button class="ntab" onclick="tab(this,'s')" aria-label="Status reports" title="Status reports"><i class="ti ti-clipboard-text"></i> Status reports</button>
-  <button class="ntab" onclick="tab(this,'m')" aria-label="Multi-time" title="Multi-time"><i class="ti ti-users-group"></i> Multi-time</button>
-  <button class="ntab" onclick="tab(this,'cal')" aria-label="Calendário" title="Calendário"><i class="ti ti-calendar-stats"></i> Calendário</button>
-  <button class="ntab" onclick="tab(this,'g')" aria-label="Glossário" title="Glossário"><i class="ti ti-books"></i> Glossário</button>
-  <button class="ntab" onclick="tab(this,'ab')" aria-label="Sobre a autora" title="Sobre a autora"><i class="ti ti-user-circle"></i> Sobre a autora</button>
+  <button class="ntab on" onclick="tab(this,'v')"   aria-label="Visão Geral"          title="Visão Geral"><i class="ti ti-layout-dashboard"></i> Visão Geral</button>
+  <button class="ntab"    onclick="tab(this,'f')"   aria-label="Métricas de fluxo"     title="Métricas de fluxo"><i class="ti ti-wave-sine"></i> Métricas de fluxo</button>
+  <button class="ntab"    onclick="tab(this,'d')"   aria-label="Eficiência de deploys" title="Eficiência de deploys"><i class="ti ti-rocket"></i> Eficiência de deploys</button>
+  <button class="ntab"    onclick="tab(this,'c')"   aria-label="Saúde da qualidade"    title="Saúde da qualidade"><i class="ti ti-shield-check"></i> Saúde da qualidade</button>
+  <button class="ntab"    onclick="tab(this,'r')"   aria-label="Relatório de quarter"  title="Relatório de quarter"><i class="ti ti-file-analytics"></i> Relatório de quarter</button>
+  <button class="ntab"    onclick="tab(this,'as')"  aria-label="Acompanhamento"        title="Acompanhamento"><i class="ti ti-activity"></i> Acompanhamento</button>
+  <button class="ntab"    onclick="tab(this,'rel')" aria-label="Relatórios"            title="Relatórios"><i class="ti ti-file-text"></i> Relatórios</button>
+  <button class="ntab"    onclick="tab(this,'m')"   aria-label="Multi-time"            title="Multi-time"><i class="ti ti-users-group"></i> Multi-time</button>
+  <button class="ntab"    onclick="tab(this,'cal')" aria-label="Calendário"            title="Calendário"><i class="ti ti-calendar-stats"></i> Calendário</button>
 </nav>
 
 </div><!-- /.site-header -->
@@ -1479,9 +1480,9 @@
   </div>
 
   <!-- Status Reports -->
-  <div id="ps" class="fp">
+  <div id="prel" class="fp">
     <div class="cf-header">
-      <p class="cf-title">Status reports</p>
+      <p class="cf-title">Relatórios</p>
       <p class="cf-sub">Geração de relatórios de Sprint Planning, Forecast, Daily Digest e Encerramento, com apoio de Inteligência Artificial.</p>
     </div>
     <div class="snav">
@@ -2043,7 +2044,7 @@
       </div>
 
     </div><!-- #sg -->
-  </div><!-- #ps -->
+  </div><!-- #prel -->
 
   <!-- Multi-time -->
   <div id="pm" class="fp">
@@ -2210,6 +2211,8 @@
   FlowOps AI · Gestão de Fluxo e Entrega · 2026
   <br>
   <span class="footer-visits">👀 Visitas ao FlowOps AI: <span id="visitCount" class="footer-visits-val">—</span></span>
+  <br>
+  <span class="footer-links"><a onclick="openAux('g')">Glossário</a> · <a onclick="openAux('ab')">Sobre</a></span>
 </footer>
 </div>
 
@@ -3153,7 +3156,7 @@ function tab(el,id){
 }
 
 function sr(el,id){
-  document.querySelectorAll('#ps .snav .stab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('#prel .snav .stab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
   document.querySelectorAll('.sp').forEach(p=>p.classList.remove('on'));
   document.getElementById(id).classList.add('on');
@@ -3167,6 +3170,13 @@ function asTab(el,id){
   document.querySelectorAll('.asp').forEach(p=>p.classList.remove('on'));
   document.getElementById(id).classList.add('on');
   if(id==='as-bd') drawBurndownBurnup();
+}
+
+function openAux(id){
+  document.querySelectorAll('.fp').forEach(p=>p.classList.remove('on'));
+  document.getElementById('p'+id).classList.add('on');
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('on'));
+  if(id==='g') renderGlossario();
 }
 
 // ─── DADOS: Membros do time ───────────────────────────────────
