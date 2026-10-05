@@ -209,6 +209,26 @@
   .stab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s}
   .stab.on{background:#185FA5;color:#fff;border-color:#185FA5}
   .sp{display:none}.sp.on{display:block}
+  /* ─── Engenharia & Qualidade ─── */
+  .eq-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .eq-tab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+  .eq-tab.on{background:var(--clr-info);color:#fff;border-color:var(--clr-info)}
+  .eq-tab:hover:not(.on){background:var(--bg-insight)}
+  .eqp{display:none}.eqp.on{display:block}
+  .eq-kpi-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  .eq-kpi-card{background:#fff;border:1px solid #e5e5e3;border-radius:8px;padding:12px 14px}
+  .eq-kpi-lbl{font-size:11px;font-weight:500;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+  .eq-kpi-val{font-size:22px;font-weight:700;color:#111827;margin-bottom:2px}
+  .eq-kpi-delta{font-size:11px;margin-bottom:6px}
+  .eq-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+  .eq-kpi-name{font-size:11px;color:#9ca3af;line-height:1.35;margin-bottom:6px}
+  .eq-score-unit{font-size:13px;font-weight:400;color:#6b7280}
+  .eq-trend{background:var(--bg-insight);border-radius:6px;padding:10px 14px;margin-bottom:14px}
+  .eq-trend-hd{font-size:12px;font-weight:600;color:var(--clr-info);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .eq-trend-item{font-size:12px;color:#374151;margin:2px 0;line-height:1.5}
+  @media(max-width:900px){.eq-kpi-4{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){#peq .eq-tab{min-height:40px}}
+  @media(max-width:480px){.eq-kpi-4{grid-template-columns:repeat(2,1fr)}.eq-2col{grid-template-columns:1fr}}
 
   .prog{background:#f3f4f6;border-radius:8px;height:8px;margin:8px 0 6px;overflow:hidden}
   .prog-bar{height:100%;background:#059669;border-radius:8px;transition:width .3s}
@@ -393,6 +413,7 @@
   .ai-rec.rec-bad{background:#fff1f2;border-left-color:#dc2626}
   .ai-rec.rec-info{background:#eff6ff;border-left-color:#185FA5}
   .ai-rec-ico{font-size:15px;flex-shrink:0;margin-top:1px}
+  .ai-rec-ico:empty{width:1.37em}
   /* Recomendações da IA — componente único reutilizável */
   .ai-recs-card{border-left:4px solid #7c3aed;margin-bottom:16px}
   .ai-recs-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
@@ -798,8 +819,7 @@
 <nav class="main-nav">
   <button class="ntab on" onclick="tab(this,'v')"   aria-label="Visão Geral"          title="Visão Geral"><i class="ti ti-layout-dashboard"></i> Visão Geral</button>
   <button class="ntab"    onclick="tab(this,'f')"   aria-label="Métricas de fluxo"     title="Métricas de fluxo"><i class="ti ti-wave-sine"></i> Métricas de fluxo</button>
-  <button class="ntab"    onclick="tab(this,'d')"   aria-label="Eficiência de deploys" title="Eficiência de deploys"><i class="ti ti-rocket"></i> Eficiência de deploys</button>
-  <button class="ntab"    onclick="tab(this,'c')"   aria-label="Saúde da qualidade"    title="Saúde da qualidade"><i class="ti ti-shield-check"></i> Saúde da qualidade</button>
+  <button class="ntab"    onclick="tab(this,'eq')"  aria-label="Engenharia & Qualidade" title="Engenharia &amp; Qualidade"><i class="ti ti-shield-half"></i> Engenharia &amp; Qualidade</button>
   <button class="ntab"    onclick="tab(this,'r')"   aria-label="Relatório de quarter"  title="Relatório de quarter"><i class="ti ti-file-analytics"></i> Relatório de quarter</button>
   <button class="ntab"    onclick="tab(this,'as')"  aria-label="Acompanhamento"        title="Acompanhamento"><i class="ti ti-activity"></i> Acompanhamento</button>
   <button class="ntab"    onclick="tab(this,'rel')" aria-label="Relatórios"            title="Relatórios"><i class="ti ti-file-text"></i> Relatórios</button>
@@ -1075,330 +1095,344 @@
   </div>
 
   <!-- DORA -->
-  <div id="pd" class="fp">
+  <!-- Engenharia & Qualidade -->
+  <div id="peq" class="fp">
     <div class="cf-header">
-      <p class="cf-title">Eficiência de deploys</p>
-      <p class="cf-sub">Monitore a eficiência das entregas por meio das métricas DORA — frequência de deploy, lead time, taxa de falhas, recuperação e confiabilidade operacional, por Sprint.</p>
+      <p class="cf-title">Engenharia &amp; Qualidade</p>
+      <p class="cf-sub">Saúde técnica da entrega — métricas DORA e indicadores de qualidade por Sprint.</p>
     </div>
 
-    <!-- 1.1 Visão geral dos deploys -->
-    <div class="kg-section">
-      <div class="kg-label">
-        <span class="kg-dot" id="kgdot-pd-deploy">🟢</span>
-        Visão geral dos deploys
-      </div>
-      <span class="kg-desc">Nossa performance de engenharia está alinhada às boas práticas do mercado?</span>
+    <!-- Sub-navegação -->
+    <div class="eq-nav">
+      <button class="eq-tab on" onclick="eqTab(this,'eq-saude')" aria-label="Visão de Saúde" title="Visão de Saúde"><i class="ti ti-shield-half"></i> Visão de Saúde</button>
+      <button class="eq-tab" onclick="eqTab(this,'eq-dora')" aria-label="DORA" title="DORA"><i class="ti ti-rocket"></i> DORA</button>
+      <button class="eq-tab" onclick="eqTab(this,'eq-quality')" aria-label="Qualidade" title="Qualidade"><i class="ti ti-bug"></i> Qualidade</button>
     </div>
 
-    <!-- Saúde consolidada + 5 cards DORA — 2 linhas × 3 colunas -->
-    <div class="dora-g2x3">
+    <!-- Sub-painel 1: Visão de Saúde -->
+    <div id="eq-saude" class="eqp on">
+      <div id="eq-ov-content"></div>
+    </div>
 
-      <!-- Linha 1: Saúde, DF, LTC -->
-      <div class="dc-x dc-health-x" id="dc-health">
-        <span class="dc-x-emoji" id="d-health-emoji">—</span>
-        <p class="dc-x-name" style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:2px">Saúde dos Deploys</p>
-        <p class="dc-x-hlabel" id="d-health-label">—</p>
-        <p class="dc-x-hdesc" id="d-health-desc"></p>
-      </div>
+    <!-- Sub-painel 2: DORA -->
+    <div id="eq-dora" class="eqp">
 
-      <div class="dc-x" title="Deployment Frequency: frequência de deploys em produção. Quanto maior, melhor.">
-        <button class="gh-btn dc-help" onclick="openMetricDetail('df')" title="Ver no Glossário">?</button>
-        <div class="dc-x-sig-row">
-          <span class="dc-x-sig">DF</span>
-          <span class="dc-x-dir">↑ Quanto maior, melhor</span>
+      <!-- 1.1 Visão geral dos deploys -->
+      <div class="kg-section">
+        <div class="kg-label">
+          <span class="kg-dot" id="kgdot-pd-deploy">🟢</span>
+          Visão geral dos deploys
         </div>
-        <p class="dc-x-name">Deployment Frequency</p>
-        <p class="dc-x-namept">Frequência de Implantação</p>
-        <p class="dc-x-val" id="d0">—</p>
-        <p class="dc-x-delta" id="ddelta0">—</p>
-        <div id="dmeta0"></div>
-        <span class="tier" id="dt0">—</span>
+        <span class="kg-desc">Nossa performance de engenharia está alinhada às boas práticas do mercado?</span>
       </div>
 
-      <div class="dc-x" title="Lead Time for Changes: tempo entre commit e deploy em produção. Quanto menor, melhor.">
-        <button class="gh-btn dc-help" onclick="openMetricDetail('ltc')" title="Ver no Glossário">?</button>
-        <div class="dc-x-sig-row">
-          <span class="dc-x-sig">LTC</span>
-          <span class="dc-x-dir">↓ Quanto menor, melhor</span>
+      <!-- Saúde consolidada + 5 cards DORA — 2 linhas × 3 colunas -->
+      <div class="dora-g2x3">
+
+        <!-- Linha 1: Saúde, DF, LTC -->
+        <div class="dc-x dc-health-x" id="dc-health">
+          <span class="dc-x-emoji" id="d-health-emoji">—</span>
+          <p class="dc-x-name" style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:2px">Saúde dos Deploys</p>
+          <p class="dc-x-hlabel" id="d-health-label">—</p>
+          <p class="dc-x-hdesc" id="d-health-desc"></p>
         </div>
-        <p class="dc-x-name">Lead Time for Changes</p>
-        <p class="dc-x-namept">Tempo de Implementação de Alterações</p>
-        <p class="dc-x-val" id="d1">—</p>
-        <p class="dc-x-delta" id="ddelta1">—</p>
-        <div id="dmeta1"></div>
-        <span class="tier" id="dt1">—</span>
-      </div>
 
-      <!-- Linha 2: CFR, MTTR, Reliability -->
-      <div class="dc-x" title="Change Failure Rate: percentual de deploys que causaram falha em produção. Quanto menor, melhor.">
-        <button class="gh-btn dc-help" onclick="openMetricDetail('cfr')" title="Ver no Glossário">?</button>
-        <div class="dc-x-sig-row">
-          <span class="dc-x-sig">CFR</span>
-          <span class="dc-x-dir">↓ Quanto menor, melhor</span>
+        <div class="dc-x" title="Deployment Frequency: frequência de deploys em produção. Quanto maior, melhor.">
+          <button class="gh-btn dc-help" onclick="openMetricDetail('df')" title="Ver no Glossário">?</button>
+          <div class="dc-x-sig-row">
+            <span class="dc-x-sig">DF</span>
+            <span class="dc-x-dir">↑ Quanto maior, melhor</span>
+          </div>
+          <p class="dc-x-name">Deployment Frequency</p>
+          <p class="dc-x-namept">Frequência de Implantação</p>
+          <p class="dc-x-val" id="d0">—</p>
+          <p class="dc-x-delta" id="ddelta0">—</p>
+          <div id="dmeta0"></div>
+          <span class="tier" id="dt0">—</span>
         </div>
-        <p class="dc-x-name">Change Failure Rate</p>
-        <p class="dc-x-namept">Taxa de Falha de Alterações</p>
-        <p class="dc-x-val" id="d2">—</p>
-        <p class="dc-x-delta" id="ddelta2">—</p>
-        <div id="dmeta2"></div>
-        <span class="tier" id="dt2">—</span>
-      </div>
 
-      <div class="dc-x" title="MTTR: tempo médio de recuperação após falha em produção. Quanto menor, melhor.">
-        <button class="gh-btn dc-help" onclick="openMetricDetail('mttr')" title="Ver no Glossário">?</button>
-        <div class="dc-x-sig-row">
-          <span class="dc-x-sig">MTTR</span>
-          <span class="dc-x-dir">↓ Quanto menor, melhor</span>
+        <div class="dc-x" title="Lead Time for Changes: tempo entre commit e deploy em produção. Quanto menor, melhor.">
+          <button class="gh-btn dc-help" onclick="openMetricDetail('ltc')" title="Ver no Glossário">?</button>
+          <div class="dc-x-sig-row">
+            <span class="dc-x-sig">LTC</span>
+            <span class="dc-x-dir">↓ Quanto menor, melhor</span>
+          </div>
+          <p class="dc-x-name">Lead Time for Changes</p>
+          <p class="dc-x-namept">Tempo de Implementação de Alterações</p>
+          <p class="dc-x-val" id="d1">—</p>
+          <p class="dc-x-delta" id="ddelta1">—</p>
+          <div id="dmeta1"></div>
+          <span class="tier" id="dt1">—</span>
         </div>
-        <p class="dc-x-name">Mean Time to Recovery</p>
-        <p class="dc-x-namept">Tempo Médio de Recuperação</p>
-        <p class="dc-x-val" id="d3">—</p>
-        <p class="dc-x-delta" id="ddelta3">—</p>
-        <div id="dmeta3"></div>
-        <span class="tier" id="dt3">—</span>
-      </div>
 
-      <div class="dc-x" title="Reliability: índice de confiabilidade operacional 0–100. Combina CFR e MTTR. Quanto maior, melhor.">
-        <button class="gh-btn dc-help" onclick="openMetricDetail('reliability')" title="Ver no Glossário">?</button>
-        <div class="dc-x-sig-row">
-          <span class="dc-x-sig">REL</span>
-          <span class="dc-x-dir">↑ Quanto maior, melhor</span>
+        <!-- Linha 2: CFR, MTTR, Reliability -->
+        <div class="dc-x" title="Change Failure Rate: percentual de deploys que causaram falha em produção. Quanto menor, melhor.">
+          <button class="gh-btn dc-help" onclick="openMetricDetail('cfr')" title="Ver no Glossário">?</button>
+          <div class="dc-x-sig-row">
+            <span class="dc-x-sig">CFR</span>
+            <span class="dc-x-dir">↓ Quanto menor, melhor</span>
+          </div>
+          <p class="dc-x-name">Change Failure Rate</p>
+          <p class="dc-x-namept">Taxa de Falha de Alterações</p>
+          <p class="dc-x-val" id="d2">—</p>
+          <p class="dc-x-delta" id="ddelta2">—</p>
+          <div id="dmeta2"></div>
+          <span class="tier" id="dt2">—</span>
         </div>
-        <p class="dc-x-name">Reliability</p>
-        <p class="dc-x-namept">Confiabilidade Operacional</p>
-        <p class="dc-x-val" id="d4">—</p>
-        <p class="dc-x-delta" id="ddelta4">—</p>
-        <div id="dmeta4"></div>
-        <span class="tier" id="dt4">—</span>
-      </div>
 
-    </div>
-
-    <!-- Benchmark DORA — visual com faixas por tier -->
-    <div class="cc" style="margin-bottom:14px">
-      <div class="cgh" style="margin-bottom:6px">
-        <span class="cgh-dot" id="cgd-do">🟢</span>
-        <p class="ct">Classificação DORA — Benchmark de Mercado</p>
-      </div>
-      <p class="cs">Compare o desempenho atual da equipe com faixas de referência amplamente utilizadas pelo modelo DORA. Essas classificações ajudam a identificar oportunidades de evolução na velocidade, estabilidade e confiabilidade das entregas.</p>
-      <div id="doraBands"></div>
-    </div>
-
-    <!-- 1.2 Métricas de velocidade -->
-    <div class="kg-section">
-      <div class="kg-label">
-        <span class="kg-dot" id="kgdot-pd-vel">🟢</span>
-        Métricas de velocidade
-      </div>
-      <span class="kg-desc">O time entrega mudanças com frequência e fluidez suficientes?</span>
-    </div>
-    <div class="g2" style="margin-bottom:14px">
-      <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-df">🟢</span><p class="ct">Deployment Frequency (DF)</p></div>
-        <p class="cs">Quanto maior e mais sustentável, melhor — maturidade DevOps e ciclos de entrega curtos.</p>
-        <div style="position:relative;width:100%;height:200px"><canvas id="cDf" role="img" aria-label="Deployment Frequency por sprint"></canvas></div>
-      </div>
-      <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-ltc">🟢</span><p class="ct">Lead Time for Changes (LTC)</p></div>
-        <p class="cs">Quanto menor, mais rápido o valor chega ao usuário — eficiência do pipeline CI/CD.</p>
-        <div style="position:relative;width:100%;height:200px"><canvas id="cLtc" role="img" aria-label="Lead Time for Changes por sprint"></canvas></div>
-      </div>
-    </div>
-
-    <!-- 1.3 Estabilidade e qualidade -->
-    <div class="kg-section">
-      <div class="kg-label">
-        <span class="kg-dot" id="kgdot-pd-stab">🟢</span>
-        Estabilidade e qualidade
-      </div>
-      <span class="kg-desc">A velocidade de entrega está sendo sustentada com qualidade?</span>
-    </div>
-    <div class="g2" style="margin-bottom:14px">
-      <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-cfr">🟢</span><p class="ct">Change Failure Rate (CFR)</p></div>
-        <p class="cs">Quanto menor, mais confiável o processo de deploy — picos indicam qualidade comprometida.</p>
-        <div style="position:relative;width:100%;height:200px"><canvas id="cCfr" role="img" aria-label="Change Failure Rate por sprint"></canvas></div>
-      </div>
-      <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-mttr">🟢</span><p class="ct">Mean Time to Recovery (MTTR)</p></div>
-        <p class="cs">Quanto menor, maior a resiliência — capacidade do time de responder a incidentes rapidamente.</p>
-        <div style="position:relative;width:100%;height:200px"><canvas id="cMttrD" role="img" aria-label="MTTR por sprint"></canvas></div>
-      </div>
-    </div>
-
-    <!-- 1.4 Confiabilidade operacional -->
-    <div class="kg-section">
-      <div class="kg-label">
-        <span class="kg-dot" id="kgdot-pd-rel">🟢</span>
-        Confiabilidade operacional
-      </div>
-      <span class="kg-desc">A operação permanece estável mesmo com o aumento da frequência de deploys?</span>
-    </div>
-    <div class="g2" style="margin-bottom:14px">
-      <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-rel">🟢</span><p class="ct">Reliability — confiabilidade operacional</p></div>
-        <p class="cs">Score 0–100 que combina estabilidade e disponibilidade — quanto maior, mais confiável a operação.</p>
-        <div style="position:relative;width:100%;height:200px"><canvas id="cRel" role="img" aria-label="Reliability por sprint"></canvas></div>
-      </div>
-      <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-inc">🟢</span><p class="ct">Incidentes críticos por sprint</p></div>
-        <p class="cs">Incidentes críticos vinculados a deploys — ideal é zero ou tendência decrescente.</p>
-        <div style="position:relative;width:100%;height:200px"><canvas id="cInc" role="img" aria-label="Incidentes críticos por sprint"></canvas></div>
-      </div>
-    </div>
-
-    <!-- Recomendações da IA -->
-    <div class="cc ai-recs-card">
-      <div class="ai-recs-hd">
-        <i class="ti ti-sparkles"></i>
-        <span class="ai-recs-title">💡 Recomendações da IA</span>
-        <span class="ai-recs-meta">Baseadas nas métricas DORA da sprint atual</span>
-      </div>
-      <div id="doraRecsList"></div>
-    </div>
-  </div>
-
-  <!-- Saúde da Qualidade -->
-  <div id="pc" class="fp">
-    <div class="cf-header">
-      <p class="cf-title">Saúde da qualidade</p>
-      <p class="cf-sub">Indicadores de defeitos, retrabalho e eficiência operacional — Sprint a Sprint · 10 métricas consolidadas</p>
-    </div>
-
-    <!-- ── Linha 1: Riscos Imediatos ── -->
-    <div class="kg-section">
-      <div class="kg-label">
-        <span class="kg-dot" id="kgdot-risco">🟢</span>
-        Riscos imediatos
-      </div>
-      <span class="kg-desc">Algum risco exige ação imediata antes do próximo deploy?</span>
-    </div>
-    <div class="kgrid">
-      <div class="kcard cf-clickable" id="cfcard-crit" onclick="openCfDetail('crit')" title="Bugs classificados como Crítico ou Blocker ainda não resolvidos. Meta: 0. Fórmula: ~25–40% dos bugs abertos com retrabalho elevado. Clique para ver detalhes.">
-        <div class="kcard-hd"><p class="klbl">🚨 Bugs Críticos</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('bugcrit')" title="Ver no Glossário">?</button><span id="cfst-crit" class="cfst cfst-warn">—</span></div>
-        <p class="kval" id="cfk-crit">—</p>
-        <p class="kdlt" id="cfd-crit"></p>
-        <div id="cfm-crit"></div>
-      </div>
-      <div class="kcard cf-clickable" id="cfcard-esc" onclick="openCfDetail('esc')" title="Bugs encontrados em produção após o deploy. Meta: 0. Fórmula: floor(Bugs Abertos ÷ 4). Clique para ver detalhes.">
-        <div class="kcard-hd"><p class="klbl">🔥 Defeitos Escapados</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('bprod')" title="Ver no Glossário">?</button><span id="cfst-esc" class="cfst cfst-warn">—</span></div>
-        <p class="kval" id="cfk-esc">—</p>
-        <p class="kdlt" id="cfd-esc"></p>
-        <div id="cfm-esc"></div>
-      </div>
-      <div class="kcard cf-clickable" id="cfcard-bo" onclick="openCfDetail('bo')" title="Total de bugs pendentes ao final da Sprint. Meta: ≤ 3. Clique para ver detalhes.">
-        <div class="kcard-hd"><p class="klbl">🐞 Bugs Abertos</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('bo')" title="Ver no Glossário">?</button><span id="cfst-bo" class="cfst cfst-warn">—</span></div>
-        <p class="kval" id="cfk-bo">—</p>
-        <p class="kdlt" id="cfd-bo"></p>
-        <div id="cfm-bo"></div>
-      </div>
-      <div class="kcard cf-clickable" id="cfcard-reo" onclick="openCfDetail('reo')" title="Bugs reabertos após correção — indicador direto de qualidade das correções. Meta: ≤ 2. Clique para ver detalhes.">
-        <div class="kcard-hd"><p class="klbl">🔄 Bugs Reabertos</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('reo')" title="Ver no Glossário">?</button><span id="cfst-reo" class="cfst cfst-ok">—</span></div>
-        <p class="kval" id="cfk-reo">—</p>
-        <p class="kdlt" id="cfd-reo"></p>
-        <div id="cfm-reo"></div>
-      </div>
-      <div class="kcard cf-clickable" id="cfcard-bc" onclick="openCfDetail('bc')" title="Bugs resolvidos e validados nesta Sprint. Meta: ≥ 8 (quando há backlog). Clique para ver detalhes.">
-        <div class="kcard-hd"><p class="klbl">✅ Bugs Fechados</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('bc')" title="Ver no Glossário">?</button><span id="cfst-bc" class="cfst cfst-ok">—</span></div>
-        <p class="kval" id="cfk-bc">—</p>
-        <p class="kdlt" id="cfd-bc"></p>
-        <div id="cfm-bc"></div>
-      </div>
-    </div>
-
-    <!-- ── Linha 2: Eficiência Operacional ── -->
-    <div class="kg-section">
-      <div class="kg-label">
-        <span class="kg-dot" id="kgdot-eficiencia">🟢</span>
-        Eficiência operacional
-      </div>
-      <span class="kg-desc">O time está resolvendo defeitos em ritmo suficiente para não comprometer a próxima sprint?</span>
-    </div>
-    <!-- Linha 2a — cards de eficiência (4 cards) -->
-    <div class="kgrid">
-      <div class="kcard cf-clickable" id="cfcard-rw" onclick="openCfDetail('rw')" title="% do esforço gasto em correções e refações. Meta: ≤ 10%. Fórmula: Itens reabertos ÷ Total entregues × 100. Clique para ver detalhes.">
-        <div class="kcard-hd"><p class="klbl">♻️ Retrabalho</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('txdef')" title="Ver no Glossário">?</button><span id="cfst-rw" class="cfst cfst-warn">—</span></div>
-        <p class="kval" id="cfk-rw">—</p>
-        <p class="kdlt" id="cfd-rw"></p>
-        <div id="cfm-rw"></div>
-      </div>
-      <div class="kcard cf-clickable" id="cfcard-aging" onclick="openCfDetail('aging')" title="Tempo médio de permanência dos bugs abertos sem resolução. Meta: ≤ 10 dias. Clique para ver detalhes.">
-        <div class="kcard-hd"><p class="klbl">🕒 Bug Aging</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('bugage')" title="Ver no Glossário">?</button><span id="cfst-aging" class="cfst cfst-warn">—</span></div>
-        <p class="kval" id="cfk-aging">—</p>
-        <p class="kdlt" id="cfd-aging"></p>
-        <div id="cfm-aging"></div>
-      </div>
-      <div class="kcard cf-clickable" id="cfcard-res" onclick="openCfDetail('res')" title="Tempo médio entre abertura e encerramento dos bugs. Meta: ≤ 3 dias úteis. Clique para ver detalhes.">
-        <div class="kcard-hd"><p class="klbl">⚡ Tempo de Resolução</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('restime')" title="Ver no Glossário">?</button><span id="cfst-res" class="cfst cfst-warn">—</span></div>
-        <p class="kval" id="cfk-res">—</p>
-        <p class="kdlt" id="cfd-res"></p>
-        <div id="cfm-res"></div>
-      </div>
-      <div class="kcard cf-clickable" id="cfcard-qhs" onclick="openCfDetail('qhs')" title="Índice consolidado de saúde da qualidade (0–100). Ponderação: Bugs Críticos 25%, Escapados 25%, Abertos 20%, Retrabalho 20%, Reabertos 10%. Clique para ver detalhes.">
-        <div class="kcard-hd"><p class="klbl">🎯 Saúde da Qualidade</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('qhs')" title="Ver no Glossário">?</button><span id="cfst-qhs" class="cfst cfst-warn">—</span></div>
-        <p class="cf-qhs-score" id="cfk-qhs">—</p>
-        <p class="kdlt" id="cfd-qhs"></p>
-        <div id="cfm-qhs"></div>
-      </div>
-    </div>
-
-    <!-- Linha 2b — Tendência de Bugs (100% largura) -->
-    <div class="cc" id="cfcard-trend" style="margin-bottom:14px">
-      <div class="cgh">
-        <span class="cgh-dot" id="cgd-bugtrend">🟢</span>
-        <p class="ct">📈 Tendência de Bugs — evolução por sprint</p>
-        <button class="gh-btn" onclick="openMetricDetail('bugtrend')" title="Ver no Glossário" style="margin-left:auto">?</button>
-      </div>
-      <p class="cs">A qualidade está melhorando ou acumulando problemas ao longo das sprints?</p>
-      <p class="kdlt" id="cfd-trend" style="font-size:11px;margin:0 0 8px;font-weight:500"></p>
-      <div class="leg" id="cftrend-leg"></div>
-      <div style="position:relative;width:100%;height:260px;margin-top:6px">
-        <canvas id="cCfTrend" role="img" aria-label="Tendência de bugs por sprint"></canvas>
-      </div>
-      <div id="cfm-trend" style="margin-top:8px"></div>
-    </div>
-
-    <!-- ── 📊 Evolução + 📍 Distribuição por Ambiente ── -->
-    <div class="g2" style="margin-bottom:12px">
-      <div class="cc">
-        <div class="cgh"><span class="cgh-dot" id="cgd-fa">🟢</span><p class="ct">📊 Evolução sprint a sprint</p></div>
-        <p class="cs">Bugs abertos, fechados e retrabalho ao longo das últimas sprints.</p>
-        <div class="leg">
-          <span><b style="background:#dc2626"></b> Bugs abertos</span>
-          <span><b style="background:#059669"></b> Bugs fechados</span>
-          <span><b style="background:#d97706"></b> Retrabalho (%) — eixo dir.</span>
+        <div class="dc-x" title="MTTR: tempo médio de recuperação após falha em produção. Quanto menor, melhor.">
+          <button class="gh-btn dc-help" onclick="openMetricDetail('mttr')" title="Ver no Glossário">?</button>
+          <div class="dc-x-sig-row">
+            <span class="dc-x-sig">MTTR</span>
+            <span class="dc-x-dir">↓ Quanto menor, melhor</span>
+          </div>
+          <p class="dc-x-name">Mean Time to Recovery</p>
+          <p class="dc-x-namept">Tempo Médio de Recuperação</p>
+          <p class="dc-x-val" id="d3">—</p>
+          <p class="dc-x-delta" id="ddelta3">—</p>
+          <div id="dmeta3"></div>
+          <span class="tier" id="dt3">—</span>
         </div>
-        <div style="position:relative;width:100%;height:220px"><canvas id="cFa"></canvas></div>
+
+        <div class="dc-x" title="Reliability: índice de confiabilidade operacional 0–100. Combina CFR e MTTR. Quanto maior, melhor.">
+          <button class="gh-btn dc-help" onclick="openMetricDetail('reliability')" title="Ver no Glossário">?</button>
+          <div class="dc-x-sig-row">
+            <span class="dc-x-sig">REL</span>
+            <span class="dc-x-dir">↑ Quanto maior, melhor</span>
+          </div>
+          <p class="dc-x-name">Reliability</p>
+          <p class="dc-x-namept">Confiabilidade Operacional</p>
+          <p class="dc-x-val" id="d4">—</p>
+          <p class="dc-x-delta" id="ddelta4">—</p>
+          <div id="dmeta4"></div>
+          <span class="tier" id="dt4">—</span>
+        </div>
+
       </div>
-      <div class="cc">
-        <p class="ct">📍 Distribuição por Ambiente</p>
-        <p class="cs">Em que etapa os defeitos estão sendo encontrados</p>
-        <div id="cfOrigin"></div>
+
+      <!-- Benchmark DORA — visual com faixas por tier -->
+      <div class="cc" style="margin-bottom:14px">
+        <div class="cgh" style="margin-bottom:6px">
+          <span class="cgh-dot" id="cgd-do">🟢</span>
+          <p class="ct">Classificação DORA — Benchmark de Mercado</p>
+        </div>
+        <p class="cs">Compare o desempenho atual da equipe com faixas de referência amplamente utilizadas pelo modelo DORA. Essas classificações ajudam a identificar oportunidades de evolução na velocidade, estabilidade e confiabilidade das entregas.</p>
+        <div id="doraBands"></div>
       </div>
+
+      <!-- 1.2 Métricas de velocidade -->
+      <div class="kg-section">
+        <div class="kg-label">
+          <span class="kg-dot" id="kgdot-pd-vel">🟢</span>
+          Métricas de velocidade
+        </div>
+        <span class="kg-desc">O time entrega mudanças com frequência e fluidez suficientes?</span>
+      </div>
+      <div class="g2" style="margin-bottom:14px">
+        <div class="cc">
+          <div class="cgh"><span class="cgh-dot" id="cgd-df">🟢</span><p class="ct">Deployment Frequency (DF)</p></div>
+          <p class="cs">Quanto maior e mais sustentável, melhor — maturidade DevOps e ciclos de entrega curtos.</p>
+          <div style="position:relative;width:100%;height:200px"><canvas id="cDf" role="img" aria-label="Deployment Frequency por sprint"></canvas></div>
+        </div>
+        <div class="cc">
+          <div class="cgh"><span class="cgh-dot" id="cgd-ltc">🟢</span><p class="ct">Lead Time for Changes (LTC)</p></div>
+          <p class="cs">Quanto menor, mais rápido o valor chega ao usuário — eficiência do pipeline CI/CD.</p>
+          <div style="position:relative;width:100%;height:200px"><canvas id="cLtc" role="img" aria-label="Lead Time for Changes por sprint"></canvas></div>
+        </div>
+      </div>
+
+      <!-- 1.3 Estabilidade e qualidade -->
+      <div class="kg-section">
+        <div class="kg-label">
+          <span class="kg-dot" id="kgdot-pd-stab">🟢</span>
+          Estabilidade e qualidade
+        </div>
+        <span class="kg-desc">A velocidade de entrega está sendo sustentada com qualidade?</span>
+      </div>
+      <div class="g2" style="margin-bottom:14px">
+        <div class="cc">
+          <div class="cgh"><span class="cgh-dot" id="cgd-cfr">🟢</span><p class="ct">Change Failure Rate (CFR)</p></div>
+          <p class="cs">Quanto menor, mais confiável o processo de deploy — picos indicam qualidade comprometida.</p>
+          <div style="position:relative;width:100%;height:200px"><canvas id="cCfr" role="img" aria-label="Change Failure Rate por sprint"></canvas></div>
+        </div>
+        <div class="cc">
+          <div class="cgh"><span class="cgh-dot" id="cgd-mttr">🟢</span><p class="ct">Mean Time to Recovery (MTTR)</p></div>
+          <p class="cs">Quanto menor, maior a resiliência — capacidade do time de responder a incidentes rapidamente.</p>
+          <div style="position:relative;width:100%;height:200px"><canvas id="cMttrD" role="img" aria-label="MTTR por sprint"></canvas></div>
+        </div>
+      </div>
+
+      <!-- 1.4 Confiabilidade operacional -->
+      <div class="kg-section">
+        <div class="kg-label">
+          <span class="kg-dot" id="kgdot-pd-rel">🟢</span>
+          Confiabilidade operacional
+        </div>
+        <span class="kg-desc">A operação permanece estável mesmo com o aumento da frequência de deploys?</span>
+      </div>
+      <div class="g2" style="margin-bottom:14px">
+        <div class="cc">
+          <div class="cgh"><span class="cgh-dot" id="cgd-rel">🟢</span><p class="ct">Reliability — confiabilidade operacional</p></div>
+          <p class="cs">Score 0–100 que combina estabilidade e disponibilidade — quanto maior, mais confiável a operação.</p>
+          <div style="position:relative;width:100%;height:200px"><canvas id="cRel" role="img" aria-label="Reliability por sprint"></canvas></div>
+        </div>
+        <div class="cc">
+          <div class="cgh"><span class="cgh-dot" id="cgd-inc">🟢</span><p class="ct">Incidentes críticos por sprint</p></div>
+          <p class="cs">Incidentes críticos vinculados a deploys — ideal é zero ou tendência decrescente.</p>
+          <div style="position:relative;width:100%;height:200px"><canvas id="cInc" role="img" aria-label="Incidentes críticos por sprint"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Pontos de atenção — DORA -->
+      <div class="cc ai-recs-card">
+        <div class="ai-recs-hd">
+          <i class="ti ti-alert-circle"></i>
+          <span class="ai-recs-title">Pontos de atenção</span>
+          <span class="ai-recs-meta">Com base nas métricas DORA desta sprint</span>
+        </div>
+        <div id="doraRecsList"></div>
+      </div>
+
     </div>
 
-    <!-- ── 🤖 Insights + ✅ Plano de Ação ── -->
-    <div class="g2">
-      <div class="cc">
-        <p class="ct">🤖 Insights Automáticos da IA</p>
-        <p class="cs">Análise inteligente gerada com base nos indicadores da Sprint</p>
-        <div id="cfCauses"></div>
-      </div>
-      <div class="cc">
-        <p class="ct">✅ Plano de Ação Recomendado</p>
-        <p class="cs">Ações priorizadas para a próxima Sprint</p>
-        <div id="cfActions"></div>
-      </div>
-    </div>
+    <!-- Sub-painel 3: Qualidade -->
+    <div id="eq-quality" class="eqp">
 
-    <!-- Recomendações da IA -->
-    <div class="cc ai-recs-card">
-      <div class="ai-recs-hd">
-        <i class="ti ti-sparkles"></i>
-        <span class="ai-recs-title">💡 Recomendações da IA</span>
-        <span class="ai-recs-meta">Baseadas nos indicadores de qualidade da sprint atual</span>
+      <!-- ── Riscos Imediatos ── -->
+      <div class="kg-section">
+        <div class="kg-label">
+          <span class="kg-dot" id="kgdot-risco">🟢</span>
+          Riscos imediatos
+        </div>
+        <span class="kg-desc">Algum risco exige ação imediata antes do próximo deploy?</span>
       </div>
-      <div id="qualityRecsList"></div>
+      <div class="kgrid">
+        <div class="kcard cf-clickable" id="cfcard-crit" onclick="openCfDetail('crit')" title="Bugs classificados como Crítico ou Blocker ainda não resolvidos. Meta: 0. Fórmula: ~25–40% dos bugs abertos com retrabalho elevado. Clique para ver detalhes.">
+          <div class="kcard-hd"><p class="klbl"><i class="ti ti-alert-triangle"></i> Bugs Críticos</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('bugcrit')" title="Ver no Glossário">?</button><span id="cfst-crit" class="cfst cfst-warn">—</span></div>
+          <p class="kval" id="cfk-crit">—</p>
+          <p class="kdlt" id="cfd-crit"></p>
+          <div id="cfm-crit"></div>
+        </div>
+        <div class="kcard cf-clickable" id="cfcard-esc" onclick="openCfDetail('esc')" title="Bugs encontrados em produção após o deploy. Meta: 0. Fórmula: floor(Bugs Abertos ÷ 4). Clique para ver detalhes.">
+          <div class="kcard-hd"><p class="klbl"><i class="ti ti-bug-off"></i> Defeitos Escapados</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('bprod')" title="Ver no Glossário">?</button><span id="cfst-esc" class="cfst cfst-warn">—</span></div>
+          <p class="kval" id="cfk-esc">—</p>
+          <p class="kdlt" id="cfd-esc"></p>
+          <div id="cfm-esc"></div>
+        </div>
+        <div class="kcard cf-clickable" id="cfcard-bo" onclick="openCfDetail('bo')" title="Total de bugs pendentes ao final da Sprint. Meta: ≤ 3. Clique para ver detalhes.">
+          <div class="kcard-hd"><p class="klbl"><i class="ti ti-bug"></i> Bugs Abertos</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('bo')" title="Ver no Glossário">?</button><span id="cfst-bo" class="cfst cfst-warn">—</span></div>
+          <p class="kval" id="cfk-bo">—</p>
+          <p class="kdlt" id="cfd-bo"></p>
+          <div id="cfm-bo"></div>
+        </div>
+        <div class="kcard cf-clickable" id="cfcard-reo" onclick="openCfDetail('reo')" title="Bugs reabertos após correção — indicador direto de qualidade das correções. Meta: ≤ 2. Clique para ver detalhes.">
+          <div class="kcard-hd"><p class="klbl"><i class="ti ti-refresh"></i> Bugs Reabertos</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('reo')" title="Ver no Glossário">?</button><span id="cfst-reo" class="cfst cfst-ok">—</span></div>
+          <p class="kval" id="cfk-reo">—</p>
+          <p class="kdlt" id="cfd-reo"></p>
+          <div id="cfm-reo"></div>
+        </div>
+        <div class="kcard cf-clickable" id="cfcard-bc" onclick="openCfDetail('bc')" title="Bugs resolvidos e validados nesta Sprint. Meta: ≥ 8 (quando há backlog). Clique para ver detalhes.">
+          <div class="kcard-hd"><p class="klbl"><i class="ti ti-check"></i> Bugs Fechados</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('bc')" title="Ver no Glossário">?</button><span id="cfst-bc" class="cfst cfst-ok">—</span></div>
+          <p class="kval" id="cfk-bc">—</p>
+          <p class="kdlt" id="cfd-bc"></p>
+          <div id="cfm-bc"></div>
+        </div>
+      </div>
+
+      <!-- ── Eficiência Operacional ── -->
+      <div class="kg-section">
+        <div class="kg-label">
+          <span class="kg-dot" id="kgdot-eficiencia">🟢</span>
+          Eficiência operacional
+        </div>
+        <span class="kg-desc">O time está resolvendo defeitos em ritmo suficiente para não comprometer a próxima sprint?</span>
+      </div>
+      <div class="kgrid">
+        <div class="kcard cf-clickable" id="cfcard-rw" onclick="openCfDetail('rw')" title="% do esforço gasto em correções e refações. Meta: ≤ 10%. Fórmula: Itens reabertos ÷ Total entregues × 100. Clique para ver detalhes.">
+          <div class="kcard-hd"><p class="klbl"><i class="ti ti-arrows-exchange"></i> Retrabalho</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('txdef')" title="Ver no Glossário">?</button><span id="cfst-rw" class="cfst cfst-warn">—</span></div>
+          <p class="kval" id="cfk-rw">—</p>
+          <p class="kdlt" id="cfd-rw"></p>
+          <div id="cfm-rw"></div>
+        </div>
+        <div class="kcard cf-clickable" id="cfcard-aging" onclick="openCfDetail('aging')" title="Tempo médio de permanência dos bugs abertos sem resolução. Meta: ≤ 10 dias. Clique para ver detalhes.">
+          <div class="kcard-hd"><p class="klbl"><i class="ti ti-clock"></i> Bug Aging</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('bugage')" title="Ver no Glossário">?</button><span id="cfst-aging" class="cfst cfst-warn">—</span></div>
+          <p class="kval" id="cfk-aging">—</p>
+          <p class="kdlt" id="cfd-aging"></p>
+          <div id="cfm-aging"></div>
+        </div>
+        <div class="kcard cf-clickable" id="cfcard-res" onclick="openCfDetail('res')" title="Tempo médio entre abertura e encerramento dos bugs. Meta: ≤ 3 dias úteis. Clique para ver detalhes.">
+          <div class="kcard-hd"><p class="klbl"><i class="ti ti-bolt"></i> Tempo de Resolução</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('restime')" title="Ver no Glossário">?</button><span id="cfst-res" class="cfst cfst-warn">—</span></div>
+          <p class="kval" id="cfk-res">—</p>
+          <p class="kdlt" id="cfd-res"></p>
+          <div id="cfm-res"></div>
+        </div>
+        <div class="kcard cf-clickable" id="cfcard-qhs" onclick="openCfDetail('qhs')" title="Índice consolidado de saúde da qualidade (0–100). Ponderação: Bugs Críticos 25%, Escapados 25%, Abertos 20%, Retrabalho 20%, Reabertos 10%. Clique para ver detalhes.">
+          <div class="kcard-hd"><p class="klbl"><i class="ti ti-shield-check"></i> Saúde da Qualidade</p><button class="gh-btn" onclick="event.stopPropagation();openMetricDetail('qhs')" title="Ver no Glossário">?</button><span id="cfst-qhs" class="cfst cfst-warn">—</span></div>
+          <p class="cf-qhs-score" id="cfk-qhs">—</p>
+          <p class="kdlt" id="cfd-qhs"></p>
+          <div id="cfm-qhs"></div>
+        </div>
+      </div>
+
+      <!-- Tendência de Bugs (100% largura) -->
+      <div class="cc" id="cfcard-trend" style="margin-bottom:14px">
+        <div class="cgh">
+          <span class="cgh-dot" id="cgd-bugtrend">🟢</span>
+          <p class="ct">Tendência de Bugs — evolução por sprint</p>
+          <button class="gh-btn" onclick="openMetricDetail('bugtrend')" title="Ver no Glossário" style="margin-left:auto">?</button>
+        </div>
+        <p class="cs">A qualidade está melhorando ou acumulando problemas ao longo das sprints?</p>
+        <p class="kdlt" id="cfd-trend" style="font-size:11px;margin:0 0 8px;font-weight:500"></p>
+        <div class="leg" id="cftrend-leg"></div>
+        <div style="position:relative;width:100%;height:260px;margin-top:6px">
+          <canvas id="cCfTrend" role="img" aria-label="Tendência de bugs por sprint"></canvas>
+        </div>
+        <div id="cfm-trend" style="margin-top:8px"></div>
+      </div>
+
+      <!-- Evolução + Distribuição por Ambiente -->
+      <div class="g2" style="margin-bottom:12px">
+        <div class="cc">
+          <div class="cgh"><span class="cgh-dot" id="cgd-fa">🟢</span><p class="ct">Evolução sprint a sprint</p></div>
+          <p class="cs">Bugs abertos, fechados e retrabalho ao longo das últimas sprints.</p>
+          <div class="leg">
+            <span><b style="background:#dc2626"></b> Bugs abertos</span>
+            <span><b style="background:#059669"></b> Bugs fechados</span>
+            <span><b style="background:#d97706"></b> Retrabalho (%) — eixo dir.</span>
+          </div>
+          <div style="position:relative;width:100%;height:220px"><canvas id="cFa"></canvas></div>
+        </div>
+        <div class="cc">
+          <p class="ct">Distribuição por Ambiente</p>
+          <p class="cs">Em que etapa os defeitos estão sendo encontrados</p>
+          <div id="cfOrigin"></div>
+        </div>
+      </div>
+
+      <!-- Análise dos indicadores + Próximas ações -->
+      <div class="g2">
+        <div class="cc">
+          <p class="ct">Análise dos indicadores</p>
+          <p class="cs">Padrões identificados nos dados desta sprint</p>
+          <div id="cfCauses"></div>
+        </div>
+        <div class="cc">
+          <p class="ct">Próximas ações</p>
+          <p class="cs">Ações priorizadas para a próxima Sprint</p>
+          <div id="cfActions"></div>
+        </div>
+      </div>
+
+      <!-- Pontos de atenção — Qualidade -->
+      <div class="cc ai-recs-card">
+        <div class="ai-recs-hd">
+          <i class="ti ti-alert-circle"></i>
+          <span class="ai-recs-title">Pontos de atenção</span>
+          <span class="ai-recs-meta">Com base nos indicadores de qualidade desta sprint</span>
+        </div>
+        <div id="qualityRecsList"></div>
+      </div>
+
     </div>
   </div>
 
@@ -2248,7 +2282,7 @@ const SPRINT_DATES={
   Q3:['19/06–02/07','03/07–16/07','17/07–30/07','31/07–13/08','14/08–27/08','28/08–10/09'],
   Q4:['11/09–24/09','25/09–08/10','09/10–22/10','23/10–05/11','06/11–19/11','20/11–03/12'],
 };
-const METAS={p85:20,tp:17,vl:55,pct:90,tr:1,bo:3,bc:8,reo:2,res:3,wip:9,aging:2};
+const METAS={p85:20,tp:17,vl:55,pct:90,tr:1,bo:3,bc:8,reo:2,res:3,wip:9,aging:2,cfr:10};
 
 let ch={};
 let _mtCh={};
@@ -2448,6 +2482,7 @@ function upd(){
   // ── Outras abas ───────────────────────────────────────────
   renderDora();
   renderCargaFalhas();
+  renderEqOverview();
   if(document.getElementById('pm').classList.contains('on')) renderMultiTeam();
   if(document.getElementById('pf').classList.contains('on')) renderFlowMetrics();
   drawCharts();
@@ -2589,8 +2624,8 @@ function drawCharts(){
   ch['cy']=new Chart(document.getElementById('cCy'),{type:'bar',data:{labels:ctLabels,datasets:[{data:ctTimes,backgroundColor:ctBg,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y}d${ctx.dataIndex===ctMax?' ← gargalo':''}`}}},scales:{y:{title:{display:true,text:'dias',font:{size:11}},grid:{color:'#f3f4f6'}}}}});
   // Throughput with meta line
   ch['th']=new Chart(document.getElementById('cTh'),{type:'line',data:{labels:sp,datasets:[{label:'Entregue',data:d.en,borderColor:'#185FA5',backgroundColor:'rgba(24,95,165,.08)',fill:true,tension:.35,pointRadius:5,pointBackgroundColor:'#185FA5'},{label:`Meta (${METAS.tp})`,data:Array(sp.length).fill(METAS.tp),borderColor:'#059669',borderDash:[5,4],backgroundColor:'transparent',pointRadius:0,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:10,font:{size:11},padding:12}}},scales:{y:{beginAtZero:false,grid:{color:'#f3f4f6'}}}}});
-  if(document.getElementById('pd').classList.contains('on')) renderDoraCharts(d,q);
-  if(document.getElementById('pc').classList.contains('on')) drawCfaChart(d);
+  if(document.getElementById('eq-dora').classList.contains('on')) renderDoraCharts(d,q);
+  if(document.getElementById('eq-quality').classList.contains('on')){drawCfaChart(d);drawCfTrendSparkline(d,gi());}
   drawCFD(d,gi());
 }
 
@@ -3148,8 +3183,7 @@ function tab(el,id){
   if(id==='r') renderQuarterReport();
   if(id==='m') renderMultiTeam();
   if(id==='f') renderFlowMetrics();
-  if(id==='d') renderDora();
-  if(id==='c') renderCargaFalhas();
+  if(id==='eq') eqTab(document.querySelector('#peq .eq-tab'),'eq-saude');
   if(id==='cal') renderCalendario();
   if(id==='g') renderGlossario();
   if(id==='as') renderAcompanhamento();
@@ -3170,6 +3204,65 @@ function asTab(el,id){
   document.querySelectorAll('.asp').forEach(p=>p.classList.remove('on'));
   document.getElementById(id).classList.add('on');
   if(id==='as-bd') drawBurndownBurnup();
+}
+
+function eqTab(el,id){
+  document.querySelectorAll('#peq .eq-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('#peq .eqp').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  if(id==='eq-dora') renderDora();
+  if(id==='eq-quality') renderCargaFalhas();
+  if(id==='eq-saude') renderEqOverview();
+}
+
+function renderEqOverview(){
+  const q=gq(),d=gd()[q],i=gi(),p=Math.max(0,i-1);
+  const el=document.getElementById('eq-ov-content');
+  if(!el) return;
+  const rel=calcReliability(d,i),relP=calcReliability(d,p),relTier=doraClassify(rel,'rel');
+  const qhs=cfQhs(d,i),qhsP=cfQhs(d,p);
+  const crit=cfCritical(d,i),esc=cfEscaped(d,i);
+  const pl=n=>n>1?'s':'';
+  // delta no mesmo formato dos cards da aba DORA (renderDora)
+  const dlt=(cur,prv,better)=>{
+    if(i===0) return '<span style="color:#9ca3af">Sprint inicial</span>';
+    const dd=cur-prv,pct=prv>0?Math.round(Math.abs(dd)/prv*100):0,good=better?(dd>=0):(dd<=0);
+    return `<span style="color:${dd===0?'#9ca3af':good?'#059669':'#dc2626'}">${(dd>0?'↑ +':'↓ ')+pct}% vs S${i}</span>`;
+  };
+  const card=(sig,name,val,unit,delta,t)=>`<div class="eq-kpi-card"><div class="eq-kpi-lbl">${sig}</div><div class="eq-kpi-name">${name}</div><div class="eq-kpi-val">${val}<span class="eq-score-unit">${unit}</span></div><div class="eq-kpi-delta">${delta}</div><span class="tier ${t.c}">${t.l}</span></div>`;
+  const dora=(sig,name,key,fix,unit,better)=>card(sig,name,d[key][i].toFixed(fix),unit,dlt(d[key][i],d[key][p],better),doraClassify(d[key][i],key));
+
+  const qSt=qhsStatus(qhs),qhsCls=qSt.c.replace('cfst-','cf-qhs-'),qd=qhs-qhsP;
+  const qhsDelta=(i===0||qd===0)?'<span style="color:#9ca3af">—</span>':`<span style="color:${qd>0?'#059669':'#dc2626'}">${qd>0?'▲ +':'▼ '}${Math.abs(qd)} pts vs anterior</span>`;
+
+  // Pontos de atenção — mesmos sinais e faixas das abas DORA e Qualidade (METAS.cfr, cfZeroStatus, qhsStatus, doraClassify)
+  const att=[],critSt=cfZeroStatus(crit),escSt=cfZeroStatus(esc);
+  if(d.cf[i]>METAS.cfr) att.push({bad:doraClassify(d.cf[i],'cf').c==='t-low',txt:`Change Failure Rate em ${d.cf[i].toFixed(1)}% — acima da meta de ${METAS.cfr}%.`});
+  if(critSt.c!=='cfst-ok') att.push({bad:critSt.c==='cfst-bad',txt:`${crit} bug${pl(crit)} crítico${pl(crit)} em aberto.`});
+  if(escSt.c!=='cfst-ok') att.push({bad:escSt.c==='cfst-bad',txt:`${esc} defeito${pl(esc)} escapado${pl(esc)} para produção.`});
+  if(qSt.c!=='cfst-ok') att.push({bad:qSt.c==='cfst-bad',txt:`QHS em ${qhs}/100 — qualidade em estado ${qSt.c==='cfst-bad'?'crítico':'de atenção'}.`});
+  if(relTier.c==='t-med'||relTier.c==='t-low') att.push({bad:relTier.c==='t-low',txt:`Reliability em ${rel} pts — abaixo do esperado (nível ${relTier.l}).`});
+
+  // Tendência — somente observações factuais, sem inferir causalidade
+  const obs=[];
+  if(i>0){
+    const NM={df:'Deployment Frequency',lc:'Lead Time for Changes',cf:'Change Failure Rate',mt:'MTTR'};
+    const up=[],dn=[];
+    Object.keys(NM).forEach(k=>{const dd=d[k][i]-d[k][p]; if(dd>0) up.push(NM[k]); else if(dd<0) dn.push(NM[k]);});
+    const lst=a=>a.length>1?a.slice(0,-1).join(', ')+' e '+a[a.length-1]:a[0];
+    if(up.length) obs.push(`${lst(up)} ${up.length>1?'aumentaram':'aumentou'} em relação à sprint anterior.`);
+    if(dn.length) obs.push(`${lst(dn)} ${dn.length>1?'diminuíram':'diminuiu'} em relação à sprint anterior.`);
+    if(d.bo[i]!==d.bo[p]) obs.push(`Bugs abertos ${d.bo[i]>d.bo[p]?'aumentaram':'diminuíram'} em relação à sprint anterior (${d.bo[p]} → ${d.bo[i]}).`);
+  }
+
+  el.innerHTML=
+    `<div class="kg-section"><div class="kg-label">Entrega</div><span class="kg-desc">Como estamos entregando?</span></div>
+    <div class="eq-kpi-4">${dora('DF','Deployment Frequency','df',1,'/sem',true)}${dora('LTC','Lead Time for Changes','lc',1,'d',false)}${dora('CFR','Change Failure Rate','cf',1,'%',false)}${dora('MTTR','Mean Time to Recovery','mt',1,'h',false)}</div>
+    <div class="kg-section"><div class="kg-label">Estabilidade &amp; Qualidade</div><span class="kg-desc">Quão estável está a entrega e como está a qualidade? Reliability e QHS medem aspectos diferentes e não são combinados.</span></div>
+    <div class="eq-2col">${card('Reliability','Estabilidade operacional — combina CFR e MTTR',rel,' pts',dlt(rel,relP,true),relTier)}<div class="eq-kpi-card"><div class="eq-kpi-lbl">QHS</div><div class="eq-kpi-name">Saúde da qualidade — bugs, escapados e retrabalho</div><div class="eq-kpi-val"><span class="${qhsCls}">${qhs}</span><span class="eq-score-unit">/100</span></div><div class="eq-kpi-delta">${qhsDelta}</div><span class="cfst ${qSt.c}">${qSt.t}</span></div></div>`+
+    (att.length?`<div class="cc ai-recs-card"><div class="ai-recs-hd"><i class="ti ti-alert-circle"></i><span class="ai-recs-title">Pontos de atenção</span><span class="ai-recs-meta">Onde existe risco e qual indicador merece investigação</span></div>${att.map(a=>`<div class="ai-rec ${a.bad?'rec-bad':'rec-warn'}"><span class="ai-rec-ico">${a.bad?'🔴':'🟡'}</span><span>${a.txt}</span></div>`).join('')}</div>`:'')+
+    (obs.length?`<div class="eq-trend"><div class="eq-trend-hd"><i class="ti ti-trending-up"></i> Tendência</div>${obs.map(o=>`<div class="eq-trend-item">${o}</div>`).join('')}</div>`:'');
 }
 
 function openAux(id){
@@ -4836,7 +4929,7 @@ function renderDora(){
   const metrics=[
     {target:2,  label:'Meta ≥ 2/sem', better:true,  type:'df',  val:d.df[i],  prv:d.df[p],  fmt:v=>v.toFixed(1)+'/sem'},
     {target:3,  label:'Meta ≤ 3d',    better:false, type:'lc',  val:d.lc[i],  prv:d.lc[p],  fmt:v=>v.toFixed(1)+'d'},
-    {target:10, label:'Meta ≤ 10%',   better:false, type:'cf',  val:d.cf[i],  prv:d.cf[p],  fmt:v=>v.toFixed(1)+'%'},
+    {target:METAS.cfr, label:'Meta ≤ '+METAS.cfr+'%', better:false, type:'cf',  val:d.cf[i],  prv:d.cf[p],  fmt:v=>v.toFixed(1)+'%'},
     {target:4,  label:'Meta ≤ 4h',    better:false, type:'mt',  val:d.mt[i],  prv:d.mt[p],  fmt:v=>v.toFixed(1)+'h'},
     {target:90, label:'Meta ≥ 90',    better:true,  type:'rel', val:rel,       prv:relPrv,   fmt:v=>v+' pts'}
   ];
@@ -4917,7 +5010,7 @@ function renderDoraRecs(d,i,metrics){
   if(ltc.emoji==='🔴') recs.push({cls:'rec-bad',ico:'🔴',txt:`Lead Time for Changes de ${ltc.val.toFixed(1)}d está muito acima da meta — revise a fila de code review e os gates manuais de aprovação.`});
   else if(ltc.emoji==='🟡') recs.push({cls:'rec-warn',ico:'🟡',txt:`Lead Time for Changes de ${ltc.val.toFixed(1)}d próximo do limite — monitore o tempo de revisão de código nas próximas sprints.`});
 
-  if(cfr.emoji==='🟢' && df.emoji!=='🔴') recs.push({cls:'rec-info',ico:'💡',txt:`A baixa Change Failure Rate (${cfr.val.toFixed(1)}%) permite considerar uma estratégia de entregas mais frequentes, mantendo o equilíbrio entre velocidade e estabilidade.`});
+  if(cfr.emoji==='🟢' && df.emoji!=='🔴') recs.push({cls:'rec-info',ico:'',txt:`A baixa Change Failure Rate (${cfr.val.toFixed(1)}%) permite considerar uma estratégia de entregas mais frequentes, mantendo o equilíbrio entre velocidade e estabilidade.`});
   else if(cfr.emoji==='🔴') recs.push({cls:'rec-bad',ico:'🔴',txt:`Change Failure Rate de ${cfr.val.toFixed(1)}% está acima do tolerável — reforce testes automatizados e critérios de qualidade antes do deploy.`});
   else if(cfr.emoji==='🟡') recs.push({cls:'rec-warn',ico:'🟡',txt:`Change Failure Rate de ${cfr.val.toFixed(1)}% pede atenção — avalie feature flags ou canary release para reduzir o risco por deploy.`});
 
@@ -5111,7 +5204,7 @@ function renderDoraBands(d,i){
   document.getElementById('doraBands').innerHTML=
     bandsHtml+
     legend+
-    `<div class="db-reading"><p class="db-reading-title">📊 Leitura do Benchmark</p>${readingRows}<div class="db-conclusion">${conclusion}</div></div>`+
+    `<div class="db-reading"><p class="db-reading-title">Leitura do Benchmark</p>${readingRows}<div class="db-conclusion">${conclusion}</div></div>`+
     footer+
     notice;
 }
@@ -5133,7 +5226,7 @@ function renderDoraCharts(d,q){
 
   mkLine('cDf',   'Deployment Frequency (DF)',    d.df, '#185FA5', 2,  'Meta ≥ 2',   'deploys/sem');
   mkLine('cLtc',  'Lead Time for Changes (LTC)', d.lc, '#059669', 3,  'Meta ≤ 3d',  'dias');
-  mkLine('cCfr',  'Change Failure Rate (CFR)',   d.cf, '#dc2626', 10, 'Meta ≤ 10%', '%');
+  mkLine('cCfr',  'Change Failure Rate (CFR)',   d.cf, '#dc2626', METAS.cfr, 'Meta ≤ '+METAS.cfr+'%', '%');
   mkLine('cMttrD','Mean Time to Recovery (MTTR)',d.mt, '#7c3aed', 4,  'Meta ≤ 4h',  'horas');
   mkLine('cRel',  'Reliability (pts)',       relData,'#0891b2',90,'Meta ≥ 90',  'pts (0–100)');
 
@@ -5389,6 +5482,9 @@ function cfQhs(d,i){
   const s5=reo===0?100:reo<=2?70:40;
   return Math.round(s1*0.20+s2*0.25+s3*0.20+s4*0.25+s5*0.10);
 }
+// Faixas de status da Qualidade — fonte única de renderCargaFalhas() e renderEqOverview()
+function qhsStatus(v){return v>=80?{t:'Saudável',c:'cfst-ok'}:v>=60?{t:'Atenção',c:'cfst-warn'}:{t:'Crítico',c:'cfst-bad'};}
+function cfZeroStatus(v){return v===0?{t:'Saudável',c:'cfst-ok'}:v===1?{t:'Atenção',c:'cfst-warn'}:{t:'Crítico',c:'cfst-bad'};}
 
 // ── helper genérico de card para Carga de Falhas ─────────────────
 function cfCard(id,val,prv,unit,better,metaLbl,metaPct,statusFn,si){
@@ -5505,11 +5601,11 @@ function renderCargaFalhas(){
 
   cfCard('crit', crit, critP, '', false, 'Meta = 0',
     v=>v===0?100:Math.max(0,100-v*30),
-    v=>v===0?{t:'Saudável',c:'cfst-ok'}:v===1?{t:'Atenção',c:'cfst-warn'}:{t:'Crítico',c:'cfst-bad'}, i);
+    cfZeroStatus, i);
 
   cfCard('esc', esc,   escP,  '', false, 'Meta = 0',
     v=>v===0?100:Math.max(0,100-v*25),
-    v=>v===0?{t:'Saudável',c:'cfst-ok'}:v===1?{t:'Atenção',c:'cfst-warn'}:{t:'Crítico',c:'cfst-bad'}, i);
+    cfZeroStatus, i);
 
   cfCard('reo', reo,   reoP,  '', false, 'Meta ≤ 2',
     v=>v<=2?100:Math.round(2/v*100),
@@ -5533,18 +5629,18 @@ function renderCargaFalhas(){
 
   // Saúde Geral da Qualidade — score colorido
   const qhsEl=document.getElementById('cfk-qhs');
-  const qhsCls=qhs>=80?'cf-qhs-ok':qhs>=60?'cf-qhs-warn':'cf-qhs-bad';
+  const qhsSt=qhsStatus(qhs);
+  const qhsCls=qhsSt.c.replace('cfst-','cf-qhs-');
   qhsEl.textContent=qhs+'/100'; qhsEl.className='cf-qhs-score '+qhsCls;
   const qhsDelta=qhs-qhsP;
   const qhsDEl=document.getElementById('cfd-qhs');
   if(i===0||qhsDelta===0){qhsDEl.textContent='—';qhsDEl.style.color='#9ca3af';}
   else{qhsDEl.textContent=(qhsDelta>0?'▲ +':'▼ ')+Math.abs(qhsDelta)+' pts vs anterior';qhsDEl.style.color=qhsDelta>0?'#059669':'#dc2626';}
-  const qhsSt=qhs>=80?{t:'Saudável',c:'cfst-ok'}:qhs>=60?{t:'Atenção',c:'cfst-warn'}:{t:'Crítico',c:'cfst-bad'};
   const qhsStEl=document.getElementById('cfst-qhs');
   qhsStEl.textContent=qhsSt.t; qhsStEl.className='cfst '+qhsSt.c;
   document.getElementById('cfcard-qhs').className='kcard '+(qhsSt.c==='cfst-ok'?'kc-ok':qhsSt.c==='cfst-warn'?'kc-warn':'kc-bad');
   const qhsPct=qhs;
-  const qhsMc=qhsPct>=80?'#059669':qhsPct>=60?'#d97706':'#dc2626';
+  const qhsMc=qhsSt.c==='cfst-ok'?'#059669':qhsSt.c==='cfst-warn'?'#d97706':'#dc2626';
   document.getElementById('cfm-qhs').innerHTML=`<div class="dmeta-row"><span>Índice de qualidade</span><span style="font-weight:600;color:${qhsMc}">${qhsPct}%</span></div><div class="dmeta-track"><div class="dmeta-fill" style="width:${qhsPct}%;background:${qhsMc}"></div></div>`;
 
   updateCfGroupDots();
@@ -5552,7 +5648,7 @@ function renderCargaFalhas(){
   renderCfOrigin(d,i,esc);
   renderCfCauses(d,i,esc,reo,crit,aging,res);
   renderCfActions(d,i,esc,reo,crit,aging,res,qhs);
-  if(document.getElementById('pc').classList.contains('on')){
+  if(document.getElementById('eq-quality').classList.contains('on')){
     drawCfaChart(d);
     drawCfTrendSparkline(d,i);
   }
@@ -5574,7 +5670,7 @@ function renderQualityRecs(d,i,esc,reo,crit,aging,res,qhs){
   if(aging>10) recs.push({cls:'rec-bad',ico:'🔴',txt:`Bug Aging de ${aging}d está crítico — bugs antigos consomem capacidade; priorize o backlog de defeitos antes de novas features.`});
   else if(aging>7) recs.push({cls:'rec-warn',ico:'🟡',txt:`Bug Aging de ${aging}d está próximo do limite — evite que defeitos se acumulem sem tratamento.`});
 
-  if(res<=3 && esc===0) recs.push({cls:'rec-info',ico:'💡',txt:`Tempo de Resolução em ${res}d e baixa taxa de escapados permitem considerar uma estratégia de entregas mais frequentes.`});
+  if(res<=3 && esc===0) recs.push({cls:'rec-info',ico:'',txt:`Tempo de Resolução em ${res}d e baixa taxa de escapados permitem considerar uma estratégia de entregas mais frequentes.`});
 
   const qhsTxt=qhs>=80?`O índice de Saúde da Qualidade (${qhs}/100) confirma um cenário saudável — manter o ritmo atual de testes e revisões.`
     :qhs>=60?`O índice de Saúde da Qualidade (${qhs}/100) indica atenção — reforce revisões antes da próxima Sprint Review.`
@@ -5588,7 +5684,7 @@ function renderQualityRecs(d,i,esc,reo,crit,aging,res,qhs){
 function renderCfOrigin(d,i,esc){
   const bo=d.bo[i], rw=d.rw[i], total=bo+esc;
   if(total===0){
-    document.getElementById('cfOrigin').innerHTML='<p style="color:#059669;font-size:13px;text-align:center;padding:24px 0">🎉 Nenhum defeito ativo neste sprint.</p>';
+    document.getElementById('cfOrigin').innerHTML='<p style="color:#059669;font-size:13px;text-align:center;padding:24px 0">Nenhum defeito ativo neste sprint.</p>';
     return;
   }
   const devP=rw>15?0.55:rw>10?0.45:0.35;
@@ -5611,17 +5707,17 @@ function renderCfOrigin(d,i,esc){
 function renderCfCauses(d,i,esc,reo,crit,aging,res){
   const rw=d.rw[i], bo=d.bo[i], p=Math.max(0,i-1);
   const causes=[];
-  if(crit>0)  causes.push({ico:'🚨',txt:`${crit} bug${crit>1?'s':''} crítico${crit>1?'s':''} aberto${crit>1?'s':''} — prioridade máxima; qualquer deploy traz risco elevado de impacto ao usuário`});
-  if(rw>15)   causes.push({ico:'📋',txt:'Refinamento incompleto ou critérios de aceite frágeis — histórias entram no sprint sem DoR validada'});
-  else if(rw>8) causes.push({ico:'🧪',txt:'Cobertura de testes automatizados insuficiente — regressões não detectadas antes da entrega'});
-  if(esc>0)   causes.push({ico:'🔓',txt:'Falha no processo de homologação — shift-left testing não implementado plenamente'});
-  if(reo>0)   causes.push({ico:'🔄',txt:'Correções parciais ou critérios de aceite mal definidos para fechamento de bugs'});
-  if(aging>10) causes.push({ico:'🕒',txt:`Bug Aging de ${aging} dias acima da meta — bugs acumulando sem resolução, aumentando a dívida de qualidade`});
-  if(res>5)   causes.push({ico:'⚡',txt:`Tempo médio de resolução de ${res} dias — processo de triagem e correção lento ou sem priorização clara`});
-  if(bo>5)    causes.push({ico:'🧱',txt:'Débito técnico acumulado impactando a estabilidade das entregas'});
-  if(i>0&&d.rw[i]<d.rw[p]) causes.push({ico:'📈',txt:'Retrabalho em queda — melhoria do refinamento e da qualidade nas sprints recentes'});
-  if(causes.length===0) causes.push({ico:'✅',txt:'Sem causas críticas identificadas. Manter boas práticas de refinamento e DoD.'});
-  document.getElementById('cfCauses').innerHTML=causes.map(c=>`<div class="cf-item"><span class="cf-item-ico">${c.ico}</span><span>${c.txt}</span></div>`).join('');
+  if(crit>0)  causes.push({txt:`${crit} bug${crit>1?'s':''} crítico${crit>1?'s':''} aberto${crit>1?'s':''} — prioridade máxima; qualquer deploy traz risco elevado de impacto ao usuário`});
+  if(rw>15)   causes.push({txt:'Refinamento incompleto ou critérios de aceite frágeis — histórias entram no sprint sem DoR validada'});
+  else if(rw>8) causes.push({txt:'Cobertura de testes automatizados insuficiente — regressões não detectadas antes da entrega'});
+  if(esc>0)   causes.push({txt:'Falha no processo de homologação — shift-left testing não implementado plenamente'});
+  if(reo>0)   causes.push({txt:'Correções parciais ou critérios de aceite mal definidos para fechamento de bugs'});
+  if(aging>10) causes.push({txt:`Bug Aging de ${aging} dias acima da meta — bugs acumulando sem resolução, aumentando a dívida de qualidade`});
+  if(res>5)   causes.push({txt:`Tempo médio de resolução de ${res} dias — processo de triagem e correção lento ou sem priorização clara`});
+  if(bo>5)    causes.push({txt:'Débito técnico acumulado impactando a estabilidade das entregas'});
+  if(i>0&&d.rw[i]<d.rw[p]) causes.push({txt:'Retrabalho em queda — melhoria do refinamento e da qualidade nas sprints recentes'});
+  if(causes.length===0) causes.push({txt:'Sem causas críticas identificadas. Manter boas práticas de refinamento e DoD.'});
+  document.getElementById('cfCauses').innerHTML=causes.map(c=>`<div class="cf-item"><span>${c.txt}</span></div>`).join('');
 }
 
 function renderCfActions(d,i,esc,reo,crit,aging,res,qhs){
@@ -5650,31 +5746,31 @@ function openCfDetail(type){
 
   // Configuração por tipo de card
   const cfg={
-    crit:{title:'🚨 Bugs Críticos — Detalhe',meta:`Meta: 0 · Atual: ${crit} · Sprint ${sprint} · ${team}`,
+    crit:{title:'Bugs Críticos — Detalhe',meta:`Meta: 0 · Atual: ${crit} · Sprint ${sprint} · ${team}`,
       count:crit, sevFilter:['Crítico','Blocker'],
       summary:[{v:crit,l:'Críticos Abertos'},{v:0,l:'Em Resolução'},{v:'Alta',l:'Prioridade'},{v:'Bloquear deploy',l:'Recomendação'}]},
-    esc:{title:'🔥 Defeitos Escapados — Detalhe',meta:`Meta: 0 · Atual: ${esc} · Sprint ${sprint} · ${team}`,
+    esc:{title:'Defeitos Escapados — Detalhe',meta:`Meta: 0 · Atual: ${esc} · Sprint ${sprint} · ${team}`,
       count:esc, sevFilter:['Crítico','Alto'],
       summary:[{v:esc,l:'Escapados'},{v:esc>0?'Produção':'—',l:'Ambiente'},{v:esc>0?'Alta':'—',l:'Severidade'},{v:esc>0?'RCA urgente':'OK',l:'Ação'}]},
-    bo:{title:'🐞 Bugs Abertos — Detalhe',meta:`Meta: ≤ 3 · Atual: ${d.bo[i]} · Sprint ${sprint} · ${team}`,
+    bo:{title:'Bugs Abertos — Detalhe',meta:`Meta: ≤ 3 · Atual: ${d.bo[i]} · Sprint ${sprint} · ${team}`,
       count:d.bo[i], sevFilter:null,
       summary:[{v:d.bo[i],l:'Total Abertos'},{v:crit,l:'Críticos'},{v:aging+'d',l:'Aging Médio'},{v:res+'d',l:'Tempo Resolução'}]},
-    reo:{title:'🔄 Bugs Reabertos — Detalhe',meta:`Meta: ≤ 2 · Atual: ${reo} · Sprint ${sprint} · ${team}`,
+    reo:{title:'Bugs Reabertos — Detalhe',meta:`Meta: ≤ 2 · Atual: ${reo} · Sprint ${sprint} · ${team}`,
       count:reo, sevFilter:['Alto','Médio'],
       summary:[{v:reo,l:'Reabertos'},{v:d.rw[i]+'%',l:'Retrabalho'},{v:reo>0?'Correção parcial':'—',l:'Causa provável'},{v:reo>2?'Crítico':'Atenção',l:'Status'}]},
-    bc:{title:'✅ Bugs Fechados — Detalhe',meta:`Meta: ≥ 8 · Atual: ${d.bc[i]} · Sprint ${sprint} · ${team}`,
+    bc:{title:'Bugs Fechados — Detalhe',meta:`Meta: ≥ 8 · Atual: ${d.bc[i]} · Sprint ${sprint} · ${team}`,
       count:d.bc[i], sevFilter:null,
       summary:[{v:d.bc[i],l:'Fechados'},{v:res+'d',l:'Tempo Médio'},{v:d.bc[i]>=8?'✓ Meta':'✗ Abaixo',l:'Meta'},{v:Math.round(d.bc[i]/Math.max(1,d.bo[i]+d.bc[i])*100)+'%',l:'Taxa Resolução'}]},
-    rw:{title:'♻️ Retrabalho — Detalhe',meta:`Meta: ≤ 10% · Atual: ${d.rw[i]}% · Sprint ${sprint} · ${team}`,
+    rw:{title:'Retrabalho — Detalhe',meta:`Meta: ≤ 10% · Atual: ${d.rw[i]}% · Sprint ${sprint} · ${team}`,
       count:Math.round(d.en[i]*d.rw[i]/100), sevFilter:null,
       summary:[{v:d.rw[i]+'%',l:'Retrabalho'},{v:Math.round(d.en[i]*d.rw[i]/100),l:'Itens Refeitos'},{v:d.en[i],l:'Total Entregues'},{v:d.rw[i]<=10?'OK':'Acima da meta',l:'Status'}]},
-    aging:{title:'🕒 Bug Aging — Detalhe',meta:`Meta: ≤ 10d · Atual: ${aging}d · Sprint ${sprint} · ${team}`,
+    aging:{title:'Bug Aging — Detalhe',meta:`Meta: ≤ 10d · Atual: ${aging}d · Sprint ${sprint} · ${team}`,
       count:d.bo[i], sevFilter:null,
       summary:[{v:aging+'d',l:'Aging Médio'},{v:Math.round(aging*1.4)+'d',l:'Mais Antigo'},{v:Math.round(aging*0.6)+'d',l:'Mais Recente'},{v:aging>10?'Crítico':'OK',l:'Status'}]},
-    res:{title:'⚡ Tempo de Resolução — Detalhe',meta:`Meta: ≤ 3d · Atual: ${res}d · Sprint ${sprint} · ${team}`,
+    res:{title:'Tempo de Resolução — Detalhe',meta:`Meta: ≤ 3d · Atual: ${res}d · Sprint ${sprint} · ${team}`,
       count:d.bc[i], sevFilter:null,
       summary:[{v:res+'d',l:'Média Resolução'},{v:Math.round(res*0.5)+'d',l:'Mínimo'},{v:Math.round(res*2.1)+'d',l:'Máximo'},{v:res<=3?'Ágil':res<=5?'Atenção':'Lento',l:'Status'}]},
-    qhs:{title:'🎯 Saúde da Qualidade — Decomposição',meta:`Índice QHS · Sprint ${sprint} · ${team}`,
+    qhs:{title:'Saúde da Qualidade — Decomposição',meta:`Índice QHS · Sprint ${sprint} · ${team}`,
       count:5, sevFilter:null,
       summary:[{v:qhs+'/100',l:'QHS Geral'},{v:qhs>=80?'Saudável':qhs>=60?'Atenção':'Crítico',l:'Classificação'},{v:crit===0&&esc===0?'Apto':'Risco',l:'Status Deploy'},{v:qhs>=80?'Manter':'Plano de ação',l:'Próxima Sprint'}]},
   };
@@ -5765,7 +5861,7 @@ function openCfDetail(type){
     </table>`;
   } else {
     document.getElementById('cfDetailBody').innerHTML=rows.length===0
-      ? '<p style="text-align:center;color:#059669;padding:24px 0;font-size:13px">🎉 Nenhum item nesta categoria para a sprint selecionada.</p>'
+      ? '<p style="text-align:center;color:#059669;padding:24px 0;font-size:13px">Nenhum item nesta categoria para a sprint selecionada.</p>'
       : `<table class="cfm-tbl">
           <thead><tr><th>ID</th><th>Título</th><th>Severidade</th><th>Responsável</th><th>Papel</th><th>Sprint</th><th>Criação</th><th>Idade</th><th>Status</th></tr></thead>
           <tbody>${rows.join('')}</tbody>
