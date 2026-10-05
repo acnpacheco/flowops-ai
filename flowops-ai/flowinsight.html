@@ -570,6 +570,33 @@
   .depm-btn-save{padding:8px 18px;font-size:12px;font-weight:600;border:none;border-radius:8px;background:#185FA5;color:#fff;cursor:pointer}
   .depm-btn-save:hover{background:#1a4f8a}
   @media(max-width:600px){.cal-year-grid{grid-template-columns:repeat(2,1fr)}.spr-grid{grid-template-columns:1fr}.depm-row{grid-template-columns:1fr}}
+  /* Fase 2 — Lote 4 — Backup e confiabilidade dos deploys (tokens do Lote 1) */
+  .dep-backup{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+  .dep-note{margin:0 0 var(--sp-card-gap);font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral)}
+  .dep-msg{margin:0 0 var(--sp-card-gap);padding:var(--sp-card-gap) var(--sp-card-pad);background:#fff;border:1px solid #e5e5e3;border-left:3px solid var(--clr-neutral);border-radius:8px;font-size:var(--fs-body);font-weight:var(--fw-body);overflow-wrap:anywhere}
+  .dep-msg.is-ok{border-left-color:var(--clr-ok)}
+  .dep-msg.is-warn{border-left-color:var(--clr-warn)}
+  .dep-msg.is-bad{border-left-color:var(--clr-bad)}
+  .depm-msg{margin:0 22px var(--sp-card-gap)}
+  .dep-imp{font-size:var(--fs-body)}
+  .dep-imp-meta{margin:0;font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral);overflow-wrap:anywhere}
+  .dep-imp-sum{display:flex;flex-direction:column;gap:6px}
+  .dep-imp-row{display:flex;justify-content:space-between;gap:var(--sp-card-gap);padding:6px 10px;border-left:3px solid var(--clr-neutral)}
+  .dep-imp-row b{font-weight:var(--fw-badge)}
+  .dep-imp-row.is-ok{border-left-color:var(--clr-ok)}
+  .dep-imp-row.is-warn{border-left-color:var(--clr-warn)}
+  .dep-imp-row.is-bad{border-left-color:var(--clr-bad)}
+  .dep-imp-list{margin:0 0 0 18px;padding:0;font-size:var(--fs-caption);color:var(--clr-neutral)}
+  .dep-imp-list li{overflow-wrap:anywhere}
+  .dep-imp .depm-foot{flex-wrap:wrap}
+  .dep-imp .depm-foot button:disabled{opacity:.5;cursor:not-allowed}
+  .dep-imp .depm-btn-danger{padding:8px 18px;font-size:12px;font-weight:600;border:none;border-radius:8px;background:var(--clr-bad);color:#fff;cursor:pointer}
+  @media(max-width:600px){
+    #pcal .dep-backup{width:100%;margin-left:0}
+    #pcal .dep-btn-new{min-height:40px}
+    .depm-msg{margin:0 16px var(--sp-card-gap)}
+    .dep-imp .depm-foot button{flex:1 1 100%;min-height:40px}
+  }
 
   /* ── Glossário de Métricas ──────────────────────────── */
   .gl-header{margin-bottom:16px}
@@ -4300,6 +4327,15 @@ function downloadMarkdown(filename,content){
   document.body.removeChild(a);URL.revokeObjectURL(url);
 }
 
+// ─── Download de JSON (backup de deploys) — helper próprio; downloadMarkdown() permanece como está ───
+function downloadJSON(filename,content){
+  const blob=new Blob([content],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=filename;document.body.appendChild(a);a.click();
+  document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
 function _mdSlug(s){return s.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9\-]/g,'').replace(/-+/g,'-');}
 
 function _mdFile(type){
@@ -5879,6 +5915,95 @@ function closeCfDetail(){
 
 // ───────────────────────────────────────────────────────────────────
 
+// ── DEPLOYS: leitura e gravação seguras, escape e validação (Fase 2 — Lote 4) ──
+// Persistência existente mantida: fi_deploys (lista), fi_dep_counter (contador) e CAL.deploys (memória).
+const DEP_ENUMS={
+  tipo:['Programada','Emergencial','Corretiva'],
+  status:['Agendado','Em execução','Concluído','Cancelado'],
+  squad:['Time Alpha','Time Beta','Time Gamma'],
+  ambiente:['Desenvolvimento','Homologação','Pré-Produção','Produção'],
+  criticidade:['Baixa','Média','Alta','Crítica']
+};
+// Campos do deploy, na ordem em que saveDepModal() os grava
+const DEP_FIELDS=['id','createdAt','updatedAt','sistema','date','tipo','hora','squad','ambiente','responsavel','criticidade','status','qsprint','epic','feature','us','task','rollbackEstrategia','rollbackResponsavel','rollbackTempo','rollbackCriterios','postDeploy','approval','approvalPO','approvalTL','excType','justificativa','obs','history'];
+const DEP_BOOL_FIELDS=['approval','approvalPO','approvalTL'];
+const _depStore={issue:null}; // resultado da última leitura de fi_deploys: null | 'ilegivel' | 'acesso'
+
+function escHtml(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+function depValidDate(s){
+  if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  const y=+s.slice(0,4),m=+s.slice(5,7),d=+s.slice(8,10),dt=new Date(y,m-1,d);
+  return dt.getFullYear()===y&&dt.getMonth()===m-1&&dt.getDate()===d;
+}
+
+// Problemas de um registro de deploy (lista vazia = válido). strict=true (importação) também confere o formato do
+// código e os valores previstos; na leitura do armazenamento só a estrutura é conferida.
+function depCheckItem(it,strict){
+  if(!it||typeof it!=='object'||Array.isArray(it)) return['não é um registro de deploy'];
+  const err=[];
+  if(typeof it.sistema!=='string'||!it.sistema.trim()) err.push('sistema ausente');
+  if(!depValidDate(it.date)) err.push('data inválida');
+  DEP_FIELDS.forEach(f=>{
+    const v=it[f];
+    if(v==null||f==='sistema'||f==='date') return;
+    if(f==='history'){
+      if(!Array.isArray(v)||v.some(h=>!h||typeof h!=='object'||Array.isArray(h)||['at','action','by'].some(k=>h[k]!=null&&typeof h[k]!=='string'))) err.push('histórico inválido');
+    } else if(DEP_BOOL_FIELDS.includes(f)){
+      if(typeof v!=='boolean') err.push('campo "'+f+'" deve ser verdadeiro ou falso');
+    } else if(typeof v!=='string') err.push('campo "'+f+'" deve ser texto');
+  });
+  if(strict&&!err.length){
+    if(it.id&&!/^DEP-\d{3,}$/.test(it.id)) err.push('código fora do formato DEP-NNN');
+    ['tipo','status','squad','ambiente','criticidade'].forEach(f=>{if(it[f]&&!DEP_ENUMS[f].includes(it[f])) err.push(f+' fora dos valores previstos');});
+    if(it.excType&&!BIZ_RULES.exceptionalTypes.includes(it.excType)) err.push('tipo de exceção fora dos valores previstos');
+    if(it.hora&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(it.hora)) err.push('horário inválido');
+  }
+  return err;
+}
+
+// Lê fi_deploys sem nunca lançar exceção. Se estiver ilegível, devolve lista vazia e NÃO altera o valor guardado:
+// ele só é substituído quando a pessoa salvar um deploy ou importar um backup.
+function loadDeploys(){
+  _depStore.issue=null;
+  let raw;
+  try{raw=localStorage.getItem('fi_deploys');}catch(e){_depStore.issue='acesso';return[];}
+  if(raw===null||raw==='') return[];
+  let data;
+  try{data=JSON.parse(raw);}catch(e){_depStore.issue='ilegivel';return[];}
+  if(!Array.isArray(data)||data.some(d=>depCheckItem(d,false).length)){_depStore.issue='ilegivel';return[];}
+  return data;
+}
+
+function depStoredCounter(){
+  try{const n=parseInt(localStorage.getItem('fi_dep_counter')||'0',10);return n>0?n:0;}catch(e){return 0;}
+}
+function depMaxIdNum(list){
+  let m=0;
+  (list||[]).forEach(d=>{const x=/^DEP-(\d+)$/.exec((d&&d.id)||'');if(x) m=Math.max(m,parseInt(x[1],10));});
+  return m;
+}
+// Contador reconciliado: nunca abaixo do valor gravado nem do maior DEP-NNN da lista
+function depCounterFor(list){return Math.max(depStoredCounter(),depMaxIdNum(list));}
+
+// Grava a lista (e o contador, quando informado) sem tocar em CAL.deploys; quem chama só atualiza a memória se ok.
+function persistDeploys(list,counter){
+  let prev=null,touched=false;
+  try{
+    if(counter!==undefined){
+      prev=localStorage.getItem('fi_dep_counter');
+      localStorage.setItem('fi_dep_counter',String(counter));
+      touched=true;
+    }
+    localStorage.setItem('fi_deploys',JSON.stringify(list));
+    _depStore.issue=null;
+    return{ok:true};
+  }catch(e){
+    if(touched){try{if(prev===null) localStorage.removeItem('fi_dep_counter'); else localStorage.setItem('fi_dep_counter',prev);}catch(_){}}
+    return{ok:false,error:e};
+  }
+}
+
 // ── CALENDÁRIO CORPORATIVO ────────────────────────────────────────
 const CAL = {
   holidays: ['2026-01-01','2026-04-03','2026-04-21','2026-05-01','2026-06-11',
@@ -5905,7 +6030,7 @@ const CAL = {
                {id:'S5',start:'2026-11-30',end:'2026-12-11'},{id:'S6',start:'2026-12-14',end:'2026-12-25'}],
       planningNext:{start:'2026-12-28',end:'2027-01-01',label:'Sem. Planejamento 2027'}}
   ],
-  deploys: JSON.parse(localStorage.getItem('fi_deploys')||'[]')
+  deploys: loadDeploys()
 };
 
 const BIZ_RULES = {
@@ -5964,15 +6089,30 @@ function calBestDeployWindow(sprint){
 }
 
 // ── ID único de deploy ────────────────────────────────────────────
+// Próximo código livre: acima do contador gravado e de qualquer DEP-NNN da lista. Não grava nada:
+// o contador é gravado junto com a lista em persistDeploys(), só quando o salvamento der certo.
 function calNextDepId(){
-  let n=parseInt(localStorage.getItem('fi_dep_counter')||'0')+1;
-  localStorage.setItem('fi_dep_counter',n);
-  return'DEP-'+String(n).padStart(3,'0');
+  return'DEP-'+String(depCounterFor(CAL.deploys)+1).padStart(3,'0');
 }
 function calIsInFreeze(dateStr){
   for(const f of BIZ_RULES.changeFreezes||[])
     if(dateStr>=f.start&&dateStr<=f.end) return f;
   return null;
+}
+// Horizonte do calendário cadastrado (D20): do primeiro ao último dia presente nos feriados e nas sprints.
+// Semanas de planejamento cadastradas também contam como cobertas, pois a Regra 4 é avaliada nelas.
+function calHorizon(){
+  let a=null,b=null;
+  const put=d=>{if(!d)return;if(a===null||d<a)a=d;if(b===null||d>b)b=d;};
+  CAL.holidays.forEach(put);
+  CAL.quarters.forEach(q=>q.sprints.forEach(s=>{put(s.start);put(s.end);}));
+  return a===null?null:{start:a,end:b};
+}
+function calHorizonNote(dateStr){
+  const h=calHorizon();
+  if(!h||(dateStr>=h.start&&dateStr<=h.end)||calIsInPlanningWeek(dateStr)) return'';
+  return'Data fora do calendário cadastrado. As regras de feriados, sprints e períodos de freeze não puderam ser avaliadas. '
+    +(dateStr>h.end?'Calendário cadastrado até '+calFmtBR(h.end)+'.':'Calendário cadastrado a partir de '+calFmtBR(h.start)+'.');
 }
 
 // ── Regra de negócio ─────────────────────────────────────────────
@@ -5982,6 +6122,9 @@ function checkDeployDate(dateStr,currentId){
   const blockReasons=[],warnReasons=[];
   if(calIsWeekend(dt)) return{status:'block',reasons:['Final de semana — deploy não permitido']};
   if(calIsHoliday(dt)) return{status:'block',reasons:['Feriado nacional — deploy não permitido']};
+  // Fora do calendário cadastrado (D20): atenção explícita, sem avaliar o que não existe nos dados
+  const hzNote=calHorizonNote(dateStr);
+  if(hzNote) warnReasons.push(hzNote);
   // Regra 5 — Change Freeze
   const freeze=calIsInFreeze(dateStr);
   if(freeze) blockReasons.push('Período de Change Freeze: '+freeze.label+' (Regra 5)');
@@ -6131,6 +6274,7 @@ function renderCalSprints(){
 
   function sprintStatus(s){
     const st=calParseDt(s.start), en=calParseDt(s.end);
+    en.setHours(23,59,59,999); // s.end é a meia-noite do último dia: o dia inteiro pertence à sprint
     if(today>=st&&today<=en) return'current';
     const tomorrow=new Date(today);tomorrow.setDate(tomorrow.getDate()+1);
     // next sprint: first sprint where start > today
@@ -6159,7 +6303,7 @@ function renderCalSprints(){
     const total=calWorkdays(cur.start,cur.end);
     const remaining=calWorkdays(todayStr,cur.end);
     const pct=Math.round(elapsed/total*100);
-    const lwd=calDtStr(calGetLastWorkday(calParseDt(cur.end)));
+    const lwd=calDtStr(calGetLastWorkday(cur.end));
     const isLastDay=todayStr===lwd;
     todayBox=`<div class="cal-today-box">
       <div>
@@ -6247,6 +6391,7 @@ function renderCalDeploys(){
   const statusColor={Agendado:'#185FA5',background:'#dbeafe','Em execução':'#d97706',Concluído:'#059669',Cancelado:'#9ca3af'};
   const tipoColor={Programada:'#185FA5',Emergencial:'#dc2626',Corretiva:'#d97706'};
   const critColor={Crítica:'#dc2626',Alta:'#d97706',Média:'#185FA5',Baixa:'#6b7280'};
+  const pick=(map,k,def)=>Object.prototype.hasOwnProperty.call(map,k)?map[k]:def; // valor do deploy nunca vira chave herdada
 
   let _df={status:'',squad:'',ambiente:'',crit:''};
 
@@ -6261,50 +6406,50 @@ function renderCalDeploys(){
     if(!CAL.deploys.length) return`<div class="dep-empty">
       <i class="ti ti-rocket" style="font-size:36px;display:block;margin-bottom:10px;color:#d1d5db"></i>
       <p style="font-size:14px;font-weight:500;color:#6b7280;margin-bottom:4px">Nenhum deploy agendado</p>
-      <p style="font-size:12px">Clique em <strong>Novo Deploy</strong> para registrar uma implantação.</p>
+      <p style="font-size:12px">Clique em <strong>Novo Deploy</strong> para registrar uma implantação ou restaure um backup com <strong>Importar backup</strong>.</p>
     </div>`;
     if(!list.length) return`<div class="dep-empty"><p style="font-size:13px;color:#9ca3af">Nenhum deploy corresponde aos filtros selecionados.</p></div>`;
     return list.map((dep,fi)=>{
       const idx=CAL.deploys.indexOf(dep);
       const ins=calDeployInsights(dep);
       const insHtml=ins.messages.length
-        ?`<div class="dep-insight${ins.status==='ok'?' dep-insight-ok':''}">${ins.messages.map(m=>`<div>${m}</div>`).join('')}</div>`
+        ?`<div class="dep-insight${ins.status==='ok'?' dep-insight-ok':''}">${ins.messages.map(m=>`<div>${escHtml(m)}</div>`).join('')}</div>`
         :`<div class="dep-insight dep-insight-ok">✅ Nenhuma violação de regra identificada.</div>`;
       const stColor=dep.status==='Concluído'?'#059669':dep.status==='Cancelado'?'#9ca3af':dep.status==='Em execução'?'#d97706':'#185FA5';
       const stBg=dep.status==='Concluído'?'#f0fdf4':dep.status==='Cancelado'?'#f3f4f6':dep.status==='Em execução'?'#fffbeb':'#dbeafe';
-      const histTip=dep.history&&dep.history.length?` title="Última alteração: ${dep.history[dep.history.length-1].at}"`:'' ;
+      const histTip=dep.history&&dep.history.length?` title="Última alteração: ${escHtml(dep.history[dep.history.length-1].at)}"`:'' ;
       return`<div class="dep-card risk-${ins.status}">
         <div class="dep-card-hd">
           <div style="flex:1;min-width:0">
             <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px">
-              ${dep.id?`<span style="font-size:10px;font-weight:700;color:#9ca3af;font-family:monospace">${dep.id}</span>`:''}
-              ${dep.tipo?`<span style="font-size:10px;font-weight:600;padding:1px 7px;border-radius:10px;background:${tipoColor[dep.tipo]||'#6b7280'}22;color:${tipoColor[dep.tipo]||'#6b7280'}">${dep.tipo}</span>`:''}
-              ${dep.status?`<span style="font-size:10px;font-weight:600;padding:1px 7px;border-radius:10px;background:${stBg};color:${stColor}">${dep.status}</span>`:''}
+              ${dep.id?`<span style="font-size:10px;font-weight:700;color:#9ca3af;font-family:monospace">${escHtml(dep.id)}</span>`:''}
+              ${dep.tipo?`<span style="font-size:10px;font-weight:600;padding:1px 7px;border-radius:10px;background:${pick(tipoColor,dep.tipo,'#6b7280')}22;color:${pick(tipoColor,dep.tipo,'#6b7280')}">${escHtml(dep.tipo)}</span>`:''}
+              ${dep.status?`<span style="font-size:10px;font-weight:600;padding:1px 7px;border-radius:10px;background:${stBg};color:${stColor}">${escHtml(dep.status)}</span>`:''}
             </div>
-            <div class="dep-card-name">${dep.sistema||'Sistema não informado'}</div>
-            <div class="dep-card-sub">${[dep.squad,dep.ambiente,dep.qsprint].filter(Boolean).join(' · ')}${dep.date?' · '+calFmtBR(dep.date)+(dep.hora?' '+dep.hora:''):''}</div>
+            <div class="dep-card-name">${escHtml(dep.sistema)||'Sistema não informado'}</div>
+            <div class="dep-card-sub">${escHtml([dep.squad,dep.ambiente,dep.qsprint].filter(Boolean).join(' · ')+(dep.date?' · '+calFmtBR(dep.date)+(dep.hora?' '+dep.hora:''):''))}</div>
           </div>
           <div style="text-align:right;flex-shrink:0">
             <span class="win-pill win-${ins.status}">${riskLabel[ins.status]}</span>
-            ${dep.criticidade?`<div style="margin-top:4px;font-size:10px;font-weight:600;color:${critColor[dep.criticidade]||'#6b7280'}">${dep.criticidade}</div>`:''}
+            ${dep.criticidade?`<div style="margin-top:4px;font-size:10px;font-weight:600;color:${pick(critColor,dep.criticidade,'#6b7280')}">${escHtml(dep.criticidade)}</div>`:''}
           </div>
         </div>
         <div class="dep-meta">
-          ${dep.responsavel?`<span><i class="ti ti-user" style="font-size:11px"></i> ${dep.responsavel}</span>`:''}
-          ${dep.epic?`<span><i class="ti ti-circle-letter-e" style="font-size:11px"></i> ${dep.epic}</span>`:''}
-          ${dep.feature?`<span><i class="ti ti-bolt" style="font-size:11px"></i> ${dep.feature}</span>`:''}
-          ${dep.us?`<span><i class="ti ti-file-text" style="font-size:11px"></i> ${dep.us}</span>`:''}
-          ${dep.task?`<span><i class="ti ti-subtask" style="font-size:11px"></i> ${dep.task}</span>`:''}
+          ${dep.responsavel?`<span><i class="ti ti-user" style="font-size:11px"></i> ${escHtml(dep.responsavel)}</span>`:''}
+          ${dep.epic?`<span><i class="ti ti-circle-letter-e" style="font-size:11px"></i> ${escHtml(dep.epic)}</span>`:''}
+          ${dep.feature?`<span><i class="ti ti-bolt" style="font-size:11px"></i> ${escHtml(dep.feature)}</span>`:''}
+          ${dep.us?`<span><i class="ti ti-file-text" style="font-size:11px"></i> ${escHtml(dep.us)}</span>`:''}
+          ${dep.task?`<span><i class="ti ti-subtask" style="font-size:11px"></i> ${escHtml(dep.task)}</span>`:''}
           ${dep.approval?`<span style="color:#d97706"><i class="ti ti-shield-check" style="font-size:11px"></i> Aprovação formal</span>`:''}
           ${dep.approvalPO?`<span style="color:#059669;font-size:11px">✓ PO</span>`:''}
           ${dep.approvalTL?`<span style="color:#059669;font-size:11px">✓ TL</span>`:''}
         </div>
-        ${dep.rollbackEstrategia?`<div style="font-size:11px;color:#6b7280;margin:6px 0 0;padding:6px 8px;background:#f9fafb;border-radius:6px;border-left:2px solid #d1d5db"><strong>Rollback:</strong> ${dep.rollbackEstrategia.substring(0,120)}${dep.rollbackEstrategia.length>120?'…':''}</div>`:''}
+        ${dep.rollbackEstrategia?`<div style="font-size:11px;color:#6b7280;margin:6px 0 0;padding:6px 8px;background:#f9fafb;border-radius:6px;border-left:2px solid #d1d5db"><strong>Rollback:</strong> ${escHtml(dep.rollbackEstrategia.substring(0,120))}${dep.rollbackEstrategia.length>120?'…':''}</div>`:''}
         ${insHtml}
         <div class="dep-actions"${histTip}>
           <button class="dep-btn-edit" onclick="openDepModal(${idx})"><i class="ti ti-edit" style="font-size:11px"></i> Editar</button>
           <button class="dep-btn-del" onclick="deleteDepModal(${idx})"><i class="ti ti-trash" style="font-size:11px"></i> Excluir</button>
-          ${dep.history&&dep.history.length?`<span style="font-size:10px;color:#9ca3af;margin-left:auto;align-self:center">v${dep.history.length} · ${dep.history[dep.history.length-1].at}</span>`:''}
+          ${dep.history&&dep.history.length?`<span style="font-size:10px;color:#9ca3af;margin-left:auto;align-self:center">v${dep.history.length} · ${escHtml(dep.history[dep.history.length-1].at)}</span>`:''}
         </div>
       </div>`;
     }).join('');
@@ -6312,30 +6457,25 @@ function renderCalDeploys(){
 
   function buildFilters(){
     const uniqueVals=(key)=>[...new Set(CAL.deploys.map(d=>d[key]).filter(Boolean))];
-    const pill=(label,key,val)=>`<button class="ccal-fil${_df[key]===val?' on':''}" onclick="_depFil('${key}','${val}',this)">${label}</button>`;
+    // grupo e valor vão em data-attributes (escapados): o valor de um deploy nunca entra em código inline
+    const pill=(label,key,val)=>`<button class="ccal-fil${_df[key]===val?' on':''}" data-grp="${key}" data-val="${escHtml(val)}" onclick="_depFil(this.dataset.grp,this.dataset.val,this)">${escHtml(label)}</button>`;
     return`<div class="ccal-filters" id="depFilRow" style="margin-bottom:10px">
       <span style="font-size:11px;color:#9ca3af;font-weight:600">Status:</span>
-      <button class="ccal-fil${!_df.status?' on':''}" onclick="_depFil('status','',this)">Todos</button>
+      <button class="ccal-fil${!_df.status?' on':''}" data-grp="status" data-val="" onclick="_depFil(this.dataset.grp,this.dataset.val,this)">Todos</button>
       ${['Agendado','Em execução','Concluído','Cancelado'].map(s=>pill(s,'status',s)).join('')}
       <span style="font-size:11px;color:#9ca3af;font-weight:600;margin-left:6px">Ambiente:</span>
-      <button class="ccal-fil${!_df.ambiente?' on':''}" onclick="_depFil('ambiente','',this)">Todos</button>
+      <button class="ccal-fil${!_df.ambiente?' on':''}" data-grp="ambiente" data-val="" onclick="_depFil(this.dataset.grp,this.dataset.val,this)">Todos</button>
       ${uniqueVals('ambiente').map(a=>pill(a,'ambiente',a)).join('')}
       <span style="font-size:11px;color:#9ca3af;font-weight:600;margin-left:6px">Criticidade:</span>
-      <button class="ccal-fil${!_df.crit?' on':''}" onclick="_depFil('crit','',this)">Todas</button>
+      <button class="ccal-fil${!_df.crit?' on':''}" data-grp="crit" data-val="" onclick="_depFil(this.dataset.grp,this.dataset.val,this)">Todas</button>
       ${['Crítica','Alta','Média','Baixa'].map(c=>pill(c,'crit',c)).join('')}
     </div>`;
   }
 
   window._depFil=function(key,val,el){
     _df[key]=val;
-    document.querySelectorAll(`#depFilRow .ccal-fil`).forEach(b=>{
-      if(b===el||(!val&&b.textContent.match(/^Todos|Todas/)&&b.getAttribute('onclick').includes(`'${key}'`))){
-        // handled below
-      }
-    });
     el.closest('#depFilRow').querySelectorAll('.ccal-fil').forEach(b=>{
-      const oc=b.getAttribute('onclick')||'';
-      if(oc.includes(`'${key}'`)) b.classList.remove('on');
+      if(b.dataset.grp===key) b.classList.remove('on');
     });
     el.classList.add('on');
     document.getElementById('depGrid').innerHTML=buildDepCards();
@@ -6348,11 +6488,19 @@ function renderCalDeploys(){
     }).length+' deploy(s)';
   };
 
+  const hasDeps=CAL.deploys.length>0;
   document.getElementById('calContent').innerHTML=`
     <div class="dep-toolbar">
       <button class="dep-btn-new" onclick="openDepModal(-1)"><i class="ti ti-plus"></i> Novo Deploy / RDM</button>
       <span style="font-size:12px;color:#9ca3af;margin-left:4px" id="depCount">${CAL.deploys.length} deploy(s) agendado(s)</span>
+      <div class="dep-backup">
+        <button class="btn-export" id="depExportBtn" onclick="exportDeployJSON()"${hasDeps?'':' disabled'} title="${hasDeps?'Baixa um arquivo .json com os deploys deste navegador':'Não há deploys para exportar'}"><i class="ti ti-download"></i> Exportar backup</button>
+        <button class="btn-export" id="depImportBtn" onclick="document.getElementById('depImportFile').click()" title="Carrega deploys de um arquivo de backup (.json)"><i class="ti ti-upload"></i> Importar backup</button>
+        <input type="file" id="depImportFile" accept=".json,application/json" hidden onchange="importDeployJSON(event)">
+      </div>
     </div>
+    <p class="dep-note" id="depBackupNote">Os deploys ficam salvos apenas neste navegador. Exporte um backup para guardar uma cópia ou levá-los a outro lugar.</p>
+    <div id="depNotice">${depStoreNoticeHtml()}</div>
     ${buildFilters()}
     <div class="dep-grid" id="depGrid">${buildDepCards()}</div>`;
 }
@@ -6364,29 +6512,30 @@ function openDepModal(idx){
   const dep=idx>=0?CAL.deploys[idx]:{};
   const isNew=idx<0;
   const overlay=document.getElementById('depModal');
-  const ambientes=['Desenvolvimento','Homologação','Pré-Produção','Produção'];
-  const criticidades=['Baixa','Média','Alta','Crítica'];
-  const tipos=['Programada','Emergencial','Corretiva'];
-  const statusList=['Agendado','Em execução','Concluído','Cancelado'];
-  const squads=['Time Alpha','Time Beta','Time Gamma'];
-  const sel=(arr,cur)=>arr.map(v=>`<option${cur===v?' selected':''}>${v}</option>`).join('');
+  // listas únicas (DEP_ENUMS): o formulário nunca oferece valor que a importação rejeitaria
+  const ambientes=DEP_ENUMS.ambiente;
+  const criticidades=DEP_ENUMS.criticidade;
+  const tipos=DEP_ENUMS.tipo;
+  const statusList=DEP_ENUMS.status;
+  const squads=DEP_ENUMS.squad;
+  const sel=(arr,cur)=>arr.map(v=>`<option${cur===v?' selected':''}>${escHtml(v)}</option>`).join('');
   document.getElementById('depModalBox').innerHTML=`
     <div class="depm-head">
       <div>
         <div class="depm-head-title">${isNew?'Novo Deploy / RDM':'Editar Deploy / RDM'}</div>
-        ${!isNew&&dep.id?`<div style="font-size:11px;color:#9ca3af;margin-top:2px">${dep.id} · criado em ${dep.createdAt||'—'}</div>`:''}
+        ${!isNew&&dep.id?`<div style="font-size:11px;color:#9ca3af;margin-top:2px">${escHtml(dep.id)} · criado em ${escHtml(dep.createdAt||'—')}</div>`:''}
       </div>
       <button class="depm-close" onclick="closeDepModal()">✕</button>
     </div>
     <div class="depm-body">
       <p style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Identificação</p>
       <div class="depm-row">
-        <div class="depm-field"><label class="depm-label">Sistema / Produto <span>*</span></label><input class="depm-input" id="df_sistema" value="${dep.sistema||''}" placeholder="Ex: Portal do Cliente" oninput="_depFormSis=this.value"></div>
+        <div class="depm-field"><label class="depm-label">Sistema / Produto <span>*</span></label><input class="depm-input" id="df_sistema" value="${escHtml(dep.sistema)}" placeholder="Ex: Portal do Cliente" oninput="_depFormSis=this.value"></div>
         <div class="depm-field"><label class="depm-label">Tipo de mudança <span>*</span></label><select class="depm-input" id="df_tipo">${sel(tipos,dep.tipo||'Programada')}</select></div>
       </div>
       <div class="depm-row">
         <div class="depm-field"><label class="depm-label">Squad responsável <span>*</span></label><select class="depm-input" id="df_squad">${sel(squads,dep.squad)}</select></div>
-        <div class="depm-field"><label class="depm-label">Responsável técnico</label><input class="depm-input" id="df_resp" value="${dep.responsavel||''}" placeholder="Nome"></div>
+        <div class="depm-field"><label class="depm-label">Responsável técnico</label><input class="depm-input" id="df_resp" value="${escHtml(dep.responsavel)}" placeholder="Nome"></div>
       </div>
       <div class="depm-row">
         <div class="depm-field"><label class="depm-label">Criticidade</label><select class="depm-input" id="df_crit">${sel(criticidades,dep.criticidade||'Média')}</select></div>
@@ -6394,17 +6543,17 @@ function openDepModal(idx){
       </div>
       <p style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin:4px 0 8px">Agendamento</p>
       <div class="depm-row">
-        <div class="depm-field"><label class="depm-label">Data prevista <span>*</span></label><input class="depm-input" id="df_date" type="date" value="${dep.date||''}" oninput="checkDeployDateLive(this.value)"></div>
-        <div class="depm-field"><label class="depm-label">Horário previsto</label><input class="depm-input" id="df_hora" type="time" value="${dep.hora||''}"></div>
+        <div class="depm-field"><label class="depm-label">Data prevista <span>*</span></label><input class="depm-input" id="df_date" type="date" value="${escHtml(dep.date)}" oninput="checkDeployDateLive(this.value)"></div>
+        <div class="depm-field"><label class="depm-label">Horário previsto</label><input class="depm-input" id="df_hora" type="time" value="${escHtml(dep.hora)}"></div>
       </div>
       <div class="depm-row">
         <div class="depm-field"><label class="depm-label">Ambiente <span>*</span></label><select class="depm-input" id="df_ambiente" onchange="_depFormAmb=this.value;checkDeployDateLive(document.getElementById('df_date').value)">${sel(ambientes,dep.ambiente||'Produção')}</select></div>
-        <div class="depm-field"><label class="depm-label">Quarter / Sprint</label><input class="depm-input" id="df_qsprint" value="${dep.qsprint||''}" placeholder="Preenchido automaticamente" readonly style="background:#f9fafb;color:#6b7280"></div>
+        <div class="depm-field"><label class="depm-label">Quarter / Sprint</label><input class="depm-input" id="df_qsprint" value="${escHtml(dep.qsprint)}" placeholder="Preenchido automaticamente" readonly style="background:#f9fafb;color:#6b7280"></div>
       </div>
       <div class="depm-rule-box" id="depRuleBox"></div>
       <div id="depExcBox" style="display:none;flex-direction:column;gap:10px">
         <div class="depm-field full"><label class="depm-label">Tipo de exceção <span>*</span></label><select class="depm-input" id="df_excType">${sel(BIZ_RULES.exceptionalTypes,dep.excType)}</select></div>
-        <div class="depm-field full"><label class="depm-label">Justificativa obrigatória <span>*</span></label><textarea class="depm-input" id="df_justif" rows="2" placeholder="Descreva a justificativa para o deploy excepcional...">${dep.justificativa||''}</textarea></div>
+        <div class="depm-field full"><label class="depm-label">Justificativa obrigatória <span>*</span></label><textarea class="depm-input" id="df_justif" rows="2" placeholder="Descreva a justificativa para o deploy excepcional...">${escHtml(dep.justificativa)}</textarea></div>
         <div style="display:flex;gap:16px;flex-wrap:wrap">
           <div style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="df_apoPO" ${dep.approvalPO?'checked':''}><label class="depm-label" style="margin:0;cursor:pointer" for="df_apoPO">Aprovação do Product Owner</label></div>
           <div style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="df_apoTL" ${dep.approvalTL?'checked':''}><label class="depm-label" style="margin:0;cursor:pointer" for="df_apoTL">Aprovação do Tech Lead</label></div>
@@ -6412,28 +6561,29 @@ function openDepModal(idx){
       </div>
       <p style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin:4px 0 8px">Artefatos relacionados</p>
       <div class="depm-row">
-        <div class="depm-field"><label class="depm-label">Épico</label><input class="depm-input" id="df_epic" value="${dep.epic||''}" placeholder="Ex: EP-007"></div>
-        <div class="depm-field"><label class="depm-label">Feature</label><input class="depm-input" id="df_feature" value="${dep.feature||''}" placeholder="Ex: Login Social"></div>
+        <div class="depm-field"><label class="depm-label">Épico</label><input class="depm-input" id="df_epic" value="${escHtml(dep.epic)}" placeholder="Ex: EP-007"></div>
+        <div class="depm-field"><label class="depm-label">Feature</label><input class="depm-input" id="df_feature" value="${escHtml(dep.feature)}" placeholder="Ex: Login Social"></div>
       </div>
       <div class="depm-row">
-        <div class="depm-field"><label class="depm-label">User Story</label><input class="depm-input" id="df_us" value="${dep.us||''}" placeholder="Ex: US-042"></div>
-        <div class="depm-field"><label class="depm-label">Task / Bug</label><input class="depm-input" id="df_task" value="${dep.task||''}" placeholder="Ex: TSK-018 / BUG-023"></div>
+        <div class="depm-field"><label class="depm-label">User Story</label><input class="depm-input" id="df_us" value="${escHtml(dep.us)}" placeholder="Ex: US-042"></div>
+        <div class="depm-field"><label class="depm-label">Task / Bug</label><input class="depm-input" id="df_task" value="${escHtml(dep.task)}" placeholder="Ex: TSK-018 / BUG-023"></div>
       </div>
       <p style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin:4px 0 8px">Rollback <span style="font-size:10px;font-weight:400;color:#dc2626">(obrigatório)</span></p>
-      <div class="depm-field full"><label class="depm-label">Estratégia de reversão <span>*</span></label><textarea class="depm-input" id="df_rbEst" rows="2" placeholder="Descreva como reverter a mudança caso necessário...">${dep.rollbackEstrategia||''}</textarea></div>
+      <div class="depm-field full"><label class="depm-label">Estratégia de reversão <span>*</span></label><textarea class="depm-input" id="df_rbEst" rows="2" placeholder="Descreva como reverter a mudança caso necessário...">${escHtml(dep.rollbackEstrategia)}</textarea></div>
       <div class="depm-row">
-        <div class="depm-field"><label class="depm-label">Responsável pelo rollback</label><input class="depm-input" id="df_rbResp" value="${dep.rollbackResponsavel||''}" placeholder="Nome"></div>
-        <div class="depm-field"><label class="depm-label">Tempo estimado de reversão</label><input class="depm-input" id="df_rbTempo" value="${dep.rollbackTempo||''}" placeholder="Ex: 30 min"></div>
+        <div class="depm-field"><label class="depm-label">Responsável pelo rollback</label><input class="depm-input" id="df_rbResp" value="${escHtml(dep.rollbackResponsavel)}" placeholder="Nome"></div>
+        <div class="depm-field"><label class="depm-label">Tempo estimado de reversão</label><input class="depm-input" id="df_rbTempo" value="${escHtml(dep.rollbackTempo)}" placeholder="Ex: 30 min"></div>
       </div>
-      <div class="depm-field full"><label class="depm-label">Critérios para acionamento do rollback</label><textarea class="depm-input" id="df_rbCrit" rows="2" placeholder="Ex: Erro 5xx acima de 2% por mais de 5 minutos...">${dep.rollbackCriterios||''}</textarea></div>
+      <div class="depm-field full"><label class="depm-label">Critérios para acionamento do rollback</label><textarea class="depm-input" id="df_rbCrit" rows="2" placeholder="Ex: Erro 5xx acima de 2% por mais de 5 minutos...">${escHtml(dep.rollbackCriterios)}</textarea></div>
       <p style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin:4px 0 8px">Pós-implantação <span style="font-size:10px;font-weight:400;color:#dc2626">(obrigatório)</span></p>
-      <div class="depm-field full"><label class="depm-label">Validação pós-deploy <span>*</span></label><textarea class="depm-input" id="df_postDeploy" rows="2" placeholder="Critérios de sucesso, smoke tests, KPIs a verificar...">${dep.postDeploy||''}</textarea></div>
+      <div class="depm-field full"><label class="depm-label">Validação pós-deploy <span>*</span></label><textarea class="depm-input" id="df_postDeploy" rows="2" placeholder="Critérios de sucesso, smoke tests, KPIs a verificar...">${escHtml(dep.postDeploy)}</textarea></div>
       <p style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin:4px 0 8px">Aprovações e observações</p>
       <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px">
         <div style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="df_approval" ${dep.approval?'checked':''}><label class="depm-label" style="margin:0;cursor:pointer" for="df_approval">Aprovação formal necessária antes da execução</label></div>
       </div>
-      <div class="depm-field full"><label class="depm-label">Observações gerais</label><textarea class="depm-input" id="df_obs" rows="2" placeholder="Informações adicionais, dependências, alertas...">${dep.obs||''}</textarea></div>
+      <div class="depm-field full"><label class="depm-label">Observações gerais</label><textarea class="depm-input" id="df_obs" rows="2" placeholder="Informações adicionais, dependências, alertas...">${escHtml(dep.obs)}</textarea></div>
     </div>
+    <div id="depSaveMsg" class="dep-msg is-bad depm-msg" role="alert" hidden></div>
     <div class="depm-foot">
       <button class="depm-btn-cancel" onclick="closeDepModal()">Cancelar</button>
       <button class="depm-btn-save" onclick="saveDepModal()"><i class="ti ti-device-floppy" style="font-size:13px"></i> Salvar</button>
@@ -6448,6 +6598,7 @@ function openDepModal(idx){
 function closeDepModal(){
   document.getElementById('depModal').classList.remove('open');
   document.body.style.overflow='';
+  DepBackup.reset(); // descarta qualquer importação em andamento (o estado fica encapsulado em DepBackup)
 }
 
 function checkDeployDateLive(dateStr){
@@ -6469,7 +6620,7 @@ function checkDeployDateLive(dateStr){
   }
   box.className='depm-rule-box show'+(check.status==='block'?' block':'');
   const icon=check.status==='block'?'🔴':'🟡';
-  box.innerHTML=`<strong>${icon} ${check.status==='block'?'Data bloqueada — exceção necessária':'Atenção'}</strong><ul style="margin:4px 0 0 14px;padding:0">${check.reasons.map(r=>`<li>${r}</li>`).join('')}</ul>${check.status==='block'?'<div style="margin-top:6px;font-style:italic">Preencha a justificativa de exceção abaixo para prosseguir.</div>':''}`;
+  box.innerHTML=`<strong>${icon} ${check.status==='block'?'Data bloqueada — exceção necessária':'Atenção'}</strong><ul style="margin:4px 0 0 14px;padding:0">${check.reasons.map(r=>`<li>${escHtml(r)}</li>`).join('')}</ul>${check.status==='block'?'<div style="margin-top:6px;font-style:italic">Preencha a justificativa de exceção abaixo para prosseguir.</div>':''}`;
   if(excBox){
     excBox.style.display=check.status==='block'?'flex':'none';
     excBox.style.flexDirection='column';
@@ -6481,6 +6632,7 @@ function saveDepModal(){
   const g=id=>document.getElementById(id);
   const v=id=>(g(id)||{value:''}).value;
   const c=id=>(g(id)||{checked:false}).checked;
+  if(g('depSaveMsg')) g('depSaveMsg').hidden=true; // limpa o aviso de uma tentativa anterior
   const sistema=v('df_sistema').trim();
   const date=v('df_date');
   const tipo=v('df_tipo');
@@ -6527,27 +6679,197 @@ function saveDepModal(){
     excType:v('df_excType'),
     justificativa:v('df_justif').trim(),
     obs:v('df_obs').trim(),
-    history: _editDepIdx>=0?(CAL.deploys[_editDepIdx].history||[]):[],
+    history: _editDepIdx>=0?(CAL.deploys[_editDepIdx].history||[]).slice():[], // cópia: a memória só muda depois de gravar
   };
-  // Registra histórico de alteração
+  // Registra histórico de alteração e monta a lista nova SEM tocar em CAL.deploys (D17C):
+  // a memória só muda se a gravação der certo; em falha o modal fica aberto, com o que foi digitado.
+  const next=CAL.deploys.slice();
   if(_editDepIdx>=0){
     dep.history.push({at:now,action:'Editado',by:'Usuário'});
-    CAL.deploys[_editDepIdx]=dep;
+    next[_editDepIdx]=dep;
   } else {
     dep.history.push({at:now,action:'Criado',by:'Usuário'});
-    CAL.deploys.push(dep);
+    next.push(dep);
   }
-  localStorage.setItem('fi_deploys',JSON.stringify(CAL.deploys));
+  const res=persistDeploys(next,depCounterFor(next));
+  if(!res.ok){
+    depSaveError('Não foi possível salvar neste navegador (sem espaço ou navegação privada). Nada foi alterado e o que você digitou foi mantido. Exporte um backup se precisar e tente salvar novamente.');
+    return;
+  }
+  CAL.deploys=next;
   closeDepModal();
   renderCalDeploys();
 }
 
 function deleteDepModal(idx){
   if(!confirm('Excluir este deploy? Esta ação não pode ser desfeita.')) return;
-  CAL.deploys.splice(idx,1);
-  localStorage.setItem('fi_deploys',JSON.stringify(CAL.deploys));
+  const next=CAL.deploys.filter((_,i)=>i!==idx);
+  const res=persistDeploys(next);
+  if(!res.ok){
+    depNotify('bad','Não foi possível salvar neste navegador (sem espaço ou navegação privada). O deploy não foi excluído. Exporte um backup se precisar e tente novamente.');
+    return;
+  }
+  CAL.deploys=next;
   renderCalDeploys();
 }
+
+// ── Backup de deploys: exportar e importar (Fase 2 — Lote 4) ─────────────────
+function depMsgHtml(kind,text){return`<div class="dep-msg is-${kind}" role="${kind==='bad'?'alert':'status'}">${escHtml(text)}</div>`;}
+function depStoreNoticeHtml(){
+  if(_depStore.issue==='ilegivel') return depMsgHtml('warn','Os deploys salvos neste navegador não puderam ser lidos. Nada foi apagado e a lista aparece vazia. Você pode importar um backup ou registrar novos deploys; ao salvar ou importar, o conteúdo ilegível será substituído.');
+  if(_depStore.issue==='acesso') return depMsgHtml('warn','Este navegador não permite salvar dados nesta página. Os deploys registrados agora serão perdidos ao recarregar. Exporte um backup antes de sair.');
+  return'';
+}
+// Mensagem fixa dentro da aba Deploys (não é toast): usada na exclusão e no resultado de exportar/importar
+function depNotify(kind,text){
+  const el=document.getElementById('depNotice');
+  if(!el){alert(text);return;}
+  el.innerHTML=depMsgHtml(kind,text);
+  if(el.scrollIntoView) el.scrollIntoView({block:'nearest'});
+}
+// Mensagem dentro do modal de deploy: o modal continua aberto com o que foi digitado
+function depSaveError(text){
+  const el=document.getElementById('depSaveMsg');
+  if(!el){alert(text);return;}
+  el.textContent=text;el.hidden=false;
+  if(el.scrollIntoView) el.scrollIntoView({block:'nearest'});
+}
+function depLocalDate(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+
+function exportDeployJSON(){
+  if(!CAL.deploys.length) return;
+  const backup={app:'FlowOps AI',formatVersion:1,exportedAt:new Date().toISOString(),counter:depCounterFor(CAL.deploys),deploys:CAL.deploys};
+  downloadJSON('flowops-deploys-'+depLocalDate()+'.json',JSON.stringify(backup,null,2));
+  depNotify('ok','Backup exportado com '+CAL.deploys.length+' deploy(s).');
+}
+function importDeployJSON(ev){DepBackup.onFile(ev.target);}
+
+// Importação: ler → validar → classificar → resumo → escolha → estado final → persistir → só então atualizar CAL.deploys e a tela.
+// Todo o estado temporário (arquivo lido, classificação, etapa) fica encapsulado aqui e é descartado em closeDepModal().
+const DepBackup=(function(){
+  const MAX_BYTES=2*1024*1024;
+  const MSG_DESCONHECIDO='Arquivo não reconhecido. Escolha um backup de deploys exportado por esta ferramenta. Nada foi alterado.';
+  let st=null;
+
+  // Forma canônica: todos os campos conhecidos, na ordem de saveDepModal(); campos desconhecidos não entram
+  function canon(it){
+    const o={};
+    DEP_FIELDS.forEach(f=>{
+      if(f==='history') o[f]=(Array.isArray(it.history)?it.history:[]).map(h=>({at:h.at||'',action:h.action||'',by:h.by||''}));
+      else if(DEP_BOOL_FIELDS.includes(f)) o[f]=!!it[f];
+      else o[f]=typeof it[f]==='string'?it[f]:'';
+    });
+    if(!o.qsprint){const sp=calGetSprintForDate(o.date);o.qsprint=sp?sp.q+' · '+sp.s:'Fora de sprint';}
+    return o;
+  }
+  // "Igual" = mesmo conteúdo em todos os campos gravados (qsprint é derivado da data e fica de fora)
+  function same(a,b){const A=canon(a),B=canon(b);return DEP_FIELDS.every(f=>f==='qsprint'||JSON.stringify(A[f])===JSON.stringify(B[f]));}
+
+  function open(){document.getElementById('depModal').classList.add('open');document.body.style.overflow='hidden';}
+  function fail(msg){st={step:'erro',msg:msg};render();}
+  const row=(cls,label,n)=>'<div class="dep-imp-row'+(cls?' '+cls:'')+'"><span>'+label+'</span><b>'+n+'</b></div>';
+  const lst=arr=>arr.length?'<ul class="dep-imp-list">'+arr.slice(0,5).map(x=>'<li>'+escHtml(x)+'</li>').join('')+(arr.length>5?'<li>e mais '+(arr.length-5)+'</li>':'')+'</ul>':'';
+
+  function render(){
+    if(!st) return;
+    const cur=CAL.deploys.length,its=st.items||[];
+    const nNov=its.filter(x=>x.kind==='novo').length,nIg=its.filter(x=>x.kind==='igual').length,nCf=its.filter(x=>x.kind==='conflito').length;
+    const head='<div class="depm-head"><div class="depm-head-title">Importar backup</div><button class="depm-close" onclick="DepBackup.cancel()" aria-label="Fechar"><i class="ti ti-x"></i></button></div>';
+    let body,foot;
+    if(st.step==='erro'){
+      body=depMsgHtml('bad',st.msg);
+      foot='<button class="depm-btn-cancel" onclick="DepBackup.cancel()">Fechar</button>';
+    } else if(st.step==='confirmar'){
+      body=(st.msg?depMsgHtml('bad',st.msg):'')+depMsgHtml('warn','Substituir tudo remove os '+cur+' deploy(s) atuais deste navegador e carrega '+its.length+' do arquivo. Exporte um backup antes se quiser guardar os atuais.');
+      foot='<button class="depm-btn-cancel" onclick="DepBackup.back()">Voltar</button><button class="depm-btn-danger" onclick="DepBackup.apply(\'replace\')">Confirmar substituição</button>';
+    } else {
+      const conf=its.filter(x=>x.kind==='conflito').map(x=>x.it.id+': mesmo código com dados diferentes');
+      const inv=st.invalid.map(x=>'Registro '+x.n+(x.id?' ('+x.id+')':'')+': '+x.why);
+      body=(st.msg?depMsgHtml('bad',st.msg):'')
+        +'<p class="dep-imp-meta">Arquivo: <strong>'+escHtml(st.name)+'</strong>'+(st.exportedAt?' · exportado em '+escHtml(new Date(st.exportedAt).toLocaleString('pt-BR')):'')+'</p>'
+        +'<p>O arquivo tem '+st.total+' registro(s). Neste navegador há '+cur+' deploy(s).</p>'
+        +'<div class="dep-imp-sum">'+row('is-ok','Novos',nNov)+row('','Iguais (ignorados)',nIg)+row('is-warn','Em conflito (o atual é mantido)',nCf)+row('is-bad','Inválidos (ignorados)',st.invalid.length)+'</div>'
+        +lst(conf)+lst(inv)
+        +(_depStore.issue==='ilegivel'?'<p class="dep-imp-meta">O conteúdo ilegível salvo neste navegador será substituído quando você importar.</p>':'')
+        +(its.length?'':depMsgHtml('warn','Nenhum registro válido para importar.'));
+      foot=its.length
+        ?'<button class="depm-btn-cancel" onclick="DepBackup.cancel()">Cancelar</button>'
+          +'<button class="depm-btn-cancel" onclick="DepBackup.askReplace()" title="Remove os '+cur+' deploys atuais">Substituir tudo</button>'
+          +'<button class="depm-btn-save" onclick="DepBackup.apply(\'add\')"'+(nNov?'':' disabled')+'>Adicionar novos'+(nNov?' ('+nNov+')':'')+'</button>'
+        :'<button class="depm-btn-cancel" onclick="DepBackup.cancel()">Fechar</button>';
+    }
+    document.getElementById('depModalBox').innerHTML='<div class="dep-imp">'+head+'<div class="depm-body">'+body+'</div><div class="depm-foot">'+foot+'</div></div>';
+    open();
+  }
+
+  function prepare(name,text){
+    let data;
+    try{data=JSON.parse(text.replace(/^﻿/,''));}catch(e){fail(MSG_DESCONHECIDO);return;}
+    let list,exportedAt=null,bkCounter=null;
+    if(Array.isArray(data)){ // lista simples (formato inicial do plano)
+      list=data;
+    } else if(data&&typeof data==='object'&&data.app==='FlowOps AI'&&Number.isInteger(data.formatVersion)&&data.formatVersion>=1){
+      if(data.formatVersion>1){fail('Este backup usa um formato mais novo (versão '+data.formatVersion+') que esta página não reconhece. Nada foi alterado.');return;}
+      if(!Array.isArray(data.deploys)){fail('O arquivo não traz uma lista de deploys. Nada foi alterado.');return;}
+      list=data.deploys;
+      if(typeof data.exportedAt==='string'&&!isNaN(Date.parse(data.exportedAt))) exportedAt=data.exportedAt;
+      if(Number.isSafeInteger(data.counter)&&data.counter>=0&&data.counter<1000000) bkCounter=data.counter;
+    } else {fail(MSG_DESCONHECIDO);return;}
+    const byId=new Map();
+    CAL.deploys.forEach(d=>{if(d.id&&!byId.has(d.id)) byId.set(d.id,d);});
+    const seen=new Set(),items=[],invalid=[];
+    list.forEach((raw,i)=>{
+      const prob=depCheckItem(raw,true);
+      if(!prob.length&&!raw.id) prob.push('código ausente');
+      if(!prob.length&&seen.has(raw.id)) prob.push('código repetido no arquivo');
+      if(prob.length){invalid.push({n:i+1,id:(raw&&typeof raw==='object'&&typeof raw.id==='string')?raw.id:'',why:prob.join('; ')});return;}
+      seen.add(raw.id);
+      const it=canon(raw),ex=byId.get(it.id);
+      items.push({it:it,kind:ex?(same(ex,it)?'igual':'conflito'):'novo'});
+    });
+    st={step:'resumo',name:name,exportedAt:exportedAt,bkCounter:bkCounter,items:items,invalid:invalid,total:list.length,msg:''};
+    render();
+  }
+
+  function onFile(inp){
+    const f=inp.files&&inp.files[0];
+    inp.value=''; // permite escolher o mesmo arquivo de novo
+    if(!f) return;
+    if(f.size>MAX_BYTES){fail('O arquivo é maior que 2 MB. Escolha um backup de deploys exportado por esta ferramenta. Nada foi alterado.');return;}
+    const r=new FileReader();
+    r.onerror=()=>fail('Não foi possível ler o arquivo. Nada foi alterado.');
+    r.onload=()=>prepare(f.name,String(r.result));
+    r.readAsText(f);
+  }
+
+  function apply(mode){
+    if(!st||st.step==='erro'||!st.items) return;
+    if(mode==='replace'&&(st.step!=='confirmar'||!st.items.length)) return; // substituir exige a confirmação explícita
+    const novos=st.items.filter(x=>x.kind==='novo').map(x=>x.it);
+    if(mode==='add'&&!novos.length) return;
+    // 1) estado candidato  2) persistir  3) só então atualizar memória e tela
+    const final=mode==='replace'?st.items.map(x=>x.it):CAL.deploys.concat(novos);
+    const counter=Math.max(depStoredCounter(),st.bkCounter||0,depMaxIdNum(final));
+    const res=persistDeploys(final,counter);
+    if(!res.ok){
+      st.msg='Não foi possível salvar neste navegador (sem espaço ou navegação privada). Nada foi importado: a lista atual permanece como estava. Exporte um backup se precisar e tente novamente.';
+      render();return;
+    }
+    CAL.deploys=final;
+    closeDepModal();
+    renderCalDeploys();
+    depNotify('ok',mode==='replace'?'Importação concluída: a lista foi substituída por '+final.length+' deploy(s).':'Importação concluída: '+novos.length+' deploy(s) adicionado(s).');
+  }
+
+  return{
+    onFile:onFile,
+    apply:apply,
+    askReplace:()=>{if(st&&st.items&&st.items.length){st.step='confirmar';st.msg='';render();}},
+    back:()=>{if(st){st.step='resumo';st.msg='';render();}},
+    cancel:()=>{closeDepModal();},
+    reset:()=>{st=null;}
+  };
+})();
 // ─────────────────────────────────────────────────────────────────
 
 // ── GLOSSÁRIO DE MÉTRICAS ─────────────────────────────────────────
