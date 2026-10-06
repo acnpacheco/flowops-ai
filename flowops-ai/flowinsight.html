@@ -646,6 +646,71 @@
     #okrModal .depm-foot button{flex:1 1 100%;min-height:40px}
     #okrModal .okr-chk{min-height:40px;align-items:center}
   }
+  /* Fase 2 — Lote 6 — Discovery (tokens do Lote 1; reaproveita .cf-header, .cc, .dep-*, .depm-*) */
+  .ed-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .ed-tab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+  .ed-tab.on{background:var(--clr-info);color:#fff;border-color:var(--clr-info)}
+  .ed-tab:hover:not(.on){background:var(--bg-insight)}
+  .edp{display:none}.edp.on{display:block}
+  .disc-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-card-gap);flex-wrap:wrap;margin-bottom:6px}
+  .disc-ctx{font-size:var(--fs-body);font-weight:var(--fw-body);color:var(--clr-neutral);overflow-wrap:anywhere;min-width:0}
+  .disc-ctx strong{color:#111827}
+  .disc-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:var(--sp-card-gap);margin-bottom:var(--sp-section-gap)}
+  .disc-strip-c{background:#fff;border:1px solid #e5e5e3;border-radius:8px;padding:10px 12px}
+  .disc-strip-v{font-size:var(--fs-kpi-value);font-weight:var(--fw-kpi-value);line-height:1.1;color:#111827}
+  .disc-strip-l{font-size:var(--fs-kpi-label);font-weight:var(--fw-kpi-label);color:var(--clr-neutral);margin-top:2px}
+  .disc-board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-card-gap);align-items:start}
+  .disc-col{padding:var(--sp-card-pad);margin-bottom:0;min-width:0}
+  .disc-col-hd{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:var(--fs-section-hd);font-weight:var(--fw-section-hd);color:#111827;margin-bottom:var(--sp-card-gap)}
+  .disc-col-n{font-size:var(--fs-caption);font-weight:var(--fw-badge);color:var(--clr-neutral)}
+  .disc-list{display:flex;flex-direction:column;gap:var(--sp-card-gap)}
+  .disc-card{border:1px solid #e5e5e3;border-radius:8px;padding:10px 12px;background:#fff;min-width:0}
+  .disc-sum{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;cursor:pointer;list-style:none}
+  .disc-sum::-webkit-details-marker{display:none}
+  .disc-sum-main{flex:1 1 150px;min-width:0}
+  .disc-title{font-size:var(--fs-body);font-weight:600;color:#111827;overflow-wrap:anywhere}
+  .disc-meta{font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral);margin-top:2px;overflow-wrap:anywhere}
+  .disc-chev{color:var(--clr-neutral);transition:transform .15s}
+  details[open]>.disc-sum .disc-chev{transform:rotate(180deg)}
+  .disc-body{display:flex;flex-direction:column;gap:10px;padding-top:var(--sp-card-gap);font-size:var(--fs-body);font-weight:var(--fw-body);color:#374151;overflow-wrap:anywhere}
+  .disc-lbl{font-size:var(--fs-caption);font-weight:600;color:var(--clr-neutral);margin-bottom:2px}
+  .disc-empty{font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral)}
+  .disc-chip{display:inline-flex;align-items:center;gap:4px;font-size:var(--fs-badge);font-weight:var(--fw-badge);padding:2px 10px;border-radius:12px;border:1px solid var(--disc-c,var(--clr-neutral));color:#374151;max-width:100%;overflow-wrap:anywhere}
+  .disc-chip i{color:var(--disc-c,var(--clr-neutral))}
+  .disc-c-info{--disc-c:var(--clr-info)}
+  .disc-c-ok{--disc-c:var(--clr-ok)}
+  .disc-c-warn{--disc-c:var(--clr-warn)}
+  .disc-c-bad{--disc-c:var(--clr-bad)}
+  .disc-c-neutral{--disc-c:var(--clr-neutral)}
+  .disc-actions{display:flex;gap:6px;flex-wrap:wrap}
+  .disc-btn{font-size:11px;padding:4px 10px;border:1px solid #d1d5db;border-radius:6px;background:#f9fafb;cursor:pointer;color:#374151}
+  .disc-btn-del{border-color:#fca5a5;background:#fff1f2;color:var(--clr-bad)}
+  .disc-row{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
+  .disc-row-main{flex:1 1 200px;min-width:0}
+  .disc-commit{display:flex;align-items:center;gap:var(--sp-card-gap);margin:var(--sp-section-gap) 0 4px;color:var(--clr-info);font-size:var(--fs-section-hd);font-weight:var(--fw-section-hd)}
+  .disc-commit::before,.disc-commit::after{content:'';flex:1;height:2px;background:var(--clr-info);border-radius:1px}
+  .disc-commit-cap{text-align:center;font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral);margin-bottom:var(--sp-card-gap)}
+  .disc-dec{padding:var(--sp-card-pad)}
+  .disc-sub{font-size:var(--fs-section-hd);font-weight:var(--fw-section-hd);color:#111827;margin:var(--sp-card-gap) 0 8px}
+  .disc-decided{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));gap:var(--sp-card-gap);align-items:start}
+  .disc-example{margin:0 0 var(--sp-card-gap);padding:var(--sp-card-gap) var(--sp-card-pad);border:1px dashed var(--clr-info);border-radius:8px;font-size:var(--fs-body);color:#374151}
+  .disc-gate{margin-top:var(--sp-card-gap);font-size:var(--fs-body);color:#374151}
+  .disc-req{list-style:none;display:flex;flex-direction:column;gap:4px}
+  .disc-req li{display:flex;align-items:flex-start;gap:6px;overflow-wrap:anywhere}
+  .disc-req .is-ok i{color:var(--clr-ok)}
+  .disc-req .is-miss i{color:var(--clr-bad)}
+  .disc-chk{display:flex;align-items:flex-start;gap:6px;font-size:var(--fs-body);overflow-wrap:anywhere}
+  .disc-chk-grp{font-size:var(--fs-caption);font-weight:600;color:var(--clr-neutral);margin-top:6px}
+  #discModal .depm-btn-save:disabled{opacity:.5;cursor:not-allowed}
+  @media(max-width:1023px){.disc-board{grid-template-columns:1fr}}
+  @media(max-width:600px){
+    #ped .ed-tab{min-height:40px}
+    #ed-discovery .disc-btn,#ed-discovery .dep-btn-new{min-height:40px}
+    #ed-discovery .disc-sum{min-height:40px}
+    #discModal .depm-foot{flex-wrap:wrap}
+    #discModal .depm-foot button{flex:1 1 100%;min-height:40px}
+    #discModal .disc-chk{min-height:40px;align-items:center}
+  }
 
   /* ── Glossário de Métricas ──────────────────────────── */
   .gl-header{margin-bottom:16px}
@@ -1171,13 +1236,18 @@
 
   </div>
 
-  <!-- Estratégia — Objetivos & OKRs (Fase 2 — Lote 5): conteúdo gerado por renderOKRs() -->
+  <!-- Estratégia & Discovery (Fase 2 — Lotes 5 e 6): #ed-okr gerado por renderOKRs(), #ed-discovery por renderDiscovery() -->
   <div id="ped" class="fp">
     <div class="cf-header">
-      <p class="cf-title">Estratégia</p>
-      <p class="cf-sub">Objetivos e resultados-chave do período selecionado.</p>
+      <p class="cf-title">Estratégia &amp; Discovery</p>
+      <p class="cf-sub">Objetivos e resultados-chave do período selecionado, e itens em Discovery até a decisão.</p>
     </div>
-    <div id="ed-okr"></div>
+    <div class="ed-nav">
+      <button class="ed-tab on" onclick="edTab(this,'ed-okr')" aria-label="Objetivos" title="Objetivos"><i class="ti ti-target"></i> Objetivos</button>
+      <button class="ed-tab" onclick="edTab(this,'ed-discovery')" aria-label="Discovery" title="Discovery"><i class="ti ti-bulb"></i> Discovery</button>
+    </div>
+    <div id="ed-okr" class="edp on"></div>
+    <div id="ed-discovery" class="edp"></div>
   </div>
 
   <!-- DORA -->
@@ -2572,6 +2642,7 @@ function upd(){
   if(document.getElementById('pm').classList.contains('on')) renderMultiTeam();
   if(document.getElementById('pf').classList.contains('on')) renderFlowMetrics();
   if(document.getElementById('ped').classList.contains('on')) renderOKRs();
+  if(document.getElementById('ped').classList.contains('on')&&document.getElementById('ed-discovery').classList.contains('on')) renderDiscovery();
   drawCharts();
 }
 
@@ -3272,7 +3343,7 @@ function tab(el,id){
   if(id==='f') renderFlowMetrics();
   if(id==='eq') eqTab(document.querySelector('#peq .eq-tab'),'eq-saude');
   if(id==='cal') renderCalendario();
-  if(id==='ed') renderOKRs();
+  if(id==='ed') edTab(document.querySelector('#ped .ed-tab'),'ed-okr');
   if(id==='g') renderGlossario();
   if(id==='as') renderAcompanhamento();
 }
@@ -3302,6 +3373,15 @@ function eqTab(el,id){
   if(id==='eq-dora') renderDora();
   if(id==='eq-quality') renderCargaFalhas();
   if(id==='eq-saude') renderEqOverview();
+}
+
+function edTab(el,id){
+  document.querySelectorAll('#ped .ed-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('#ped .edp').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  if(id==='ed-okr') renderOKRs();
+  if(id==='ed-discovery') renderDiscovery();
 }
 
 function renderEqOverview(){
@@ -7282,6 +7362,17 @@ const OKR=(function(){
     return null;
   }
 
+  // Lote 6: aviso informativo de itens de Discovery que referenciam o que será excluído. Não bloqueia e não altera fi_discovery.
+  function discNote(act,id){
+    let ids=[];
+    if(act==='del-kr') ids=[id];
+    else if(act==='del-okr'){const o=findObj(data,id);ids=o?o.keyResults.map(k=>k.id):[];}
+    let n=0;
+    try{n=ids.length&&typeof Discovery!=='undefined'?Discovery.refsTo(ids):0;}catch(e){n=0;}
+    if(!n) return '';
+    return '<div class="dep-msg is-warn">'+E(n+(n===1?' item de Discovery referencia ':' itens de Discovery referenciam ')+(act==='del-kr'?'este resultado-chave.':'resultados-chave deste objetivo.')+' Os vínculos continuam salvos no Discovery e passam a aparecer como removidos.')+'</div>';
+  }
+
   function openModal(act,id,parent){
     if(typeof act!=='string'||!act) return;
     if(example&&act!=='new-okr') return; // o exemplo é só demonstração: não edita
@@ -7293,6 +7384,7 @@ const OKR=(function(){
       title=p.title;
       body='<p>'+E(p.text)+' Esta ação não pode ser desfeita.</p>'
         +(p.orph.length?'<div class="dep-msg is-warn">As iniciativas a seguir ficariam sem nenhum resultado-chave e também serão excluídas: '+E(p.orph.map(i=>i.title).join('; '))+'.</div>':'');
+      body+=discNote(act,id);
       foot='<button class="depm-btn-cancel" onclick="OKR.close()">Cancelar</button><button class="depm-btn-save" style="background:var(--clr-bad)" onclick="OKR.save()">Confirmar exclusão</button>';
     } else {
       const f=formFor(act,id,parent);
@@ -7402,6 +7494,452 @@ const OKR=(function(){
   };
 })();
 function renderOKRs(){OKR.render();}
+
+// ── ESTRATÉGIA & DISCOVERY — itens de Discovery (Fase 2 — Lote 6) ───────────────
+// Persistência em fi_discovery (envelope com schemaVersion), separada de fi_okr, no padrão de leitura e gravação seguras dos Lotes 4 e 5.
+// Etapa, status e decisão são informados pelo responsável: nada é concluído automaticamente. O vínculo com resultado-chave é só por ID.
+const DISC_STAGES={oportunidade:{pt:'Oportunidade'},hipotese:{pt:'Hipótese'},validacao:{pt:'Validação'}};
+const DISC_STATUS={
+  active:{pt:'Em andamento',icon:'circle-dot',c:'info'},
+  attention:{pt:'Atenção',icon:'alert-triangle',c:'warn'},
+  blocked:{pt:'Bloqueado',icon:'ban',c:'bad'}
+};
+const DISC_RESULT={
+  supports:{pt:'Apoia a hipótese',icon:'circle-check',c:'ok'},
+  contradicts:{pt:'Contradiz a hipótese',icon:'circle-x',c:'warn'},
+  inconclusive:{pt:'Inconclusiva',icon:'help-circle',c:'neutral'}
+};
+const DISC_DECISION={
+  commit:{pt:'Comprometer',done:'Comprometido',icon:'flag-check',c:'info'},
+  discard:{pt:'Descartar',done:'Descartado',icon:'archive',c:'neutral'}
+};
+
+const Discovery=(function(){
+  const KEY='fi_discovery',KINDS=['discovery','discoveryEvidence'];
+  const RX={discovery:/^discovery-\d{3,}$/,discoveryEvidence:/^discovery-evidence-\d{3,}$/},RXKR=/^kr-\d{3,}$/;
+  const PFX={discovery:'discovery-',discoveryEvidence:'discovery-evidence-'};
+  const MSG_FALHA='Não foi possível salvar neste navegador (sem espaço ou navegação privada). Nada foi alterado e o que você digitou foi mantido. Tente salvar novamente.';
+  const MSG_NOVA='Estes dados foram salvos por uma versão mais nova do FlowOps AI e não serão alterados por esta página.';
+  let data=empty(),issue=null,example=false,m=null;
+  const wantOpen=new Set();
+
+  function empty(){return{schemaVersion:1,counters:{discovery:0,discoveryEvidence:0},items:[]};}
+  const clone=x=>JSON.parse(JSON.stringify(x));
+  const isStr=(v,max)=>typeof v==='string'&&v.length<=max;
+  const isInt=(v,a,b)=>Number.isInteger(v)&&v>=a&&v<=b;
+  const isoOk=v=>typeof v==='string'&&v.length<=40&&!isNaN(Date.parse(v));
+  const plain=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
+  const needsNote=s=>s==='attention'||s==='blocked';
+
+  // Validação estrutural completa; devolve '' se válido ou o motivo. Não confere se o KR existe em fi_okr (ver krIndex).
+  function check(d){
+    if(!plain(d)) return 'raiz';
+    if(!Number.isInteger(d.schemaVersion)||d.schemaVersion<1) return 'schemaVersion';
+    if(d.schemaVersion>1) return 'schema mais novo';
+    if(!plain(d.counters)||KINDS.some(k=>!isInt(d.counters[k],0,1e9))) return 'counters';
+    if(!Array.isArray(d.items)) return 'itens';
+    const seen={discovery:new Set(),discoveryEvidence:new Set()};
+    const uniq=(k,id)=>{if(typeof id!=='string'||!RX[k].test(id)||seen[k].has(id)) return false;seen[k].add(id);return true;};
+    for(const it of d.items){
+      if(!plain(it)||!uniq('discovery',it.id)) return 'id do item';
+      if(!isStr(it.title,160)||!it.title.trim()) return 'título';
+      if(!isStr(it.problem,300)||!it.problem.trim()) return 'problema';
+      if(it.hypothesis!==null&&(!isStr(it.hypothesis,300)||!it.hypothesis.trim())) return 'hipótese';
+      if(!isStr(it.owner,120)||!it.owner.trim()) return 'responsável';
+      if(typeof it.stage!=='string'||!OKR_HAS(DISC_STAGES,it.stage)) return 'etapa';
+      if(it.stage!=='oportunidade'&&it.hypothesis===null) return 'hipótese obrigatória na etapa';
+      if(!isoOk(it.stageSince)||!isoOk(it.createdAt)||!isoOk(it.updatedAt)) return 'datas';
+      if(it.status!==null&&(typeof it.status!=='string'||!OKR_HAS(DISC_STATUS,it.status))) return 'status';
+      if(!isStr(it.statusNote,300)||(needsNote(it.status)&&!it.statusNote.trim())) return 'motivo do status';
+      if(!Array.isArray(it.krIds)||it.krIds.length>50||new Set(it.krIds).size!==it.krIds.length||it.krIds.some(k=>typeof k!=='string'||!RXKR.test(k))) return 'vínculos';
+      if(!Array.isArray(it.evidence)) return 'evidências';
+      for(const e of it.evidence){
+        if(!plain(e)||!uniq('discoveryEvidence',e.id)) return 'id da evidência';
+        if(!isStr(e.text,300)||!e.text.trim()) return 'texto da evidência';
+        if(!depValidDate(e.date)) return 'data da evidência';
+        if(typeof e.result!=='string'||!OKR_HAS(DISC_RESULT,e.result)) return 'resultado da evidência';
+      }
+      const dc=it.decision;
+      if(dc===null){if(it.status===null) return 'item aberto sem status';}
+      else{
+        if(!plain(dc)||typeof dc.outcome!=='string'||!OKR_HAS(DISC_DECISION,dc.outcome)||!depValidDate(dc.date)||!isStr(dc.note,300)||!dc.note.trim()) return 'decisão';
+        if(it.status!==null) return 'status em item decidido';
+        if(dc.outcome==='commit'&&(it.stage!=='validacao'||!it.evidence.length||!it.krIds.length)) return 'compromisso incompleto';
+      }
+    }
+    return '';
+  }
+  // Reconstrói só os campos conhecidos
+  function normalize(d){
+    return{schemaVersion:1,counters:{discovery:d.counters.discovery,discoveryEvidence:d.counters.discoveryEvidence},
+      items:d.items.map(i=>({id:i.id,title:i.title,problem:i.problem,hypothesis:i.hypothesis,owner:i.owner,stage:i.stage,stageSince:i.stageSince,
+        status:i.status,statusNote:needsNote(i.status)?i.statusNote:'',krIds:i.krIds.slice(),
+        evidence:i.evidence.map(e=>({id:e.id,text:e.text,date:e.date,result:e.result})),
+        decision:i.decision?{outcome:i.decision.outcome,date:i.decision.date,note:i.decision.note}:null,
+        createdAt:i.createdAt,updatedAt:i.updatedAt}))};
+  }
+
+  // Leitura segura: nunca lança exceção. Valor ilegível ou de versão mais nova fica guardado como está.
+  function load(){
+    issue=null;example=false;data=empty();
+    let raw;
+    try{raw=localStorage.getItem(KEY);}catch(e){issue='acesso';return;}
+    if(raw===null){example=true;return;} // chave ainda não existe: exemplo só em memória, nunca gravado
+    let p;
+    try{p=JSON.parse(raw);}catch(e){issue='ilegivel';return;}
+    if(plain(p)&&Number.isInteger(p.schemaVersion)&&p.schemaVersion>1){issue='nova';return;}
+    if(check(p)){issue='ilegivel';return;}
+    data=normalize(p);
+  }
+  function persist(next){
+    try{localStorage.setItem(KEY,JSON.stringify(next));return{ok:true};}catch(e){return{ok:false,error:e};}
+  }
+  // Toda gravação: monta o estado candidato, valida, persiste e só então troca a memória
+  function commit(mutator){
+    if(issue==='nova') return{ok:false,msg:MSG_NOVA};
+    const next=clone((issue||example)?empty():data); // exemplo e valor ilegível nunca entram no estado novo
+    const err=mutator(next);
+    if(err) return{ok:false,msg:err};
+    if(check(next)) return{ok:false,msg:'Os dados informados não são válidos. Revise os campos e tente novamente.'};
+    if(!persist(next).ok) return{ok:false,msg:MSG_FALHA};
+    data=next;example=false;issue=null;
+    return{ok:true};
+  }
+  function newId(next,kind){
+    let max=next.counters[kind]||0;
+    const scan=id=>{const x=/-(\d+)$/.exec(id||'');if(x) max=Math.max(max,parseInt(x[1],10));};
+    next.items.forEach(i=>{if(kind==='discovery') scan(i.id);else i.evidence.forEach(e=>scan(e.id));});
+    max+=1;next.counters[kind]=max;
+    return PFX[kind]+String(max).padStart(3,'0');
+  }
+  const touch=i=>{i.updatedAt=new Date().toISOString();};
+  const find=(d,id)=>d.items.find(i=>i.id===id)||null;
+
+  // ── Resultados-chave: referência só por ID, resolvida na leitura a partir de OKR.state() (uma vez por renderização) ──
+  function krIndex(){
+    const s=OKR.state();
+    if(s.issue) return{ok:false,map:{},groups:[]}; // fi_okr ilegível, de versão mais nova ou inacessível: não dá para verificar
+    const map={},groups=[];
+    s.data.objectives.forEach(o=>{
+      const per=o.period.quarter+' '+o.period.year;
+      const g={title:o.title,period:per,krs:o.keyResults.map(k=>({id:k.id,title:k.title}))};
+      g.krs.forEach(k=>{map[k.id]={title:k.title,objective:o.title,period:per};});
+      if(g.krs.length) groups.push(g);
+    });
+    return{ok:true,map:map,groups:groups};
+  }
+  const resolve=(idx,id)=>!idx.ok?'unverifiable':(OKR_HAS(idx.map,id)?'ok':'removed');
+
+  // Requisitos do compromisso (D30), na ordem aprovada; a justificativa e a data fazem parte do registro da decisão
+  function commitReqs(it,idx,note,date){
+    return[
+      {ok:it.stage==='validacao',text:'O item está na etapa Validação.'},
+      {ok:!!(it.hypothesis&&it.hypothesis.trim()),text:'A hipótese está preenchida.'},
+      {ok:!!it.owner.trim(),text:'O responsável está definido.'},
+      {ok:it.evidence.length>0,text:'Há pelo menos uma evidência registrada.'},
+      {ok:it.krIds.some(k=>resolve(idx,k)==='ok'),text:idx.ok?'Há pelo menos um resultado-chave vinculado que existe.':'Há pelo menos um resultado-chave vinculado que existe (os objetivos não puderam ser lidos agora, então não dá para verificar).'},
+      {ok:!!note.trim(),text:'A justificativa da decisão está preenchida.'},
+      {ok:depValidDate(date),text:'A data da decisão é válida.'}
+    ];
+  }
+  const discardReqs=(note,date)=>[
+    {ok:!!note.trim(),text:'A justificativa da decisão está preenchida.'},
+    {ok:depValidDate(date),text:'A data da decisão é válida.'}
+  ];
+
+  // Exemplo (D37): 1 item, só em memória; sem evidência, decisão, data nem resultado-chave inventados
+  function exampleData(){
+    return{schemaVersion:1,counters:{discovery:1,discoveryEvidence:0},items:[{id:'discovery-001',
+      title:'Reduzir falhas após deploy',problem:'Parte dos deploys exige correção logo depois de ir para produção.',
+      hypothesis:'Se a revisão de deploy incluir uma checagem antes da liberação, a taxa de falha por mudança cai.',
+      owner:'Time Alpha',stage:'hipotese',stageSince:'',status:'active',statusNote:'',krIds:[],evidence:[],decision:null,createdAt:'',updatedAt:''}]};
+  }
+
+  // ── Renderização (todo texto vindo dos dados passa por escHtml; nada de dado em onclick) ──
+  const E=escHtml;
+  const fmtDate=d=>d&&d.length>=10?d.slice(8,10)+'/'+d.slice(5,7)+'/'+d.slice(0,4):'';
+  const chip=(c,icon,text)=>'<span class="disc-chip disc-c-'+c+'"><i class="ti ti-'+icon+'"></i> '+text+'</span>';
+  const btn=(act,id,parent,label,cls)=>'<button class="disc-btn'+(cls?' '+cls:'')+'" data-act="'+act+'" data-id="'+E(id)+'" data-parent="'+E(parent)+'" onclick="Discovery.click(this)">'+label+'</button>';
+  const decQ=i=>'Q'+Math.ceil(+i.decision.date.slice(5,7)/3);
+  const decY=i=>+i.decision.date.slice(0,4);
+  const decMatches=(i,ctx)=>decQ(i)===ctx.quarter&&(ctx.year===null||decY(i)===ctx.year);
+  function sinceTxt(it){ // tempo na etapa: informação factual, calculada da data de entrada
+    const t=Date.parse(it.stageSince);
+    if(isNaN(t)) return '';
+    const n=Math.max(0,Math.floor((Date.now()-t)/86400000));
+    return n===0?'Desde hoje nesta etapa':'Há '+n+(n===1?' dia':' dias')+' nesta etapa';
+  }
+  function evSummary(it){ // contagem simples; o FlowOps não conclui se a hipótese foi validada
+    const n={supports:0,contradicts:0,inconclusive:0};
+    it.evidence.forEach(e=>{n[e.result]++;});
+    return n.supports+(n.supports===1?' apoia':' apoiam')+' · '+n.contradicts+(n.contradicts===1?' contradiz':' contradizem')+' · '+n.inconclusive+(n.inconclusive===1?' inconclusiva':' inconclusivas');
+  }
+  function krHtml(it,idx){
+    if(!it.krIds.length) return '<span class="disc-empty">Nenhum resultado-chave vinculado.</span>';
+    const rows=it.krIds.map(id=>{
+      const s=resolve(idx,id);
+      if(s==='ok'){const k=idx.map[id];return '<div>'+E(k.title)+' <span class="disc-empty">('+E(k.objective)+' · '+E(k.period)+')</span></div>';}
+      if(s==='removed') return '<div>'+chip('warn','alert-triangle','Resultado-chave removido ('+E(id)+')')+'</div>';
+      return '<div>'+chip('neutral','lock','Resultado-chave não verificável ('+E(id)+')')+'</div>';
+    });
+    if(it.decision&&it.decision.outcome==='commit'&&idx.ok&&!it.krIds.some(k=>resolve(idx,k)==='ok')) rows.push('<div>'+chip('warn','alert-triangle','Compromisso sem resultado-chave válido')+'</div>');
+    return rows.join('');
+  }
+  function cardHtml(it,idx,ro){
+    const dc=it.decision,closed=!!dc;
+    const head=closed?chip(DISC_DECISION[dc.outcome].c,DISC_DECISION[dc.outcome].icon,DISC_DECISION[dc.outcome].done)
+      :chip(DISC_STATUS[it.status].c,DISC_STATUS[it.status].icon,DISC_STATUS[it.status].pt);
+    const since=closed?'':sinceTxt(it);
+    const meta=['Responsável: '+E(it.owner)];
+    if(closed) meta.push('Decidido em '+E(fmtDate(dc.date)));else if(since) meta.push(E(since));
+    meta.push(it.evidence.length+(it.evidence.length===1?' evidência':' evidências'));
+    const evRows=it.evidence.length?it.evidence.map(e=>{const r=DISC_RESULT[e.result];
+      return '<div class="disc-row"><div class="disc-row-main"><span class="disc-empty">'+E(fmtDate(e.date))+'</span> '+chip(r.c,r.icon,r.pt)+'<div>'+E(e.text)+'</div></div>'
+        +(ro||closed?'':'<div class="disc-actions">'+btn('del-ev',e.id,it.id,'Remover','disc-btn-del')+'</div>')+'</div>';}).join('')
+      :'<span class="disc-empty">Nenhuma evidência registrada.</span>';
+    const evAdd=ro||closed?'':(it.hypothesis?'<div>'+btn('new-ev','',it.id,'Registrar evidência')+'</div>':'<span class="disc-empty">Preencha a hipótese para registrar evidências.</span>');
+    const acts=ro?'':'<div class="disc-actions">'+(closed?btn('reopen',it.id,'','Reabrir'):btn('edit-item',it.id,'','Editar')+btn('move-item',it.id,'','Mover para')+btn('decide',it.id,'','Registrar decisão'))+btn('del-item',it.id,'','Excluir','disc-btn-del')+'</div>';
+    return '<details class="disc-card" data-key="'+E(it.id)+'"><summary class="disc-sum"><div class="disc-sum-main"><div class="disc-title">'+E(it.title)+'</div><div class="disc-meta">'+meta.join(' · ')+'</div></div>'+head+'<i class="ti ti-chevron-down disc-chev"></i></summary>'
+      +'<div class="disc-body">'
+      +(closed?'<div><div class="disc-lbl">Decisão: '+DISC_DECISION[dc.outcome].done+' em '+E(fmtDate(dc.date))+'</div>'+E(dc.note)+'</div>':'')
+      +'<div><div class="disc-lbl">Problema</div>'+E(it.problem)+'</div>'
+      +'<div><div class="disc-lbl">Hipótese</div>'+(it.hypothesis?E(it.hypothesis):'<span class="disc-empty">Ainda não informada.</span>')+'</div>'
+      +(!closed&&needsNote(it.status)&&it.statusNote?'<div><div class="disc-lbl">Motivo do status</div>'+E(it.statusNote)+'</div>':'')
+      +'<div><div class="disc-lbl">Resultados-chave</div>'+krHtml(it,idx)+'</div>'
+      +'<div><div class="disc-lbl">Evidências'+(it.evidence.length?' ('+evSummary(it)+')':'')+'</div>'+evRows+evAdd+'</div>'
+      +acts+'</div></details>';
+  }
+  function noticeHtml(){
+    const w=t=>depMsgHtml('warn',t);
+    if(issue==='ilegivel') return w('Os itens de Discovery salvos neste navegador não puderam ser lidos. Nada foi apagado e a lista aparece vazia. Ao salvar um item, o conteúdo ilegível será substituído.');
+    if(issue==='nova') return w(MSG_NOVA);
+    if(issue==='acesso') return w('Este navegador não permite salvar dados nesta página. Os itens registrados agora serão perdidos ao recarregar.');
+    return '';
+  }
+  function render(){
+    const root=document.getElementById('ed-discovery');
+    if(!root) return;
+    const keep=new Set([...root.querySelectorAll('details[open]')].map(d=>d.dataset.key));
+    wantOpen.forEach(k=>keep.add(k));wantOpen.clear();
+    const ctx=okrPeriodContext(),view=example?exampleData():data,idx=krIndex();
+    const open=view.items.filter(i=>!i.decision),dec=view.items.filter(i=>i.decision);
+    const inP=dec.filter(i=>decMatches(i,ctx)),per={};
+    dec.forEach(i=>{if(!decMatches(i,ctx)){const y=decY(i),q=decQ(i),k=y*10+(+q[1]);per[k]={label:q+' '+y,n:(per[k]?per[k].n:0)+1};}});
+    const others=Object.keys(per).sort((a,b)=>a-b).map(k=>per[k].label+' ('+per[k].n+')');
+    const periodTxt=ctx.quarter+(ctx.year?' '+ctx.year:'');
+    const cell=(v,l)=>'<div class="disc-strip-c"><div class="disc-strip-v">'+v+'</div><div class="disc-strip-l">'+l+'</div></div>';
+    const strip='<div class="disc-strip">'+Object.keys(DISC_STAGES).map(s=>cell(open.filter(i=>i.stage===s).length,DISC_STAGES[s].pt)).join('')
+      +cell(inP.filter(i=>i.decision.outcome==='commit').length,'Comprometidos no período')+cell(inP.filter(i=>i.decision.outcome==='discard').length,'Descartados no período')+'</div>';
+    const col=s=>{const l=open.filter(i=>i.stage===s);
+      return '<section class="cc disc-col" aria-label="'+DISC_STAGES[s].pt+'"><div class="disc-col-hd"><span>'+DISC_STAGES[s].pt+'</span><span class="disc-col-n">'+l.length+(l.length===1?' item':' itens')+'</span></div>'
+        +'<div class="disc-list">'+(l.length?l.map(i=>cardHtml(i,idx,example)).join(''):'<span class="disc-empty">Nenhum item nesta etapa.</span>')+'</div></section>';};
+    const decList=o=>{const l=inP.filter(i=>i.decision.outcome===o),nm=o==='commit'?'Comprometidos':'Descartados';
+      return '<div class="disc-sub">'+nm+' ('+l.length+')</div>'+(l.length?'<div class="disc-decided">'+l.map(i=>cardHtml(i,idx,example)).join('')+'</div>'
+        :'<span class="disc-empty">Nenhum item '+(o==='commit'?'comprometido':'descartado')+' em '+E(periodTxt)+'.</span>');};
+    const unver=!idx.ok&&view.items.some(i=>i.krIds.length)?depMsgHtml('warn','Os objetivos não puderam ser lidos agora. Os vínculos com resultados-chave não podem ser verificados e foram preservados.'):'';
+    root.innerHTML='<div class="disc-toolbar"><p class="disc-ctx">Itens abertos: todos, sem filtro · Decididos em: <strong>'+E(periodTxt)+'</strong> (filtro do topo)</p>'
+      +'<button class="dep-btn-new" data-act="new-item" data-id="" data-parent="" onclick="Discovery.click(this)"><i class="ti ti-plus"></i> Novo item</button></div>'
+      +'<p class="dep-note">Os itens de Discovery ficam salvos apenas neste navegador. Esta versão ainda não possui cópia de segurança.</p>'
+      +noticeHtml()+unver
+      +(example?'<div class="disc-example">Exemplo — substitua pelos seus itens. Este exemplo não é salvo e desaparece quando você criar o seu primeiro item.</div>':'')
+      +(view.items.length
+        ?strip+'<div class="disc-board">'+Object.keys(DISC_STAGES).map(col).join('')+'</div>'
+          +'<div class="disc-commit" role="separator" aria-label="Ponto de compromisso"><span>Ponto de compromisso</span></div>'
+          +'<p class="disc-commit-cap">Os itens abaixo desta linha já têm uma decisão registrada.</p>'
+          +'<section class="cc disc-dec"><div class="disc-col-hd"><span>Decididos em '+E(periodTxt)+'</span></div>'+decList('commit')+decList('discard')+'</section>'
+          +(others.length&&!example?'<p class="disc-empty">Outros períodos com decisões: '+E(others.join(', '))+'. Altere o período no filtro do topo.</p>':'')
+        :'<div class="dep-empty"><i class="ti ti-bulb" style="font-size:36px;display:block;margin-bottom:10px;color:#d1d5db"></i><p style="font-size:14px;font-weight:500;color:#6b7280;margin-bottom:4px">Nenhum item de Discovery</p><p style="font-size:12px">Clique em <strong>Novo item</strong> para registrar a primeira oportunidade.</p></div>');
+    root.querySelectorAll('details').forEach(d=>{if(keep.has(d.dataset.key)) d.open=true;});
+  }
+
+  // ── Editor (modal) ─────────────────────────────────────────────────────────────
+  const box=()=>document.getElementById('discModalBox');
+  const fld=(label,html,full)=>'<div class="depm-field'+(full?' full':'')+'"><label class="depm-label">'+label+'</label>'+html+'</div>';
+  const row2=(a,b)=>'<div class="depm-row">'+a+b+'</div>';
+  const inp=(name,v,attrs)=>'<input class="depm-input" name="'+name+'" value="'+E(v)+'" '+(attrs||'')+'>';
+  const ta=(name,v,attrs)=>'<textarea class="depm-input" name="'+name+'" rows="3" maxlength="300" '+(attrs||'')+'>'+E(v)+'</textarea>';
+  const sel=(name,opts,cur,attrs)=>'<select class="depm-input" name="'+name+'" '+(attrs||'')+'>'+opts.map(o=>'<option value="'+E(o[0])+'"'+(String(cur)===String(o[0])?' selected':'')+'>'+E(o[1])+'</option>').join('')+'</select>';
+  const val=n=>{const e=box().querySelector('[name="'+n+'"]');return e?e.value:'';};
+  const pick=[['','Selecione...']];
+  const statusOpts=Object.keys(DISC_STATUS).map(s=>[s,DISC_STATUS[s].pt]);
+  const resultOpts=pick.concat(Object.keys(DISC_RESULT).map(s=>[s,DISC_RESULT[s].pt]));
+  const todayIso=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+  const GATE='oninput="Discovery.gate()" onchange="Discovery.gate()"';
+  const GATEBOX='<div id="discGate" class="disc-gate" aria-live="polite"></div>';
+
+  function krPicker(it,idx){
+    if(!idx.ok) return fld('Resultados-chave','<span class="disc-empty">Os objetivos não puderam ser lidos agora. Os vínculos salvos serão mantidos como estão.</span>',true);
+    const cur=it?it.krIds:[];
+    const groups=idx.groups.map(g=>'<div class="disc-chk-grp">'+E(g.title)+' ('+E(g.period)+')</div>'
+      +g.krs.map(k=>'<label class="disc-chk"><input type="checkbox" name="kr" value="'+E(k.id)+'"'+(cur.includes(k.id)?' checked':'')+'> <span>'+E(k.title)+'</span></label>').join('')).join('');
+    const gone=cur.filter(id=>!OKR_HAS(idx.map,id)).map(id=>'<label class="disc-chk"><input type="checkbox" name="kr" value="'+E(id)+'" checked> <span>Resultado-chave removido ('+E(id)+'). Desmarque para remover o vínculo.</span></label>').join('');
+    return fld('Resultados-chave vinculados',(groups+gone)||'<span class="disc-empty">Nenhum resultado-chave salvo. Crie um em Objetivos para poder vinculá-lo.</span>',true);
+  }
+  function formFor(act,it,idx){
+    if(act==='new-item'||act==='edit-item'){
+      const e=act==='edit-item';
+      return{title:e?'Editar item':'Novo item',body:
+        fld('Título <span>*</span>',inp('title',e?it.title:'','maxlength="160"'),true)
+        +fld('Problema <span>*</span>',ta('problem',e?it.problem:''),true)
+        +fld('Hipótese',ta('hypothesis',e&&it.hypothesis?it.hypothesis:'','placeholder="Se (ação), então (resultado), porque (razão)"')+'<span class="disc-empty">Obrigatória nas etapas Hipótese e Validação.</span>',true)
+        +fld('Responsável <span>*</span>',inp('owner',e?it.owner:'','maxlength="120"'),true)
+        +(e?row2(fld('Status',sel('status',statusOpts,it.status)),fld('Motivo do status',ta('statusNote',it.statusNote)+'<span class="disc-empty">Obrigatório para Atenção e Bloqueado.</span>')):'')
+        +krPicker(e?it:null,idx)};
+    }
+    if(act==='move-item'){
+      const to=[['','Selecione...']].concat(Object.keys(DISC_STAGES).filter(s=>s!==it.stage).map(s=>[s,DISC_STAGES[s].pt]));
+      return{title:'Mover para',body:'<p>Item: <strong>'+E(it.title)+'</strong>. Etapa atual: <strong>'+DISC_STAGES[it.stage].pt+'</strong>.</p>'
+        +fld('Mover para',sel('to',to,'',GATE),true)
+        +(it.hypothesis?'':fld('Hipótese',ta('hypothesis','',GATE)+'<span class="disc-empty">Obrigatória nas etapas Hipótese e Validação.</span>',true))
+        +GATEBOX};
+    }
+    if(act==='decide'){
+      return{title:'Registrar decisão',body:'<p>Item: <strong>'+E(it.title)+'</strong>.</p>'
+        +'<p class="disc-empty">Evidências: '+(it.evidence.length?E(evSummary(it)):'nenhuma registrada')+'. A decisão é sua: o FlowOps não conclui se a hipótese foi validada.</p>'
+        +fld('Decisão <span>*</span>',sel('outcome',pick.concat(Object.keys(DISC_DECISION).map(o=>[o,DISC_DECISION[o].pt])),'',GATE),true)
+        +fld('Data <span>*</span>',inp('date',todayIso(),'type="date" '+GATE))
+        +fld('Justificativa <span>*</span>',ta('note','',GATE),true)
+        +GATEBOX};
+    }
+    if(act==='new-ev'){
+      return{title:'Registrar evidência',body:fld('Evidência <span>*</span>',ta('text',''),true)
+        +row2(fld('Data <span>*</span>',inp('date',todayIso(),'type="date"')),fld('Resultado <span>*</span>',sel('result',resultOpts,'')))};
+    }
+    return null;
+  }
+  // Lista de requisitos da ação aberta no modal (decisão e movimentação); a tela explica o que falta e o botão fica indisponível
+  function gateList(it){
+    if(m.act==='decide'){
+      const o=val('outcome');
+      if(!OKR_HAS(DISC_DECISION,o)) return[{ok:false,text:'Escolha a decisão.'}];
+      return o==='commit'?commitReqs(it,m.idx,val('note'),val('date')):discardReqs(val('note'),val('date'));
+    }
+    if(m.act==='move-item'){
+      const to=val('to');
+      if(!OKR_HAS(DISC_STAGES,to)) return[{ok:false,text:'Escolha a etapa de destino.'}];
+      return to==='oportunidade'?[]:[{ok:!!(it.hypothesis||val('hypothesis').trim()),text:'A hipótese está preenchida (obrigatória nas etapas Hipótese e Validação).'}];
+    }
+    return[];
+  }
+  function gate(){
+    if(!m||!box()) return;
+    const g=box().querySelector('#discGate'),sv=box().querySelector('.depm-btn-save'),it=find(data,m.id);
+    if(!g||!sv||!it) return;
+    const list=gateList(it);
+    g.innerHTML=list.length?'<div class="disc-lbl">'+(m.act==='decide'?'Requisitos desta decisão':'Requisito para esta etapa')+'</div><ul class="disc-req">'
+      +list.map(x=>'<li class="'+(x.ok?'is-ok':'is-miss')+'"><i class="ti ti-'+(x.ok?'circle-check':'circle-x')+'"></i><span>'+(x.ok?'Atendido: ':'Pendente: ')+E(x.text)+'</span></li>').join('')+'</ul>':'';
+    sv.disabled=list.some(x=>!x.ok);
+  }
+
+  function planDelete(act,it,evId){
+    if(act==='del-item') return{title:'Excluir item',text:'Excluir o item "'+it.title+'" remove também '+it.evidence.length+' evidência(s)'+(it.decision?' e a decisão registrada ('+DISC_DECISION[it.decision.outcome].done.toLowerCase()+' em '+fmtDate(it.decision.date)+')':'')+'.',label:'Confirmar exclusão',danger:true};
+    if(act==='del-ev'){const e=it.evidence.find(x=>x.id===evId);return e?{title:'Remover evidência',text:'Remover a evidência "'+e.text+'".',label:'Confirmar exclusão',danger:true}:null;}
+    if(act==='reopen') return{title:'Reabrir item',text:'Reabrir o item "'+it.title+'". A decisão será removida e o item volta para a etapa '+(it.hypothesis?DISC_STAGES.validacao.pt:DISC_STAGES.oportunidade.pt)+', com status Em andamento.',label:'Reabrir',danger:false};
+    return null;
+  }
+
+  function openModal(act,id,parent){
+    if(typeof act!=='string'||!act) return;
+    if(example&&act!=='new-item') return; // o exemplo é só demonstração: não edita
+    const iid=(act==='new-ev'||act==='del-ev')?parent:id;
+    const it=act==='new-item'?null:find(data,iid);
+    if(act!=='new-item'&&!it) return;
+    if(it&&(act==='reopen'?!it.decision:(it.decision&&act!=='del-item'))) return; // item decidido só reabre ou exclui
+    if(act==='new-ev'&&!it.hypothesis) return;
+    m={act:act,id:id,parent:parent,idx:krIndex()};
+    let title,body,foot;
+    if(act==='del-item'||act==='del-ev'||act==='reopen'){
+      const p=planDelete(act,it,id);
+      if(!p){m=null;return;}
+      title=p.title;
+      body='<p>'+E(p.text)+(p.danger?' Esta ação não pode ser desfeita.':'')+'</p>';
+      foot='<button class="depm-btn-cancel" onclick="Discovery.close()">Cancelar</button><button class="depm-btn-save"'+(p.danger?' style="background:var(--clr-bad)"':'')+' onclick="Discovery.save()">'+p.label+'</button>';
+    } else {
+      const f=formFor(act,it,m.idx);
+      if(!f){m=null;return;}
+      title=f.title;body=f.body;
+      foot='<button class="depm-btn-cancel" onclick="Discovery.close()">Cancelar</button><button class="depm-btn-save" onclick="Discovery.save()"><i class="ti ti-device-floppy" style="font-size:13px"></i> Salvar</button>';
+    }
+    box().innerHTML='<div class="depm-head"><div class="depm-head-title">'+E(title)+'</div><button class="depm-close" onclick="Discovery.close()" aria-label="Fechar"><i class="ti ti-x"></i></button></div>'
+      +'<div class="depm-body">'+body+'</div><div id="discSaveMsg" class="dep-msg is-bad depm-msg" role="alert" hidden></div><div class="depm-foot">'+foot+'</div>';
+    document.getElementById('discModal').classList.add('open');document.body.style.overflow='hidden';
+    gate();
+  }
+  function closeModal(){document.getElementById('discModal').classList.remove('open');document.body.style.overflow='';m=null;}
+  function showMsg(t){const e=document.getElementById('discSaveMsg');if(!e) return;e.textContent=t;e.hidden=false;if(e.scrollIntoView) e.scrollIntoView({block:'nearest'});}
+
+  function save(){
+    if(!m) return;
+    const act=m.act,id=m.id,parent=m.parent;
+    const done=mut=>{const r=commit(mut);if(!r.ok){showMsg(r.msg);return;}closeModal();render();};
+    const now=new Date().toISOString();
+    if(act==='del-item') return done(next=>{next.items=next.items.filter(x=>x.id!==id);});
+    if(act==='del-ev'){wantOpen.add(parent);return done(next=>{const it=find(next,parent);if(!it||it.decision) return 'Item não encontrado ou já decidido.';it.evidence=it.evidence.filter(e=>e.id!==id);touch(it);});}
+    if(act==='reopen'){wantOpen.add(id);return done(next=>{const it=find(next,id);if(!it||!it.decision) return 'O item não está decidido.';
+      it.decision=null;it.status='active';it.statusNote='';it.stage=it.hypothesis?'validacao':'oportunidade';it.stageSince=now;touch(it);});}
+    if(act==='move-item'){
+      const it0=find(data,id),to=val('to'),typed=val('hypothesis').trim();
+      if(!it0) return closeModal();
+      if(!OKR_HAS(DISC_STAGES,to)) return showMsg('Escolha a etapa de destino.');
+      if(to!=='oportunidade'&&!it0.hypothesis&&!typed) return showMsg('Preencha a hipótese para mover o item para '+DISC_STAGES[to].pt+'.');
+      wantOpen.add(id);
+      return done(next=>{const it=find(next,id);if(!it) return 'Item não encontrado.';if(it.decision) return 'Reabra o item antes de movê-lo.';if(to===it.stage) return 'O item já está nesta etapa.';
+        if(!it.hypothesis&&typed) it.hypothesis=typed;
+        it.stage=to;it.stageSince=now;touch(it);});
+    }
+    if(act==='decide'){
+      const it0=find(data,id),outcome=val('outcome'),date=val('date'),note=val('note').trim();
+      if(!it0) return closeModal();
+      if(!OKR_HAS(DISC_DECISION,outcome)) return showMsg('Escolha a decisão.');
+      const miss=(outcome==='commit'?commitReqs(it0,krIndex(),note,date):discardReqs(note,date)).filter(r=>!r.ok);
+      if(miss.length) return showMsg('Não é possível registrar a decisão. Pendente: '+miss.map(r=>r.text).join(' '));
+      wantOpen.add(id);
+      return done(next=>{const it=find(next,id);if(!it) return 'Item não encontrado.';if(it.decision) return 'Este item já tem uma decisão.';
+        it.decision={outcome:outcome,date:date,note:note};it.status=null;it.statusNote='';touch(it);});
+    }
+    if(act==='new-ev'){
+      const text=val('text').trim(),date=val('date'),result=val('result');
+      if(!text) return showMsg('Descreva a evidência.');
+      if(!depValidDate(date)) return showMsg('Informe uma data válida.');
+      if(!OKR_HAS(DISC_RESULT,result)) return showMsg('Escolha o resultado da evidência.');
+      wantOpen.add(parent);
+      return done(next=>{const it=find(next,parent);if(!it) return 'Item não encontrado.';if(it.decision) return 'Reabra o item antes de registrar evidências.';if(!it.hypothesis) return 'Preencha a hipótese antes de registrar evidências.';
+        it.evidence.push({id:newId(next,'discoveryEvidence'),text:text,date:date,result:result});touch(it);});
+    }
+    if(act==='new-item'||act==='edit-item'){
+      const title=val('title').trim(),problem=val('problem').trim(),hyp=val('hypothesis').trim(),owner=val('owner').trim();
+      const status=act==='edit-item'?val('status'):'active',note=val('statusNote').trim();
+      const it0=act==='edit-item'?find(data,id):null;
+      if(!title) return showMsg('Informe o título do item.');
+      if(!problem) return showMsg('Descreva o problema.');
+      if(!owner) return showMsg('Informe o responsável.');
+      if(!OKR_HAS(DISC_STATUS,status)) return showMsg('Escolha o status.');
+      if(needsNote(status)&&!note) return showMsg('Informe o motivo do status Atenção ou Bloqueado.');
+      if(it0&&it0.stage!=='oportunidade'&&!hyp) return showMsg('A hipótese é obrigatória nas etapas Hipótese e Validação. Mova o item para Oportunidade se quiser removê-la.');
+      const krIds=m.idx.ok?[...new Set([...box().querySelectorAll('input[name="kr"]:checked')].map(c=>c.value))]:(it0?it0.krIds.slice():[]);
+      return done(next=>{
+        if(act==='new-item'){const nid=newId(next,'discovery');wantOpen.add(nid);
+          next.items.push({id:nid,title:title,problem:problem,hypothesis:hyp||null,owner:owner,stage:'oportunidade',stageSince:now,status:'active',statusNote:'',krIds:krIds,evidence:[],decision:null,createdAt:now,updatedAt:now});}
+        else{const it=find(next,id);if(!it) return 'Item não encontrado.';if(it.decision) return 'Reabra o item antes de editá-lo.';wantOpen.add(id);
+          Object.assign(it,{title:title,problem:problem,hypothesis:hyp||null,owner:owner,status:status,statusNote:needsNote(status)?note:'',krIds:krIds});touch(it);}
+      });
+    }
+  }
+
+  function click(el){openModal(el.dataset.act,el.dataset.id||'',el.dataset.parent||'');}
+  load();
+  return{
+    render:render,click:click,close:closeModal,save:save,gate:gate,
+    // consulta para lotes futuros e para o aviso de exclusão do módulo OKR (somente dados salvos; o exemplo nunca é devolvido)
+    byKr:id=>clone(data.items.filter(i=>i.krIds.includes(id))),
+    open:()=>clone(data.items.filter(i=>!i.decision)),
+    committed:()=>clone(data.items.filter(i=>i.decision&&i.decision.outcome==='commit')),
+    refsTo:ids=>{const g=new Set(ids);return data.items.filter(i=>i.krIds.some(k=>g.has(k))).length;},
+    isExample:()=>example,
+    state:()=>({issue:issue,example:example,data:clone(data)})
+  };
+})();
+function renderDiscovery(){Discovery.render();}
 
 // ── GLOSSÁRIO DE MÉTRICAS ─────────────────────────────────────────
 const GL={
@@ -8229,6 +8767,11 @@ window.onload=function(){ updateSprintOptions(); applyTeamColor(); upd(); markSe
 <!-- Estratégia — editor de objetivos (reaproveita o visual .depm-*) -->
 <div class="depm-overlay" id="okrModal" onclick="if(event.target===this)OKR.close()">
   <div class="depm-box" id="okrModalBox"></div>
+</div>
+
+<!-- Discovery — editor de itens (reaproveita o visual .depm-*) -->
+<div class="depm-overlay" id="discModal" onclick="if(event.target===this)Discovery.close()">
+  <div class="depm-box" id="discModalBox"></div>
 </div>
 
 <!-- ── Modal Detalhe — Saúde da Qualidade ── -->
