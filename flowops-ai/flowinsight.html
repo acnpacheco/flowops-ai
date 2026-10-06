@@ -711,6 +711,46 @@
     #discModal .depm-foot button{flex:1 1 100%;min-height:40px}
     #discModal .disc-chk{min-height:40px;align-items:center}
   }
+  /* Fase 2 — Lote 7 — Visão Geral: Atenção agora e Estratégia e Discovery em resumo (tokens do Lote 1; reaproveita .cc e .dep-msg) */
+  .hm-att,.hm-strat{padding:var(--sp-card-pad)}
+  .hm-hd{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+  .hm-title{font-size:var(--fs-section-hd);font-weight:var(--fw-section-hd);color:#111827;overflow-wrap:anywhere}
+  .hm-sub{font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral);margin-bottom:var(--sp-card-gap);overflow-wrap:anywhere}
+  .hm-list{display:flex;flex-direction:column;gap:8px}
+  .hm-row{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp-card-gap);flex-wrap:wrap;border:1px solid #e5e5e3;border-left:3px solid var(--hm-c,var(--clr-neutral));border-radius:8px;padding:8px 12px;background:#fff;min-width:0}
+  .hm-row-main{flex:1 1 220px;min-width:0}
+  .hm-tags{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-bottom:2px}
+  .hm-chip{display:inline-flex;align-items:center;font-size:var(--fs-badge);font-weight:var(--fw-badge);padding:1px 8px;border-radius:10px;border:1px solid var(--hm-c,var(--clr-neutral));color:#374151}
+  .hm-area,.hm-nat{font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral)}
+  .hm-txt{font-size:var(--fs-body);font-weight:var(--fw-body);color:#374151;overflow-wrap:anywhere}
+  .hm-cap{font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral);margin-top:2px;overflow-wrap:anywhere}
+  .hm-open{font-size:11px;padding:4px 10px;border:1px solid #d1d5db;border-radius:6px;background:#f9fafb;cursor:pointer;color:var(--clr-info);flex-shrink:0}
+  .hm-more{margin-top:8px;font-size:var(--fs-caption);font-weight:var(--fw-badge);color:var(--clr-neutral)}
+  .hm-t-bad{--hm-c:var(--clr-bad)}
+  .hm-t-warn{--hm-c:var(--clr-warn)}
+  .hm-t-ok{--hm-c:var(--clr-ok)}
+  .hm-t-info{--hm-c:var(--clr-info)}
+  .hm-t-neutral{--hm-c:var(--clr-neutral)}
+  .hm-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-section-gap);margin-top:var(--sp-card-gap)}
+  .hm-col{min-width:0}
+  .hm-col-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:var(--fs-body);font-weight:600;color:#111827;margin-bottom:8px;overflow-wrap:anywhere}
+  .hm-obj{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp-card-gap);flex-wrap:wrap;border-top:1px solid #f3f4f6;padding:8px 0}
+  .hm-obj-main{flex:1 1 200px;min-width:0}
+  .hm-obj-top{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
+  .hm-obj-t{flex:1 1 140px;min-width:0;font-size:var(--fs-body);font-weight:600;color:#111827;overflow-wrap:anywhere}
+  .hm-prog{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral)}
+  .hm-bar{flex:1 1 120px;min-width:100px;height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden}
+  .hm-bar-fill{height:100%;background:var(--clr-info);border-radius:4px}
+  .hm-counts{border:1px solid #e5e5e3;border-radius:8px;padding:2px 12px;background:#fff}
+  .hm-count{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid #f3f4f6;font-size:var(--fs-body);color:#374151}
+  .hm-count:first-child{border-top:none}
+  .hm-count dd{font-weight:700;color:#111827}
+  .hm-empty{font-size:var(--fs-body);font-weight:var(--fw-body);color:var(--clr-neutral);margin-bottom:8px}
+  @media(max-width:1023px){.hm-cols{grid-template-columns:1fr}}
+  @media(max-width:600px){
+    #homeAttention .hm-open,#homeStrategy .hm-open{min-height:40px}
+    #homeAttention .hm-row,#homeStrategy .hm-obj{min-height:40px}
+  }
 
   /* ── Glossário de Métricas ──────────────────────────── */
   .gl-header{margin-bottom:16px}
@@ -991,6 +1031,9 @@
       <div class="hb-bars" id="hBars"></div>
     </div>
 
+    <!-- Atenção agora (Fase 2 — Lote 7): gerado por renderHome(); some quando não há sinais -->
+    <div id="homeAttention" class="cc hm-att" hidden></div>
+
     <!-- 2. Resumo Executivo (IA) -->
     <div class="exec-summary">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
@@ -1044,6 +1087,9 @@
         <div class="kcard" id="kc10"><div class="kcard-hd"><p class="klbl">Tempo de resolução</p><button class="gh-btn" onclick="openMetricDetail('restime')" title="Ver no Glossário">?</button><span id="ks10"></span></div><p class="kval" id="k10">—</p><p class="kdlt" id="kd10"></p><p class="ktrend" id="kt10"></p><div class="kmeta" id="km10"></div></div>
       </div>
     </div>
+
+    <!-- Estratégia e Discovery em resumo (Fase 2 — Lote 7): gerado por renderHome() -->
+    <div id="homeStrategy" class="cc hm-strat"></div>
 
     <!-- 7. Chart: Capacity × Velocity por sprint -->
     <div class="cc">
@@ -2643,6 +2689,7 @@ function upd(){
   if(document.getElementById('pf').classList.contains('on')) renderFlowMetrics();
   if(document.getElementById('ped').classList.contains('on')) renderOKRs();
   if(document.getElementById('ped').classList.contains('on')&&document.getElementById('ed-discovery').classList.contains('on')) renderDiscovery();
+  renderHome();
   drawCharts();
 }
 
@@ -3344,6 +3391,7 @@ function tab(el,id){
   if(id==='eq') eqTab(document.querySelector('#peq .eq-tab'),'eq-saude');
   if(id==='cal') renderCalendario();
   if(id==='ed') edTab(document.querySelector('#ped .ed-tab'),'ed-okr');
+  if(id==='v') renderHome();
   if(id==='g') renderGlossario();
   if(id==='as') renderAcompanhamento();
 }
@@ -3384,14 +3432,28 @@ function edTab(el,id){
   if(id==='ed-discovery') renderDiscovery();
 }
 
+// Pontos de atenção de Engenharia & Qualidade — regra única da Visão de Saúde e da Visão Geral (METAS.cfr, cfZeroStatus, qhsStatus, doraClassify).
+// Devolve [{key,bad,txt}]; key indica a sub-aba de origem: cf e rel (DORA); crit, esc e qhs (Qualidade).
+function eqAttention(d,i){
+  const rel=calcReliability(d,i),relTier=doraClassify(rel,'rel');
+  const qhs=cfQhs(d,i),qSt=qhsStatus(qhs);
+  const crit=cfCritical(d,i),esc=cfEscaped(d,i);
+  const pl=n=>n>1?'s':'';
+  const att=[],critSt=cfZeroStatus(crit),escSt=cfZeroStatus(esc);
+  if(d.cf[i]>METAS.cfr) att.push({key:'cf',bad:doraClassify(d.cf[i],'cf').c==='t-low',txt:`Change Failure Rate em ${d.cf[i].toFixed(1)}% — acima da meta de ${METAS.cfr}%.`});
+  if(critSt.c!=='cfst-ok') att.push({key:'crit',bad:critSt.c==='cfst-bad',txt:`${crit} bug${pl(crit)} crítico${pl(crit)} em aberto.`});
+  if(escSt.c!=='cfst-ok') att.push({key:'esc',bad:escSt.c==='cfst-bad',txt:`${esc} defeito${pl(esc)} escapado${pl(esc)} para produção.`});
+  if(qSt.c!=='cfst-ok') att.push({key:'qhs',bad:qSt.c==='cfst-bad',txt:`QHS em ${qhs}/100 — qualidade em estado ${qSt.c==='cfst-bad'?'crítico':'de atenção'}.`});
+  if(relTier.c==='t-med'||relTier.c==='t-low') att.push({key:'rel',bad:relTier.c==='t-low',txt:`Reliability em ${rel} pts — abaixo do esperado (nível ${relTier.l}).`});
+  return att;
+}
+
 function renderEqOverview(){
   const q=gq(),d=gd()[q],i=gi(),p=Math.max(0,i-1);
   const el=document.getElementById('eq-ov-content');
   if(!el) return;
   const rel=calcReliability(d,i),relP=calcReliability(d,p),relTier=doraClassify(rel,'rel');
   const qhs=cfQhs(d,i),qhsP=cfQhs(d,p);
-  const crit=cfCritical(d,i),esc=cfEscaped(d,i);
-  const pl=n=>n>1?'s':'';
   // delta no mesmo formato dos cards da aba DORA (renderDora)
   const dlt=(cur,prv,better)=>{
     if(i===0) return '<span style="color:#9ca3af">Sprint inicial</span>';
@@ -3404,13 +3466,8 @@ function renderEqOverview(){
   const qSt=qhsStatus(qhs),qhsCls=qSt.c.replace('cfst-','cf-qhs-'),qd=qhs-qhsP;
   const qhsDelta=(i===0||qd===0)?'<span style="color:#9ca3af">—</span>':`<span style="color:${qd>0?'#059669':'#dc2626'}">${qd>0?'▲ +':'▼ '}${Math.abs(qd)} pts vs anterior</span>`;
 
-  // Pontos de atenção — mesmos sinais e faixas das abas DORA e Qualidade (METAS.cfr, cfZeroStatus, qhsStatus, doraClassify)
-  const att=[],critSt=cfZeroStatus(crit),escSt=cfZeroStatus(esc);
-  if(d.cf[i]>METAS.cfr) att.push({bad:doraClassify(d.cf[i],'cf').c==='t-low',txt:`Change Failure Rate em ${d.cf[i].toFixed(1)}% — acima da meta de ${METAS.cfr}%.`});
-  if(critSt.c!=='cfst-ok') att.push({bad:critSt.c==='cfst-bad',txt:`${crit} bug${pl(crit)} crítico${pl(crit)} em aberto.`});
-  if(escSt.c!=='cfst-ok') att.push({bad:escSt.c==='cfst-bad',txt:`${esc} defeito${pl(esc)} escapado${pl(esc)} para produção.`});
-  if(qSt.c!=='cfst-ok') att.push({bad:qSt.c==='cfst-bad',txt:`QHS em ${qhs}/100 — qualidade em estado ${qSt.c==='cfst-bad'?'crítico':'de atenção'}.`});
-  if(relTier.c==='t-med'||relTier.c==='t-low') att.push({bad:relTier.c==='t-low',txt:`Reliability em ${rel} pts — abaixo do esperado (nível ${relTier.l}).`});
+  // Pontos de atenção — regra em eqAttention(), compartilhada com a Visão Geral
+  const att=eqAttention(d,i);
 
   // Tendência — somente observações factuais, sem inferir causalidade
   const obs=[];
@@ -7616,8 +7673,8 @@ const Discovery=(function(){
   const find=(d,id)=>d.items.find(i=>i.id===id)||null;
 
   // ── Resultados-chave: referência só por ID, resolvida na leitura a partir de OKR.state() (uma vez por renderização) ──
-  function krIndex(){
-    const s=OKR.state();
+  function krIndex(s0){
+    const s=s0||OKR.state();
     if(s.issue) return{ok:false,map:{},groups:[]}; // fi_okr ilegível, de versão mais nova ou inacessível: não dá para verificar
     const map={},groups=[];
     s.data.objectives.forEach(o=>{
@@ -7926,10 +7983,19 @@ const Discovery=(function(){
     }
   }
 
+  // Consulta somente leitura para a Visão Geral: itens abertos ou comprometidos com resultado-chave removido, pela mesma resolução da tela.
+  // okrState (opcional): estado de OKR já lido pelo chamador, para não consultar o módulo de novo no mesmo render.
+  function broken(okrState){
+    const idx=krIndex(okrState);
+    if(!idx.ok) return{verifiable:false,items:[]};
+    return{verifiable:true,items:data.items.filter(i=>!i.decision||i.decision.outcome==='commit')
+      .map(i=>({id:i.id,title:i.title,removed:i.krIds.filter(k=>resolve(idx,k)==='removed')})).filter(x=>x.removed.length)};
+  }
+
   function click(el){openModal(el.dataset.act,el.dataset.id||'',el.dataset.parent||'');}
   load();
   return{
-    render:render,click:click,close:closeModal,save:save,gate:gate,
+    render:render,click:click,close:closeModal,save:save,gate:gate,broken:broken,
     // consulta para lotes futuros e para o aviso de exclusão do módulo OKR (somente dados salvos; o exemplo nunca é devolvido)
     byKr:id=>clone(data.items.filter(i=>i.krIds.includes(id))),
     open:()=>clone(data.items.filter(i=>!i.decision)),
@@ -7940,6 +8006,130 @@ const Discovery=(function(){
   };
 })();
 function renderDiscovery(){Discovery.render();}
+
+// ── VISÃO GERAL — Atenção agora e Estratégia e Discovery em resumo (Fase 2 — Lote 7) ──────────
+// Um único snapshot por render: OKR.state() e Discovery.state() são lidos uma vez (sem ler localStorage) e passados aos renderizadores.
+// Só dados realmente salvos: os exemplos dos Lotes 5 e 6 nunca aparecem aqui. Nada é calculado além do que os módulos e Engenharia & Qualidade já calculam.
+const HOME_AREA=['Estratégia','Discovery','Engenharia & Qualidade'];
+// Destinos autorizados (fixos): nunca montados a partir de texto do usuário
+const HOME_DEST={'ed:ed-okr':'Objetivos','ed:ed-discovery':'Discovery','eq:eq-dora':'Engenharia & Qualidade, DORA','eq:eq-quality':'Engenharia & Qualidade, Qualidade'};
+const HOME_OBJ_RANK={'at-risk':0,'attention':1,'on-track':2,'completed':3};
+const HOME_OBJ_TONE={'at-risk':'bad','attention':'warn','on-track':'ok','completed':'info'};
+const HOME_MAX_SIGNALS=6,HOME_MAX_OBJECTIVES=3;
+const HOME_OKR_ISSUE={ilegivel:'Os objetivos salvos neste navegador não puderam ser lidos.',nova:'Os objetivos foram salvos por uma versão mais nova do FlowOps AI.',acesso:'Este navegador não permite ler os objetivos salvos.'};
+const HOME_DISC_ISSUE={ilegivel:'Os itens de Discovery salvos neste navegador não puderam ser lidos.',nova:'Os itens de Discovery foram salvos por uma versão mais nova do FlowOps AI.',acesso:'Este navegador não permite ler os itens de Discovery salvos.'};
+
+// Navegação contextual com destinos fixos (HOME_DEST); abre a sub-aba pedida
+function goArea(id,sub){
+  if(!OKR_HAS(HOME_DEST,id+':'+sub)) return;
+  const btn=[...document.querySelectorAll('.ntab')].find(b=>(b.getAttribute('onclick')||'').indexOf("tab(this,'"+id+"')")===0);
+  if(!btn) return;
+  tab(btn,id);
+  const tabs=[...document.querySelectorAll(id==='ed'?'#ped .ed-tab':'#peq .eq-tab')];
+  const t=tabs.find(b=>(b.getAttribute('onclick')||'').indexOf("'"+sub+"'")>-1);
+  if(t) (id==='ed'?edTab:eqTab)(t,sub);
+  window.scrollTo(0,0);
+}
+
+function homeSnapshot(){
+  const q=gq(),i=gi(),d=gd()[q],ctx=okrPeriodContext();
+  const okr=OKR.state(),disc=Discovery.state();
+  const objectives=okr.data.objectives.filter(o=>o.period.quarter===ctx.quarter&&(ctx.year===null||o.period.year===ctx.year))
+    .map((o,k)=>({o:o,k:k})).sort((a,b)=>HOME_OBJ_RANK[a.o.status]-HOME_OBJ_RANK[b.o.status]||a.k-b.k).map(x=>x.o);
+  const items=disc.data.items;
+  const decQ=it=>'Q'+Math.ceil(+it.decision.date.slice(5,7)/3),decY=it=>+it.decision.date.slice(0,4);
+  const decided=items.filter(it=>it.decision&&decQ(it)===ctx.quarter&&(ctx.year===null||decY(it)===ctx.year));
+  return{ctx:ctx,okr:okr,disc:disc,objectives:objectives,
+    open:items.filter(it=>!it.decision),
+    committed:decided.filter(it=>it.decision.outcome==='commit').length,discarded:decided.filter(it=>it.decision.outcome==='discard').length,
+    broken:Discovery.broken(okr),   // reutiliza o estado de OKR já lido
+    eq:eqAttention(d,i),scope:document.getElementById('sTeam').value+' · '+q+' · S'+(i+1),
+    noData:!okr.issue&&!disc.issue&&!okr.data.objectives.length&&!items.length};
+}
+
+// Sinais de "Atenção agora": declarado (status de objetivo e de Discovery), calculado (Engenharia & Qualidade) e derivado (vínculo removido).
+// Ordem: gravidade, depois área (Estratégia, Discovery, Engenharia & Qualidade), depois a ordem de origem. Sem score.
+function homeSignals(s){
+  const out=[];
+  const push=x=>{x.ord=out.length;out.push(x);};
+  s.objectives.forEach(o=>{
+    if(o.status!=='at-risk'&&o.status!=='attention') return;
+    const high=o.risks.filter(r=>r.level==='high').length;
+    push({sev:o.status==='at-risk'?1:2,area:0,nature:'Declarado',state:OKR_STATUS[o.status].pt,tone:HOME_OBJ_TONE[o.status],dest:'ed:ed-okr',text:o.title,
+      cap:[o.period.quarter+' '+o.period.year,o.team||'',high?high+(high===1?' risco de nível Alto':' riscos de nível Alto'):''].filter(Boolean).join(' · ')});
+  });
+  s.open.forEach(it=>{
+    if(it.status!=='blocked'&&it.status!=='attention') return;
+    push({sev:it.status==='blocked'?1:2,area:1,nature:'Declarado',state:DISC_STATUS[it.status].pt,tone:DISC_STATUS[it.status].c,dest:'ed:ed-discovery',text:it.title,
+      cap:'Etapa: '+DISC_STAGES[it.stage].pt+(it.statusNote?' · Motivo: '+it.statusNote:'')});
+  });
+  const bk=s.broken.items;
+  if(bk.length) push({sev:3,area:1,nature:'Derivado',state:'Resultado-chave removido',tone:'neutral',dest:'ed:ed-discovery',
+    text:bk.length===1?'Item "'+bk[0].title+'" com resultado-chave removido':bk.length+' itens de Discovery com resultado-chave removido',
+    cap:'Os vínculos continuam salvos. Revise no Discovery.'});
+  s.eq.forEach(a=>push({sev:a.bad?1:2,area:2,nature:'Calculado',state:a.bad?'Fora da meta':'Perto da meta',tone:a.bad?'bad':'warn',
+    dest:(a.key==='cf'||a.key==='rel')?'eq:eq-dora':'eq:eq-quality',text:a.txt,cap:s.scope}));
+  return out.sort((a,b)=>a.sev-b.sev||a.area-b.area||a.ord-b.ord);
+}
+
+const homeOpenBtn=dest=>{const p=dest.split(':');return '<button class="hm-open" data-area="'+p[0]+'" data-sub="'+p[1]+'" onclick="goArea(this.dataset.area,this.dataset.sub)" aria-label="'+escHtml('Abrir '+HOME_DEST[dest])+'">Abrir</button>';};
+
+function renderHomeAttention(s,sig){
+  const el=document.getElementById('homeAttention');
+  if(!el) return;
+  if(!sig.length){el.innerHTML='';el.hidden=true;return;} // sem sinais: o bloco não aparece
+  const E=escHtml,shown=sig.slice(0,HOME_MAX_SIGNALS),more=sig.length-shown.length;
+  el.innerHTML='<div class="hm-hd"><span class="hm-title">Atenção agora</span></div>'
+    +'<p class="hm-sub">Sinais de Estratégia, Discovery e Engenharia &amp; Qualidade. Fluxo e capacidade estão nos indicadores abaixo.</p>'
+    +'<div class="hm-list">'+shown.map(g=>'<div class="hm-row hm-t-'+g.tone+'"><div class="hm-row-main"><div class="hm-tags"><span class="hm-chip">'+E(g.state)+'</span><span class="hm-area">'+E(HOME_AREA[g.area])+'</span><span class="hm-nat">'+g.nature+'</span></div>'
+      +'<div class="hm-txt">'+E(g.text)+'</div>'+(g.cap?'<div class="hm-cap">'+E(g.cap)+'</div>':'')+'</div>'+homeOpenBtn(g.dest)+'</div>').join('')+'</div>'
+    +(more>0?'<div class="hm-more">+'+more+(more===1?' sinal':' sinais')+'</div>':'');
+  el.hidden=false;
+}
+
+function renderHomeStrategy(s){
+  const el=document.getElementById('homeStrategy');
+  if(!el) return;
+  const E=escHtml,ctx=s.ctx,periodTxt=ctx.quarter+(ctx.year?' '+ctx.year:''),hd='<div class="hm-hd"><span class="hm-title">Estratégia e Discovery em resumo</span></div>';
+  el.hidden=false;
+  if(s.noData){el.innerHTML=hd+'<p class="hm-empty">Nenhum objetivo ou item de Discovery registrado.</p>'+homeOpenBtn('ed:ed-okr');return;}
+  const n=(v,um,pl)=>v+' '+(v===1?um:pl);
+  let left;
+  if(s.okr.issue) left=depMsgHtml('warn',HOME_OKR_ISSUE[s.okr.issue])+homeOpenBtn('ed:ed-okr');
+  else if(!s.okr.data.objectives.length) left='<p class="hm-empty">Nenhum objetivo registrado.</p>'+homeOpenBtn('ed:ed-okr');
+  else if(!s.objectives.length) left='<p class="hm-empty">Nenhum objetivo em '+E(periodTxt)+'.</p>'+homeOpenBtn('ed:ed-okr');
+  else{
+    const shown=s.objectives.slice(0,HOME_MAX_OBJECTIVES),more=s.objectives.length-shown.length;
+    left=shown.map(o=>{
+      const high=o.risks.filter(r=>r.level==='high').length;
+      const prog=o.progress===null?'<span>Progresso não informado</span>'
+        :'<div class="hm-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Number(o.progress)+'" aria-label="'+E('Progresso informado de '+o.title)+'"><div class="hm-bar-fill" style="width:'+Number(o.progress)+'%"></div></div><span>Progresso informado: <strong>'+Number(o.progress)+'%</strong></span>';
+      return '<div class="hm-obj"><div class="hm-obj-main"><div class="hm-obj-top"><div class="hm-obj-t">'+E(o.title)+'</div><span class="hm-chip hm-t-'+HOME_OBJ_TONE[o.status]+'">'+OKR_STATUS[o.status].pt+'</span></div>'
+        +'<div class="hm-prog">'+prog+'</div>'
+        +'<div class="hm-cap">'+E([o.team||'',n(o.keyResults.length,'resultado-chave','resultados-chave'),n(high,'risco de nível Alto','riscos de nível Alto')].filter(Boolean).join(' · '))+'</div></div>'
+        +homeOpenBtn('ed:ed-okr')+'</div>';
+    }).join('')+(more>0?'<div class="hm-more">+'+more+(more===1?' objetivo':' objetivos')+'</div>':'');
+  }
+  let right;
+  if(s.disc.issue) right=depMsgHtml('warn',HOME_DISC_ISSUE[s.disc.issue])+homeOpenBtn('ed:ed-discovery');
+  else if(!s.disc.data.items.length) right='<p class="hm-empty">Nenhum item de Discovery registrado.</p>'+homeOpenBtn('ed:ed-discovery');
+  else{
+    const c=(l,v)=>'<div class="hm-count"><dt>'+l+'</dt><dd>'+v+'</dd></div>';
+    right='<dl class="hm-counts">'+Object.keys(DISC_STAGES).map(k=>c(DISC_STAGES[k].pt,s.open.filter(it=>it.stage===k).length)).join('')+c('Comprometidos no quarter',s.committed)+c('Descartados no quarter',s.discarded)+'</dl>'
+      +'<div class="hm-cap">Informativo · abertos: todos, sem filtro · decididos em '+E(periodTxt)+'</div>'+homeOpenBtn('ed:ed-discovery');
+  }
+  el.innerHTML=hd+'<div class="hm-cols"><div class="hm-col"><div class="hm-col-hd">Objetivos de '+E(periodTxt)+' · todos os times</div>'+left+'</div>'
+    +'<div class="hm-col"><div class="hm-col-hd">Discovery</div>'+right+'</div></div>';
+}
+
+// Um snapshot por render, repassado aos dois blocos. Falha nos blocos novos nunca derruba a Visão Geral.
+function renderHome(){
+  try{const s=homeSnapshot();renderHomeAttention(s,homeSignals(s));renderHomeStrategy(s);}
+  catch(e){
+    ['homeAttention','homeStrategy'].forEach(id=>{const el=document.getElementById(id);if(el){el.innerHTML='';el.hidden=true;}});
+    if(window.console&&console.warn) console.warn('Visão Geral: blocos de estratégia indisponíveis',e);
+  }
+}
 
 // ── GLOSSÁRIO DE MÉTRICAS ─────────────────────────────────────────
 const GL={
