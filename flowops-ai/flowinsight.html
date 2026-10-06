@@ -597,6 +597,55 @@
     .depm-msg{margin:0 16px var(--sp-card-gap)}
     .dep-imp .depm-foot button{flex:1 1 100%;min-height:40px}
   }
+  /* Fase 2 — Lote 5 — Estratégia / Objetivos & OKRs (tokens do Lote 1; reaproveita .cf-header, .cc, .dep-*, .depm-*) */
+  .okr-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-card-gap);flex-wrap:wrap;margin-bottom:6px}
+  .okr-ctx{font-size:var(--fs-body);font-weight:var(--fw-body);color:var(--clr-neutral);overflow-wrap:anywhere;min-width:0}
+  .okr-ctx strong{color:#111827}
+  .okr-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:var(--sp-card-gap);margin-bottom:var(--sp-section-gap)}
+  .okr-strip-c{background:#fff;border:1px solid #e5e5e3;border-radius:8px;padding:10px 12px}
+  .okr-strip-v{font-size:var(--fs-kpi-value);font-weight:var(--fw-kpi-value);line-height:1.1;color:#111827}
+  .okr-strip-l{font-size:var(--fs-kpi-label);font-weight:var(--fw-kpi-label);color:var(--clr-neutral);margin-top:2px}
+  .okr-obj{padding:var(--sp-card-pad)}
+  .okr-obj-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp-card-gap);flex-wrap:wrap}
+  .okr-title{flex:1 1 260px;min-width:0;font-size:var(--fs-section-hd);font-weight:var(--fw-section-hd);color:#111827;overflow-wrap:anywhere}
+  .okr-meta{font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral);margin-top:2px;overflow-wrap:anywhere}
+  .okr-st{display:inline-flex;align-items:center;gap:4px;font-size:var(--fs-badge);font-weight:var(--fw-badge);padding:2px 10px;border-radius:12px;border:1px solid var(--okr-c,var(--clr-neutral));color:#374151;white-space:nowrap}
+  .okr-st i{color:var(--okr-c,var(--clr-neutral))}
+  .okr-st-on-track{--okr-c:var(--clr-ok)}
+  .okr-st-attention{--okr-c:var(--clr-warn)}
+  .okr-st-at-risk{--okr-c:var(--clr-bad)}
+  .okr-st-completed{--okr-c:var(--clr-info)}
+  .okr-prog{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral)}
+  .okr-bar{flex:1 1 160px;min-width:120px;height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden}
+  .okr-bar-fill{height:100%;background:var(--clr-info);border-radius:4px}
+  .okr-actions{display:flex;gap:6px;flex-wrap:wrap}
+  .okr-btn{font-size:11px;padding:4px 10px;border:1px solid #d1d5db;border-radius:6px;background:#f9fafb;cursor:pointer;color:#374151}
+  .okr-btn-del{border-color:#fca5a5;background:#fff1f2;color:var(--clr-bad)}
+  .okr-krs{margin-top:var(--sp-card-gap);display:flex;flex-direction:column;gap:var(--sp-card-gap)}
+  .okr-kr{border-left:3px solid #e5e5e3;padding:4px 0 4px 12px;min-width:0}
+  .okr-kr-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .okr-kr-t{flex:1 1 220px;min-width:0;font-size:var(--fs-body);font-weight:600;color:#111827;overflow-wrap:anywhere}
+  .okr-kr-f{display:flex;flex-wrap:wrap;gap:2px 14px;margin-top:2px;font-size:var(--fs-body);font-weight:var(--fw-body);color:#374151;overflow-wrap:anywhere}
+  .okr-chip{display:inline-flex;align-items:center;font-size:var(--fs-badge);font-weight:var(--fw-badge);padding:1px 8px;border-radius:10px;border:1px solid var(--okr-c,var(--clr-neutral));color:#374151;white-space:nowrap}
+  .okr-chip-ok{--okr-c:var(--clr-ok)}
+  .okr-chip-warn{--okr-c:var(--clr-warn)}
+  .okr-chip-bad{--okr-c:var(--clr-bad)}
+  .okr-det{border-top:1px solid #f3f4f6;margin-top:10px;padding-top:6px}
+  .okr-det>summary{cursor:pointer;font-size:var(--fs-body);font-weight:600;color:#374151;padding:6px 0}
+  .okr-det-body{display:flex;flex-direction:column;gap:8px;padding:4px 0 2px}
+  .okr-row{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap;font-size:var(--fs-body);font-weight:var(--fw-body);overflow-wrap:anywhere}
+  .okr-row-main{flex:1 1 240px;min-width:0}
+  .okr-cap{font-size:var(--fs-caption);font-weight:var(--fw-caption);color:var(--clr-neutral)}
+  .okr-example{margin:0 0 var(--sp-card-gap);padding:var(--sp-card-gap) var(--sp-card-pad);border:1px dashed var(--clr-info);border-radius:8px;font-size:var(--fs-body);color:#374151}
+  .okr-chk{display:flex;align-items:flex-start;gap:6px;font-size:var(--fs-body);overflow-wrap:anywhere}
+  .okr-chk-grp{font-size:var(--fs-caption);font-weight:600;color:var(--clr-neutral);margin-top:6px}
+  @media(max-width:600px){
+    #ed-okr .okr-btn,#ed-okr .dep-btn-new{min-height:40px}
+    #ed-okr .okr-det>summary{min-height:40px;display:flex;align-items:center}
+    #okrModal .depm-foot{flex-wrap:wrap}
+    #okrModal .depm-foot button{flex:1 1 100%;min-height:40px}
+    #okrModal .okr-chk{min-height:40px;align-items:center}
+  }
 
   /* ── Glossário de Métricas ──────────────────────────── */
   .gl-header{margin-bottom:16px}
@@ -845,6 +894,7 @@
 
 <nav class="main-nav">
   <button class="ntab on" onclick="tab(this,'v')"   aria-label="Visão Geral"          title="Visão Geral"><i class="ti ti-layout-dashboard"></i> Visão Geral</button>
+  <button class="ntab"    onclick="tab(this,'ed')"  aria-label="Estratégia"            title="Estratégia"><i class="ti ti-target"></i> Estratégia</button>
   <button class="ntab"    onclick="tab(this,'f')"   aria-label="Métricas de fluxo"     title="Métricas de fluxo"><i class="ti ti-wave-sine"></i> Métricas de fluxo</button>
   <button class="ntab"    onclick="tab(this,'eq')"  aria-label="Engenharia & Qualidade" title="Engenharia &amp; Qualidade"><i class="ti ti-shield-half"></i> Engenharia &amp; Qualidade</button>
   <button class="ntab"    onclick="tab(this,'r')"   aria-label="Relatório de quarter"  title="Relatório de quarter"><i class="ti ti-file-analytics"></i> Relatório de quarter</button>
@@ -1119,6 +1169,15 @@
       <div id="flowRecsList"></div>
     </div>
 
+  </div>
+
+  <!-- Estratégia — Objetivos & OKRs (Fase 2 — Lote 5): conteúdo gerado por renderOKRs() -->
+  <div id="ped" class="fp">
+    <div class="cf-header">
+      <p class="cf-title">Estratégia</p>
+      <p class="cf-sub">Objetivos e resultados-chave do período selecionado.</p>
+    </div>
+    <div id="ed-okr"></div>
   </div>
 
   <!-- DORA -->
@@ -2512,6 +2571,7 @@ function upd(){
   renderEqOverview();
   if(document.getElementById('pm').classList.contains('on')) renderMultiTeam();
   if(document.getElementById('pf').classList.contains('on')) renderFlowMetrics();
+  if(document.getElementById('ped').classList.contains('on')) renderOKRs();
   drawCharts();
 }
 
@@ -3212,6 +3272,7 @@ function tab(el,id){
   if(id==='f') renderFlowMetrics();
   if(id==='eq') eqTab(document.querySelector('#peq .eq-tab'),'eq-saude');
   if(id==='cal') renderCalendario();
+  if(id==='ed') renderOKRs();
   if(id==='g') renderGlossario();
   if(id==='as') renderAcompanhamento();
 }
@@ -6872,6 +6933,476 @@ const DepBackup=(function(){
 })();
 // ─────────────────────────────────────────────────────────────────
 
+// ── ESTRATÉGIA / OBJETIVOS & OKRs (Fase 2 — Lote 5) ────────────────────────────
+// Persistência em fi_okr (envelope com schemaVersion), leitura e gravação seguras no padrão do Lote 4.
+// Progresso e status são informados pelo responsável: nada é calculado automaticamente.
+const OKR_STATUS={
+  'on-track':{pt:'No caminho',icon:'circle-check'},
+  'attention':{pt:'Atenção',icon:'alert-triangle'},
+  'at-risk':{pt:'Em risco',icon:'alert-circle'},
+  'completed':{pt:'Concluído',icon:'flag-check'}
+};
+const OKR_LEVEL={low:'Baixo',medium:'Médio',high:'Alto'};
+// Registro central das métricas do FlowOps que um resultado-chave pode ler (unidade e direção conferidas em upd() e renderDora()).
+// read(d,i): d = dataset do quarter (D/DB/DG[quarter]), i = índice da sprint; dec = casas decimais exibidas.
+const OKR_METRICS={
+  p85:{label:'Lead Time P85',field:'p85',unit:'d',dir:'down',dec:0,deltaUnit:'d',read:(d,i)=>d.p85[i]},
+  pct:{label:'% Entrega (entregues ÷ planejados)',field:'en / pl',unit:'%',dir:'up',dec:0,deltaUnit:'pp',read:(d,i)=>Math.round(d.en[i]/d.pl[i]*100)},
+  df:{label:'Deployment Frequency',field:'df',unit:'/sem',dir:'up',dec:1,deltaUnit:'/sem',read:(d,i)=>d.df[i]},
+  lc:{label:'Lead Time for Changes',field:'lc',unit:'d',dir:'down',dec:1,deltaUnit:'d',read:(d,i)=>d.lc[i]},
+  mt:{label:'Mean Time to Recovery (MTTR)',field:'mt',unit:'h',dir:'down',dec:1,deltaUnit:'h',read:(d,i)=>d.mt[i]},
+  cf:{label:'Change Failure Rate',field:'cf',unit:'%',dir:'down',dec:1,deltaUnit:'pp',read:(d,i)=>d.cf[i]}
+};
+const OKR_HAS=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
+function okrFmt(v,unit,dec){
+  const s=dec===undefined?String(v):v.toFixed(dec);
+  return !unit?s:(unit==='%'||unit==='/sem')?s+unit:s+' '+unit;
+}
+// Único ponto que lê os filtros globais: quarter (gq), ano (texto da opção de #sQ) e sprint (gi)
+function okrPeriodContext(){
+  const sel=document.getElementById('sQ'),opt=sel&&sel.options[sel.selectedIndex];
+  const m=opt&&/\b(20\d\d)\b/.exec(opt.textContent);
+  const i=gi();
+  return{quarter:gq(),year:m?parseInt(m[1],10):null,sprint:i,sprintLabel:'S'+(i+1)};
+}
+// Mesma regra de gd(), mas por time explícito (o filtro global de Time não decide qual time medir)
+function okrDataset(team){return team==='Time Alpha'?D:team==='Time Beta'?DB:team==='Time Gamma'?DG:null;}
+// Valor medido do FlowOps para uma métrica do registro; tendência = diferença simples para a sprint anterior
+function okrMeasure(code,target,team,ctx){
+  const mt=OKR_HAS(OKR_METRICS,code)?OKR_METRICS[code]:null;
+  if(!mt) return{state:'sem-dado'};
+  const ds=okrDataset(team);
+  if(!ds) return{state:'sem-time'};
+  const d=ds[ctx.quarter];
+  const rd=i=>{try{return d?mt.read(d,i):undefined;}catch(e){return undefined;}};
+  const v=rd(ctx.sprint);
+  if(typeof v!=='number'||!isFinite(v)) return{state:'sem-dado'};
+  const out={state:'ok',v:v,text:okrFmt(v,mt.unit,mt.dec),status:metaStatus(v,target,mt.dir==='down')};
+  if(ctx.sprint>0){
+    const p=rd(ctx.sprint-1);
+    if(typeof p==='number'&&isFinite(p)){
+      const k=Math.pow(10,mt.dec),diff=Math.round((v-p)*k)/k;
+      out.trend=diff===0?'sem variação vs S'+ctx.sprint:(diff>0?'+':'-')+Math.abs(diff).toFixed(mt.dec)+(mt.deltaUnit==='/sem'?'':' ')+mt.deltaUnit+' vs S'+ctx.sprint;
+    }
+  }
+  return out;
+}
+
+const OKR=(function(){
+  const KEY='fi_okr',KINDS=['okr','kr','initiative','risk','evidence'];
+  const RX={okr:/^okr-\d{3,}$/,kr:/^kr-\d{3,}$/,initiative:/^initiative-\d{3,}$/,risk:/^risk-\d{3,}$/,evidence:/^evidence-\d{3,}$/};
+  const MSG_FALHA='Não foi possível salvar neste navegador (sem espaço ou navegação privada). Nada foi alterado e o que você digitou foi mantido. Tente salvar novamente.';
+  const MSG_NOVA='Estes dados foram salvos por uma versão mais nova do FlowOps AI e não serão alterados por esta página.';
+  const META_TXT={ok:'Meta atingida',warn:'Perto da meta',bad:'Fora da meta'};
+  let data=empty(),issue=null,example=false,m=null;
+  const wantOpen=new Set();
+
+  function empty(){return{schemaVersion:1,counters:{okr:0,kr:0,initiative:0,risk:0,evidence:0},objectives:[],initiatives:[]};}
+  const clone=x=>JSON.parse(JSON.stringify(x));
+  const isStr=(v,max)=>typeof v==='string'&&v.length<=max;
+  const isInt=(v,a,b)=>Number.isInteger(v)&&v>=a&&v<=b;
+  const isNum=v=>typeof v==='number'&&Number.isFinite(v);
+  const isoOk=v=>typeof v==='string'&&v.length<=40&&!isNaN(Date.parse(v));
+  const plain=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
+
+  // Validação estrutural completa; devolve '' se válido ou o motivo (uso interno e testes)
+  function check(d){
+    if(!plain(d)) return 'raiz';
+    if(!Number.isInteger(d.schemaVersion)||d.schemaVersion<1) return 'schemaVersion';
+    if(d.schemaVersion>1) return 'schema mais novo';
+    if(!plain(d.counters)||KINDS.some(k=>!isInt(d.counters[k],0,1e9))) return 'counters';
+    if(!Array.isArray(d.objectives)||!Array.isArray(d.initiatives)) return 'listas';
+    const seen={};KINDS.forEach(k=>seen[k]=new Set());
+    const uniq=(k,id)=>{if(typeof id!=='string'||!RX[k].test(id)||seen[k].has(id)) return false;seen[k].add(id);return true;};
+    const krAll=new Set();
+    for(const o of d.objectives){
+      if(!plain(o)) return 'objetivo';
+      if(!uniq('okr',o.id)) return 'id do objetivo';
+      if(!isStr(o.title,160)||!o.title.trim()) return 'título';
+      if(!isStr(o.owner,120)) return 'responsável';
+      if(o.team!==null&&(!isStr(o.team,60)||!o.team)) return 'time';
+      if(!plain(o.period)||o.period.type!=='quarter'||!isInt(o.period.year,2000,2100)||!['Q1','Q2','Q3','Q4'].includes(o.period.quarter)) return 'período';
+      if(typeof o.status!=='string'||!OKR_HAS(OKR_STATUS,o.status)) return 'status';
+      if(o.progress!==null&&!isInt(o.progress,0,100)) return 'progresso';
+      if(!isoOk(o.createdAt)||!isoOk(o.updatedAt)) return 'datas';
+      if(!Array.isArray(o.keyResults)||!Array.isArray(o.risks)||!Array.isArray(o.evidence)) return 'listas do objetivo';
+      const krs=new Set();
+      for(const k of o.keyResults){
+        if(!plain(k)||!uniq('kr',k.id)) return 'id do resultado-chave';
+        if(!isStr(k.title,160)||!k.title.trim()) return 'título do resultado-chave';
+        if(!isStr(k.unit,12)) return 'unidade';
+        if(k.direction!=='up'&&k.direction!=='down') return 'direção';
+        if(!isNum(k.target)) return 'meta';
+        if(k.current!==null&&!isNum(k.current)) return 'valor atual';
+        if(k.progress!==null&&!isInt(k.progress,0,100)) return 'progresso do resultado-chave';
+        if(k.measure!==null&&(!plain(k.measure)||typeof k.measure.metric!=='string'||!OKR_HAS(OKR_METRICS,k.measure.metric))) return 'métrica';
+        krs.add(k.id);krAll.add(k.id);
+      }
+      for(const r of o.risks){
+        if(!plain(r)||!uniq('risk',r.id)) return 'id do risco';
+        if(!isStr(r.text,300)||!r.text.trim()) return 'texto do risco';
+        if(typeof r.level!=='string'||!OKR_HAS(OKR_LEVEL,r.level)) return 'nível do risco';
+        if(r.krId!==null&&!krs.has(r.krId)) return 'referência do risco';
+      }
+      for(const e of o.evidence){
+        if(!plain(e)||!uniq('evidence',e.id)) return 'id da evidência';
+        if(!isStr(e.text,300)||!e.text.trim()) return 'texto da evidência';
+        if(!depValidDate(e.date)) return 'data da evidência';
+        if(e.krId!==null&&!krs.has(e.krId)) return 'referência da evidência';
+      }
+    }
+    for(const i of d.initiatives){
+      if(!plain(i)||!uniq('initiative',i.id)) return 'id da iniciativa';
+      if(!isStr(i.title,160)||!i.title.trim()) return 'título da iniciativa';
+      if(!isStr(i.owner,120)) return 'responsável da iniciativa';
+      if(typeof i.status!=='string'||!OKR_HAS(OKR_STATUS,i.status)) return 'status da iniciativa';
+      if(!Array.isArray(i.krIds)||!i.krIds.length||new Set(i.krIds).size!==i.krIds.length||i.krIds.some(k=>typeof k!=='string'||!krAll.has(k))) return 'referências da iniciativa';
+    }
+    return '';
+  }
+  // Reconstrói só os campos conhecidos (nada além do modelo aprovado é mantido, ex.: period.label)
+  function normalize(d){
+    return{schemaVersion:1,counters:Object.fromEntries(KINDS.map(k=>[k,d.counters[k]])),
+      objectives:d.objectives.map(o=>({id:o.id,title:o.title,owner:o.owner,team:o.team,
+        period:{type:'quarter',year:o.period.year,quarter:o.period.quarter},status:o.status,progress:o.progress,
+        keyResults:o.keyResults.map(k=>({id:k.id,title:k.title,unit:k.unit,direction:k.direction,target:k.target,current:k.current,progress:k.progress,measure:k.measure?{metric:k.measure.metric}:null})),
+        risks:o.risks.map(r=>({id:r.id,text:r.text,level:r.level,krId:r.krId})),
+        evidence:o.evidence.map(e=>({id:e.id,text:e.text,date:e.date,krId:e.krId})),
+        createdAt:o.createdAt,updatedAt:o.updatedAt})),
+      initiatives:d.initiatives.map(i=>({id:i.id,title:i.title,owner:i.owner,status:i.status,krIds:i.krIds.slice()}))};
+  }
+
+  // Leitura segura: nunca lança exceção. Valor ilegível ou de versão mais nova fica guardado como está.
+  function load(){
+    issue=null;example=false;data=empty();
+    let raw;
+    try{raw=localStorage.getItem(KEY);}catch(e){issue='acesso';return;}
+    if(raw===null){example=true;return;} // chave ainda não existe: exemplo só em memória, nunca gravado
+    let p;
+    try{p=JSON.parse(raw);}catch(e){issue='ilegivel';return;}
+    if(plain(p)&&Number.isInteger(p.schemaVersion)&&p.schemaVersion>1){issue='nova';return;}
+    if(check(p)){issue='ilegivel';return;}
+    data=normalize(p);
+  }
+  function persist(next){
+    try{localStorage.setItem(KEY,JSON.stringify(next));return{ok:true};}catch(e){return{ok:false,error:e};}
+  }
+  // Toda gravação: monta o estado candidato, valida, persiste e só então troca a memória
+  function commit(mutator){
+    if(issue==='nova') return{ok:false,msg:MSG_NOVA};
+    const next=clone((issue||example)?empty():data); // exemplo e valor ilegível nunca entram no estado novo
+    const err=mutator(next);
+    if(err) return{ok:false,msg:err};
+    if(check(next)) return{ok:false,msg:'Os dados informados não são válidos. Revise os campos e tente novamente.'};
+    if(!persist(next).ok) return{ok:false,msg:MSG_FALHA};
+    data=next;example=false;issue=null;
+    return{ok:true};
+  }
+  function newId(next,kind){
+    let max=next.counters[kind]||0;
+    const scan=id=>{const x=/-(\d+)$/.exec(id||'');if(x) max=Math.max(max,parseInt(x[1],10));};
+    next.objectives.forEach(o=>{if(kind==='okr') scan(o.id);o.keyResults.forEach(k=>{if(kind==='kr') scan(k.id);});o.risks.forEach(r=>{if(kind==='risk') scan(r.id);});o.evidence.forEach(e=>{if(kind==='evidence') scan(e.id);});});
+    next.initiatives.forEach(i=>{if(kind==='initiative') scan(i.id);});
+    max+=1;next.counters[kind]=max;
+    return kind+'-'+String(max).padStart(3,'0');
+  }
+  const touch=o=>{o.updatedAt=new Date().toISOString();};
+  const findObj=(d,id)=>d.objectives.find(o=>o.id===id)||null;
+  const findKr=(d,id)=>{for(const o of d.objectives){const k=o.keyResults.find(x=>x.id===id);if(k) return{o:o,kr:k};}return null;};
+  function removeKrs(next,ids){
+    const gone=new Set(ids);
+    next.objectives.forEach(o=>{o.risks.forEach(r=>{if(gone.has(r.krId)) r.krId=null;});o.evidence.forEach(e=>{if(gone.has(e.krId)) e.krId=null;});});
+    next.initiatives.forEach(i=>{i.krIds=i.krIds.filter(k=>!gone.has(k));});
+    next.initiatives=next.initiatives.filter(i=>i.krIds.length>0); // só roda depois da confirmação do usuário
+  }
+  const orphansOf=ids=>{const gone=new Set(ids);return data.initiatives.filter(i=>i.krIds.length&&i.krIds.every(k=>gone.has(k)));};
+
+  // ── Exemplo (D26): 1 objetivo, só em memória; período e medições seguem os filtros do topo ──
+  function exampleData(ctx){
+    return{schemaVersion:1,counters:{okr:1,kr:3,initiative:2,risk:0,evidence:0},
+      objectives:[{id:'okr-001',title:'Aumentar a previsibilidade de entrega do time',owner:'Time Alpha',team:'Time Alpha',
+        period:{type:'quarter',year:ctx.year||new Date().getFullYear(),quarter:ctx.quarter},status:'attention',progress:60,
+        keyResults:[
+          {id:'kr-001',title:'Lead Time P85 de até 8 dias',unit:'d',direction:'down',target:8,current:null,progress:40,measure:{metric:'p85'}},
+          {id:'kr-002',title:'% Entrega de pelo menos 90%',unit:'%',direction:'up',target:90,current:null,progress:85,measure:{metric:'pct'}},
+          {id:'kr-003',title:'Change Failure Rate de até 4%',unit:'%',direction:'down',target:4,current:null,progress:60,measure:{metric:'cf'}}],
+        risks:[],evidence:[],createdAt:'',updatedAt:''}],
+      initiatives:[
+        {id:'initiative-001',title:'Reduzir WIP',owner:'Time Alpha',status:'on-track',krIds:['kr-001']},
+        {id:'initiative-002',title:'Revisão da Definition of Done',owner:'Time Alpha',status:'attention',krIds:['kr-001','kr-003']}]};
+  }
+
+  // ── Renderização (todo texto vindo dos dados passa por escHtml; nada de dado em onclick) ──
+  const E=escHtml;
+  const btn=(act,id,parent,label,cls)=>'<button class="okr-btn'+(cls?' '+cls:'')+'" data-act="'+act+'" data-id="'+E(id)+'" data-parent="'+E(parent)+'" onclick="OKR.click(this)">'+label+'</button>';
+  const stChip=s=>'<span class="okr-st okr-st-'+s+'"><i class="ti ti-'+OKR_STATUS[s].icon+'"></i> '+OKR_STATUS[s].pt+'</span>';
+  const progress=(p,who)=>p===null
+    ?'<span>Progresso não informado</span>'
+    :'<div class="okr-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'" aria-label="Progresso informado de '+E(who)+'"><div class="okr-bar-fill" style="width:'+p+'%"></div></div><span>Progresso informado: <strong>'+p+'%</strong></span>';
+  const qLabel=p=>p.quarter+' '+p.year;
+  const matches=(o,ctx)=>o.period.quarter===ctx.quarter&&(ctx.year===null||o.period.year===ctx.year);
+
+  function krHtml(k,o,ctx,ro){
+    const mt=k.measure?OKR_METRICS[k.measure.metric]:null;
+    const unit=mt?mt.unit:k.unit,dir=mt?mt.dir:k.direction;
+    const f=['<span>Meta: '+(dir==='down'?'≤':'≥')+' '+E(okrFmt(k.target,unit))+'</span>'];
+    if(mt){
+      const r=okrMeasure(k.measure.metric,k.target,o.team,ctx);
+      if(r.state==='ok'){
+        f.push('<span>Medido em '+ctx.sprintLabel+' ('+E(o.team)+'): <strong>'+E(r.text)+'</strong></span>');
+        f.push('<span class="okr-chip okr-chip-'+r.status+'">'+META_TXT[r.status]+'</span>');
+        f.push('<span>Tendência: '+(r.trend?E(r.trend):'sem sprint anterior')+'</span>');
+      } else f.push('<span>'+(r.state==='sem-time'?'Sem time no objetivo: a métrica não pode ser lida.':'Sem dado medido para '+ctx.sprintLabel+'.')+'</span>');
+      f.push('<span class="okr-cap">Fonte: '+E(mt.label)+'</span>');
+    } else f.push(k.current===null?'<span>Valor atual não informado.</span>':'<span>Valor atual informado: <strong>'+E(okrFmt(k.current,unit))+'</strong></span>');
+    const acts=ro?'':'<div class="okr-actions">'+btn('edit-kr',k.id,'','Editar')+btn('del-kr',k.id,'','Excluir','okr-btn-del')+'</div>';
+    return '<div class="okr-kr"><div class="okr-kr-hd"><div class="okr-kr-t">'+E(k.title)+'</div>'+acts+'</div>'
+      +'<div class="okr-kr-f">'+f.join('')+'</div><div class="okr-prog">'+progress(k.progress,k.title)+'</div></div>';
+  }
+  function objHtml(o,view,ctx,ro){
+    const kids=new Set(o.keyResults.map(k=>k.id));
+    const inis=view.initiatives.filter(i=>i.krIds.some(k=>kids.has(k)));
+    const ktitle=id=>{const k=o.keyResults.find(x=>x.id===id);return k?k.title:'';};
+    const det=(key,label,n,body)=>'<details class="okr-det" data-key="'+E(o.id+':'+key)+'"><summary>'+label+' ('+n+')</summary><div class="okr-det-body">'+body+'</div></details>';
+    const none=t=>'<span class="okr-cap">'+t+'</span>';
+    const iniBody=(inis.length?inis.map(i=>'<div class="okr-row"><div class="okr-row-main"><strong>'+E(i.title)+'</strong> '+stChip(i.status)
+        +'<div class="okr-cap">Responsável: '+E(i.owner)+' · atende: '+E(i.krIds.map(id=>ktitle(id)).filter(Boolean).join('; '))+'</div></div>'
+        +(ro?'':'<div class="okr-actions">'+btn('edit-ini',i.id,'','Editar')+btn('del-ini',i.id,'','Excluir','okr-btn-del')+'</div>')+'</div>').join(''):none('Nenhuma iniciativa vinculada.'))
+      +(ro||!o.keyResults.length?'':'<div>'+btn('new-ini','',o.id,'Adicionar iniciativa')+'</div>');
+    const riskBody=(o.risks.length?o.risks.map(r=>'<div class="okr-row"><div class="okr-row-main">'+E(r.text)+' <span class="okr-chip">Nível '+OKR_LEVEL[r.level]+'</span>'
+        +(r.krId?'<div class="okr-cap">Resultado-chave: '+E(ktitle(r.krId))+'</div>':'')+'</div>'
+        +(ro?'':'<div class="okr-actions">'+btn('del-risk',r.id,o.id,'Remover','okr-btn-del')+'</div>')+'</div>').join(''):none('Nenhum risco registrado.'))
+      +(ro?'':'<div>'+btn('new-risk','',o.id,'Adicionar risco')+'</div>');
+    const evBody=(o.evidence.length?o.evidence.map(e=>'<div class="okr-row"><div class="okr-row-main"><span class="okr-cap">'+E(e.date.slice(8,10)+'/'+e.date.slice(5,7)+'/'+e.date.slice(0,4))+'</span> '+E(e.text)
+        +(e.krId?'<div class="okr-cap">Resultado-chave: '+E(ktitle(e.krId))+'</div>':'')+'</div>'
+        +(ro?'':'<div class="okr-actions">'+btn('del-ev',e.id,o.id,'Remover','okr-btn-del')+'</div>')+'</div>').join(''):none('Nenhuma evidência registrada.'))
+      +(ro?'':'<div>'+btn('new-ev','',o.id,'Adicionar evidência')+'</div>');
+    return '<section class="cc okr-obj"><div class="okr-obj-hd"><div class="okr-title">'+E(o.title)
+      +'<div class="okr-meta">Responsável: '+E(o.owner)+(o.team?' · Time: '+E(o.team):'')+' · '+E(qLabel(o.period))+(o.updatedAt?' · atualizado em '+E(new Date(o.updatedAt).toLocaleDateString('pt-BR')):'')+'</div></div>'
+      +stChip(o.status)+(ro?'':'<div class="okr-actions">'+btn('edit-okr',o.id,'','Editar')+btn('del-okr',o.id,'','Excluir','okr-btn-del')+'</div>')+'</div>'
+      +'<div class="okr-prog">'+progress(o.progress,o.title)+'</div>'
+      +'<div class="okr-krs">'+(o.keyResults.length?o.keyResults.map(k=>krHtml(k,o,ctx,ro)).join(''):none('Nenhum resultado-chave neste objetivo.'))
+      +(ro?'':'<div>'+btn('new-kr','',o.id,'Adicionar resultado-chave')+'</div>')+'</div>'
+      +det('ini','Iniciativas',inis.length,iniBody)+det('risk','Riscos',o.risks.length,riskBody)+det('ev','Evidências',o.evidence.length,evBody)+'</section>';
+  }
+  function noticeHtml(){
+    const w=t=>depMsgHtml('warn',t);
+    if(issue==='ilegivel') return w('Os objetivos salvos neste navegador não puderam ser lidos. Nada foi apagado e a lista aparece vazia. Ao salvar um objetivo, o conteúdo ilegível será substituído.');
+    if(issue==='nova') return w(MSG_NOVA);
+    if(issue==='acesso') return w('Este navegador não permite salvar dados nesta página. Os objetivos registrados agora serão perdidos ao recarregar.');
+    return '';
+  }
+  function render(){
+    const root=document.getElementById('ed-okr');
+    if(!root) return;
+    const keep=new Set([...root.querySelectorAll('details[open]')].map(d=>d.dataset.key));
+    wantOpen.forEach(k=>keep.add(k));wantOpen.clear();
+    const ctx=okrPeriodContext(),view=example?exampleData(ctx):data;
+    const list=view.objectives.filter(o=>matches(o,ctx));
+    const per={};
+    view.objectives.forEach(o=>{if(!matches(o,ctx)){const l=qLabel(o.period);per[l]=(per[l]||0)+1;}});
+    const others=Object.keys(per).sort().map(l=>l+' ('+per[l]+')');
+    const cnt=s=>list.filter(o=>o.status===s).length;
+    const strip=list.length?'<div class="okr-strip"><div class="okr-strip-c"><div class="okr-strip-v">'+list.length+'</div><div class="okr-strip-l">Objetivos no período</div></div>'
+      +Object.keys(OKR_STATUS).map(s=>'<div class="okr-strip-c"><div class="okr-strip-v">'+cnt(s)+'</div><div class="okr-strip-l">'+OKR_STATUS[s].pt+'</div></div>').join('')+'</div>':'';
+    const periodTxt=ctx.quarter+(ctx.year?' '+ctx.year:'');
+    root.innerHTML='<div class="okr-toolbar"><p class="okr-ctx">Período: <strong>'+E(periodTxt)+'</strong> (filtro do topo) · Valores medidos: <strong>'+E(ctx.sprintLabel)+'</strong></p>'
+      +'<button class="dep-btn-new" data-act="new-okr" data-id="" data-parent="" onclick="OKR.click(this)"><i class="ti ti-plus"></i> Novo objetivo</button></div>'
+      +'<p class="dep-note">Os objetivos ficam salvos apenas neste navegador. Esta versão ainda não possui cópia de segurança.</p>'
+      +'<div id="ed-okr-notice">'+noticeHtml()+'</div>'
+      +(example?'<div class="okr-example">Exemplo — substitua pelos seus objetivos. Este exemplo não é salvo e desaparece quando você criar o seu primeiro objetivo.</div>':'')
+      +'<div id="ed-okr-strip">'+strip+'</div>'
+      +'<div id="ed-okr-list">'+(list.length?list.map(o=>objHtml(o,view,ctx,example)).join('')
+        :'<div class="dep-empty"><i class="ti ti-target" style="font-size:36px;display:block;margin-bottom:10px;color:#d1d5db"></i><p style="font-size:14px;font-weight:500;color:#6b7280;margin-bottom:4px">Nenhum objetivo em '+E(periodTxt)+'</p><p style="font-size:12px">Clique em <strong>Novo objetivo</strong> para criar o primeiro.</p></div>')+'</div>'
+      +(others.length&&!example?'<p class="okr-cap">Outros períodos com objetivos: '+E(others.join(', '))+'. Altere o período no filtro do topo.</p>':'');
+    root.querySelectorAll('details').forEach(d=>{if(keep.has(d.dataset.key)) d.open=true;});
+  }
+
+  // ── Editor (modal) ─────────────────────────────────────────────────────────────
+  const box=()=>document.getElementById('okrModalBox');
+  const fld=(label,html,full)=>'<div class="depm-field'+(full?' full':'')+'"><label class="depm-label">'+label+'</label>'+html+'</div>';
+  const row2=(a,b)=>'<div class="depm-row">'+a+b+'</div>';
+  const inp=(name,val,attrs)=>'<input class="depm-input" name="'+name+'" value="'+E(val)+'" '+(attrs||'')+'>';
+  const ta=(name,val)=>'<textarea class="depm-input" name="'+name+'" rows="3" maxlength="300">'+E(val)+'</textarea>';
+  const sel=(name,opts,cur,attrs)=>'<select class="depm-input" name="'+name+'" '+(attrs||'')+'>'+opts.map(o=>'<option value="'+E(o[0])+'"'+(String(cur)===String(o[0])?' selected':'')+'>'+E(o[1])+'</option>').join('')+'</select>';
+  const val=n=>{const e=box().querySelector('[name="'+n+'"]');return e?e.value:'';};
+  const teams=()=>{const s=document.getElementById('sTeam');const l=s?[...s.options].map(o=>o.value||o.textContent):[];return l.length?l:['Time Alpha','Time Beta','Time Gamma'];};
+  const statusOpts=Object.keys(OKR_STATUS).map(s=>[s,OKR_STATUS[s].pt]);
+  const krOpts=o=>[['','Nenhum (o objetivo como um todo)']].concat(o.keyResults.map(k=>[k.id,k.title]));
+  const todayIso=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+
+  function formFor(act,id,parent){
+    if(act==='new-okr'||act==='edit-okr'){
+      const o=act==='edit-okr'?findObj(data,id):null,ctx=okrPeriodContext();
+      const per=o?o.period:{quarter:ctx.quarter,year:ctx.year||new Date().getFullYear()};
+      return{title:o?'Editar objetivo':'Novo objetivo',body:
+        fld('Título <span>*</span>',inp('title',o?o.title:'','maxlength="160"'),true)
+        +row2(fld('Responsável <span>*</span>',inp('owner',o?o.owner:'','maxlength="120"')),fld('Time (para ler métricas)',sel('team',[['','Sem time']].concat(teams().map(t=>[t,t])),o?o.team||'':'')))
+        +row2(fld('Quarter',sel('quarter',['Q1','Q2','Q3','Q4'].map(q=>[q,q]),per.quarter)),fld('Ano',inp('year',per.year,'type="number" min="2000" max="2100" step="1"')))
+        +row2(fld('Status',sel('status',statusOpts,o?o.status:'on-track')),fld('Progresso informado (0 a 100)',inp('progress',o&&o.progress!==null?o.progress:'','type="number" min="0" max="100" step="1" placeholder="Em branco = não informado"')))};
+    }
+    if(act==='new-kr'||act==='edit-kr'){
+      const f=act==='edit-kr'?findKr(data,id):null,k=f?f.kr:null;
+      return{title:k?'Editar resultado-chave':'Novo resultado-chave',body:
+        fld('Título <span>*</span>',inp('title',k?k.title:'','maxlength="160"'),true)
+        +fld('Métrica do FlowOps (opcional)',sel('metric',[['','Nenhuma: valor informado manualmente']].concat(Object.keys(OKR_METRICS).map(c=>[c,OKR_METRICS[c].label])),k&&k.measure?k.measure.metric:'','onchange="OKR.metric()"')
+          +'<span class="okr-cap">Com métrica, o valor atual é lido do FlowOps (time do objetivo, sprint do filtro do topo). Unidade e direção seguem a métrica.</span>',true)
+        +row2(fld('Meta <span>*</span>',inp('target',k?k.target:'','type="number" step="any"')),fld('Unidade',inp('unit',k?k.unit:'','maxlength="12"')))
+        +row2(fld('Direção favorável',sel('direction',[['down','Menor é melhor (meta ≤)'],['up','Maior é melhor (meta ≥)']],k?k.direction:'down')),fld('Valor atual informado',inp('current',k&&k.current!==null?k.current:'','type="number" step="any"')))
+        +fld('Progresso informado (0 a 100)',inp('progress',k&&k.progress!==null?k.progress:'','type="number" min="0" max="100" step="1" placeholder="Em branco = não informado"'),true)};
+    }
+    if(act==='new-ini'||act==='edit-ini'){
+      const ini=act==='edit-ini'?data.initiatives.find(x=>x.id===id):null;
+      const groups=data.objectives.filter(o=>o.keyResults.length).map(o=>'<div class="okr-chk-grp">'+E(o.title)+' ('+E(qLabel(o.period))+')</div>'
+        +o.keyResults.map(k=>'<label class="okr-chk"><input type="checkbox" name="kr" value="'+E(k.id)+'"'+(ini&&ini.krIds.includes(k.id)?' checked':'')+'> <span>'+E(k.title)+'</span></label>').join('')).join('');
+      return{title:ini?'Editar iniciativa':'Nova iniciativa',body:
+        fld('Título <span>*</span>',inp('title',ini?ini.title:'','maxlength="160"'),true)
+        +row2(fld('Responsável <span>*</span>',inp('owner',ini?ini.owner:'','maxlength="120"')),fld('Status',sel('status',statusOpts,ini?ini.status:'on-track')))
+        +fld('Resultados-chave atendidos <span>*</span>',groups||'<span class="okr-cap">Crie um resultado-chave antes.</span>',true)};
+    }
+    const o=findObj(data,parent);
+    if(act==='new-risk') return{title:'Adicionar risco',body:fld('Risco <span>*</span>',ta('text',''),true)+row2(fld('Nível',sel('level',[['low','Baixo'],['medium','Médio'],['high','Alto']],'medium')),fld('Resultado-chave',sel('kr',krOpts(o),'')))};
+    if(act==='new-ev') return{title:'Adicionar evidência',body:fld('Evidência <span>*</span>',ta('text',''),true)+row2(fld('Data <span>*</span>',inp('date',todayIso(),'type="date"')),fld('Resultado-chave',sel('kr',krOpts(o),'')))};
+    return null;
+  }
+
+  function planDelete(act,id){
+    if(act==='del-okr'){
+      const o=findObj(data,id);if(!o) return null;
+      const orph=orphansOf(o.keyResults.map(k=>k.id));
+      return{title:'Excluir objetivo',text:'Excluir o objetivo "'+o.title+'" remove também '+o.keyResults.length+' resultado(s)-chave, '+o.risks.length+' risco(s) e '+o.evidence.length+' evidência(s).',orph:orph};
+    }
+    if(act==='del-kr'){
+      const f=findKr(data,id);if(!f) return null;
+      return{title:'Excluir resultado-chave',text:'Excluir o resultado-chave "'+f.kr.title+'". Riscos e evidências ligados a ele continuam no objetivo, sem esse vínculo.',orph:orphansOf([id])};
+    }
+    if(act==='del-ini'){const i=data.initiatives.find(x=>x.id===id);return i?{title:'Excluir iniciativa',text:'Excluir a iniciativa "'+i.title+'".',orph:[]}:null;}
+    if(act==='del-risk'){const f=findObj(data,m&&m.parent);const r=f&&f.risks.find(x=>x.id===id);return r?{title:'Remover risco',text:'Remover o risco "'+r.text+'".',orph:[]}:null;}
+    if(act==='del-ev'){const f=findObj(data,m&&m.parent);const e=f&&f.evidence.find(x=>x.id===id);return e?{title:'Remover evidência',text:'Remover a evidência "'+e.text+'".',orph:[]}:null;}
+    return null;
+  }
+
+  function openModal(act,id,parent){
+    if(typeof act!=='string'||!act) return;
+    if(example&&act!=='new-okr') return; // o exemplo é só demonstração: não edita
+    m={act:act,id:id,parent:parent};
+    let title,body,foot;
+    if(act.indexOf('del-')===0){
+      const p=planDelete(act,id);
+      if(!p){m=null;return;}
+      title=p.title;
+      body='<p>'+E(p.text)+' Esta ação não pode ser desfeita.</p>'
+        +(p.orph.length?'<div class="dep-msg is-warn">As iniciativas a seguir ficariam sem nenhum resultado-chave e também serão excluídas: '+E(p.orph.map(i=>i.title).join('; '))+'.</div>':'');
+      foot='<button class="depm-btn-cancel" onclick="OKR.close()">Cancelar</button><button class="depm-btn-save" style="background:var(--clr-bad)" onclick="OKR.save()">Confirmar exclusão</button>';
+    } else {
+      const f=formFor(act,id,parent);
+      if(!f){m=null;return;}
+      title=f.title;body=f.body;
+      foot='<button class="depm-btn-cancel" onclick="OKR.close()">Cancelar</button><button class="depm-btn-save" onclick="OKR.save()"><i class="ti ti-device-floppy" style="font-size:13px"></i> Salvar</button>';
+    }
+    box().innerHTML='<div class="depm-head"><div class="depm-head-title">'+E(title)+'</div><button class="depm-close" onclick="OKR.close()" aria-label="Fechar"><i class="ti ti-x"></i></button></div>'
+      +'<div class="depm-body">'+body+'</div><div id="okrSaveMsg" class="dep-msg is-bad depm-msg" role="alert" hidden></div><div class="depm-foot">'+foot+'</div>';
+    document.getElementById('okrModal').classList.add('open');document.body.style.overflow='hidden';
+    metric();
+  }
+  function closeModal(){document.getElementById('okrModal').classList.remove('open');document.body.style.overflow='';m=null;}
+  function showMsg(t){const e=document.getElementById('okrSaveMsg');if(!e) return;e.textContent=t;e.hidden=false;if(e.scrollIntoView) e.scrollIntoView({block:'nearest'});}
+  // Com métrica escolhida, unidade/direção vêm do registro e o valor atual vem do FlowOps
+  function metric(){
+    const s=box()&&box().querySelector('[name="metric"]');if(!s) return;
+    const mt=s.value&&OKR_HAS(OKR_METRICS,s.value)?OKR_METRICS[s.value]:null;
+    const u=box().querySelector('[name="unit"]'),d=box().querySelector('[name="direction"]'),c=box().querySelector('[name="current"]');
+    if(mt){u.value=mt.unit;d.value=mt.dir;c.value='';}
+    u.disabled=d.disabled=c.disabled=!!mt;
+  }
+  const optNum=s=>s.trim()===''?null:Number(s);
+  function readProgress(name){
+    const s=val(name).trim();
+    if(s==='') return{ok:true,v:null};
+    const n=Number(s);
+    return Number.isInteger(n)&&n>=0&&n<=100?{ok:true,v:n}:{ok:false};
+  }
+  const PROG_ERR='Informe o progresso como número inteiro de 0 a 100, ou deixe em branco.';
+
+  function save(){
+    if(!m) return;
+    const act=m.act,id=m.id,parent=m.parent;
+    const done=mut=>{const r=commit(mut);if(!r.ok){showMsg(r.msg);return;}closeModal();render();};
+    if(act.indexOf('del-')===0){
+      if(act==='del-okr'){const o=findObj(data,id);if(!o) return closeModal();const ids=o.keyResults.map(k=>k.id);return done(next=>{next.objectives=next.objectives.filter(x=>x.id!==id);removeKrs(next,ids);});}
+      if(act==='del-kr'){return done(next=>{const f=findKr(next,id);if(!f) return 'Resultado-chave não encontrado.';f.o.keyResults=f.o.keyResults.filter(k=>k.id!==id);removeKrs(next,[id]);touch(f.o);});}
+      if(act==='del-ini'){return done(next=>{next.initiatives=next.initiatives.filter(x=>x.id!==id);});}
+      if(act==='del-risk'){wantOpen.add(parent+':risk');return done(next=>{const o=findObj(next,parent);if(!o) return 'Objetivo não encontrado.';o.risks=o.risks.filter(x=>x.id!==id);touch(o);});}
+      if(act==='del-ev'){wantOpen.add(parent+':ev');return done(next=>{const o=findObj(next,parent);if(!o) return 'Objetivo não encontrado.';o.evidence=o.evidence.filter(x=>x.id!==id);touch(o);});}
+      return;
+    }
+    const title=val('title').trim();
+    if(act==='new-okr'||act==='edit-okr'){
+      const owner=val('owner').trim(),year=Number(val('year')),pr=readProgress('progress');
+      if(!title) return showMsg('Informe o título do objetivo.');
+      if(!owner) return showMsg('Informe o responsável.');
+      if(!Number.isInteger(year)||year<2000||year>2100) return showMsg('Informe um ano entre 2000 e 2100.');
+      if(!pr.ok) return showMsg(PROG_ERR);
+      const team=val('team')||null,quarter=val('quarter'),status=val('status');
+      return done(next=>{
+        const now=new Date().toISOString();
+        if(act==='new-okr') next.objectives.push({id:newId(next,'okr'),title:title,owner:owner,team:team,period:{type:'quarter',year:year,quarter:quarter},status:status,progress:pr.v,keyResults:[],risks:[],evidence:[],createdAt:now,updatedAt:now});
+        else{const o=findObj(next,id);if(!o) return 'Objetivo não encontrado.';Object.assign(o,{title:title,owner:owner,team:team,period:{type:'quarter',year:year,quarter:quarter},status:status,progress:pr.v});touch(o);}
+      });
+    }
+    if(act==='new-kr'||act==='edit-kr'){
+      const code=val('metric'),mt=code&&OKR_HAS(OKR_METRICS,code)?OKR_METRICS[code]:null,pr=readProgress('progress');
+      const target=optNum(val('target')),current=mt?null:optNum(val('current'));
+      if(!title) return showMsg('Informe o título do resultado-chave.');
+      if(target===null||!Number.isFinite(target)) return showMsg('Informe a meta como número.');
+      if(current!==null&&!Number.isFinite(current)) return showMsg('Informe o valor atual como número, ou deixe em branco.');
+      if(!pr.ok) return showMsg(PROG_ERR);
+      const unit=mt?mt.unit:val('unit').trim(),dir=mt?mt.dir:val('direction');
+      return done(next=>{
+        const kr={title:title,unit:unit,direction:dir,target:target,current:current,progress:pr.v,measure:mt?{metric:code}:null};
+        if(act==='new-kr'){const o=findObj(next,parent);if(!o) return 'Objetivo não encontrado.';o.keyResults.push(Object.assign({id:newId(next,'kr')},kr));touch(o);}
+        else{const f=findKr(next,id);if(!f) return 'Resultado-chave não encontrado.';Object.assign(f.kr,kr);touch(f.o);}
+      });
+    }
+    if(act==='new-ini'||act==='edit-ini'){
+      const owner=val('owner').trim(),status=val('status'),krIds=[...box().querySelectorAll('input[name="kr"]:checked')].map(c=>c.value);
+      if(!title) return showMsg('Informe o título da iniciativa.');
+      if(!owner) return showMsg('Informe o responsável.');
+      if(!krIds.length) return showMsg('Escolha ao menos um resultado-chave atendido pela iniciativa.');
+      if(parent) wantOpen.add(parent+':ini');
+      return done(next=>{
+        if(act==='new-ini') next.initiatives.push({id:newId(next,'initiative'),title:title,owner:owner,status:status,krIds:krIds});
+        else{const i=next.initiatives.find(x=>x.id===id);if(!i) return 'Iniciativa não encontrada.';Object.assign(i,{title:title,owner:owner,status:status,krIds:krIds});}
+      });
+    }
+    if(act==='new-risk'||act==='new-ev'){
+      const text=val('text').trim(),kr=val('kr')||null;
+      if(!text) return showMsg(act==='new-risk'?'Descreva o risco.':'Descreva a evidência.');
+      if(act==='new-ev'&&!depValidDate(val('date'))) return showMsg('Informe uma data válida.');
+      wantOpen.add(parent+(act==='new-risk'?':risk':':ev'));
+      return done(next=>{
+        const o=findObj(next,parent);if(!o) return 'Objetivo não encontrado.';
+        if(act==='new-risk') o.risks.push({id:newId(next,'risk'),text:text,level:val('level'),krId:kr});
+        else o.evidence.push({id:newId(next,'evidence'),text:text,date:val('date'),krId:kr});
+        touch(o);
+      });
+    }
+  }
+
+  function click(el){openModal(el.dataset.act,el.dataset.id||'',el.dataset.parent||'');}
+  load();
+  return{
+    render:render,click:click,close:closeModal,save:save,metric:metric,
+    // consulta para lotes futuros (somente dados salvos; o exemplo nunca é devolvido)
+    byPeriod:(quarter,year)=>clone(data.objectives.filter(o=>o.period.quarter===quarter&&(year==null||o.period.year===year))),
+    kr:id=>{const f=findKr(data,id);return f?clone({objective:f.o.id,kr:f.kr}):null;},
+    initiativesOf:krId=>clone(data.initiatives.filter(i=>i.krIds.includes(krId))),
+    isExample:()=>example,
+    state:()=>({issue:issue,example:example,data:clone(data)})
+  };
+})();
+function renderOKRs(){OKR.render();}
+
 // ── GLOSSÁRIO DE MÉTRICAS ─────────────────────────────────────────
 const GL={
   lt:{name:'Lead Time',namePT:'Tempo de Entrega',cat:'flow',catLabel:'Fluxo',catColor:'#185FA5',
@@ -7693,6 +8224,11 @@ window.onload=function(){ updateSprintOptions(); applyTeamColor(); upd(); markSe
 <!-- Deploy Modal -->
 <div class="depm-overlay" id="depModal" onclick="if(event.target===this)closeDepModal()">
   <div class="depm-box" id="depModalBox"></div>
+</div>
+
+<!-- Estratégia — editor de objetivos (reaproveita o visual .depm-*) -->
+<div class="depm-overlay" id="okrModal" onclick="if(event.target===this)OKR.close()">
+  <div class="depm-box" id="okrModalBox"></div>
 </div>
 
 <!-- ── Modal Detalhe — Saúde da Qualidade ── -->
