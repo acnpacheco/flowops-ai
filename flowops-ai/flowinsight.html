@@ -759,6 +759,13 @@
   .planp{display:none}.planp.on{display:block}
   .planp .cc,.planp .as-kgrid,.planp>div{min-width:0;max-width:100%} /* conteúdo largo (tabelas) rola no próprio contêiner, não na página */
   @media(max-width:600px){#pplan .plan-tab{min-height:40px}}
+  /* Fase 2 — Lote 9 — Delivery (sub-navegação no padrão de Engenharia & Qualidade) */
+  .del-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .del-tab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+  .del-tab.on{background:var(--clr-info);color:#fff;border-color:var(--clr-info)}
+  .del-tab:hover:not(.on){background:var(--bg-insight)}
+  .delp{display:none}.delp.on{display:block}
+  @media(max-width:600px){#pdel .del-tab{min-height:40px}}
 
   /* ── Glossário de Métricas ──────────────────────────── */
   .gl-header{margin-bottom:16px}
@@ -1008,10 +1015,9 @@
 <nav class="main-nav">
   <button class="ntab on" onclick="tab(this,'v')"   aria-label="Visão Geral"          title="Visão Geral"><i class="ti ti-layout-dashboard"></i> Visão Geral</button>
   <button class="ntab"    onclick="tab(this,'ed')"  aria-label="Estratégia"            title="Estratégia"><i class="ti ti-target"></i> Estratégia</button>
-  <button class="ntab"    onclick="tab(this,'f')"   aria-label="Métricas de fluxo"     title="Métricas de fluxo"><i class="ti ti-wave-sine"></i> Métricas de fluxo</button>
+  <button class="ntab"    onclick="tab(this,'del')" aria-label="Delivery"              title="Delivery"><i class="ti ti-truck-delivery"></i> Delivery</button>
   <button class="ntab"    onclick="tab(this,'eq')"  aria-label="Engenharia & Qualidade" title="Engenharia &amp; Qualidade"><i class="ti ti-shield-half"></i> Engenharia &amp; Qualidade</button>
   <button class="ntab"    onclick="tab(this,'r')"   aria-label="Relatório de quarter"  title="Relatório de quarter"><i class="ti ti-file-analytics"></i> Relatório de quarter</button>
-  <button class="ntab"    onclick="tab(this,'as')"  aria-label="Acompanhamento"        title="Acompanhamento"><i class="ti ti-activity"></i> Acompanhamento</button>
   <button class="ntab"    onclick="tab(this,'rel')" aria-label="Relatórios"            title="Relatórios"><i class="ti ti-file-text"></i> Relatórios</button>
   <button class="ntab"    onclick="tab(this,'m')"   aria-label="Multi-time"            title="Multi-time"><i class="ti ti-users-group"></i> Multi-time</button>
   <button class="ntab"    onclick="tab(this,'plan')" aria-label="Planejamento"         title="Planejamento"><i class="ti ti-calendar-event"></i> Planejamento</button>
@@ -1152,12 +1158,20 @@
     </div>
   </div>
 
-  <!-- Métricas de Fluxo -->
-  <div id="pf" class="fp">
+  <!-- Delivery (Fase 2 — Lote 9): Métricas de fluxo (antigo #pf) e Resumo, Burndown & Burnup, Forecast e Alertas (antigo #pas) -->
+  <div id="pdel" class="fp">
     <div class="cf-header">
-      <p class="cf-title">Métricas de fluxo</p>
-      <p class="cf-sub">Indicadores de eficiência do fluxo de trabalho, previsibilidade e capacidade de entrega — acompanhamento Sprint a Sprint.</p>
+      <p class="cf-title">Delivery</p>
+      <p class="cf-sub">Fluxo de trabalho, resumo da sprint, burndown, burnup, previsão de entrega e alertas.</p>
     </div>
+    <div class="del-nav">
+      <button class="del-tab on" onclick="delTab(this,'del-flow')" aria-label="Métricas de fluxo" title="Métricas de fluxo"><i class="ti ti-wave-sine"></i> Métricas de fluxo</button>
+      <button class="del-tab" onclick="delTab(this,'as-resumo')" aria-label="Resumo executivo" title="Resumo executivo"><i class="ti ti-layout-dashboard"></i> Resumo executivo</button>
+      <button class="del-tab" onclick="delTab(this,'as-bd')" aria-label="Burndown &amp; Burnup" title="Burndown &amp; Burnup"><i class="ti ti-chart-line"></i> Burndown &amp; Burnup</button>
+      <button class="del-tab" onclick="delTab(this,'as-forecast')" aria-label="Forecast da sprint" title="Forecast da sprint"><i class="ti ti-chart-arrows-vertical"></i> Forecast da sprint</button>
+      <button class="del-tab" onclick="delTab(this,'as-al')" aria-label="Alertas" title="Alertas"><i class="ti ti-bell-ringing"></i> Alertas</button>
+    </div>
+    <div id="del-flow" class="delp on">
 
     <!-- Grupo 1 — Saúde do fluxo -->
     <div class="kg-section">
@@ -1288,6 +1302,40 @@
       <div id="flowRecsList"></div>
     </div>
 
+    </div>
+    <!-- 1. Resumo Executivo -->
+    <div id="as-resumo" class="delp">
+      <div id="as-resumo-content"></div>
+    </div>
+
+    <!-- 2. Burndown & Burnup -->
+    <div id="as-bd" class="delp">
+      <div class="bd-grid">
+        <div class="cc">
+          <div class="cgh"><span class="cgh-dot" id="cgd-bd">🟢</span><p class="ct">Burndown — trabalho restante por dia</p></div>
+          <p class="cs">Compara a linha ideal com o ritmo real de conclusão da sprint.</p>
+          <div style="position:relative;width:100%;height:240px"><canvas id="cBD"></canvas></div>
+        </div>
+        <div class="cc">
+          <div class="cgh"><span class="cgh-dot" id="cgd-bu">🟢</span><p class="ct">Burnup — trabalho concluído vs escopo</p></div>
+          <p class="cs">Progresso acumulado da entrega, incluindo eventuais mudanças de escopo.</p>
+          <div style="position:relative;width:100%;height:240px"><canvas id="cBU"></canvas></div>
+        </div>
+      </div>
+      <div id="bd-insight" class="cc" style="margin-top:0"></div>
+    </div>
+
+    <!-- 3. Forecast da Sprint -->
+    <div id="as-forecast" class="delp">
+      <div id="as-forecast-content"></div>
+    </div>
+
+    <!-- Capacity, Capacity × Velocity e Timeline foram para Planejamento (Fase 2 — Lote 8) -->
+
+    <!-- 7. Alertas -->
+    <div id="as-al" class="delp">
+      <div id="as-al-content"></div>
+    </div>
   </div>
 
   <!-- Estratégia & Discovery (Fase 2 — Lotes 5 e 6): #ed-okr gerado por renderOKRs(), #ed-discovery por renderDiscovery() -->
@@ -1643,55 +1691,6 @@
         <div id="qualityRecsList"></div>
       </div>
 
-    </div>
-  </div>
-
-  <!-- Acompanhamento da Sprint -->
-  <div id="pas" class="fp">
-    <div class="cf-header">
-      <p class="cf-title">Acompanhamento</p>
-      <p class="cf-sub">Acompanhamento diário da Sprint — burndown, burnup, forecast e alertas em tempo real.</p>
-    </div>
-    <!-- Sub-tabs -->
-    <div class="as-tabs">
-      <button class="as-tab on" onclick="asTab(this,'as-resumo')"><i class="ti ti-layout-dashboard" style="font-size:13px"></i> Resumo executivo</button>
-      <button class="as-tab" onclick="asTab(this,'as-bd')"><i class="ti ti-chart-line" style="font-size:13px"></i> Burndown &amp; Burnup</button>
-      <button class="as-tab" onclick="asTab(this,'as-forecast')"><i class="ti ti-chart-arrows-vertical" style="font-size:13px"></i> Forecast da sprint</button>
-      <button class="as-tab" onclick="asTab(this,'as-al')"><i class="ti ti-bell-ringing" style="font-size:13px"></i> Alertas</button>
-    </div>
-
-    <!-- 1. Resumo Executivo -->
-    <div id="as-resumo" class="asp on">
-      <div id="as-resumo-content"></div>
-    </div>
-
-    <!-- 2. Burndown & Burnup -->
-    <div id="as-bd" class="asp">
-      <div class="bd-grid">
-        <div class="cc">
-          <div class="cgh"><span class="cgh-dot" id="cgd-bd">🟢</span><p class="ct">Burndown — trabalho restante por dia</p></div>
-          <p class="cs">Compara a linha ideal com o ritmo real de conclusão da sprint.</p>
-          <div style="position:relative;width:100%;height:240px"><canvas id="cBD"></canvas></div>
-        </div>
-        <div class="cc">
-          <div class="cgh"><span class="cgh-dot" id="cgd-bu">🟢</span><p class="ct">Burnup — trabalho concluído vs escopo</p></div>
-          <p class="cs">Progresso acumulado da entrega, incluindo eventuais mudanças de escopo.</p>
-          <div style="position:relative;width:100%;height:240px"><canvas id="cBU"></canvas></div>
-        </div>
-      </div>
-      <div id="bd-insight" class="cc" style="margin-top:0"></div>
-    </div>
-
-    <!-- 3. Forecast da Sprint -->
-    <div id="as-forecast" class="asp">
-      <div id="as-forecast-content"></div>
-    </div>
-
-    <!-- Capacity, Capacity × Velocity e Timeline foram para Planejamento (Fase 2 — Lote 8) -->
-
-    <!-- 7. Alertas -->
-    <div id="as-al" class="asp">
-      <div id="as-al-content"></div>
     </div>
   </div>
 
@@ -2688,7 +2687,6 @@ function upd(){
   // ── Sprint Planning capacity (sempre atualiza) ────────────
   renderSpPlanningCapacity();
   // ── Acompanhamento (só se visível) ───────────────────────
-  if(document.getElementById('pas').classList.contains('on')) renderAcompanhamento();
   if(document.getElementById('pplan').classList.contains('on')) renderPlanejamento();
 
   // ── Outras abas ───────────────────────────────────────────
@@ -2696,7 +2694,7 @@ function upd(){
   renderCargaFalhas();
   renderEqOverview();
   if(document.getElementById('pm').classList.contains('on')) renderMultiTeam();
-  if(document.getElementById('pf').classList.contains('on')) renderFlowMetrics();
+  if(document.getElementById('pdel').classList.contains('on')) renderDelivery();
   if(document.getElementById('ped').classList.contains('on')) renderOKRs();
   if(document.getElementById('ped').classList.contains('on')&&document.getElementById('ed-discovery').classList.contains('on')) renderDiscovery();
   renderHome();
@@ -3397,13 +3395,12 @@ function tab(el,id){
   document.getElementById('p'+id).classList.add('on');
   if(id==='r') renderQuarterReport();
   if(id==='m') renderMultiTeam();
-  if(id==='f') renderFlowMetrics();
+  if(id==='del') delTab(document.querySelector('#pdel .del-tab'),'del-flow');
   if(id==='eq') eqTab(document.querySelector('#peq .eq-tab'),'eq-saude');
   if(id==='plan') planTab(document.querySelector('#pplan .plan-tab'),'plan-cap');
   if(id==='ed') edTab(document.querySelector('#ped .ed-tab'),'ed-okr');
   if(id==='v') renderHome();
   if(id==='g') renderGlossario();
-  if(id==='as') renderAcompanhamento();
 }
 
 function sr(el,id){
@@ -3415,12 +3412,20 @@ function sr(el,id){
   if(id==='ssp') renderSpPlanningCapacity();
 }
 
-function asTab(el,id){
-  document.querySelectorAll('#pas .as-tab').forEach(t=>t.classList.remove('on'));
+function delTab(el,id){
+  document.querySelectorAll('#pdel .del-tab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
-  document.querySelectorAll('.asp').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('#pdel .delp').forEach(p=>p.classList.remove('on'));
   document.getElementById(id).classList.add('on');
-  if(id==='as-bd') drawBurndownBurnup();
+  renderDelivery(id);
+}
+
+// Renderiza só o sub-painel ativo (canvas oculto não deve ser desenhado): as métricas de fluxo têm renderizador próprio;
+// Resumo, Forecast e Alertas são renderizados por renderAcompanhamento(), que também desenha o Burndown quando ele está ativo.
+function renderDelivery(id){
+  const on=id||(document.querySelector('#pdel .delp.on')||{}).id;
+  if(on==='del-flow') renderFlowMetrics();
+  else if(on) renderAcompanhamento();
 }
 
 function eqTab(el,id){
