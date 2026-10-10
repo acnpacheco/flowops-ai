@@ -751,6 +751,14 @@
     #homeAttention .hm-open,#homeStrategy .hm-open{min-height:40px}
     #homeAttention .hm-row,#homeStrategy .hm-obj{min-height:40px}
   }
+  /* Fase 2 — Lote 8 — Planejamento (sub-navegação no padrão de Engenharia & Qualidade) */
+  .plan-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .plan-tab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+  .plan-tab.on{background:var(--clr-info);color:#fff;border-color:var(--clr-info)}
+  .plan-tab:hover:not(.on){background:var(--bg-insight)}
+  .planp{display:none}.planp.on{display:block}
+  .planp .cc,.planp .as-kgrid,.planp>div{min-width:0;max-width:100%} /* conteúdo largo (tabelas) rola no próprio contêiner, não na página */
+  @media(max-width:600px){#pplan .plan-tab{min-height:40px}}
 
   /* ── Glossário de Métricas ──────────────────────────── */
   .gl-header{margin-bottom:16px}
@@ -1006,7 +1014,7 @@
   <button class="ntab"    onclick="tab(this,'as')"  aria-label="Acompanhamento"        title="Acompanhamento"><i class="ti ti-activity"></i> Acompanhamento</button>
   <button class="ntab"    onclick="tab(this,'rel')" aria-label="Relatórios"            title="Relatórios"><i class="ti ti-file-text"></i> Relatórios</button>
   <button class="ntab"    onclick="tab(this,'m')"   aria-label="Multi-time"            title="Multi-time"><i class="ti ti-users-group"></i> Multi-time</button>
-  <button class="ntab"    onclick="tab(this,'cal')" aria-label="Calendário"            title="Calendário"><i class="ti ti-calendar-stats"></i> Calendário</button>
+  <button class="ntab"    onclick="tab(this,'plan')" aria-label="Planejamento"         title="Planejamento"><i class="ti ti-calendar-event"></i> Planejamento</button>
 </nav>
 
 </div><!-- /.site-header -->
@@ -1642,16 +1650,13 @@
   <div id="pas" class="fp">
     <div class="cf-header">
       <p class="cf-title">Acompanhamento</p>
-      <p class="cf-sub">Acompanhamento diário da Sprint — burndown, burnup, forecast, capacidade e riscos em tempo real.</p>
+      <p class="cf-sub">Acompanhamento diário da Sprint — burndown, burnup, forecast e alertas em tempo real.</p>
     </div>
     <!-- Sub-tabs -->
     <div class="as-tabs">
       <button class="as-tab on" onclick="asTab(this,'as-resumo')"><i class="ti ti-layout-dashboard" style="font-size:13px"></i> Resumo executivo</button>
       <button class="as-tab" onclick="asTab(this,'as-bd')"><i class="ti ti-chart-line" style="font-size:13px"></i> Burndown &amp; Burnup</button>
       <button class="as-tab" onclick="asTab(this,'as-forecast')"><i class="ti ti-chart-arrows-vertical" style="font-size:13px"></i> Forecast da sprint</button>
-      <button class="as-tab" onclick="asTab(this,'as-cap')"><i class="ti ti-users" style="font-size:13px"></i> Capacity</button>
-      <button class="as-tab" onclick="asTab(this,'as-plxr')"><i class="ti ti-scale" style="font-size:13px"></i> Capacity × Velocity</button>
-      <button class="as-tab" onclick="asTab(this,'as-tl')"><i class="ti ti-timeline" style="font-size:13px"></i> Timeline</button>
       <button class="as-tab" onclick="asTab(this,'as-al')"><i class="ti ti-bell-ringing" style="font-size:13px"></i> Alertas</button>
     </div>
 
@@ -1682,20 +1687,7 @@
       <div id="as-forecast-content"></div>
     </div>
 
-    <!-- 4. Capacidade -->
-    <div id="as-cap" class="asp">
-      <div id="as-cap-content"></div>
-    </div>
-
-    <!-- 5. Planejado x Realizado -->
-    <div id="as-plxr" class="asp">
-      <div id="as-plxr-content"></div>
-    </div>
-
-    <!-- 6. Timeline -->
-    <div id="as-tl" class="asp">
-      <div id="as-tl-content"></div>
-    </div>
+    <!-- Capacity, Capacity × Velocity e Timeline foram para Planejamento (Fase 2 — Lote 8) -->
 
     <!-- 7. Alertas -->
     <div id="as-al" class="asp">
@@ -2291,8 +2283,23 @@
     </div>
   </div>
 
-  <!-- Calendário Corporativo -->
-  <div id="pcal" class="fp">
+  <!-- Planejamento (Fase 2 — Lote 8): Capacity, Capacity × Velocity e Timeline (vindos de Acompanhamento) e Calendário corporativo -->
+  <div id="pplan" class="fp">
+    <div class="cf-header">
+      <p class="cf-title">Planejamento</p>
+      <p class="cf-sub">Capacidade da sprint, velocity histórica, linha do tempo e calendário corporativo.</p>
+    </div>
+    <div class="plan-nav">
+      <button class="plan-tab on" onclick="planTab(this,'plan-cap')" aria-label="Capacity" title="Capacity"><i class="ti ti-users"></i> Capacity</button>
+      <button class="plan-tab" onclick="planTab(this,'plan-plxr')" aria-label="Capacity × Velocity" title="Capacity × Velocity"><i class="ti ti-scale"></i> Capacity × Velocity</button>
+      <button class="plan-tab" onclick="planTab(this,'plan-tl')" aria-label="Timeline" title="Timeline"><i class="ti ti-timeline"></i> Timeline</button>
+      <button class="plan-tab" onclick="planTab(this,'plan-cal')" aria-label="Calendário" title="Calendário"><i class="ti ti-calendar-stats"></i> Calendário</button>
+    </div>
+    <div id="plan-cap" class="planp on"><div id="as-cap-content"></div></div>
+    <div id="plan-plxr" class="planp"><div id="as-plxr-content"></div></div>
+    <div id="plan-tl" class="planp"><div id="as-tl-content"></div></div>
+    <div id="plan-cal" class="planp">
+  <div id="pcal">
     <div class="cc ccal-header">
       <p class="ccal-title"><i class="ti ti-calendar-stats" style="color:#185FA5"></i> Calendário corporativo</p>
       <p class="ccal-sub">Planejamento anual de Quarters, Sprints, ritos ágeis e janelas de implantação</p>
@@ -2303,6 +2310,8 @@
       </div>
     </div>
     <div id="calContent" class="cc" style="padding-top:0"></div>
+  </div>
+    </div>
   </div>
 
   <!-- Glossário de Métricas -->
@@ -2680,6 +2689,7 @@ function upd(){
   renderSpPlanningCapacity();
   // ── Acompanhamento (só se visível) ───────────────────────
   if(document.getElementById('pas').classList.contains('on')) renderAcompanhamento();
+  if(document.getElementById('pplan').classList.contains('on')) renderPlanejamento();
 
   // ── Outras abas ───────────────────────────────────────────
   renderDora();
@@ -3389,7 +3399,7 @@ function tab(el,id){
   if(id==='m') renderMultiTeam();
   if(id==='f') renderFlowMetrics();
   if(id==='eq') eqTab(document.querySelector('#peq .eq-tab'),'eq-saude');
-  if(id==='cal') renderCalendario();
+  if(id==='plan') planTab(document.querySelector('#pplan .plan-tab'),'plan-cap');
   if(id==='ed') edTab(document.querySelector('#ped .ed-tab'),'ed-okr');
   if(id==='v') renderHome();
   if(id==='g') renderGlossario();
@@ -3446,6 +3456,24 @@ function eqAttention(d,i){
   if(qSt.c!=='cfst-ok') att.push({key:'qhs',bad:qSt.c==='cfst-bad',txt:`QHS em ${qhs}/100 — qualidade em estado ${qSt.c==='cfst-bad'?'crítico':'de atenção'}.`});
   if(relTier.c==='t-med'||relTier.c==='t-low') att.push({key:'rel',bad:relTier.c==='t-low',txt:`Reliability em ${rel} pts — abaixo do esperado (nível ${relTier.l}).`});
   return att;
+}
+
+function planTab(el,id){
+  document.querySelectorAll('#pplan .plan-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('#pplan .planp').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  renderPlanejamento(id);
+}
+
+// Capacity, Capacity × Velocity e Timeline dependem de Time, Quarter e Sprint (renderizados no sub-painel ativo);
+// o Calendário não depende dos filtros e só é renderizado quando o sub-painel é aberto (id explícito).
+function renderPlanejamento(id){
+  const q=gq(),d=gd()[q],i=gi(),on=id||(document.querySelector('#pplan .planp.on')||{}).id;
+  if(on==='plan-cap') renderAsCapacity(d,i,q);
+  if(on==='plan-plxr') renderAsPlxR(d,i,q);
+  if(on==='plan-tl') renderAsTimeline(d,i,q);
+  if(id==='plan-cal') renderCalendario();
 }
 
 function renderEqOverview(){
@@ -3629,9 +3657,6 @@ function renderAcompanhamento(){
   const q=gq(),d=gd()[q],i=gi();
   renderAsResumo(d,i,q);
   renderAsForecast(d,i,q);
-  renderAsCapacity(d,i,q);
-  renderAsPlxR(d,i,q);
-  renderAsTimeline(d,i,q);
   renderAsAlertas(d,i,q);
   // Burndown só quando a aba estiver ativa
   if(document.getElementById('as-bd').classList.contains('on')) drawBurndownBurnup();
