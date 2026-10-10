@@ -30,7 +30,7 @@
   /* Layout */
   .app{display:flex;flex-direction:column;min-height:100vh}
   .site-header{position:sticky;top:0;z-index:100}
-  .topbar{background:#fff;border-bottom:1px solid #e5e5e3;padding:0 24px;display:flex;align-items:center;gap:16px;height:52px;flex-wrap:wrap}
+  .topbar{background:#fff;border-bottom:1px solid #e5e5e3;padding:6px 24px;display:flex;align-items:center;gap:8px 16px;min-height:52px;flex-wrap:wrap}
   .brand{font-size:15px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:8px;white-space:nowrap}
   .brand i{color:#185FA5;font-size:20px}
   .filters{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;align-items:center}
@@ -210,10 +210,11 @@
   .stab.on{background:#185FA5;color:#fff;border-color:#185FA5}
   .sp{display:none}.sp.on{display:block}
   /* ─── Engenharia & Qualidade ─── */
-  .eq-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-  .eq-tab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
-  .eq-tab.on{background:var(--clr-info);color:#fff;border-color:var(--clr-info)}
-  .eq-tab:hover:not(.on){background:var(--bg-insight)}
+  /* Sub-navegação das áreas (Estratégia, Planejamento, Delivery, Engenharia & Qualidade, Resultados) — componente único */
+  .eq-nav,.ed-nav,.plan-nav,.del-nav,.res-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .eq-tab,.ed-tab,.plan-tab,.del-tab,.res-tab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+  .eq-tab.on,.ed-tab.on,.plan-tab.on,.del-tab.on,.res-tab.on{background:var(--clr-info);color:#fff;border-color:var(--clr-info)}
+  .eq-tab:hover:not(.on),.ed-tab:hover:not(.on),.plan-tab:hover:not(.on),.del-tab:hover:not(.on),.res-tab:hover:not(.on){background:var(--bg-insight)}
   .eqp{display:none}.eqp.on{display:block}
   .eq-kpi-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
   .eq-kpi-card{background:#fff;border:1px solid #e5e5e3;border-radius:8px;padding:12px 14px}
@@ -227,7 +228,6 @@
   .eq-trend-hd{font-size:12px;font-weight:600;color:var(--clr-info);margin-bottom:6px;display:flex;align-items:center;gap:6px}
   .eq-trend-item{font-size:12px;color:#374151;margin:2px 0;line-height:1.5}
   @media(max-width:900px){.eq-kpi-4{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:600px){#peq .eq-tab{min-height:40px}}
   @media(max-width:480px){.eq-kpi-4{grid-template-columns:repeat(2,1fr)}.eq-2col{grid-template-columns:1fr}}
 
   .prog{background:#f3f4f6;border-radius:8px;height:8px;margin:8px 0 6px;overflow:hidden}
@@ -241,8 +241,6 @@
   .footer-links{display:inline-block;margin-top:6px;font-size:10px}
   .footer-links a{color:var(--clr-info);text-decoration:none;cursor:pointer}
   .footer-links a:hover{text-decoration:underline}
-  .footer-visits{display:inline-flex;align-items:center;gap:5px;margin-top:5px;font-size:10px;color:#c4c9d4;letter-spacing:.02em}
-  .footer-visits-val{font-variant-numeric:tabular-nums;color:#9ca3af;font-weight:500}
 
   /* Quarter Report */
   .q-status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:4px 12px;border-radius:20px;margin-bottom:16px}
@@ -414,10 +412,10 @@
   .ai-rec.rec-info{background:#eff6ff;border-left-color:#185FA5}
   .ai-rec-ico{font-size:15px;flex-shrink:0;margin-top:1px}
   .ai-rec-ico:empty{width:1.37em}
-  /* Recomendações da IA — componente único reutilizável */
-  .ai-recs-card{border-left:4px solid #7c3aed;margin-bottom:16px}
+  /* Próximas ações e pontos de atenção — componente único reutilizável */
+  .ai-recs-card{border-left:4px solid var(--clr-info);margin-bottom:16px}
   .ai-recs-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-  .ai-recs-hd i{color:#7c3aed;font-size:16px}
+  .ai-recs-hd i{color:var(--clr-info);font-size:16px}
   .ai-recs-title{font-size:13px;font-weight:600;color:#111827;display:flex;align-items:center;gap:6px}
   .ai-recs-meta{font-size:10px;color:#9ca3af;margin-left:auto}
   .cfd-diag{border-radius:8px;padding:13px 15px;border-left:3px solid #185FA5;background:#f9fafb;margin-top:14px;font-size:12px;color:#374151;line-height:1.7}
@@ -443,7 +441,7 @@
   .mt-tbl td:first-child{text-align:left;color:#6b7280}
   .mt-tbl tr:last-child td{border-bottom:none}
   .mt-tbl td.win{font-weight:600}
-  /* ── Multi-time v2 ────────────────────────────────────── */
+  /* ── Comparar times ────────────────────────────────────── */
   .mt-sec-desc{font-size:11.5px;color:#6b7280;line-height:1.6;margin:-4px 0 14px}
   .mtc-v2{background:#fff;border-radius:14px;border:1px solid #e5e7eb;padding:20px 18px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);position:relative;transition:box-shadow .15s}
   .mtc-v2:hover{box-shadow:0 4px 18px rgba(0,0,0,.10)}
@@ -560,7 +558,7 @@
   .depm-field.full{grid-column:1/-1}
   .depm-label{font-size:11px;font-weight:600;color:#374151}
   .depm-label span{color:#dc2626}
-  .depm-input{padding:7px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;color:#111827;outline:none;background:#fff;transition:border-color .15s}
+  .depm-input{padding:9px 10px;min-height:40px;box-sizing:border-box;border:1px solid #d1d5db;border-radius:8px;font-size:13px;color:#111827;outline:none;background:#fff;transition:border-color .15s}
   .depm-input:focus{border-color:#185FA5;box-shadow:0 0 0 2px rgba(24,95,165,.1)}
   .depm-rule-box{background:#fffbeb;border:1px solid #fde68a;border-left:3px solid #d97706;border-radius:0 8px 8px 0;padding:10px 12px;font-size:11px;color:#374151;display:none}
   .depm-rule-box.block{background:#fff1f2;border-color:#fca5a5;border-left-color:#dc2626}
@@ -647,10 +645,6 @@
     #okrModal .okr-chk{min-height:40px;align-items:center}
   }
   /* Fase 2 — Lote 6 — Discovery (tokens do Lote 1; reaproveita .cf-header, .cc, .dep-*, .depm-*) */
-  .ed-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-  .ed-tab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
-  .ed-tab.on{background:var(--clr-info);color:#fff;border-color:var(--clr-info)}
-  .ed-tab:hover:not(.on){background:var(--bg-insight)}
   .edp{display:none}.edp.on{display:block}
   .disc-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-card-gap);flex-wrap:wrap;margin-bottom:6px}
   .disc-ctx{font-size:var(--fs-body);font-weight:var(--fw-body);color:var(--clr-neutral);overflow-wrap:anywhere;min-width:0}
@@ -704,7 +698,6 @@
   #discModal .depm-btn-save:disabled{opacity:.5;cursor:not-allowed}
   @media(max-width:1023px){.disc-board{grid-template-columns:1fr}}
   @media(max-width:600px){
-    #ped .ed-tab{min-height:40px}
     #ed-discovery .disc-btn,#ed-discovery .dep-btn-new{min-height:40px}
     #ed-discovery .disc-sum{min-height:40px}
     #discModal .depm-foot{flex-wrap:wrap}
@@ -752,32 +745,18 @@
     #homeAttention .hm-row,#homeStrategy .hm-obj{min-height:40px}
   }
   /* Fase 2 — Lote 8 — Planejamento (sub-navegação no padrão de Engenharia & Qualidade) */
-  .plan-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-  .plan-tab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
-  .plan-tab.on{background:var(--clr-info);color:#fff;border-color:var(--clr-info)}
-  .plan-tab:hover:not(.on){background:var(--bg-insight)}
   .planp{display:none}.planp.on{display:block}
   .planp .cc,.planp .as-kgrid,.planp>div{min-width:0;max-width:100%} /* conteúdo largo (tabelas) rola no próprio contêiner, não na página */
-  @media(max-width:600px){#pplan .plan-tab{min-height:40px}}
   /* Fase 2 — Lote 9 — Delivery (sub-navegação no padrão de Engenharia & Qualidade) */
-  .del-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-  .del-tab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
-  .del-tab.on{background:var(--clr-info);color:#fff;border-color:var(--clr-info)}
-  .del-tab:hover:not(.on){background:var(--bg-insight)}
   .delp{display:none}.delp.on{display:block}
-  @media(max-width:600px){#pdel .del-tab{min-height:40px}}
   /* Fase 2 — Lote 10 — Resultados (sub-navegação no padrão de Engenharia & Qualidade; reaproveita os componentes .hm-* da Visão Geral) */
-  .res-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-  .res-tab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
-  .res-tab.on{background:var(--clr-info);color:#fff;border-color:var(--clr-info)}
-  .res-tab:hover:not(.on){background:var(--bg-insight)}
   .resp{display:none}.resp.on{display:block}
   .resp .cc,.resp>div{min-width:0;max-width:100%}
   .res-oo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-card-gap);margin-bottom:var(--sp-card-gap);align-items:start}
   .res-oo-card{background:#fff;border:1px solid #e5e5e3;border-radius:12px;padding:var(--sp-card-pad);min-width:0}
   .res-oo-line{font-size:var(--fs-body);font-weight:var(--fw-body);color:#374151;margin-bottom:var(--sp-section-gap);overflow-wrap:anywhere}
   @media(max-width:1023px){.res-oo-grid{grid-template-columns:1fr}}
-  @media(max-width:600px){#pres .res-tab{min-height:40px}#res-output-outcome .hm-open{min-height:40px}#res-output-outcome .hm-obj{min-height:40px}}
+  @media(max-width:600px){#res-output-outcome .hm-open{min-height:40px}#res-output-outcome .hm-obj{min-height:40px}}
 
   /* ── Glossário de Métricas ──────────────────────────── */
   .gl-header{margin-bottom:16px}
@@ -832,7 +811,7 @@
   .gm-list li::before{content:'›';position:absolute;left:3px;color:#185FA5;font-weight:700}
   .gm-tags{display:flex;flex-wrap:wrap;gap:5px}
   .gm-tag{font-size:11px;padding:3px 9px;border-radius:12px;background:#f3f4f6;color:#6b7280;font-weight:500}
-  .gm-insight{background:#fefce8;border:1px solid #fde68a;border-left:3px solid #d97706;padding:11px 14px;border-radius:0 8px 8px 0;font-size:12px;color:#374151;line-height:1.65;font-style:italic}
+  .gm-insight{background:#f9fafb;border:1px solid #e5e7eb;border-left:3px solid var(--clr-info);padding:11px 14px;border-radius:0 8px 8px 0;font-size:12px;color:#374151;line-height:1.65}
   .gm-why{background:#eff6ff;border:1px solid #bfdbfe;border-left:3px solid #185FA5;padding:11px 14px;border-radius:0 8px 8px 0;font-size:12px;color:#374151;line-height:1.65}
   .gm-example{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 13px;font-size:12px;color:#374151;line-height:1.7}
   /* ── Acompanhamento da Sprint ──────────────────────────── */
@@ -922,12 +901,12 @@
   .ab-value-icon{font-size:22px;color:#185FA5;margin-bottom:8px}
   .ab-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
   .ab-chip{padding:5px 13px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:20px;font-size:11px;font-weight:600;color:#185FA5;white-space:nowrap}
-  .ab-chip.ab-chip-ai{background:#f5f3ff;border-color:#ddd6fe;color:#6d28d9}
+  .ab-chip.ab-chip-ai{background:#eff6ff;border-color:#bfdbfe;color:#185FA5}
   .ab-chip.ab-chip-tool{background:#f0fdf4;border-color:#bbf7d0;color:#059669}
-  .ab-ai-block{background:linear-gradient(135deg,#f5f3ff 0%,#ede9fe 100%);border:1px solid #ddd6fe;border-left:4px solid #7c3aed;border-radius:12px;padding:20px 24px;margin-bottom:20px}
+  .ab-ai-block{background:#f8faff;border:1px solid #bfdbfe;border-left:4px solid #185FA5;border-radius:12px;padding:20px 24px;margin-bottom:20px}
   .ab-ai-block-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-  .ab-ai-block-hd i{font-size:22px;color:#7c3aed}
-  .ab-ai-block-title{font-size:13px;font-weight:700;color:#5b21b6}
+  .ab-ai-block-hd i{font-size:22px;color:#185FA5}
+  .ab-ai-block-title{font-size:13px;font-weight:700;color:#185FA5}
   .ab-ai-body{font-size:13px;line-height:1.75;color:#374151}
   .ab-ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
   @media(max-width:640px){.ab-ps-grid{grid-template-columns:1fr}}
@@ -960,20 +939,56 @@
 
   /* Lote 2 — D3+D5 — Topbar mobile | Lote 3 — D2 — Navegação icon-only */
   @media(max-width:600px){
-    .topbar{height:auto;flex-direction:column;align-items:flex-start;padding:8px 16px;gap:8px}
-    .filters{width:100%;margin-left:0}
-    .flt-wrap{flex:1;min-width:0}
-    .filters select{min-width:0;width:100%}
+    /* Lote 11 — marca e exportação na 1ª linha; filtros em duas linhas (time + quarter, sprint abaixo) para não truncar o texto */
+    .topbar{height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:8px 16px;gap:8px}
+    .brand{flex:1 1 auto}
+    .filters{display:contents}
+    .topbar .btn-export{order:1;width:auto;padding:0 12px}
+    .flt-wrap{order:2;min-width:0;flex:1 1 100%}
+    .flt-wrap:nth-child(1){flex-basis:calc(40% - 4px)}
+    .flt-wrap:nth-child(2){flex-basis:calc(60% - 4px)}
+    .filters select{min-width:0;width:100%;padding:7px 24px 7px 30px}
+    .flt-icon-l{left:9px}
+    .flt-icon-r{right:8px}
     .btn-export{width:100%;justify-content:center;padding:10px 12px;min-height:40px}
     .ntab{font-size:0;padding:0 10px;min-width:40px;min-height:40px}
     .ntab i{font-size:16px}
     .ntab.on{border-bottom:2px solid var(--flt-c,var(--clr-info))}
   }
 
+  /* Lote 11 — Sinaleira como marcador de cor. Os valores 🟢🟡🔴🔵 seguem sendo o dado interno
+     (a lógica compara o texto); paintDots() envolve o caractere em .sdot e o oculta. */
+  .sdot{display:inline-block;width:9px;height:9px;border-radius:50%;font-size:0;line-height:0;color:transparent;overflow:hidden;vertical-align:middle;margin:0 5px 1px 0;flex:none;background:var(--clr-neutral)}
+  .sdot[data-sd="g"]{background:var(--clr-ok)}
+  .sdot[data-sd="y"]{background:var(--clr-warn)}
+  .sdot[data-sd="r"]{background:var(--clr-bad)}
+  .sdot[data-sd="b"]{background:var(--clr-info)}
+  .kg-dot,.cgh-dot{display:inline-flex;align-items:center}
+  .kg-dot .sdot,.cgh-dot .sdot,.tl-dot .sdot{margin:0}
+  .ai-rec-ico,.al-ico{display:inline-flex;align-items:flex-start;min-width:15px}
+  .ai-rec-ico .sdot,.al-ico .sdot{margin:6px 0 0}
+
   /* Lote 4 — D4 — Overflow de tabelas */
   #agingList{overflow-x:auto}
   .cal-table-scroll{overflow-x:auto}
   #pm .cc:has(> .mt-tbl){overflow-x:auto}
+  /* Lote 11 — alvos de toque de 40px em tablet e celular (≤1023px). Em ≤600px algumas áreas já tinham regra própria. */
+  @media(max-width:1023px){
+    .ntab,.btn-export,.btn-md,.dep-btn-new,.alert-btn,.eq-tab,.ed-tab,.plan-tab,.del-tab,.res-tab,.stab,.gen-tab,.ccal-tab,.ccal-fil,.hm-open,#apiToggle,.depm-btn-cancel,.depm-btn-save,.okr-btn,.disc-btn{min-height:40px}
+    .depm-close{width:40px;height:40px}
+    .filters select{min-height:40px}
+    #genSprint,#genTeam,#genDate,#apiKey{min-height:40px}
+    .disc-sum{min-height:40px}
+    .okr-det>summary{min-height:40px;padding:10px 0}
+    .gh-btn{position:relative}
+    .gh-btn::after{content:'';position:absolute;inset:-12px}
+    .footer-links a{display:inline-block;padding:13px 8px}
+  }
+  @media(min-width:601px) and (max-width:1023px){
+    .main-nav{padding:0 12px;scrollbar-width:none}
+    .main-nav::-webkit-scrollbar{display:none}
+    .ntab{padding:10px 8px;font-size:12px;gap:4px}
+  }
 </style>
 </head>
 <body>
@@ -1027,11 +1042,11 @@
 <nav class="main-nav">
   <button class="ntab on" onclick="tab(this,'v')"   aria-label="Visão Geral"          title="Visão Geral"><i class="ti ti-layout-dashboard"></i> Visão Geral</button>
   <button class="ntab"    onclick="tab(this,'ed')"  aria-label="Estratégia"            title="Estratégia"><i class="ti ti-target"></i> Estratégia</button>
+  <button class="ntab"    onclick="tab(this,'plan')" aria-label="Planejamento"         title="Planejamento"><i class="ti ti-calendar-event"></i> Planejamento</button>
   <button class="ntab"    onclick="tab(this,'del')" aria-label="Delivery"              title="Delivery"><i class="ti ti-truck-delivery"></i> Delivery</button>
   <button class="ntab"    onclick="tab(this,'eq')"  aria-label="Engenharia & Qualidade" title="Engenharia &amp; Qualidade"><i class="ti ti-shield-half"></i> Engenharia &amp; Qualidade</button>
   <button class="ntab"    onclick="tab(this,'res')" aria-label="Resultados"            title="Resultados"><i class="ti ti-file-analytics"></i> Resultados</button>
   <button class="ntab"    onclick="tab(this,'rel')" aria-label="Relatórios"            title="Relatórios"><i class="ti ti-file-text"></i> Relatórios</button>
-  <button class="ntab"    onclick="tab(this,'plan')" aria-label="Planejamento"         title="Planejamento"><i class="ti ti-calendar-event"></i> Planejamento</button>
 </nav>
 
 </div><!-- /.site-header -->
@@ -1059,12 +1074,12 @@
     <!-- Atenção agora (Fase 2 — Lote 7): gerado por renderHome(); some quando não há sinais -->
     <div id="homeAttention" class="cc hm-att" hidden></div>
 
-    <!-- 2. Resumo Executivo (IA) -->
+    <!-- 2. Resumo da sprint -->
     <div class="exec-summary">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-        <i class="ti ti-brain" style="color:#185FA5;font-size:16px"></i>
-        <span style="font-size:13px;font-weight:600;color:#111827">Resumo executivo</span>
-        <span style="font-size:10px;color:#9ca3af;margin-left:auto">Gerado automaticamente com base nos dados selecionados</span>
+        <i class="ti ti-file-text" style="color:#185FA5;font-size:16px"></i>
+        <span style="font-size:13px;font-weight:600;color:#111827">Resumo da sprint</span>
+        <span style="font-size:10px;color:#9ca3af;margin-left:auto">Calculado a partir dos indicadores selecionados</span>
       </div>
       <p id="execSummaryText" style="font-size:12.5px;color:#374151;line-height:1.85;margin:0">—</p>
     </div>
@@ -1158,11 +1173,11 @@
       <div id="cfdInsight"></div>
     </div>
 
-    <!-- Recomendações da IA -->
+    <!-- Próximas ações -->
     <div class="cc ai-recs-card">
       <div class="ai-recs-hd">
-        <i class="ti ti-sparkles"></i>
-        <span class="ai-recs-title">💡 Recomendações da IA</span>
+        <i class="ti ti-list-check"></i>
+        <span class="ai-recs-title">Próximas ações</span>
         <span class="ai-recs-meta">Baseadas nos dados da sprint atual</span>
       </div>
       <div id="aiRecsList"></div>
@@ -1177,7 +1192,7 @@
     </div>
     <div class="del-nav">
       <button class="del-tab on" onclick="delTab(this,'del-flow')" aria-label="Métricas de fluxo" title="Métricas de fluxo"><i class="ti ti-wave-sine"></i> Métricas de fluxo</button>
-      <button class="del-tab" onclick="delTab(this,'as-resumo')" aria-label="Resumo executivo" title="Resumo executivo"><i class="ti ti-layout-dashboard"></i> Resumo executivo</button>
+      <button class="del-tab" onclick="delTab(this,'as-resumo')" aria-label="Resumo da sprint" title="Resumo da sprint"><i class="ti ti-layout-dashboard"></i> Resumo da sprint</button>
       <button class="del-tab" onclick="delTab(this,'as-bd')" aria-label="Burndown &amp; Burnup" title="Burndown &amp; Burnup"><i class="ti ti-chart-line"></i> Burndown &amp; Burnup</button>
       <button class="del-tab" onclick="delTab(this,'as-forecast')" aria-label="Forecast da sprint" title="Forecast da sprint"><i class="ti ti-chart-arrows-vertical"></i> Forecast da sprint</button>
       <button class="del-tab" onclick="delTab(this,'as-al')" aria-label="Alertas" title="Alertas"><i class="ti ti-bell-ringing"></i> Alertas</button>
@@ -1244,7 +1259,7 @@
     <!-- Principal Gargalo do Fluxo -->
     <div id="gargaloCard" class="gc" style="display:none">
       <div class="gc-top">
-        <span class="gc-label" id="gc-label">🚧 Principal Gargalo do Fluxo</span>
+        <span class="gc-label" id="gc-label">Principal Gargalo do Fluxo</span>
         <button class="gh-btn" onclick="openMetricDetail('ct')" title="Ver Cycle Time no Glossário">?</button>
       </div>
       <div class="gc-body">
@@ -1296,18 +1311,18 @@
       <div id="agingList"></div>
       <div id="alertOutput" style="display:none;margin-top:14px;background:#f9fafb;border-radius:8px;padding:12px 14px;border:1px solid #e5e5e3">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-          <p style="font-size:11px;font-weight:600;color:#374151">⚠ Alerta de fluxo — cole no Status Report</p>
+          <p style="font-size:11px;font-weight:600;color:#374151">Alerta de fluxo — cole no Status Report</p>
           <button onclick="copyAlert(this)" style="font-size:11px;color:#185FA5;background:none;border:1px solid #185FA5;border-radius:6px;padding:2px 10px;cursor:pointer">Copiar</button>
         </div>
         <pre id="alertText" style="font-size:11px;line-height:1.75;white-space:pre-wrap;color:#374151;font-family:inherit;margin:0"></pre>
       </div>
     </div>
 
-    <!-- Recomendações da IA -->
+    <!-- Próximas ações -->
     <div class="cc ai-recs-card">
       <div class="ai-recs-hd">
-        <i class="ti ti-sparkles"></i>
-        <span class="ai-recs-title">💡 Recomendações da IA</span>
+        <i class="ti ti-list-check"></i>
+        <span class="ai-recs-title">Próximas ações</span>
         <span class="ai-recs-meta">Baseadas nos indicadores de fluxo da sprint atual</span>
       </div>
       <div id="flowRecsList"></div>
@@ -1324,12 +1339,12 @@
       <div class="bd-grid">
         <div class="cc">
           <div class="cgh"><span class="cgh-dot" id="cgd-bd">🟢</span><p class="ct">Burndown — trabalho restante por dia</p></div>
-          <p class="cs">Compara a linha ideal com o ritmo real de conclusão da sprint.</p>
+          <p class="cs">Compara a linha ideal com o ritmo de conclusão da sprint. Curva estimada a partir dos itens planejados e entregues; o painel ainda não recebe o progresso diário.</p>
           <div style="position:relative;width:100%;height:240px"><canvas id="cBD"></canvas></div>
         </div>
         <div class="cc">
           <div class="cgh"><span class="cgh-dot" id="cgd-bu">🟢</span><p class="ct">Burnup — trabalho concluído vs escopo</p></div>
-          <p class="cs">Progresso acumulado da entrega, incluindo eventuais mudanças de escopo.</p>
+          <p class="cs">Progresso acumulado da entrega. A mudança de escopo em D6 (+5%) é uma referência demonstrativa; veja o Glossário.</p>
           <div style="position:relative;width:100%;height:240px"><canvas id="cBU"></canvas></div>
         </div>
       </div>
@@ -1729,14 +1744,14 @@
   <div id="prel" class="fp">
     <div class="cf-header">
       <p class="cf-title">Relatórios</p>
-      <p class="cf-sub">Geração de relatórios de Sprint Planning, Forecast, Daily Digest e Encerramento, com apoio de Inteligência Artificial.</p>
+      <p class="cf-sub">Relatórios de Sprint Planning, Forecast, Daily Digest e encerramento, gerados a partir dos dados do painel. O aprimoramento com Claude é opcional.</p>
     </div>
     <div class="snav">
       <button class="stab on" onclick="sr(this,'ssp')"><i class="ti ti-clipboard-list"></i> Sprint planning</button>
       <button class="stab" onclick="sr(this,'sm')"><i class="ti ti-chart-arrows-vertical"></i> Forecast</button>
       <button class="stab" onclick="sr(this,'sd')"><i class="ti ti-messages"></i> Daily digest</button>
       <button class="stab" onclick="sr(this,'se')"><i class="ti ti-flag-check"></i> Final de sprint</button>
-      <button class="stab" onclick="sr(this,'sg')"><i class="ti ti-sparkles"></i> Gerador IA</button>
+      <button class="stab" onclick="sr(this,'sg')"><i class="ti ti-file-description"></i> Gerador de relatório</button>
     </div>
 
     <!-- Sprint Planning -->
@@ -1757,12 +1772,12 @@
           <div style="background:#f9fafb;border-radius:8px;padding:10px;border:1px solid #e5e5e3"><p style="font-size:10px;text-transform:uppercase;color:#9ca3af;font-weight:600;letter-spacing:.05em;margin-bottom:3px">Data da Planning</p><p style="font-size:13px;font-weight:600;color:#111827">15/06/2026</p></div>
         </div>
         <!-- Sprint Goal -->
-        <p class="stitle">🎯 Objetivo da Sprint</p>
+        <p class="stitle">Objetivo da Sprint</p>
         <div style="background:#eff6ff;border-left:3px solid #185FA5;border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:16px">
           <p style="font-size:13px;color:#1e3a5f;font-weight:500;line-height:1.6">Finalizar o módulo de relatórios exportáveis (Sprint Planning, Forecast e Final de Sprint em Markdown/Wiki), integrar o calendário de deploys com as métricas DORA e elevar a cobertura de testes para 80% nas features críticas.</p>
         </div>
         <!-- Itens planejados -->
-        <p class="stitle">📋 Itens Planejados</p>
+        <p class="stitle">Itens Planejados</p>
         <div style="overflow-x:auto;margin-bottom:16px">
           <table style="width:100%;border-collapse:collapse;font-size:12px">
             <thead><tr style="background:#f3f4f6;text-align:left">
@@ -1784,7 +1799,7 @@
           </table>
         </div>
         <!-- Transbordo da sprint anterior -->
-        <p class="stitle">↩️ Transbordo da Sprint Anterior (Q2-S5)</p>
+        <p class="stitle">Transbordo da Sprint Anterior (Q2-S5)</p>
         <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:8px">
           <i class="ti ti-alert-triangle" style="color:#d97706;font-size:15px;flex-shrink:0"></i>
           <p style="font-size:12px;color:#92400e"><strong>2 itens transbordaram</strong> da sprint anterior e foram replanejados nesta sprint. Verifique capacidade e impacto no compromisso total.</p>
@@ -1838,7 +1853,7 @@
           </table>
         </div>
         <!-- Capacidade -->
-        <p class="stitle">👥 Capacidade Prevista do Time</p>
+        <p class="stitle">Capacidade Prevista do Time</p>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:16px">
           <div class="kcard"><p class="klbl">Dias úteis</p><p class="kval" style="font-size:20px">10</p></div>
           <div class="kcard"><p class="klbl">Capacidade bruta</p><p class="kval" style="font-size:20px">20 pts</p></div>
@@ -1850,7 +1865,7 @@
           <div><p style="font-size:13px">5 devs · 1 QA · 1 Scrum Master · 1 Tech Lead</p><p class="sm">Férias: nenhum · Ausências previstas: 0,5 dia (Ana C. — consulta médica dia 18/06)</p></div>
         </div>
         <!-- Riscos -->
-        <p class="stitle">⚠️ Riscos Identificados</p>
+        <p class="stitle">Riscos Identificados</p>
         <div class="sri">
           <div class="av" style="background:#fee2e2;color:#991b1b">R1</div>
           <div><p style="font-size:13px">Dependência de API externa do time de Infra (US-055)</p><p class="sm">Prob: Alta · Impacto: Alto · Mitigação: reunião de alinhamento agendada para dia 1 da sprint</p></div>
@@ -1860,7 +1875,7 @@
           <div><p style="font-size:13px">Escopo de US-055 pode se expandir após integração real com DORA</p><p class="sm">Prob: Média · Impacto: Médio · Mitigação: Spike técnico de 0,5 dia no início da sprint</p></div>
         </div>
         <!-- Dependências -->
-        <p class="stitle">🔗 Dependências Conhecidas</p>
+        <p class="stitle">Dependências Conhecidas</p>
         <div class="sri">
           <div class="av" style="background:#f3e8ff;color:#6b21a8">IN</div>
           <div><p style="font-size:13px">Infra Squad — endpoint de webhooks para integração DORA</p><p class="sm">Tipo: Interna · Contato: Carlos M. (Infra Lead) · Prazo: 17/06/2026</p></div>
@@ -1870,14 +1885,14 @@
           <div><p style="font-size:13px">QA Team — aprovação de ambiente de homologação para testes de integração</p><p class="sm">Tipo: Interna · Contato: Marina P. (QA Lead) · Prazo: 16/06/2026</p></div>
         </div>
         <!-- Critérios de aceite -->
-        <p class="stitle">✅ Critérios de Aceite Relevantes</p>
+        <p class="stitle">Critérios de Aceite Relevantes</p>
         <div style="background:#f9fafb;border-radius:8px;padding:12px 14px;margin-bottom:16px;border:1px solid #e5e5e3">
           <p style="font-size:12px;color:#374151;line-height:1.8"><strong>US-054:</strong> Arquivo .md baixado com nome correto, conteúdo estruturado em headings, tabelas e bullet points. Compatível com Confluence e Wiki corporativa.<br>
           <strong>US-055:</strong> Deploy registrado no calendário reflete automaticamente na taxa de Deploy Frequency do painel DORA. Latência máxima: 0s (sincronismo direto).<br>
           <strong>US-056:</strong> Cobertura ≥ 80% nas funções de geração e download de Markdown. Pipeline CI não bloqueia se cobertura ≥ 80%.</p>
         </div>
         <!-- Premissas -->
-        <p class="stitle">📌 Premissas da Sprint</p>
+        <p class="stitle">Premissas da Sprint</p>
         <div style="background:#f9fafb;border-radius:8px;padding:12px 14px;margin-bottom:16px;border:1px solid #e5e5e3">
           <ul style="font-size:12px;color:#374151;line-height:2;padding-left:18px">
             <li>Ambiente de homologação estável e disponível do dia 1</li>
@@ -1887,7 +1902,7 @@
           </ul>
         </div>
         <!-- Fora do escopo -->
-        <p class="stitle">🚫 Itens Fora do Escopo desta Sprint</p>
+        <p class="stitle">Itens Fora do Escopo desta Sprint</p>
         <div class="sri" style="margin-bottom:4px">
           <div class="av" style="background:#f3f4f6;color:#6b7280">–</div>
           <div><p style="font-size:13px">Exportação em PDF — aguarda licença jurídica (US-007 · Q2-S7)</p></div>
@@ -1897,7 +1912,7 @@
           <div><p style="font-size:13px">Integração com Google Calendar — escopo expandido pendente (US-018 · Q2-S7)</p></div>
         </div>
         <!-- Responsáveis -->
-        <p class="stitle">👤 Responsáveis Principais</p>
+        <p class="stitle">Responsáveis Principais</p>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:16px">
           <div style="border:1px solid #e5e5e3;border-radius:8px;padding:10px"><p style="font-size:11px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">Scrum Master</p><p style="font-size:13px;font-weight:600;color:#111827">Ana Costa</p></div>
           <div style="border:1px solid #e5e5e3;border-radius:8px;padding:10px"><p style="font-size:11px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">Tech Lead</p><p style="font-size:13px;font-weight:600;color:#111827">João Ramos</p></div>
@@ -1905,12 +1920,12 @@
           <div style="border:1px solid #e5e5e3;border-radius:8px;padding:10px"><p style="font-size:11px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">QA Lead</p><p style="font-size:13px;font-weight:600;color:#111827">Marina Prado</p></div>
         </div>
         <!-- Observações SM -->
-        <p class="stitle">💬 Observações da Scrum Master</p>
+        <p class="stitle">Observações da Scrum Master</p>
         <div style="background:#fffbeb;border-left:3px solid #d97706;border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:16px">
           <p style="font-size:12px;color:#374151;line-height:1.7">Sprint com foco técnico alto. Atenção especial à dependência com Infra Squad — o contato foi feito antes do planning e há compromisso verbal de entrega até 17/06. Caso não ocorra, US-055 precisará ser renegociada ou dividida. Spike técnico de 0,5 dia aprovado pelo PO para reduzir incerteza de US-055.</p>
         </div>
         <!-- Próximos passos -->
-        <p class="stitle">▶️ Próximos Passos</p>
+        <p class="stitle">Próximos Passos</p>
         <div class="sri">
           <div class="av" style="background:#dbeafe;color:#1e40af">P1</div>
           <div><p style="font-size:13px">Spike técnico de US-055 — João Ramos</p><p class="sm">Até: 16/06/2026 · Entregável: decisão de arquitetura documentada</p></div>
@@ -1925,7 +1940,7 @@
         </div>
 
         <!-- Capacidade por Colaborador -->
-        <p class="stitle" style="margin-top:20px">👤 Capacidade por Colaborador</p>
+        <p class="stitle" style="margin-top:20px">Capacidade por Colaborador</p>
         <p style="font-size:11px;color:#9ca3af;margin-bottom:10px">Jornada padrão: 7h úteis/dia · 10 dias úteis/Sprint · 70h brutas por colaborador</p>
         <div style="overflow-x:auto;margin-bottom:16px">
           <table class="cap-tbl">
@@ -1940,7 +1955,7 @@
         </div>
 
         <!-- Distribuição Planejada -->
-        <p class="stitle">📊 Distribuição Planejada da Capacity</p>
+        <p class="stitle">Distribuição Planejada da Capacity</p>
         <div class="g2" style="margin-bottom:16px">
           <div>
             <div id="spDistBars"></div>
@@ -1949,7 +1964,7 @@
         </div>
 
         <!-- Ritos e Cerimônias -->
-        <p class="stitle">🏁 Ritos e Cerimônias</p>
+        <p class="stitle">Ritos e Cerimônias</p>
         <div style="overflow-x:auto;margin-bottom:16px">
           <table class="rit-tbl">
             <thead><tr><th>Cerimônia</th><th>Frequência</th><th>Duração</th><th>H. totais/pessoa</th><th>Regra</th></tr></thead>
@@ -1966,7 +1981,7 @@
         </div>
 
         <!-- Ausências Previstas -->
-        <p class="stitle">📅 Ausências e Indisponibilidades Previstas</p>
+        <p class="stitle">Ausências e Indisponibilidades Previstas</p>
         <div id="spAusencias" style="margin-bottom:16px">
           <p style="font-size:12px;color:#9ca3af;padding:8px 0">Carregando ausências…</p>
         </div>
@@ -2002,7 +2017,7 @@
         <div class="prog"><div class="prog-bar" style="width:55%"></div></div>
         <p style="font-size:12px;color:#6b7280;margin-bottom:16px">11 de 20 itens concluídos (55%) · Projeção: 18 itens até o fim da sprint · Forecast: 88%</p>
         <!-- Projeção -->
-        <p class="stitle">📈 Projeção até o Fim da Sprint</p>
+        <p class="stitle">Projeção até o Fim da Sprint</p>
         <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 14px;margin-bottom:16px">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
             <div><p style="font-size:11px;color:#6b7280;margin-bottom:2px">Velocity atual (S6 D5)</p><p style="font-size:14px;font-weight:700;color:#059669">2,2 itens/dia</p></div>
@@ -2021,7 +2036,7 @@
           </div>
         </div>
         <!-- Riscos ativos -->
-        <p class="stitle">⚠️ Riscos Ativos</p>
+        <p class="stitle">Riscos Ativos</p>
         <div class="sri">
           <div class="av" style="background:#fef3c7;color:#92400e">R1</div>
           <div>
@@ -2037,7 +2052,7 @@
           </div>
         </div>
         <!-- Dependências externas -->
-        <p class="stitle">🔗 Dependências Externas</p>
+        <p class="stitle">Dependências Externas</p>
         <div class="sri">
           <div class="av" style="background:#f3e8ff;color:#6b21a8">IN</div>
           <div>
@@ -2053,7 +2068,7 @@
           </div>
         </div>
         <!-- Janela de deploy -->
-        <p class="stitle">🚀 Janela de Deploy</p>
+        <p class="stitle">Janela de Deploy</p>
         <div class="sri" style="margin-bottom:16px">
           <div class="av" style="background:#dcfce7;color:#166534">DP</div>
           <div>
@@ -2062,7 +2077,7 @@
           </div>
         </div>
         <!-- Recomendações -->
-        <p class="stitle">✅ Recomendações de Ação</p>
+        <p class="stitle">Recomendações de Ação</p>
         <div class="sri">
           <div class="av" style="background:#dbeafe;color:#1e40af">A1</div>
           <div><p style="font-size:13px">Escalar blocker de API junto ao Engineering Manager hoje</p><p class="sm">Prazo: 20/06 · Owner: Ana Costa (SM)</p></div>
@@ -2140,7 +2155,7 @@
     <div id="sd" class="sp">
       <div class="sr-card">
         <div class="sr-h">
-          <p class="sr-ht"><i class="ti ti-messages" style="color:#7c3aed"></i> Daily digest · Q1-S6</p>
+          <p class="sr-ht"><i class="ti ti-messages" style="color:#185FA5"></i> Daily digest · Q1-S6</p>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
             <span class="sr-meta">Time Alpha · 13/01/2026 · 09h15</span>
             <button class="btn-md" onclick="exportMd('daily-digest')"><i class="ti ti-markdown" style="font-size:12px"></i> Exportar Markdown</button>
@@ -2190,14 +2205,14 @@
       </div>
     </div>
 
-    <!-- Gerador IA -->
+    <!-- Gerador de relatório -->
     <div id="sg" class="sp">
 
       <!-- API Config -->
       <div class="sr-card">
         <div class="sr-h">
-          <p class="sr-ht"><i class="ti ti-key" style="color:#7c3aed"></i> Configuração da API Anthropic</p>
-          <button onclick="document.getElementById('apiBody').style.display=document.getElementById('apiBody').style.display==='none'?'block':'none'" style="font-size:12px;color:#185FA5;background:none;border:1px solid #185FA5;border-radius:6px;padding:4px 10px;cursor:pointer">Mostrar / Ocultar</button>
+          <p class="sr-ht"><i class="ti ti-key" style="color:#185FA5"></i> Configuração da API Anthropic</p>
+          <button id="apiToggle" onclick="document.getElementById('apiBody').style.display=document.getElementById('apiBody').style.display==='none'?'block':'none'" style="font-size:12px;color:#185FA5;background:none;border:1px solid #185FA5;border-radius:6px;padding:4px 10px;cursor:pointer">Mostrar / Ocultar</button>
         </div>
         <div id="apiBody" style="display:none;padding-top:4px">
           <p style="font-size:12px;color:#6b7280;margin-bottom:10px">A chave é salva apenas no seu navegador (localStorage). Obtenha em <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:#185FA5">console.anthropic.com</a>.</p>
@@ -2230,8 +2245,8 @@
             <i class="ti ti-file-text" style="font-size:36px;color:#9ca3af;display:block;margin-bottom:8px"></i>
             <p style="font-size:14px;font-weight:500;color:#374151">Arraste o arquivo aqui</p>
             <p style="font-size:12px;color:#9ca3af;margin-top:4px">ou clique para selecionar · <strong>.PDF</strong> ou <strong>.DOCX</strong></p>
-            <input type="file" id="fileIn" accept=".pdf,.docx" style="display:none" onchange="handleFileInput(this.files[0])">
           </div>
+          <input type="file" id="fileIn" accept=".pdf,.docx" style="display:none" aria-label="Selecionar arquivo PDF ou DOCX" onchange="handleFileInput(this.files[0]);this.value=''">
           <p id="fileStatus" style="font-size:12px;margin-top:8px;display:none"></p>
         </div>
 
@@ -2244,11 +2259,11 @@
           <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px;margin-bottom:12px">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
               <span style="font-size:13px;font-weight:600;color:#1e40af;display:flex;align-items:center;gap:6px"><i class="ti ti-database"></i> Snapshot da sprint selecionada</span>
-              <button onclick="refreshDataPreview()" style="font-size:11px;color:#185FA5;background:none;border:1px solid #185FA5;border-radius:5px;padding:3px 8px;cursor:pointer">↺ Atualizar</button>
+              <button onclick="refreshDataPreview()" style="font-size:11px;color:#185FA5;background:none;border:1px solid #185FA5;border-radius:5px;padding:3px 8px;cursor:pointer"><i class="ti ti-refresh"></i> Atualizar</button>
             </div>
             <div id="dataPreview" style="font-size:12px;color:#374151;line-height:1.9"></div>
           </div>
-          <p style="font-size:11px;color:#6b7280">O relatório usa os dados da sprint selecionada nos filtros. <strong>Não é necessária API key</strong> para geração básica — a IA é opcional para adicionar contexto narrativo.</p>
+          <p style="font-size:11px;color:#6b7280">O relatório usa os dados da sprint selecionada nos filtros. <strong>Não é necessária API key</strong> para a geração básica. O aprimoramento com Claude é opcional e envia o relatório à API da Anthropic.</p>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px">
@@ -2267,7 +2282,7 @@
         </div>
 
         <button onclick="generateAIReport()" id="genBtn" class="gen-btn" style="margin-top:16px">
-          <i class="ti ti-sparkles"></i> Gerar Relatório com IA
+          <i class="ti ti-file-description"></i> Gerar relatório
         </button>
         <p id="genError" style="font-size:12px;color:#dc2626;margin-top:8px;display:none"></p>
       </div>
@@ -2275,7 +2290,7 @@
       <!-- Output -->
       <div class="sr-card" id="genOutput" style="display:none">
         <div class="sr-h">
-          <p class="sr-ht"><i class="ti ti-robot" style="color:#7c3aed"></i> Relatório gerado — pronto para enviar</p>
+          <p class="sr-ht"><i class="ti ti-file-check" style="color:#185FA5"></i> Relatório gerado — pronto para enviar</p>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
             <button onclick="copyAIReport(event)" style="font-size:12px;background:#059669;color:#fff;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;display:flex;align-items:center;gap:4px;font-weight:500"><i class="ti ti-copy"></i> Copiar</button>
             <button class="btn-md" onclick="exportMd('ai-report')"><i class="ti ti-markdown" style="font-size:12px"></i> Exportar Markdown</button>
@@ -2284,7 +2299,7 @@
         </div>
         <pre id="aiOutput" style="font-size:13px;line-height:1.75;white-space:pre-wrap;color:#111827;background:#f9fafb;padding:16px;border-radius:8px;border:1px solid #e5e5e3;font-family:inherit;margin:0"></pre>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
-          <button id="enhanceBtn" onclick="enhanceWithAI()" style="display:none;font-size:12px;background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;display:flex;align-items:center;gap:5px;font-weight:500"><i class="ti ti-sparkles"></i> Aprimorar com IA</button>
+          <button id="enhanceBtn" onclick="enhanceWithAI()" style="display:none;font-size:12px;background:var(--clr-info);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;display:flex;align-items:center;gap:5px;font-weight:500"><i class="ti ti-edit"></i> Aprimorar com Claude</button>
           <p id="genOutputSource" style="font-size:11px;color:#9ca3af;margin:0;text-align:right;flex:1"></p>
         </div>
       </div>
@@ -2352,7 +2367,7 @@
       <img class="ab-avatar" src="AnaPachecco.jpg" alt="Ana Cristina Nunes Pacheco">
       <div class="ab-hero-txt">
         <p class="ab-hero-name">Ana Cristina Nunes Pacheco</p>
-        <p class="ab-hero-role"><i class="ti ti-sparkles" style="font-size:13px;margin-right:4px"></i>Agile Master · Scrum Master · Gestão de Processos e Melhoria Contínua</p>
+        <p class="ab-hero-role"><i class="ti ti-user" style="font-size:13px;margin-right:4px"></i>Agile Master · Scrum Master · Gestão de Processos e Melhoria Contínua</p>
         <p class="ab-hero-body">
           Atuo no apoio a squads e times de desenvolvimento de produtos, com foco em consolidação de métricas, geração de relatórios executivos, acompanhamento de riscos e apoio à tomada de decisão baseada em dados.<br><br>
           Foi dessa vivência prática que nasceu o <strong>FlowOps AI</strong>: uma solução criada para reduzir o esforço operacional e transformar dados dispersos em informações estratégicas com apoio de Inteligência Artificial.
@@ -2395,10 +2410,10 @@
     </div>
 
     <!-- Seção 4 — Entusiasta de IA -->
-    <div class="ab-section-hd"><i class="ti ti-robot"></i> Entusiasta de IA</div>
+    <div class="ab-section-hd"><i class="ti ti-bulb"></i> Entusiasta de IA</div>
     <div class="ab-ai-block" style="margin-bottom:20px">
       <div class="ab-ai-block-hd">
-        <i class="ti ti-brain"></i>
+        <i class="ti ti-bulb"></i>
         <span class="ab-ai-block-title">Inteligência Artificial como alavanca estratégica</span>
       </div>
       <p class="ab-ai-body">
@@ -2439,13 +2454,12 @@
       </div>
       <div class="ab-future-grid">
         <div class="ab-future-item"><i class="ti ti-circuit-board"></i>Orquestração de Agentes de IA</div>
-        <div class="ab-future-item"><i class="ti ti-target-arrow"></i>Gestão Estratégica por OKRs</div>
         <div class="ab-future-item"><i class="ti ti-map-2"></i>Value Stream Mapping (VSM)</div>
         <div class="ab-future-item"><i class="ti ti-trending-up"></i>Flow Efficiency</div>
         <div class="ab-future-item"><i class="ti ti-chart-dots"></i>Forecasts preditivos com Monte Carlo</div>
-        <div class="ab-future-item"><i class="ti ti-sparkles"></i>Recomendações inteligentes por IA</div>
+        <div class="ab-future-item"><i class="ti ti-list-check"></i>Recomendações inteligentes por IA</div>
         <div class="ab-future-item"><i class="ti ti-plug-connected"></i>Integração com Jira, Confluence, ADO e GitHub</div>
-        <div class="ab-future-item"><i class="ti ti-brain"></i>IA para apoio à tomada de decisão executiva</div>
+        <div class="ab-future-item"><i class="ti ti-target-arrow"></i>IA para apoio à tomada de decisão executiva</div>
       </div>
     </div>
 
@@ -2464,7 +2478,6 @@
 <footer class="footer">
   FlowOps AI · Gestão de Fluxo e Entrega · 2026
   <br>
-  <span class="footer-visits">👀 Visitas ao FlowOps AI: <span id="visitCount" class="footer-visits-val">—</span></span>
   <br>
   <span class="footer-links"><a onclick="openAux('g')">Glossário</a> · <a onclick="openAux('ab')">Sobre</a></span>
 </footer>
@@ -2534,8 +2547,8 @@ function updateSprintOptions(){
   for(let s=5;s>=0;s--){
     const opt=document.createElement('option');
     opt.value=s;
-    const tag=(q===CURRENT_Q&&s===CURRENT_S)?'🟢 ':'';
-    opt.textContent=`${tag}S${s+1} · ${dates[s]}`;
+    const atual=(q===CURRENT_Q&&s===CURRENT_S)?' · atual':'';
+    opt.textContent=`S${s+1} · ${dates[s]}${atual}`;
     sel.appendChild(opt);
   }
   if([...sel.options].some(o=>o.value===cur)) sel.value=cur;
@@ -2563,8 +2576,8 @@ function updateKpi(idx,val,arr,si,meta,metaUnit,low,dispUnit,displayVal){
     const worst=low?Math.max(...seen):Math.min(...seen);
     const improving=tUp?!low:low;
     if(streak>=3){tEl.textContent=(improving?'▲ Melhorando':'▼ Piorando')+' há '+streak+' sprints';tEl.className='ktrend '+(improving?'pos':'neg');}
-    else if(val===best){tEl.textContent='🏆 Melhor resultado do quarter';tEl.className='ktrend pos';}
-    else if(val===worst){tEl.textContent='⚠ Pior resultado do quarter';tEl.className='ktrend neg';}
+    else if(val===best){tEl.textContent='Melhor resultado do quarter';tEl.className='ktrend pos';}
+    else if(val===worst){tEl.textContent='Pior resultado do quarter';tEl.className='ktrend neg';}
     else if(streak>=2){tEl.textContent=(improving?'▲ Melhorando':'▼ Piorando')+' há '+streak+' sprints';tEl.className='ktrend '+(improving?'pos':'neg');}
     else{tEl.textContent='↔ Oscilando';tEl.className='ktrend';}
   } else {tEl.textContent='';tEl.className='ktrend';}
@@ -2573,7 +2586,7 @@ function updateKpi(idx,val,arr,si,meta,metaUnit,low,dispUnit,displayVal){
   const ok=low?(val<=meta):(val>=meta);
   const diff=Math.abs(val-meta), near=meta>0&&diff<=meta*0.2;
   const sc=ok?'kmeta-ok':near?'kmeta-warn':'kmeta-bad';
-  const st=ok?'✓ Meta atingida':near?'⚠ Próximo da meta':'✗ Fora da meta';
+  const st=ok?'Meta atingida':near?'Próximo da meta':'Fora da meta';
   mEl.innerHTML=`Meta: ${low?'≤':'≥'}${meta}${metaUnit||''} &nbsp;<span class="${sc}">${st}</span>`;
   // semaphore + card color
   document.getElementById('ks'+idx).textContent=ok?'🟢':near?'🟡':'🔴';
@@ -2643,7 +2656,7 @@ function upd(){
   updateKpi(4,d.bo[i],d.bo,i,METAS.bo,'',true,'');
   updateKpi(5,wipArr[i],wipArr,i,METAS.wip,'',true,'');
   updateKpi(6,agArr[i],agArr,i,METAS.aging,'',true,'',
-    agArr[i]>0?`${agArr[i]}${aboveP85>0?' (⚠ '+aboveP85+' >p85)':''}`:' 0');
+    agArr[i]>0?`${agArr[i]}${aboveP85>0?' ('+aboveP85+' >p85)':''}`:' 0');
 
   // Capacity da sprint (kc7) — SP disponíveis; sinaleira por eficiência (Velocity/Capacity)
   const capVal=d.cap[i], capPrev=d.cap[Math.max(0,i-1)], capDelta=capVal-capPrev;
@@ -2735,10 +2748,10 @@ function drawCFD(d,i){
 
   // Band widths at midpoint
   const bands=[
-    {name:'Backlog',      w:cfd.committed[mid] -cfd.startedCum[mid], icon:'📥', color:'#9ca3af'},
-    {name:'In Progress',  w:cfd.startedCum[mid]-cfd.reviewCum[mid],  icon:'⚙️',  color:'#185FA5'},
-    {name:'Code Review',  w:cfd.reviewCum[mid] -cfd.testCum[mid],    icon:'🔍', color:'#d97706'},
-    {name:'Testing',      w:cfd.testCum[mid]   -cfd.doneCum[mid],    icon:'🧪', color:'#8b5cf6'},
+    {name:'Backlog',      w:cfd.committed[mid] -cfd.startedCum[mid], icon:'<i class="ti ti-inbox"></i>', color:'#9ca3af'},
+    {name:'In Progress',  w:cfd.startedCum[mid]-cfd.reviewCum[mid],  icon:'<i class="ti ti-settings"></i>',  color:'#185FA5'},
+    {name:'Code Review',  w:cfd.reviewCum[mid] -cfd.testCum[mid],    icon:'<i class="ti ti-search"></i>', color:'#d97706'},
+    {name:'Testing',      w:cfd.testCum[mid]   -cfd.doneCum[mid],    icon:'<i class="ti ti-flask"></i>', color:'#8b5cf6'},
   ];
   const bot=bands.reduce((a,b)=>b.w>a.w?b:a);
 
@@ -2766,7 +2779,7 @@ function drawCFD(d,i){
     'Testing':      `Antecipar validações (Shift Left Testing), parear QA com desenvolvedores nos itens críticos e ampliar a cobertura de testes automatizados de regressão para liberar capacidade.`,
   };
   const insEl=document.getElementById('cfdInsight');
-  if(insEl) insEl.innerHTML=`<div class="cfd-diag"><div class="cfd-diag-sect"><div class="cfd-diag-lbl" style="color:${bot.color}">&#9654; Situação identificada</div>${situacaoMap[bot.name]}</div><div class="cfd-diag-sect"><div class="cfd-diag-lbl" style="color:#d97706">&#9654; Possível impacto</div>${impactoMap[bot.name]}</div><div class="cfd-diag-sect"><div class="cfd-diag-lbl" style="color:#059669">&#9654; Recomendação</div>${acaoMap[bot.name]}</div><div class="cfd-edu">💡 <strong>Como ler o CFD:</strong> Bandas largas representam acúmulo ou filas — quanto maior a banda, mais itens presos naquela etapa. Bandas estreitas e paralelas indicam fluxo saudável com progressão constante.</div></div>`;
+  if(insEl) insEl.innerHTML=`<div class="cfd-diag"><div class="cfd-diag-sect"><div class="cfd-diag-lbl" style="color:${bot.color}">Situação identificada</div>${situacaoMap[bot.name]}</div><div class="cfd-diag-sect"><div class="cfd-diag-lbl" style="color:#d97706">Possível impacto</div>${impactoMap[bot.name]}</div><div class="cfd-diag-sect"><div class="cfd-diag-lbl" style="color:#059669">Recomendação</div>${acaoMap[bot.name]}</div><div class="cfd-edu"><strong>Como ler o CFD:</strong> Bandas largas representam acúmulo ou filas — quanto maior a banda, mais itens presos naquela etapa. Bandas estreitas e paralelas indicam fluxo saudável com progressão constante.</div></div>`;
 
   // Draw chart
   kc('cfd');
@@ -3146,7 +3159,7 @@ function renderQuarterReport(){
 
   // PLANNING STATE
   if(state==='plan'){
-    html+=`<div class="rpt-sec" style="border-left-color:#185FA5"><div class="rpt-sec-h"><span class="rpt-num" style="background:#185FA5;font-size:14px">📋</span><div><p class="rpt-title">Quarter em planejamento</p><p class="rpt-obj">Checklist de preparação — ${q} 2026</p></div></div><div class="rpt-body">`;
+    html+=`<div class="rpt-sec" style="border-left-color:#185FA5"><div class="rpt-sec-h"><span class="rpt-num" style="background:#185FA5;font-size:14px"><i class="ti ti-calendar-event"></i></span><div><p class="rpt-title">Quarter em planejamento</p><p class="rpt-obj">Checklist de preparação — ${q} 2026</p></div></div><div class="rpt-body">`;
     ['Definir OKRs e metas do quarter','Mapear Épicos e Features priorizados','Estimar capacidade do time (PTO, feriados, eventos)','Criar as 6 sprints no Jira com datas e metas','Alinhar dependências externas e parceiros','Definir SLAs de Lead Time e thresholds DORA','Planejar janelas de deploy e ambientes','Realizar Planning do Quarter (QBR)'].forEach((it,i)=>{
       html+=`<div class="plan-item"><div class="plan-cb ${i<2?'done':''}">${i<2?'<i class="ti ti-check" style="color:#fff;font-size:11px"></i>':''}</div><span style="font-size:13px;color:${i<2?'#6b7280':'#111827'};${i<2?'text-decoration:line-through':''}">${it}</span></div>`;
     });
@@ -3666,7 +3679,7 @@ function renderSpPlanningCapacity(){
   if(!ausEl) return;
   const ausentes=members.filter(m=>m.aus>0);
   if(ausentes.length===0){
-    ausEl.innerHTML='<div class="al-item al-ok"><span class="al-ico">✅</span><span>Nenhuma ausência prevista para esta sprint.</span></div>';
+    ausEl.innerHTML='<div class="al-item al-ok"><span class="al-ico"><i class="ti ti-circle-check"></i></span><span>Nenhuma ausência prevista para esta sprint.</span></div>';
   } else {
     ausEl.innerHTML=ausentes.map(m=>{
       const sev=m.aus>=14?'al-bad':m.aus>=7?'al-warn':'al-ok';
@@ -3720,8 +3733,8 @@ function renderAsResumo(d,i,q){
   </div>
   <div class="cc" style="border-left:4px solid #185FA5">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-      <i class="ti ti-brain" style="color:#185FA5;font-size:15px"></i>
-      <span style="font-size:13px;font-weight:600;color:#111827">Análise Executiva da Sprint</span>
+      <i class="ti ti-file-analytics" style="color:#185FA5;font-size:15px"></i>
+      <span style="font-size:13px;font-weight:600;color:#111827">Análise da sprint</span>
       <span style="font-size:10px;color:#9ca3af;margin-left:auto">${q} · S${i+1} · ${team}</span>
     </div>
     <p style="font-size:12.5px;color:#374151;line-height:1.85;margin:0">${buildSprintNarrative(d,i,q,h,pct,trPct,wipV,fcPct,members)}</p>
@@ -3790,12 +3803,12 @@ function renderAsForecast(d,i,q){
   </div>
   <div class="g2">
     <div class="cc">
-      <p class="ct" style="margin-bottom:10px">🔍 Indicadores de Risco</p>
+      <p class="ct" style="margin-bottom:10px">Indicadores de Risco</p>
       <div>${buildFcRiscos(d,i,wipV,pct,rem,itensCrit).map(r=>`<div class="al-item ${r.cls}"><span class="al-ico">${r.ico}</span><span>${r.txt}</span></div>`).join('')}</div>
     </div>
     <div class="cc">
-      <p class="ct" style="margin-bottom:10px">✅ Plano de Ação Recomendado</p>
-      <div>${buildFcAcoes(d,i,fcPct,wipV,itensCrit,rem,ausentes).map(a=>`<div class="al-item al-info"><span class="al-ico">▶</span><span>${a}</span></div>`).join('')}</div>
+      <p class="ct" style="margin-bottom:10px">Plano de Ação Recomendado</p>
+      <div>${buildFcAcoes(d,i,fcPct,wipV,itensCrit,rem,ausentes).map(a=>`<div class="al-item al-info"><span class="al-ico"><i class="ti ti-chevron-right"></i></span><span>${a}</span></div>`).join('')}</div>
     </div>
   </div>`;
 }
@@ -3848,7 +3861,7 @@ function renderAsCapacity(d,i,q){
   </div>
   <div class="g2">
     <div class="cc">
-      <p class="ct" style="margin-bottom:10px">👤 Capacidade Individual</p>
+      <p class="ct" style="margin-bottom:10px">Capacidade Individual</p>
       <div style="overflow-x:auto">
         <table class="cap-tbl">
           <thead><tr><th>Nome</th><th>Papel</th><th>Dispon.</th><th>Comprom.</th><th>Ocupação</th></tr></thead>
@@ -3863,11 +3876,11 @@ function renderAsCapacity(d,i,q){
       </div>
     </div>
     <div class="cc">
-      <p class="ct" style="margin-bottom:10px">📅 Ausências Previstas</p>
-      ${ausentes.length===0?'<div class="al-item al-ok"><span class="al-ico">✅</span><span>Nenhuma ausência prevista — capacidade total disponível.</span></div>'
+      <p class="ct" style="margin-bottom:10px">Ausências Previstas</p>
+      ${ausentes.length===0?'<div class="al-item al-ok"><span class="al-ico"><i class="ti ti-circle-check"></i></span><span>Nenhuma ausência prevista — capacidade total disponível.</span></div>'
       :ausentes.map(m=>`<div class="aus-row"><span class="aus-name">${m.n}</span><span style="flex:1;font-size:11px;color:#6b7280">${m.r}</span><span class="aus-badge aus-m">${m.aus}h</span><span style="font-size:10px;color:#9ca3af;margin-left:8px">${m.ausDesc}</span></div>`).join('')}
       <div style="margin-top:12px;padding-top:12px;border-top:1px solid #f3f4f6">
-        <p class="ct" style="margin-bottom:8px">🏁 Ritos — ${RITES_H}h/pessoa</p>
+        <p class="ct" style="margin-bottom:8px">Ritos — ${RITES_H}h/pessoa</p>
         ${[['Sprint Planning','1×','2h'],['Daily Scrum','8×','2h'],['Forecast D5','1×','1h'],['Sprint Review','1×','2h'],['Retrospective','1×','1h'],['Refinamento','3×','3h']]
           .map(([n,f,h])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:11px;color:#374151;border-bottom:1px solid #f9fafb"><span>${n}</span><span style="color:#6b7280">${f}</span><span style="font-weight:600">${h}</span></div>`).join('')}
       </div>
@@ -3883,7 +3896,7 @@ function renderAsPlxR(d,i,q){
   const totDisp=Math.max(1,members.reduce((a,m)=>a+Math.max(0,m.h-m.aus-RITES_H),0));
   const devPlan=Math.round(totDisp*0.58), devReal=Math.round(devPlan*(d.en[i]/d.pl[i]));
   const bugPlan=Math.round(totDisp*0.13), bugReal=Math.round(bugPlan*Math.min(1.3,d.bo[i]/Math.max(1,METAS.bo)));
-  const emPlan=Math.round(totDisp*0.07),  emReal=Math.round(emPlan*(0.8+Math.random()*0.4));
+  const emPlan=Math.round(totDisp*0.07),  emReal=Math.round(emPlan*(0.8+((q.charCodeAt(1)+i*7)%5)*0.1));
   const ritPlan=RITES_H*members.length,   ritReal=Math.round(ritPlan*0.95);
   const ausReal=members.reduce((a,m)=>a+m.aus,0);
   const rows=[
@@ -3897,7 +3910,7 @@ function renderAsPlxR(d,i,q){
   ];
 
   el.innerHTML=`<div class="cc">
-    <p class="ct" style="margin-bottom:12px">⚖️ Capacity × Velocity — ${q} · S${i+1}</p>
+    <p class="ct" style="margin-bottom:12px">Capacity × Velocity — ${q} · S${i+1}</p>
     <div style="overflow-x:auto">
       <table style="width:100%;border-collapse:collapse;font-size:12px">
         <thead><tr style="background:#f9fafb">
@@ -3931,22 +3944,22 @@ function renderAsTimeline(d,i,q){
   const team=document.getElementById('sTeam').value;
   const sp=gd()[q].sp[i];
   const events=[
-    {d:'D1',t:'Início da Sprint',desc:`Sprint ${q}-S${i+1} iniciada com ${d.pl[i]} itens planejados · ${d.pl[i]} pts · Time inicia desenvolvimento imediatamente`,ico:'🚀',col:'#185FA5'},
-    {d:'D1',t:'Sprint Planning concluída',desc:'Objetivo, escopo e capacidade definidos · Baseline bloqueado como referência',ico:'📋',col:'#185FA5'},
-    {d:'D2',t:'Daily Scrum',desc:'Primeiro Daily da sprint — sincronização de prioridades e identificação de dependências abertas',ico:'☀️',col:'#9ca3af'},
-    {d:'D3',t:'Primeiras entregas',desc:`Itens iniciados avançam para revisão · WIP monitorado (limite: ${METAS.wip})`,ico:'⚙️',col:'#059669'},
-    {d:'D4',t:'Checkpoint de riscos',desc:'Revisão das dependências abertas e bloqueadores identificados no planning',ico:'⚠️',col:'#d97706'},
-    {d:'D5',t:'Forecast — Dia D',desc:`Análise de probabilidade de entrega · ${Math.min(97,Math.max(35,Math.round(Math.round(d.en[i]/d.pl[i]*100)*0.9+(d.p85[i]*3+i*7)%14-7)))}% de probabilidade · Plano de ação se necessário`,ico:'🎯',col:'#7c3aed'},
-    {d:'D6',t:'Daily — segunda semana',desc:'Retomada com visibilidade do Forecast · Foco em desbloquear itens parados',ico:'☀️',col:'#9ca3af'},
+    {d:'D1',t:'Início da Sprint',desc:`Sprint ${q}-S${i+1} iniciada com ${d.pl[i]} itens planejados · ${d.pl[i]} pts · Time inicia desenvolvimento imediatamente`,ico:'<i class="ti ti-rocket"></i>',col:'#185FA5'},
+    {d:'D1',t:'Sprint Planning concluída',desc:'Objetivo, escopo e capacidade definidos · Baseline bloqueado como referência',ico:'<i class="ti ti-clipboard-list"></i>',col:'#185FA5'},
+    {d:'D2',t:'Daily Scrum',desc:'Primeiro Daily da sprint — sincronização de prioridades e identificação de dependências abertas',ico:'<i class="ti ti-sun"></i>',col:'#9ca3af'},
+    {d:'D3',t:'Primeiras entregas',desc:`Itens iniciados avançam para revisão · WIP monitorado (limite: ${METAS.wip})`,ico:'<i class="ti ti-settings"></i>',col:'#059669'},
+    {d:'D4',t:'Checkpoint de riscos',desc:'Revisão das dependências abertas e bloqueadores identificados no planning',ico:'<i class="ti ti-alert-triangle"></i>',col:'#d97706'},
+    {d:'D5',t:'Forecast — Dia D',desc:`Análise de probabilidade de entrega · ${Math.min(97,Math.max(35,Math.round(Math.round(d.en[i]/d.pl[i]*100)*0.9+(d.p85[i]*3+i*7)%14-7)))}% de probabilidade · Plano de ação se necessário`,ico:'<i class="ti ti-target"></i>',col:'#7c3aed'},
+    {d:'D6',t:'Daily — segunda semana',desc:'Retomada com visibilidade do Forecast · Foco em desbloquear itens parados',ico:'<i class="ti ti-sun"></i>',col:'#9ca3af'},
     ...(d.tr[i]>0?[{d:'D7-D8',t:'Risco de transbordo detectado',desc:`${d.tr[i]} itens em risco de transbordo · Alinhamento com PO para priorização ou redução de escopo`,ico:'🔴',col:'#dc2626'}]:[]),
-    {d:'D9',t:'Integração e testes finais',desc:'Itens entram em fase de teste e homologação · QA prioriza fluxo de validação',ico:'🧪',col:'#8b5cf6'},
-    {d:'D10 - manhã',t:'Sprint Review',desc:`Demonstração de ${d.en[i]} itens entregues para stakeholders · Coleta de feedback do PO`,ico:'🎤',col:'#059669'},
-    {d:'D10 - tarde',t:'Sprint Retrospective',desc:'Inspeção do processo · Definição de melhorias para a próxima sprint',ico:'🔄',col:'#185FA5'},
-    ...(d.en[i]>0?[{d:'D10',t:'Encerramento',desc:`Sprint encerrada · ${d.en[i]} de ${d.pl[i]} itens entregues (${Math.round(d.en[i]/d.pl[i]*100)}%) · ${d.tr[i]} transbordados`,ico:'✅',col:'#059669'}]:[]),
+    {d:'D9',t:'Integração e testes finais',desc:'Itens entram em fase de teste e homologação · QA prioriza fluxo de validação',ico:'<i class="ti ti-flask"></i>',col:'#8b5cf6'},
+    {d:'D10 - manhã',t:'Sprint Review',desc:`Demonstração de ${d.en[i]} itens entregues para stakeholders · Coleta de feedback do PO`,ico:'<i class="ti ti-microphone"></i>',col:'#059669'},
+    {d:'D10 - tarde',t:'Sprint Retrospective',desc:'Inspeção do processo · Definição de melhorias para a próxima sprint',ico:'<i class="ti ti-refresh"></i>',col:'#185FA5'},
+    ...(d.en[i]>0?[{d:'D10',t:'Encerramento',desc:`Sprint encerrada · ${d.en[i]} de ${d.pl[i]} itens entregues (${Math.round(d.en[i]/d.pl[i]*100)}%) · ${d.tr[i]} transbordados`,ico:'<i class="ti ti-circle-check"></i>',col:'#059669'}]:[]),
   ];
 
   el.innerHTML=`<div class="cc">
-    <p class="ct" style="margin-bottom:14px">📅 Timeline da Sprint ${q}-S${i+1}</p>
+    <p class="ct" style="margin-bottom:14px">Timeline da Sprint ${q}-S${i+1}</p>
     <div class="tl-list">${events.map(e=>`<div class="tl-item">
       <div class="tl-dot" style="border-color:${e.col};color:${e.col}">${e.ico}</div>
       <div class="tl-body">
@@ -3969,7 +3982,7 @@ function renderAsAlertas(d,i,q){
   const members=MEMBERS[team]||[];
 
   const alerts=[];
-  if(fcPct<60) alerts.push({sev:'al-bad',ico:'🚨',titulo:'Risco crítico de não conclusão',desc:`Probabilidade de entrega de ${fcPct}% — acionar plano de contingência imediatamente, revisar escopo com o PO e focar nas histórias de maior valor.`});
+  if(fcPct<60) alerts.push({sev:'al-bad',ico:'<i class="ti ti-alert-octagon"></i>',titulo:'Risco crítico de não conclusão',desc:`Probabilidade de entrega de ${fcPct}% — acionar plano de contingência imediatamente, revisar escopo com o PO e focar nas histórias de maior valor.`});
   if(trPct>25) alerts.push({sev:'al-bad',ico:'🔴',titulo:'Alto risco de transbordo',desc:`${d.tr[i]} itens (${trPct}%) com alto risco de transbordo — revisar escopo ou redistribuir carga urgentemente.`});
   if(wipV>METAS.wip*1.3) alerts.push({sev:'al-bad',ico:'🔴',titulo:'WIP crítico',desc:`WIP de ${wipV} itens está ${Math.round((wipV/METAS.wip-1)*100)}% acima do limite de ${METAS.wip} — parar novos starts imediatamente.`});
   else if(wipV>METAS.wip) alerts.push({sev:'al-warn',ico:'🟡',titulo:'WIP acima do limite',desc:`WIP de ${wipV} itens excede o limite de ${METAS.wip} — evitar iniciar novos itens até reduzir o paralelismo.`});
@@ -3980,8 +3993,8 @@ function renderAsAlertas(d,i,q){
   if(d.bo[i]>METAS.bo*1.5) alerts.push({sev:'al-bad',ico:'🔴',titulo:'Volume elevado de bugs abertos',desc:`${d.bo[i]} bugs abertos (meta: ${METAS.bo}) — reservar capacidade dedicada antes do próximo deploy.`});
   else if(d.bo[i]>METAS.bo) alerts.push({sev:'al-warn',ico:'🟡',titulo:'Bugs acima da meta',desc:`${d.bo[i]} bugs abertos superam a meta de ${METAS.bo} — priorizar resolução de bugs críticos.`});
   const ausentes=members.filter(m=>m.aus>0);
-  if(ausentes.length>0) alerts.push({sev:'al-warn',ico:'📅',titulo:`${ausentes.length} ausência${ausentes.length>1?'s':''} prevista${ausentes.length>1?'s':''}`,desc:`${ausentes.map(m=>m.n).join(', ')} com indisponibilidade nesta sprint — redistribuir itens e revisar capacidade líquida.`});
-  if(alerts.length===0) alerts.push({sev:'al-ok',ico:'✅',titulo:'Sprint saudável',desc:'Nenhum alerta ativo no momento. Continue monitorando as métricas diariamente para antecipar riscos.'});
+  if(ausentes.length>0) alerts.push({sev:'al-warn',ico:'<i class="ti ti-calendar"></i>',titulo:`${ausentes.length} ausência${ausentes.length>1?'s':''} prevista${ausentes.length>1?'s':''}`,desc:`${ausentes.map(m=>m.n).join(', ')} com indisponibilidade nesta sprint — redistribuir itens e revisar capacidade líquida.`});
+  if(alerts.length===0) alerts.push({sev:'al-ok',ico:'<i class="ti ti-circle-check"></i>',titulo:'Sprint saudável',desc:'Nenhum alerta ativo no momento. Continue monitorando as métricas diariamente para antecipar riscos.'});
 
   el.innerHTML=`
   <div class="as-kgrid" style="grid-template-columns:repeat(auto-fit,minmax(120px,1fr));margin-bottom:16px">
@@ -3991,7 +4004,7 @@ function renderAsAlertas(d,i,q){
     <div class="as-kcard ak-info"><p class="as-klbl">Total alertas</p><p class="as-kval" style="color:#185FA5">${alerts.length}</p></div>
   </div>
   <div class="cc">
-    <p class="ct" style="margin-bottom:12px">🔔 Alertas Inteligentes — ${q}·S${i+1}</p>
+    <p class="ct" style="margin-bottom:12px">Alertas da sprint — ${q}·S${i+1}</p>
     <div>${alerts.map(a=>`<div class="al-item ${a.sev}" style="margin-bottom:8px">
       <span class="al-ico">${a.ico}</span>
       <div><strong style="display:block;margin-bottom:3px">${a.titulo}</strong>${a.desc}</div>
@@ -4041,11 +4054,11 @@ function drawBurndownBurnup(){
   const bdIns=document.getElementById('bd-insight');
   if(bdIns){
     const lastReal=real[real.length-1];
-    const trend=lastReal<=undelivered?'✅ No ritmo esperado':lastReal<=undelivered+Math.round(total*0.15)?'⚠️ Ligeiramente atrasado':'🔴 Atraso significativo detectado';
+    const trend=lastReal<=undelivered?'🟢 No ritmo esperado':lastReal<=undelivered+Math.round(total*0.15)?'🟡 Ligeiramente atrasado':'🔴 Atraso significativo detectado';
     const bdEmoji=lastReal<=undelivered?'🟢':lastReal<=undelivered+Math.round(total*0.15)?'🟡':'🔴';
     setGroupDot('cgd-bd',[bdEmoji]); setGroupDot('cgd-bu',[bdEmoji]);
     bdIns.innerHTML=`<div style="display:flex;align-items:flex-start;gap:10px">
-      <div style="flex:1"><p class="ct">📈 Análise do Burndown</p>
+      <div style="flex:1"><p class="ct">Análise do Burndown</p>
       <p style="font-size:12px;color:#374151;line-height:1.7;margin-top:6px"><strong>${trend}</strong> — ${lastReal} itens restantes ao final da sprint (${undelivered} eram esperados). ${scopeAdd>0?`Escopo aumentou em ${scopeAdd} itens no D6. `:''}${lastReal>undelivered?`Risco de transbordo de ${lastReal-undelivered} itens adicionais.`:'Sprint dentro do planejado.'}</p></div>
       <div style="text-align:center;min-width:80px">
         <p style="font-size:24px;font-weight:700;color:${lastReal<=undelivered?'#059669':lastReal<=undelivered+Math.round(total*0.15)?'#d97706':'#dc2626'}">${Math.round(delivered/total*100)}%</p>
@@ -4065,7 +4078,7 @@ function initGenPage(){
   document.getElementById('genDate').value=new Date().toISOString().split('T')[0];
   const k=localStorage.getItem('fi_api_key');
   const badge=document.getElementById('keyBadge');
-  badge.textContent=k?'✓ API key configurada — pronto para gerar':'⚠ Configure sua API key Anthropic acima para usar a IA';
+  badge.textContent=k?'API key configurada — o aprimoramento com Claude está disponível':'Para aprimorar com Claude, configure sua API key da Anthropic acima';
   badge.style.color=k?'#059669':'#d97706';
 }
 
@@ -4073,7 +4086,7 @@ function saveApiKey(){
   const v=document.getElementById('apiKey').value.trim();
   const s=document.getElementById('keyStatus');
   if(!v.startsWith('sk-ant-')){
-    s.textContent='❌ Chave inválida — deve começar com sk-ant-';
+    s.textContent='Chave inválida — deve começar com sk-ant-';
     s.style.color='#dc2626';
     return;
   }
@@ -4082,7 +4095,7 @@ function saveApiKey(){
   s.style.color='#059669';
   document.getElementById('apiKey').value='••••••••••••••••••••';
   const badge=document.getElementById('keyBadge');
-  badge.textContent='✓ API key configurada — pronto para gerar';
+  badge.textContent='API key configurada — o aprimoramento com Claude está disponível';
   badge.style.color='#059669';
 }
 
@@ -4106,7 +4119,7 @@ async function handleFileInput(file){
   if(!file)return;
   const zone=document.getElementById('dropZone');
   const status=document.getElementById('fileStatus');
-  zone.innerHTML=`<i class="ti ti-loader-2 spin" style="font-size:30px;color:#185FA5;display:block;margin-bottom:8px"></i><p style="font-size:13px;color:#374151">Extraindo texto de <strong>${file.name}</strong>...</p>`;
+  zone.innerHTML=`<i class="ti ti-loader-2 spin" style="font-size:30px;color:#185FA5;display:block;margin-bottom:8px"></i><p style="font-size:13px;color:#374151">Extraindo texto de <strong>${escHtml(file.name)}</strong>...</p>`;
   try{
     if(file.name.toLowerCase().endsWith('.pdf')){
       _extractedText=await extractPDFText(file);
@@ -4116,12 +4129,12 @@ async function handleFileInput(file){
       throw new Error('Formato não suportado. Use .PDF ou .DOCX');
     }
     const words=_extractedText.trim().split(/\s+/).length;
-    zone.innerHTML=`<i class="ti ti-file-check" style="font-size:32px;color:#059669;display:block;margin-bottom:8px"></i><p style="font-size:13px;font-weight:500;color:#374151">${file.name}</p><p style="font-size:11px;color:#9ca3af;margin-top:4px">~${words} palavras · Clique para trocar</p><input type="file" id="fileIn" accept=".pdf,.docx" style="display:none" onchange="handleFileInput(this.files[0])">`;
+    zone.innerHTML=`<i class="ti ti-file-check" style="font-size:32px;color:#059669;display:block;margin-bottom:8px"></i><p style="font-size:13px;font-weight:500;color:#374151">${escHtml(file.name)}</p><p style="font-size:11px;color:#9ca3af;margin-top:4px">~${words} palavras · Clique para trocar</p>`;
     status.textContent='✓ Texto extraído com sucesso — clique em Gerar Relatório.';
     status.style.color='#059669';
     status.style.display='block';
   }catch(err){
-    zone.innerHTML=`<i class="ti ti-alert-circle" style="font-size:32px;color:#dc2626;display:block;margin-bottom:8px"></i><p style="font-size:13px;color:#dc2626">${err.message}</p><p style="font-size:11px;color:#9ca3af;margin-top:6px">Clique para tentar novamente</p><input type="file" id="fileIn" accept=".pdf,.docx" style="display:none" onchange="handleFileInput(this.files[0])">`;
+    zone.innerHTML=`<i class="ti ti-alert-circle" style="font-size:32px;color:#dc2626;display:block;margin-bottom:8px"></i><p style="font-size:13px;color:#dc2626">${escHtml(err.message)}</p><p style="font-size:11px;color:#9ca3af;margin-top:6px">Clique para tentar novamente</p>`;
     status.style.display='none';
     _extractedText='';
   }
@@ -4197,7 +4210,7 @@ async function generateAIReport(){
     showGenErr('Erro na API: '+err.message);
   }finally{
     btn.disabled=false;
-    btn.innerHTML='<i class="ti ti-sparkles"></i> Gerar Relatório com IA';
+    btn.innerHTML='<i class="ti ti-file-description"></i> Gerar relatório';
   }
 }
 
@@ -4214,24 +4227,24 @@ Extraia e organize apenas o que estiver explicitamente na transcrição:
 
 Use exatamente este formato compatível com WhatsApp/Slack:
 
-📋 *Daily — ${sprint} · ${team} · ${date}*
+*Daily — ${sprint} · ${team} · ${date}*
 
-✅ *Em andamento:*
+*Em andamento:*
 • [item] ([% se disponível]) _([Responsável])_
 
-🚨 *Blockers:*
+*Blockers:*
 • [descrição do blocker] _([quem está impactado / quem resolve])_
 
-⚠️ *Impedimentos:*
+*Impedimentos:*
 • [descrição]
 
-🔴 *Gargalo:*
+*Gargalo:*
 • [descrição e impacto no fluxo]
 
-👤 *Encaminhamentos:*
+*Encaminhamentos:*
 • [Pessoa] → [ação concreta e prazo se mencionado]
 
-📊 *Forecast:* [X]% das entregas da sprint no prazo
+*Forecast:* [X]% das entregas da sprint no prazo
 
 Regras:
 - Omita seções sem dados na transcrição
@@ -4265,7 +4278,7 @@ Regras:
 
 function showGenErr(msg){
   const el=document.getElementById('genError');
-  el.textContent='❌ '+msg;
+  el.textContent=''+msg;
   el.style.display='block';
 }
 
@@ -4335,39 +4348,39 @@ function generateFromData(){
   const delta=(n,inv,unit='')=>{
     if(n===0)return'';
     const good=inv?(n<0):(n>0);
-    return` (${good?'✅':'⚠️'} ${n>0?'+':''}${n}${unit} vs anterior)`;
+    return` (${n>0?'+':''}${n}${unit} vs anterior)`;
   };
 
   const lines=[
-    `📋 *Status Report — ${q}-${sp} · ${team} · ${dateFmt}*`,
+    `*Status Report — ${q}-${sp} · ${team} · ${dateFmt}*`,
     '',
-    `📊 *Execução da Sprint (${sp}):*`,
+    `*Execução da Sprint (${sp}):*`,
     `• Planejado: *${d.pl[i]}* | Entregue: *${d.en[i]}* | Transbordo: *${d.tr[i]}*`,
-    `• Taxa de aderência: *${pct}%*${pct>=90?' ✅':pct>=75?' ⚠️':' 🔴'}`,
+    `• Taxa de aderência: *${pct}%*${pct>=90?' (meta atingida)':pct>=75?' (atenção)':' (abaixo do esperado)'}`,
     '',
-    `⏱️ *Métricas de Fluxo:*`,
+    `*Métricas de Fluxo:*`,
     `• Lead Time p85: *${d.p85[i]}d*${delta(ltD,true,'d')}`,
     `• Lead Time p50: *${d.p50[i]}d* · p95: *${d.p95[i]}d*`,
     `• Throughput: *${d.en[i]} itens*${delta(tpD,false,' itens')}`,
     '',
-    `🚀 *DORA — ${doraT(d.df[i],'df')} performance:*`,
+    `*DORA — ${doraT(d.df[i],'df')} performance:*`,
     `• Deployment Frequency (DF): *${d.df[i].toFixed(1)}/sem* (${doraT(d.df[i],'df')})`,
     `• Lead Time for Changes (LTC): *${d.lc[i].toFixed(1)}d* | MTTR: *${d.mt[i].toFixed(1)}h*`,
     `• Change Failure Rate (CFR): *${d.cf[i].toFixed(1)}%* (${doraT(d.cf[i],'cf')})`,
     '',
-    `🐛 *Qualidade:*`,
+    `*Qualidade:*`,
     `• Bugs abertos: *${d.bo[i]}*${delta(boD,true)} | Fechados: *${d.bc[i]}*`,
     `• Retrabalho: *${d.rw[i]}%*`,
   ];
 
   if(d.tr[i]>0){
     lines.push('');
-    lines.push(`⚠️ *Transbordo para próxima sprint:*`);
+    lines.push(`*Transbordo para próxima sprint:*`);
     lines.push(`• *${d.tr[i]}* ${d.tr[i]>1?'itens transbordaram':'item transbordou'} — priorizar no próximo planning`);
   }
 
   lines.push('');
-  lines.push(`🎯 *Índice de Saúde ${q}: *${h.total}/100** — ${tierLabel(h.total)}`);
+  lines.push(`*Índice de Saúde ${q}: *${h.total}/100** — ${tierLabel(h.total)}`);
   lines.push(`_Aderência: ${h.adherence} · LT: ${h.ltScore} · Bloqueios: ${h.blockScore} · Transbordo: ${h.carryScore} · Estabilidade: ${h.stabilityScore}_`);
 
   return lines.join('\n');
@@ -4407,17 +4420,17 @@ Responda APENAS com o relatório aprimorado, sem comentários adicionais.`;
     if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${resp.status}`);}
     const data=await resp.json();
     document.getElementById('aiOutput').textContent=data.content[0].text;
-    document.getElementById('genOutputSource').textContent='Aprimorado por Claude Haiku · FlowOps AI IA';
+    document.getElementById('genOutputSource').textContent='Aprimorado com Claude (Haiku)';
     eb.style.display='none';
   }catch(err){
     showGenErr('Erro ao aprimorar: '+err.message);
   }finally{
     eb.disabled=false;
-    eb.innerHTML='<i class="ti ti-sparkles"></i> Aprimorar com IA';
+    eb.innerHTML='<i class="ti ti-edit"></i> Aprimorar com Claude';
   }
 }
 
-// ─── Multi-time ───────────────────────────────────────────────
+// ─── Comparar times ───────────────────────────────────────────────
 
 function renderMultiTeam(){
   const q=gq(), i=gi();
@@ -4471,8 +4484,7 @@ function renderMultiTeam(){
 
   document.getElementById('pm').innerHTML=`
     <div class="cf-header">
-      <p class="cf-title">Multi-time</p>
-      <p class="cf-sub">Comparativo entre squads para apoiar decisões estratégicas e identificar oportunidades de melhoria contínua — ${q} · Sprint ${sp}.</p>
+      <p class="cf-sub">Indicadores lado a lado para identificar oportunidades de melhoria — ${q} · Sprint ${sp}.</p>
     </div>
 
     <p class="mt-sec">Índice de saúde do quarter</p>
@@ -4640,15 +4652,15 @@ function _mdSprintPlanning(team,q,sp,spLabel,spDate,now,d,i){
 
 ---
 
-## 🎯 Objetivo da Sprint
+## Objetivo da Sprint
 
 Finalizar o módulo de relatórios exportáveis (Sprint Planning, Forecast e Final de Sprint em Markdown/Wiki), integrar o calendário de deploys com as métricas DORA e elevar a cobertura de testes para 80% nas features críticas.
 
 ---
 
-## ↩️ Transbordo da Sprint Anterior (${q}-S${Math.max(1,i)})
+## Transbordo da Sprint Anterior (${q}-S${Math.max(1,i)})
 
-> ⚠️ **${d.tr[Math.max(0,i-1)]>0?d.tr[Math.max(0,i-1)]+' item(s) transbordaram':'Nenhum item transbordou'} da sprint anterior** e ${d.tr[Math.max(0,i-1)]>0?'foram replanejados nesta sprint':'foram planejados nesta sprint sem histórico de transbordo'}.
+> **${d.tr[Math.max(0,i-1)]>0?d.tr[Math.max(0,i-1)]+' item(s) transbordaram':'Nenhum item transbordou'} da sprint anterior** e ${d.tr[Math.max(0,i-1)]>0?'foram replanejados nesta sprint':'foram planejados nesta sprint sem histórico de transbordo'}.
 
 | ID | Tipo | Descrição | Pts | Responsável | Motivo do transbordo | % concluído (sprint ant.) |
 |----|------|-----------|-----|-------------|----------------------|--------------------------|
@@ -4658,7 +4670,7 @@ Finalizar o módulo de relatórios exportáveis (Sprint Planning, Forecast e Fin
 
 ---
 
-## 📋 Itens Planejados (novos nesta sprint)
+## Itens Planejados (novos nesta sprint)
 
 | ID | Descrição | Tipo | Pontos | Responsável | Prioridade |
 |----|-----------|------|--------|-------------|------------|
@@ -4672,7 +4684,7 @@ Finalizar o módulo de relatórios exportáveis (Sprint Planning, Forecast e Fin
 
 ---
 
-## 👥 Capacidade Prevista do Time
+## Capacidade Prevista do Time
 
 | Indicador | Valor |
 |-----------|-------|
@@ -4684,14 +4696,14 @@ Finalizar o módulo de relatórios exportáveis (Sprint Planning, Forecast e Fin
 
 ---
 
-## ⚠️ Riscos Identificados
+## Riscos Identificados
 
 - **R1 — Alta probabilidade / Alto impacto:** Dependência de API externa do time de Infra (US-055). Mitigação: reunião de alinhamento agendada para dia 1 da sprint.
 - **R2 — Média probabilidade / Médio impacto:** Escopo de US-055 pode expandir após integração real com DORA. Mitigação: Spike técnico de 0,5 dia no início da sprint.
 
 ---
 
-## 🔗 Dependências Conhecidas
+## Dependências Conhecidas
 
 | Dependência | Tipo | Contato | Prazo |
 |-------------|------|---------|-------|
@@ -4700,7 +4712,7 @@ Finalizar o módulo de relatórios exportáveis (Sprint Planning, Forecast e Fin
 
 ---
 
-## ✅ Critérios de Aceite Relevantes
+## Critérios de Aceite Relevantes
 
 - **US-054:** Arquivo .md baixado com nome correto, conteúdo estruturado em headings, tabelas e bullet points. Compatível com Confluence e Wiki corporativa.
 - **US-055:** Deploy registrado no calendário reflete automaticamente na taxa de Deployment Frequency do painel DORA. Latência máxima: 0s.
@@ -4708,7 +4720,7 @@ Finalizar o módulo de relatórios exportáveis (Sprint Planning, Forecast e Fin
 
 ---
 
-## 📌 Premissas da Sprint
+## Premissas da Sprint
 
 - Ambiente de homologação estável e disponível do dia 1
 - API de webhooks da Infra Squad entregue até dia 17/06
@@ -4717,20 +4729,20 @@ Finalizar o módulo de relatórios exportáveis (Sprint Planning, Forecast e Fin
 
 ---
 
-## 🚫 Itens Fora do Escopo desta Sprint
+## Itens Fora do Escopo desta Sprint
 
 - US-007 — Exportação em PDF (aguarda licença jurídica · Q2-S7)
 - US-018 — Integração com Google Calendar (escopo expandido pendente · Q2-S7)
 
 ---
 
-## 💬 Observações da Scrum Master
+## Observações da Scrum Master
 
 Sprint com foco técnico alto. Atenção especial à dependência com Infra Squad — contato feito antes do planning, compromisso verbal de entrega até 17/06. Caso não ocorra, US-055 precisará ser renegociada ou dividida. Spike técnico de 0,5 dia aprovado pelo PO para reduzir incerteza de US-055.
 
 ---
 
-## ▶️ Próximos Passos
+## Próximos Passos
 
 - [ ] **P1** — Spike técnico de US-055 (João Ramos) · Até 16/06 · Entregável: decisão de arquitetura documentada
 - [ ] **P2** — Confirmação de entrega da API de webhooks com Infra (Ana Costa) · Até 16/06 · Canal: Slack #infra-alpha-sync
@@ -4738,11 +4750,11 @@ Sprint com foco técnico alto. Atenção especial à dependência com Infra Squa
 
 ---
 
-## 📊 Resumo executivo
+## Resumo executivo
 
 Sprint ${spLabel} planejada com ${pl} pontos de capacidade e 5 itens priorizados. Risco principal identificado: dependência de API externa (Infra Squad). Mitigação ativa em curso. Meta de entrega: ≥ 85% do escopo comprometido.
 
-## 🎯 Ações Recomendadas
+## Ações Recomendadas
 
 1. Confirmar entrega da API de webhooks com Infra Squad no dia 1 da sprint
 2. Realizar spike técnico de US-055 antes de qualquer comprometimento de estimativa
@@ -4775,7 +4787,7 @@ function _mdForecast(team,q,sp,spLabel,spDate,now,d,i){
 
 ---
 
-## 📊 Snapshot de Progresso
+## Snapshot de Progresso
 
 | Indicador | Valor |
 |-----------|-------|
@@ -4788,7 +4800,7 @@ function _mdForecast(team,q,sp,spLabel,spDate,now,d,i){
 
 ---
 
-## 📈 Projeção até o Fim da Sprint
+## Projeção até o Fim da Sprint
 
 | Indicador | Valor |
 |-----------|-------|
@@ -4796,24 +4808,24 @@ function _mdForecast(team,q,sp,spLabel,spDate,now,d,i){
 | Itens restantes | ${pl-done} |
 | Dias úteis restantes | 5 |
 | Previsão de entrega | ${pl-atRisk} de ${pl} itens |
-| Classificação | ${forecast>=85?'🟢 No alvo':forecast>=70?'🟡 Atenção':'🔴 Risco'} |
+| Classificação | ${forecast>=85?'No alvo':forecast>=70?'Atenção':'Risco'} |
 
 ---
 
-## 🔴 Blockers
+## Blockers
 
 - **BL-01** — API de webhooks da Infra Squad não entregue (US-055) · Desde 17/06 · Impacto: Alto · Escalonado para EM
 
 ---
 
-## ⚠️ Riscos Ativos
+## Riscos Ativos
 
 - **R1 — Alta probabilidade:** US-055 pode transbordar caso API não seja entregue até 22/06. Plano B: integração manual via CSV.
 - **R2 — Média probabilidade:** Cobertura de testes (US-056) abaixo da meta — atualmente 68%. Ação: pair testing agendado.
 
 ---
 
-## 🔗 Dependências Externas
+## Dependências Externas
 
 | Dependência | Status | Novo Prazo | Contato |
 |-------------|--------|------------|---------|
@@ -4822,17 +4834,17 @@ function _mdForecast(team,q,sp,spLabel,spDate,now,d,i){
 
 ---
 
-## 🚀 Janela de Deploy
+## Janela de Deploy
 
 - **Data:** 25/06/2026 às 22h
 - **Ambiente:** Produção
-- **Status:** 🟢 Janela recomendada
+- **Status:** Janela recomendada
 - **Itens:** US-054 + BUG-041
 - **Rollback:** 20 minutos · Responsável: João Ramos
 
 ---
 
-## ✅ Recomendações de Ação
+## Recomendações de Ação
 
 - [ ] **A1** — Escalar blocker de API junto ao Engineering Manager (Ana Costa) · Até 20/06
 - [ ] **A2** — Acionar Plano B de US-055 caso API não chegue até 22/06 (João Ramos) · Até 22/06
@@ -4840,11 +4852,11 @@ function _mdForecast(team,q,sp,spLabel,spDate,now,d,i){
 
 ---
 
-## 📊 Resumo executivo
+## Resumo executivo
 
 Forecast de ${forecast}% para ${spLabel}. ${done} de ${pl} itens concluídos na semana 1. Principal risco: blocker de API externa com o time de Infra. Plano de contingência ativo. Deploy planejado para 25/06 em janela recomendada.
 
-## 🎯 Ações Recomendadas
+## Ações Recomendadas
 
 1. Escalar blocker imediatamente junto ao Engineering Manager
 2. Acionar Plano B (integração CSV) se prazo de 22/06 não for cumprido
@@ -4874,20 +4886,20 @@ function _mdFinalSprint(team,q,sp,spLabel,spDate,now,d,i){
 
 ---
 
-## 📊 Resultado da Sprint
+## Resultado da Sprint
 
 | Indicador | Valor | Status |
 |-----------|-------|--------|
 | Itens planejados | ${pl} | — |
-| Itens entregues | ${en} | ${pct>=85?'🟢 Meta atingida':pct>=70?'🟡 Atenção':'🔴 Abaixo da meta'} |
+| Itens entregues | ${en} | ${pct>=85?'Meta atingida':pct>=70?'Atenção':'Abaixo da meta'} |
 | Taxa de entrega | ${pct}% | ${pct>=85?'✓ ≥ 85%':'✗ < 85%'} |
-| Transbordo | ${tr} itens | ${tr===0?'🟢 Zero':'🔴 '+tr+' item(s)'} |
+| Transbordo | ${tr} itens | ${tr===0?'Zero':tr+' item(s)'} |
 | Bugs abertos | ${bo} | — |
 | Bugs fechados | ${bc} | — |
 
 ---
 
-## ✅ Sprint Review — Entregas Aceitas
+## Sprint Review — Entregas Aceitas
 
 - **FT-01** — Configuração de quarters e sprints · Aceito pelo PO · Deploy em produção ✓
 - **US-003** — Visualização de timeline unificada · Aceito · Aprovado em homologação · Sem regressões
@@ -4895,13 +4907,13 @@ function _mdFinalSprint(team,q,sp,spLabel,spDate,now,d,i){
 
 ---
 
-## ↩️ Transbordo
+## Transbordo
 
 ${tr>0?`- **US-007** — Exportação PDF (${tr} item(s) transbordado(s) para próxima sprint) · Impedimento resolvido · Estimativa: 3 dias`:'- Nenhum item transbordou nesta sprint. ✓'}
 
 ---
 
-## 🔄 Retrospectiva — Plano de Ação
+## Retrospectiva — Plano de Ação
 
 | # | Ação | Responsável | Prazo | Prioridade |
 |---|------|-------------|-------|------------|
@@ -4911,20 +4923,20 @@ ${tr>0?`- **US-007** — Exportação PDF (${tr} item(s) transbordado(s) para pr
 
 ---
 
-## 💡 Lições Aprendidas
+## Lições Aprendidas
 
-- ✅ **Positivo:** Pair programming acelerou resolução de itens técnicos complexos
-- ✅ **Positivo:** Comunicação precoce com Infra Squad evitou blocker recorrente
-- ⚠️ **A melhorar:** Dependências de UX mapeadas com menos de 48h geram blocker recorrente
-- ⚠️ **A melhorar:** Itens sem critérios de aceite claros têm 3× mais chances de transbordo
+- **Positivo:** Pair programming acelerou resolução de itens técnicos complexos
+- **Positivo:** Comunicação precoce com Infra Squad evitou blocker recorrente
+- **A melhorar:** Dependências de UX mapeadas com menos de 48h geram blocker recorrente
+- **A melhorar:** Itens sem critérios de aceite claros têm 3× mais chances de transbordo
 
 ---
 
-## 📊 Resumo executivo
+## Resumo executivo
 
 Sprint ${spLabel} encerrada com ${pct}% de aderência ao planejado (${en}/${pl} itens). ${tr===0?'Zero transbordos — excelente previsibilidade.':tr+' item(s) transbordado(s) para a próxima sprint.'} Principais aprendizados incorporados ao processo via plano de ação da retrospectiva.
 
-## 🎯 Ações Recomendadas
+## Ações Recomendadas
 
 1. Executar itens A1 e A2 do plano de ação antes do próximo planning
 2. ${tr>0?'Priorizar item(s) transbordado(s) no topo do backlog da próxima sprint':'Manter ritmo de zero transbordo na próxima sprint'}
@@ -4953,40 +4965,40 @@ function _mdDailyDigest(team,q,sp,spLabel,spDate,now,d,i){
 
 ---
 
-## 🟡 Indicadores do Dia
+## Indicadores do Dia
 
-- 🔴 **1 blocker ativo** — escalonamento em andamento
-- ⚠️ **1 risco novo** identificado
-- 🔗 **2 dependências externas** em monitoramento
-- 🔵 **6 itens em andamento**
+- **1 blocker ativo** — escalonamento em andamento
+- **1 risco novo** identificado
+- **2 dependências externas** em monitoramento
+- **6 itens em andamento**
 
 ---
 
-## 🔄 Em Progresso — Status e Evolução
+## Em Progresso — Status e Evolução
 
 | Item | Responsável | Progresso | Status |
 |------|-------------|-----------|--------|
-| US-003 — Timeline unificada (backend) | Maria S. | 80% | 🟢 On track |
-| US-004 — Filtro por quarter (PR review) | Tiago R. | 95% | 🟢 On track |
-| US-005 — Página de configurações | Ana C. | 60% | 🟢 On track |
-| US-007 — Exportação PDF | João R. | 0% | 🔴 Bloqueado |
+| US-003 — Timeline unificada (backend) | Maria S. | 80% | On track |
+| US-004 — Filtro por quarter (PR review) | Tiago R. | 95% | On track |
+| US-005 — Página de configurações | Ana C. | 60% | On track |
+| US-007 — Exportação PDF | João R. | 0% | Bloqueado |
 | Lead Time P85 atual | — | — | ${p85}d |
 
 ---
 
-## 🔴 Blockers
+## Blockers
 
 - **BL-01** — US-007 bloqueada por lib sem licença aprovada · Desde 12/01 · Responsável: João R. · Em escalonamento com Jurídico
 
 ---
 
-## 🐛 Bugs Reportados na Daily
+## Bugs Reportados na Daily
 
 - **BUG-035** — Calendário não exibe feriados nacionais corretamente · Severidade: Média · Reportado por: QA · Responsável: Dev Backend
 
 ---
 
-## 📅 Encaminhamentos Pós-Daily
+## Encaminhamentos Pós-Daily
 
 | Reunião | Envolvidos | Horário | Local |
 |---------|------------|---------|-------|
@@ -4996,11 +5008,11 @@ function _mdDailyDigest(team,q,sp,spLabel,spDate,now,d,i){
 
 ---
 
-## 📊 Resumo executivo
+## Resumo executivo
 
 Daily de ${now} com 1 blocker ativo (US-007 · licença de lib). 6 itens em andamento, 3 on-track. Risco novo identificado: prazo de refinamento de US-012. Encaminhamentos agendados para resolução hoje.
 
-## 🎯 Ações Recomendadas
+## Ações Recomendadas
 
 1. Jurídico deve retornar sobre licença PDF até COB de hoje
 2. Scrum Master monitora desbloqueio de US-007 e atualiza o time
@@ -5036,22 +5048,22 @@ function _mdQuarterReport(team,q,now,d){
 
 ---
 
-## 📊 Resultados Consolidados
+## Resultados Consolidados
 
 | Indicador | Valor | Meta | Status |
 |-----------|-------|------|--------|
 | Total planejado | ${totPl} itens | — | — |
-| Total entregue | ${totEn} itens | ≥ 85% do planejado | ${pct>=85?'🟢 ✓':'🔴 ✗'} |
-| Taxa de entrega | ${pct}% | ≥ 85% | ${pct>=85?'🟢 Meta atingida':'🔴 Abaixo da meta'} |
-| Total transbordo | ${totTr} itens | 0 | ${totTr===0?'🟢 Zero':'🟡 '+totTr} |
-| Sprints no alvo (≥85%) | ${sprintsMet}/${n} | ${n}/${n} | ${sprintsMet===n?'🟢 100%':'🟡 '+Math.round(sprintsMet/n*100)+'%'} |
-| Lead Time P85 final | ${d.p85[n-1]}d | ≤ 20d | ${d.p85[n-1]<=20?'🟢 ✓':'🔴 ✗'} |
-| Deploy Frequency final | ${d.df[n-1].toFixed(1)}/sem | ≥ 1/sem | ${d.df[n-1]>=1?'🟢 ✓':'🔴 ✗'} |
-| Saúde Geral | ${h.total}/100 | ≥ 70 | ${h.total>=85?'🟢 Elite':h.total>=70?'🟡 Bom':'🔴 Atenção'} |
+| Total entregue | ${totEn} itens | ≥ 85% do planejado | ${pct>=85?'✓':'✗'} |
+| Taxa de entrega | ${pct}% | ≥ 85% | ${pct>=85?'Meta atingida':'Abaixo da meta'} |
+| Total transbordo | ${totTr} itens | 0 | ${totTr===0?'Zero':totTr} |
+| Sprints no alvo (≥85%) | ${sprintsMet}/${n} | ${n}/${n} | ${sprintsMet===n?'100%':Math.round(sprintsMet/n*100)+'%'} |
+| Lead Time P85 final | ${d.p85[n-1]}d | ≤ 20d | ${d.p85[n-1]<=20?'✓':'✗'} |
+| Deploy Frequency final | ${d.df[n-1].toFixed(1)}/sem | ≥ 1/sem | ${d.df[n-1]>=1?'✓':'✗'} |
+| Saúde Geral | ${h.total}/100 | ≥ 70 | ${h.total>=85?'Elite':h.total>=70?'Bom':'Atenção'} |
 
 ---
 
-## 📈 Evolução Sprint a Sprint
+## Evolução Sprint a Sprint
 
 | Sprint | Planejado | Entregue | Transbordo | Lead Time P85 | DF |
 |--------|-----------|----------|------------|---------------|-----|
@@ -5059,7 +5071,7 @@ ${d.sp.map((s,i)=>`| ${s} | ${d.pl[i]} | ${d.en[i]} | ${d.tr[i]} | ${d.p85[i]}d 
 
 ---
 
-## 🏆 Saúde do Quarter
+## Saúde do Quarter
 
 | Dimensão | Pontuação |
 |----------|-----------|
@@ -5072,25 +5084,25 @@ ${d.sp.map((s,i)=>`| ${s} | ${d.pl[i]} | ${d.en[i]} | ${d.tr[i]} | ${d.p85[i]}d 
 
 ---
 
-## ⚠️ Principais Blockers do Quarter
+## Principais Blockers do Quarter
 
 - Identificados e resolvidos ao longo das 6 sprints (ver detalhes no painel DORA e Carga de Falhas)
 
 ---
 
-## 💡 Lições Aprendidas
+## Lições Aprendidas
 
-- ✅ Evolução consistente de Lead Time ao longo do quarter (${d.p85[0]}d → ${d.p85[n-1]}d)
-- ✅ Deploy Frequency cresceu de ${d.df[0].toFixed(1)} para ${d.df[n-1].toFixed(1)}/semana
-- ⚠️ Dependências externas continuam sendo o principal fator de risco de transbordo
+- Evolução consistente de Lead Time ao longo do quarter (${d.p85[0]}d → ${d.p85[n-1]}d)
+- Deploy Frequency cresceu de ${d.df[0].toFixed(1)} para ${d.df[n-1].toFixed(1)}/semana
+- Dependências externas continuam sendo o principal fator de risco de transbordo
 
 ---
 
-## 📊 Resumo executivo
+## Resumo executivo
 
 ${q} 2026 encerrado com índice de saúde de ${h.total}/100 (${h.total>=85?'Elite':h.total>=70?'High':h.total>=55?'Medium':'Low'}). Taxa de entrega consolidada: ${pct}%. ${sprintsMet} de ${n} sprints atingiram a meta de 85%. Lead Time P85 evoluiu de ${d.p85[0]}d para ${d.p85[n-1]}d (redução de ${Math.round((1-d.p85[n-1]/d.p85[0])*100)}%). Deploy Frequency passou de ${d.df[0].toFixed(1)} para ${d.df[n-1].toFixed(1)}/semana.
 
-## 🎯 Ações Recomendadas para o Próximo Quarter
+## Ações Recomendadas para o Próximo Quarter
 
 1. Manter mapeamento de dependências externas como ritual fixo no Planning Day
 2. Meta de Lead Time P85 para o próximo quarter: ≤ ${Math.round(d.p85[n-1]*0.85)}d (redução de 15%)
@@ -5121,7 +5133,7 @@ function _mdAIReport(team,q,sp,spLabel,now){
 
 ---
 
-## 📄 Relatório
+## Relatório
 
 ${raw.split('\n').map(l=>l.trim()).join('\n')}
 
@@ -5388,7 +5400,7 @@ function renderDoraBands(d,i){
     const segsHtml=b.segs.map(s=>`<div class="dband-seg" style="background:${s.bg}">${s.lbl}</div>`).join('');
     const refsHtml=b.refs.map(r=>`<div style="position:absolute;left:${r.pct}%;transform:translateX(-50%);font-size:9px;color:#c4c4c4">${r.lbl}</div>`).join('');
     const dirCls=b.better?'d-up':'d-down';
-    const dirTxt=b.better?'⬆ Quanto maior, melhor':'⬇ Quanto menor, melhor';
+    const dirTxt=b.better?'↑ Quanto maior, melhor':'↓ Quanto menor, melhor';
     return`<div class="dband-row" title="${TOOLTIP[b.type]}">
       <div class="dband-info">
         <p class="dband-sig">${SIGLA[b.type]}</p>
@@ -5448,13 +5460,13 @@ function renderDoraBands(d,i){
 
   // Footer (DORA source)
   const footer=`<div class="db-footer">
-    <span class="db-footer-ico">ℹ️</span>
+    <span class="db-footer-ico"><i class="ti ti-info-circle"></i></span>
     <span>As faixas de classificação são baseadas em benchmarks públicos do modelo <strong>DORA (DevOps Research and Assessment)</strong>, amplamente utilizados na indústria de tecnologia como referência comparativa. Esses valores servem como orientação e podem variar conforme o contexto e a maturidade de cada organização.</span>
   </div>`;
 
   // Important notice
   const notice=`<div class="db-notice">
-    <span style="font-size:14px;flex-shrink:0">⚠️</span>
+    <span style="font-size:14px;flex-shrink:0"><i class="ti ti-alert-triangle"></i></span>
     <span><strong>Importante:</strong> o objetivo das métricas DORA é apoiar a melhoria contínua do fluxo de entrega e da confiabilidade operacional. Elas não devem ser utilizadas para medir produtividade individual ou comparar pessoas.</span>
   </div>`;
 
@@ -5466,7 +5478,7 @@ function renderDoraBands(d,i){
     const segsHtml=b.segs.map(s=>`<div class="dband-seg" style="background:${s.bg}">${s.lbl}</div>`).join('');
     const refsHtml=b.refs.map(r=>`<div style="position:absolute;left:${r.pct}%;transform:translateX(-50%);font-size:9px;color:#c4c4c4">${r.lbl}</div>`).join('');
     const dirCls=b.better?'d-up':'d-down';
-    const dirTxt=b.better?'⬆ Quanto maior, melhor':'⬇ Quanto menor, melhor';
+    const dirTxt=b.better?'↑ Quanto maior, melhor':'↓ Quanto menor, melhor';
     return`<div class="dband-row" title="${TOOLTIP[b.type]}">
       <div class="dband-info">
         <p class="dband-sig">${SIGLA[b.type]}</p>
@@ -5622,7 +5634,7 @@ function renderFlowMetrics(){
   const gcCls=botPct>=50?'gc-bad':botPct>=35?'':'gc-ok';
   gc.className='gc'+(gcCls?' '+gcCls:'');
   gc.style.display='block';
-  const gcLabelMap={'gc-bad':'🚨 Maior Oportunidade de Melhoria','':'🚧 Principal Gargalo do Fluxo','gc-ok':'✅ Fluxo Equilibrado'};
+  const gcLabelMap={'gc-bad':'Maior Oportunidade de Melhoria','':'Principal Gargalo do Fluxo','gc-ok':'Fluxo Equilibrado'};
   document.getElementById('gc-label').textContent=gcLabelMap[gcCls]||gcLabelMap[''];
   document.getElementById('gc-stage').textContent=bot.stage;
   document.getElementById('gc-stats').innerHTML=
@@ -5650,7 +5662,7 @@ function renderFlowMetrics(){
 
   // Throughput meta label
   const tl=document.getElementById('tpMetaLabel');
-  if(tl) tl.textContent=`${METAS.tp} itens/sprint ${d.en[i]>=METAS.tp?'✅':'⚠ atual: '+d.en[i]}`;
+  if(tl) tl.textContent=`${METAS.tp} itens/sprint · ${d.en[i]>=METAS.tp?'meta atingida':'atual: '+d.en[i]}`;
 
   // WIP horizontal bars
   const wb=document.getElementById('wipBars');
@@ -5698,7 +5710,7 @@ function renderFlowRecs(d,i,wip,aging,bot){
   if(highRisk>1) recs.push({cls:'rec-bad',ico:'🔴',txt:`${highRisk} itens ultrapassaram o Percentil 85 e merecem atenção imediata — priorize o desbloqueio na próxima Daily.`});
   else if(highRisk===1) recs.push({cls:'rec-warn',ico:'🟡',txt:`1 item ultrapassou o Percentil 85 — acompanhe de perto para evitar impacto no Lead Time da sprint.`});
 
-  recs.push({cls:'rec-info',ico:'⚙️',txt:`Gargalo identificado em "${bot.stage}" — considere limitar o WIP desse estágio para destravar o fluxo antes de agir nas demais etapas.`});
+  recs.push({cls:'rec-info',ico:'',txt:`Gargalo identificado em "${bot.stage}" — considere limitar o WIP desse estágio para destravar o fluxo antes de agir nas demais etapas.`});
 
   const el=document.getElementById('flowRecsList');
   if(el) el.innerHTML=recs.map(r=>`<div class="ai-rec ${r.cls}"><span class="ai-rec-ico">${r.ico}</span><span>${r.txt}</span></div>`).join('');
@@ -5711,18 +5723,18 @@ function gerarAlertaFluxo(){
   const over=wips.filter(w=>w.limit&&w.wip>w.limit).map(w=>`${w.stage} (${w.wip}/${w.limit})`);
   const highRisk=aging.filter(a=>a.risk==='alto').map(a=>`${a.name} ${a.days}d`);
   const sDate=SPRINT_DATES[q][i];
-  const alert=`🚨 *ALERTA DE FLUXO — Time Alpha | ${q} / S${i+1} (${sDate})*
+  const alert=`*ALERTA DE FLUXO — ${document.getElementById('sTeam').value} | ${q} / S${i+1} (${sDate})*
 
-📊 *KPIs do Sprint*
-• Lead Time p85: ${d.p85[i]}d ${d.p85[i]<=METAS.p85?'✅':'🔴'} (meta ≤${METAS.p85}d)
-• Throughput: ${d.en[i]} itens ${d.en[i]>=METAS.tp?'✅':'⚠'} (meta ${METAS.tp})
-• Rework: ${d.rw[i]}% ${d.rw[i]<=5?'✅':d.rw[i]<=15?'⚠':'🔴'}
+*KPIs do Sprint*
+• Lead Time p85: ${d.p85[i]}d (meta ≤${METAS.p85}d)${d.p85[i]<=METAS.p85?'':' — acima da meta'}
+• Throughput: ${d.en[i]} itens (meta ${METAS.tp})${d.en[i]>=METAS.tp?'':' — abaixo da meta'}
+• Rework: ${d.rw[i]}%${d.rw[i]<=5?'':d.rw[i]<=15?' — atenção':' — crítico'}
 
-⚙️ *Cycle Time por Estágio*
-${STAGES.slice(0,4).map((st,k)=>`• ${st}: ${ct[k]}d${k===bot.idx?' ← 🔴 GARGALO':''}`).join('\n')}
+*Cycle Time por Estágio*
+${STAGES.slice(0,4).map((st,k)=>`• ${st}: ${ct[k]}d${k===bot.idx?' ← GARGALO':''}`).join('\n')}
 
-${over.length?`⚠️ *WIP acima do limite*\n${over.map(w=>`• ${w}`).join('\n')}\n`:''}${highRisk.length?`🔴 *Itens com aging crítico*\n${highRisk.map(h=>`• ${h}`).join('\n')}\n`:''}\
-💡 *Ação recomendada*
+${over.length?`*WIP acima do limite*\n${over.map(w=>`• ${w}`).join('\n')}\n`:''}${highRisk.length?`*Itens com aging crítico*\n${highRisk.map(h=>`• ${h}`).join('\n')}\n`:''}\
+*Ação recomendada*
 Focar em desbloquear ${bot.stage} — considerar pair review, reduzir batch size ou limitar WIP neste estágio.
 
 _Gerado por FlowOps AI · ${new Date().toLocaleDateString('pt-BR')}_`;
@@ -5736,7 +5748,7 @@ async function copyAlert(btn){
   try{
     await navigator.clipboard.writeText(txt);
     const orig=btn.textContent;
-    btn.textContent='✅ Copiado!';
+    btn.textContent='Copiado!';
     setTimeout(()=>btn.textContent=orig,2000);
   }catch{btn.textContent='Selecione e copie manualmente';}
 }
@@ -6414,11 +6426,11 @@ let _depFormAmb='',_depFormSis='';
 
 function calDeployInsights(dep){
   const check=checkDeployDate(dep.date,dep.id);
-  const ins=[...check.reasons.map(r=>'⚠ '+r)];
-  if(!dep.rollbackEstrategia) ins.push('⚠ Plano de rollback não registrado (Regra 7)');
-  if(!dep.postDeploy) ins.push('⚠ Validação pós-deploy não registrada (Regra 8)');
-  if(!dep.approvalPO&&(dep.criticidade==='Crítica'||dep.criticidade==='Alta')) ins.push('⚠ Aprovação do Product Owner pendente');
-  if(!dep.approvalTL&&dep.criticidade==='Crítica') ins.push('⚠ Aprovação do Tech Lead pendente');
+  const ins=[...check.reasons.map(r=>''+r)];
+  if(!dep.rollbackEstrategia) ins.push('Plano de rollback não registrado (Regra 7)');
+  if(!dep.postDeploy) ins.push('Validação pós-deploy não registrada (Regra 8)');
+  if(!dep.approvalPO&&(dep.criticidade==='Crítica'||dep.criticidade==='Alta')) ins.push('Aprovação do Product Owner pendente');
+  if(!dep.approvalTL&&dep.criticidade==='Crítica') ins.push('Aprovação do Tech Lead pendente');
   const finalStatus=ins.some(i=>i.includes('Regra 5')||i.includes('Regra 4')||i.includes('Regra 1')||i.includes('Regra 2')||i.includes('Regra 3'))?'block':check.status;
   return{status:finalStatus,messages:ins};
 }
@@ -6560,12 +6572,12 @@ function renderCalSprints(){
     todayBox=`<div class="cal-today-box">
       <div>
         <div class="cal-today-main">Sprint atual: ${cur.qId} ${cur.id} — ${calFmtBR(cur.start)} a ${calFmtBR(cur.end)}</div>
-        <div class="cal-today-sub">${remaining} dias úteis restantes · ${elapsed}/${total} dias decorridos${isLastDay?' · ⚠ Último dia útil!':''}</div>
+        <div class="cal-today-sub">${remaining} dias úteis restantes · ${elapsed}/${total} dias decorridos${isLastDay?' · Último dia útil!':''}</div>
         <div style="margin-top:6px"><div class="spr-prog-track" style="width:220px"><div class="spr-prog-fill" style="width:${pct}%;background:#185FA5"></div></div></div>
       </div>
       <div class="cal-today-pills">
         <span class="cal-badge cal-badge-and">Sprint em andamento</span>
-        ${isLastDay?'<span class="cal-badge" style="background:#fee2e2;color:#dc2626">⚠ Último dia</span>':''}
+        ${isLastDay?'<span class="cal-badge" style="background:#fee2e2;color:#dc2626">Último dia</span>':''}
       </div>
     </div>`;
   }
@@ -6666,7 +6678,7 @@ function renderCalDeploys(){
       const ins=calDeployInsights(dep);
       const insHtml=ins.messages.length
         ?`<div class="dep-insight${ins.status==='ok'?' dep-insight-ok':''}">${ins.messages.map(m=>`<div>${escHtml(m)}</div>`).join('')}</div>`
-        :`<div class="dep-insight dep-insight-ok">✅ Nenhuma violação de regra identificada.</div>`;
+        :`<div class="dep-insight dep-insight-ok">Nenhuma violação de regra identificada.</div>`;
       const stColor=dep.status==='Concluído'?'#059669':dep.status==='Cancelado'?'#9ca3af':dep.status==='Em execução'?'#d97706':'#185FA5';
       const stBg=dep.status==='Concluído'?'#f0fdf4':dep.status==='Cancelado'?'#f3f4f6':dep.status==='Em execução'?'#fffbeb':'#dbeafe';
       const histTip=dep.history&&dep.history.length?` title="Última alteração: ${escHtml(dep.history[dep.history.length-1].at)}"`:'' ;
@@ -9025,8 +9037,8 @@ function openMetricDetail(key){
       <div class="gm-sec"><div class="gm-sec-title">Quem acompanha</div>${who}</div>
       <div class="gm-sec"><div class="gm-sec-title">Quando analisar</div>${when}</div>
       <div class="gm-sec"><div class="gm-sec-title">Exemplo prático</div><div class="gm-example">${m.example}</div></div>
-      <div class="gm-sec"><div class="gm-sec-title">💡 Insights Automáticos</div><div class="gm-insight">${m.insight}</div></div>
-      <div class="gm-sec"><div class="gm-sec-title">⭐ Por que isso importa?</div><div class="gm-why">${m.why}</div></div>
+      <div class="gm-sec"><div class="gm-sec-title">Exemplo de leitura</div><div class="gm-insight">${m.insight}</div></div>
+      <div class="gm-sec"><div class="gm-sec-title">Por que isso importa?</div><div class="gm-why">${m.why}</div></div>
     </div>`;
   document.getElementById('gmodalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
@@ -9038,6 +9050,54 @@ function closeGlossModal(){
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeGlossModal();closeDepModal();}});
 // ─────────────────────────────────────────────────────────────────────
+
+// ── Sinaleira: apresentação ───────────────────────────────────────────────
+// 🟢🟡🔴🔵 continuam sendo o valor interno (groupSinaleira, statusEmoji, m.emoji comparam o texto).
+// Na tela viram um marcador de cor; o caractere permanece no DOM, oculto, então textContent não muda.
+(function(){
+  const NOME={'\u{1F7E2}':['g','Normal'],'\u{1F7E1}':['y','Atenção'],'\u{1F534}':['r','Crítico'],'\u{1F535}':['b','Informativo']};
+  const RX=/([\u{1F7E2}\u{1F7E1}\u{1F534}\u{1F535}])/u;
+  const SKIP=/^(SCRIPT|STYLE|TEXTAREA|OPTION|SELECT|INPUT|TITLE|NOSCRIPT)$/;
+  function wrap(tn){
+    const par=tn.parentNode;
+    if(!par||SKIP.test(par.nodeName)||(par.classList&&par.classList.contains('sdot'))) return;
+    const parts=tn.nodeValue.split(RX);
+    if(parts.length<2) return;
+    const frag=document.createDocumentFragment();
+    parts.forEach(t=>{
+      if(!t) return;
+      const n=NOME[t];
+      if(!n){frag.appendChild(document.createTextNode(t));return;}
+      const sp=document.createElement('span');
+      sp.className='sdot';sp.setAttribute('data-sd',n[0]);sp.setAttribute('role','img');sp.setAttribute('aria-label',n[1]);
+      sp.textContent=t;frag.appendChild(sp);
+    });
+    par.replaceChild(frag,tn);
+  }
+  function paintDots(root){
+    if(!root) return;
+    if(root.nodeType===3){if(RX.test(root.nodeValue)) wrap(root);return;}
+    if(root.nodeType!==1) return;
+    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);
+    const list=[];
+    for(let n=w.nextNode();n;n=w.nextNode()) if(RX.test(n.nodeValue)) list.push(n);
+    list.forEach(wrap);
+  }
+  window.paintDots=paintDots;
+  const mo=new MutationObserver(muts=>{
+    mo.disconnect();
+    try{
+      muts.forEach(m=>{
+        if(m.type==='characterData') paintDots(m.target);
+        else m.addedNodes.forEach(paintDots);
+      });
+    }finally{ observe(); }
+  });
+  function observe(){ mo.observe(document.body,{childList:true,subtree:true,characterData:true}); }
+  paintDots(document.body);
+  observe();
+})();
+
 
 window.onload=function(){ updateSprintOptions(); applyTeamColor(); upd(); markSelects(); };
 </script>
@@ -9078,39 +9138,6 @@ window.onload=function(){ updateSprintOptions(); applyTeamColor(); upd(); markSe
     </div>
   </div>
 </div>
-
-<!-- ──────────────────────────────────────────────────────────────────
-     CONTADOR DE VISITAS
-     Serviço: counterapi.dev — gratuito, sem cadastro, CORS aberto.
-     Endpoint: GET https://api.counterapi.dev/v1/{namespace}/{key}/up
-       · Cada chamada incrementa +1 e retorna {"value": N, ...}.
-       · Namespace único por projeto para evitar conflito com outros sites.
-     Fallback: se a API falhar por qualquer motivo (offline, CORS, timeout),
-       o elemento #visitCount exibe "—" e nenhuma exceção é lançada.
-     ────────────────────────────────────────────────────────────────── -->
-<script>
-(function () {
-  var NAMESPACE = 'flowops-ai-acnpacheco';
-  var KEY       = 'visitas';
-  var el        = document.getElementById('visitCount');
-
-  if (!el) return;
-
-  fetch('https://api.counterapi.dev/v1/' + NAMESPACE + '/' + KEY + '/up')
-    .then(function (res) {
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      return res.json();
-    })
-    .then(function (data) {
-      if (data && typeof data.count === 'number') {
-        el.textContent = data.count.toLocaleString('pt-BR');
-      }
-    })
-    .catch(function () {
-      // API indisponível — mantém "—", não quebra a aplicação
-    });
-}());
-</script>
 
 </body>
 </html>
