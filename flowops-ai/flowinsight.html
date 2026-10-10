@@ -766,6 +766,18 @@
   .del-tab:hover:not(.on){background:var(--bg-insight)}
   .delp{display:none}.delp.on{display:block}
   @media(max-width:600px){#pdel .del-tab{min-height:40px}}
+  /* Fase 2 — Lote 10 — Resultados (sub-navegação no padrão de Engenharia & Qualidade; reaproveita os componentes .hm-* da Visão Geral) */
+  .res-nav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .res-tab{padding:6px 14px;font-size:12px;color:#6b7280;border:1px solid #e5e5e3;background:#f9fafb;border-radius:8px;cursor:pointer;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+  .res-tab.on{background:var(--clr-info);color:#fff;border-color:var(--clr-info)}
+  .res-tab:hover:not(.on){background:var(--bg-insight)}
+  .resp{display:none}.resp.on{display:block}
+  .resp .cc,.resp>div{min-width:0;max-width:100%}
+  .res-oo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-card-gap);margin-bottom:var(--sp-card-gap);align-items:start}
+  .res-oo-card{background:#fff;border:1px solid #e5e5e3;border-radius:12px;padding:var(--sp-card-pad);min-width:0}
+  .res-oo-line{font-size:var(--fs-body);font-weight:var(--fw-body);color:#374151;margin-bottom:var(--sp-section-gap);overflow-wrap:anywhere}
+  @media(max-width:1023px){.res-oo-grid{grid-template-columns:1fr}}
+  @media(max-width:600px){#pres .res-tab{min-height:40px}#res-output-outcome .hm-open{min-height:40px}#res-output-outcome .hm-obj{min-height:40px}}
 
   /* ── Glossário de Métricas ──────────────────────────── */
   .gl-header{margin-bottom:16px}
@@ -1017,9 +1029,8 @@
   <button class="ntab"    onclick="tab(this,'ed')"  aria-label="Estratégia"            title="Estratégia"><i class="ti ti-target"></i> Estratégia</button>
   <button class="ntab"    onclick="tab(this,'del')" aria-label="Delivery"              title="Delivery"><i class="ti ti-truck-delivery"></i> Delivery</button>
   <button class="ntab"    onclick="tab(this,'eq')"  aria-label="Engenharia & Qualidade" title="Engenharia &amp; Qualidade"><i class="ti ti-shield-half"></i> Engenharia &amp; Qualidade</button>
-  <button class="ntab"    onclick="tab(this,'r')"   aria-label="Relatório de quarter"  title="Relatório de quarter"><i class="ti ti-file-analytics"></i> Relatório de quarter</button>
+  <button class="ntab"    onclick="tab(this,'res')" aria-label="Resultados"            title="Resultados"><i class="ti ti-file-analytics"></i> Resultados</button>
   <button class="ntab"    onclick="tab(this,'rel')" aria-label="Relatórios"            title="Relatórios"><i class="ti ti-file-text"></i> Relatórios</button>
-  <button class="ntab"    onclick="tab(this,'m')"   aria-label="Multi-time"            title="Multi-time"><i class="ti ti-users-group"></i> Multi-time</button>
   <button class="ntab"    onclick="tab(this,'plan')" aria-label="Planejamento"         title="Planejamento"><i class="ti ti-calendar-event"></i> Planejamento</button>
 </nav>
 
@@ -1694,16 +1705,24 @@
     </div>
   </div>
 
-  <!-- Relatório de Quarter -->
-  <div id="pr" class="fp">
+  <!-- Resultados (Fase 2 — Lote 10): Quarter (antigo Relatório de quarter, com Entrega e Resultado) e Comparar times (antigo Multi-time) -->
+  <div id="pres" class="fp">
     <div class="cf-header">
-      <p class="cf-title">Relatório de quarter</p>
-      <p class="cf-sub">Consolidação dos resultados do Quarter, tendências, indicadores estratégicos e evolução das entregas.</p>
+      <p class="cf-title">Resultados</p>
+      <p class="cf-sub">Entrega e resultado do quarter, consolidação dos indicadores e comparação entre times.</p>
     </div>
-    <div style="display:flex;justify-content:flex-end;padding:4px 0 8px">
-      <button class="btn-md" onclick="exportMd('quarter')"><i class="ti ti-markdown" style="font-size:12px"></i> Exportar Markdown</button>
+    <div class="res-nav">
+      <button class="res-tab on" onclick="resTab(this,'res-quarter')" aria-label="Quarter" title="Quarter"><i class="ti ti-file-analytics"></i> Quarter</button>
+      <button class="res-tab" onclick="resTab(this,'res-compare')" aria-label="Comparar times" title="Comparar times"><i class="ti ti-users-group"></i> Comparar times</button>
     </div>
-    <div id="qr-content"></div>
+    <div id="res-quarter" class="resp on">
+      <div id="res-output-outcome"></div>
+      <div style="display:flex;justify-content:flex-end;padding:4px 0 8px">
+        <button class="btn-md" onclick="exportMd('quarter')"><i class="ti ti-markdown" style="font-size:12px"></i> Exportar Markdown</button>
+      </div>
+      <div id="qr-content"></div>
+    </div>
+    <div id="res-compare" class="resp"><div id="pm"></div></div>
   </div>
 
   <!-- Status Reports -->
@@ -2273,15 +2292,6 @@
     </div><!-- #sg -->
   </div><!-- #prel -->
 
-  <!-- Multi-time -->
-  <div id="pm" class="fp">
-    <div style="text-align:center;padding:48px 24px;color:#9ca3af">
-      <i class="ti ti-users-group" style="font-size:40px;display:block;margin-bottom:12px;color:#d1d5db"></i>
-      <p style="font-size:14px;font-weight:500;color:#6b7280;margin-bottom:4px">Painel comparativo carregando…</p>
-      <p style="font-size:12px">Selecione Quarter e Sprint no filtro e clique na aba Multi-time.</p>
-    </div>
-  </div>
-
   <!-- Planejamento (Fase 2 — Lote 8): Capacity, Capacity × Velocity e Timeline (vindos de Acompanhamento) e Calendário corporativo -->
   <div id="pplan" class="fp">
     <div class="cf-header">
@@ -2693,7 +2703,7 @@ function upd(){
   renderDora();
   renderCargaFalhas();
   renderEqOverview();
-  if(document.getElementById('pm').classList.contains('on')) renderMultiTeam();
+  if(document.getElementById('pres').classList.contains('on')) renderResultados();
   if(document.getElementById('pdel').classList.contains('on')) renderDelivery();
   if(document.getElementById('ped').classList.contains('on')) renderOKRs();
   if(document.getElementById('ped').classList.contains('on')&&document.getElementById('ed-discovery').classList.contains('on')) renderDiscovery();
@@ -3393,8 +3403,7 @@ function tab(el,id){
   el.classList.add('on');
   document.querySelectorAll('.fp').forEach(p=>p.classList.remove('on'));
   document.getElementById('p'+id).classList.add('on');
-  if(id==='r') renderQuarterReport();
-  if(id==='m') renderMultiTeam();
+  if(id==='res') resTab(document.querySelector('#pres .res-tab'),'res-quarter');
   if(id==='del') delTab(document.querySelector('#pdel .del-tab'),'del-flow');
   if(id==='eq') eqTab(document.querySelector('#peq .eq-tab'),'eq-saude');
   if(id==='plan') planTab(document.querySelector('#pplan .plan-tab'),'plan-cap');
@@ -3461,6 +3470,21 @@ function eqAttention(d,i){
   if(qSt.c!=='cfst-ok') att.push({key:'qhs',bad:qSt.c==='cfst-bad',txt:`QHS em ${qhs}/100 — qualidade em estado ${qSt.c==='cfst-bad'?'crítico':'de atenção'}.`});
   if(relTier.c==='t-med'||relTier.c==='t-low') att.push({key:'rel',bad:relTier.c==='t-low',txt:`Reliability em ${rel} pts — abaixo do esperado (nível ${relTier.l}).`});
   return att;
+}
+
+function resTab(el,id){
+  document.querySelectorAll('#pres .res-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('#pres .resp').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  renderResultados(id);
+}
+
+// Renderiza só o sub-painel ativo (os gráficos do comparativo não devem ser desenhados ocultos)
+function renderResultados(id){
+  const on=id||(document.querySelector('#pres .resp.on')||{}).id;
+  if(on==='res-quarter'){renderOutputOutcome();renderQuarterReport();}
+  if(on==='res-compare') renderMultiTeam();
 }
 
 function planTab(el,id){
@@ -8150,6 +8174,50 @@ function renderHomeStrategy(s){
   }
   el.innerHTML=hd+'<div class="hm-cols"><div class="hm-col"><div class="hm-col-hd">Objetivos de '+E(periodTxt)+' · todos os times</div>'+left+'</div>'
     +'<div class="hm-col"><div class="hm-col-hd">Discovery</div>'+right+'</div></div>';
+}
+
+// ── RESULTADOS — Entrega (output) e Resultado (outcome) do quarter (Fase 2 — Lote 10) ──────────
+// Entrega: calculada de D/DB/DG (time e quarter do filtro, todas as sprints do quarter).
+// Resultado: objetivos persistidos do quarter (todos os times, como na Visão Geral): status e progresso declarados; resultados-chave com métrica
+// comparados com a meta na sprint do filtro (mesma leitura de okrMeasure da aba Objetivos). Sem veredito automático e sem exemplos.
+const RES_MAX_OBJECTIVES=8;
+function renderOutputOutcome(){
+  const el=document.getElementById('res-output-outcome');
+  if(!el) return;
+  const E=escHtml,q=gq(),d=gd()[q],ctx=okrPeriodContext(),n=d.sp.length,team=document.getElementById('sTeam').value;
+  const sum=a=>a.reduce((x,y)=>x+y,0),avg=a=>sum(a)/a.length,periodTxt=ctx.quarter+(ctx.year?' '+ctx.year:'');
+  const totEn=sum(d.en),totPl=sum(d.pl),pt=(v,um,pl)=>v+' '+(v===1?um:pl);
+  const row=(l,v)=>'<div class="hm-count"><dt>'+l+'</dt><dd>'+v+'</dd></div>';
+  const left='<div class="res-oo-card"><div class="hm-col-hd">Entrega (output) · '+E(team)+' · '+q+'</div><dl class="hm-counts">'
+    +row('Sprints no quarter',n)+row('Itens entregues',totEn+' de '+totPl+' planejados ('+Math.round(totEn/totPl*100)+'%)')
+    +row('Throughput médio por sprint',avg(d.en).toFixed(1)+' itens')+row('Velocity média',avg(d.vl).toFixed(1)+' SP')
+    +row('Deployment Frequency média',avg(d.df).toFixed(1)+'/sem')+'</dl><div class="hm-cap">Calculado · todas as sprints do quarter</div></div>';
+  const os=OKR.state(),all=os.data.objectives,objs=all.filter(o=>o.period.quarter===ctx.quarter&&(ctx.year===null||o.period.year===ctx.year))
+    .map((o,k)=>({o:o,k:k})).sort((a,b)=>HOME_OBJ_RANK[a.o.status]-HOME_OBJ_RANK[b.o.status]||a.k-b.k).map(x=>x.o);
+  let body,summary='';
+  if(os.issue) body=depMsgHtml('warn',HOME_OKR_ISSUE[os.issue])+homeOpenBtn('ed:ed-okr');
+  else if(!all.length) body='<p class="hm-empty">Nenhum objetivo registrado.</p>'+homeOpenBtn('ed:ed-okr');
+  else if(!objs.length) body='<p class="hm-empty">Nenhum objetivo em '+E(periodTxt)+'.</p>'+homeOpenBtn('ed:ed-okr');
+  else{
+    const tot={ok:0,warn:0,bad:0};
+    const rows=objs.map(o=>{
+      const c={ok:0,warn:0,bad:0};
+      o.keyResults.forEach(k=>{if(!k.measure) return;const r=okrMeasure(k.measure.metric,k.target,o.team,ctx);if(r.state==='ok'){c[r.status]++;tot[r.status]++;}});
+      const nm=c.ok+c.warn+c.bad;
+      const prog=o.progress===null?'Progresso não informado':'Progresso informado: '+Number(o.progress)+'%';
+      return '<div class="hm-obj"><div class="hm-obj-main"><div class="hm-obj-top"><div class="hm-obj-t">'+E(o.title)+'</div><span class="hm-chip hm-t-'+HOME_OBJ_TONE[o.status]+'">'+OKR_STATUS[o.status].pt+'</span></div>'
+        +'<div class="hm-prog"><span>'+prog+'</span></div>'
+        +'<div class="hm-cap">'+E([o.team||'',pt(o.keyResults.length,'resultado-chave','resultados-chave'),nm?'medidos em '+ctx.sprintLabel+': '+c.ok+' com meta atingida, '+c.warn+' perto da meta, '+c.bad+' fora da meta':'sem métrica medida em '+ctx.sprintLabel].filter(Boolean).join(' · '))+'</div></div></div>';
+    });
+    const shown=rows.slice(0,RES_MAX_OBJECTIVES),more=rows.length-shown.length;
+    const nMeasured=tot.ok+tot.warn+tot.bad;
+    body=shown.join('')+(more>0?'<div class="hm-more">+'+more+(more===1?' objetivo':' objetivos')+'</div>':'')+'<div class="hm-cap" style="margin-top:6px">Declarado (status e progresso) · Calculado (resultados-chave medidos, meta comparada em '+ctx.sprintLabel+')</div>'+homeOpenBtn('ed:ed-okr');
+    summary='<p class="res-oo-line"><strong>Síntese do quarter.</strong> Entregue: '+totEn+' de '+totPl+' itens planejados. Resultado: '
+      +(nMeasured?tot.ok+' de '+nMeasured+' resultados-chave medidos com a meta atingida em '+ctx.sprintLabel:'nenhum resultado-chave com métrica medida em '+ctx.sprintLabel)
+      +'; '+pt(objs.filter(o=>o.status==='at-risk').length,'objetivo Em risco','objetivos Em risco')+'.</p>';
+  }
+  const right='<div class="res-oo-card"><div class="hm-col-hd">Resultado (outcome) · Objetivos de '+E(periodTxt)+' · todos os times</div>'+body+'</div>';
+  el.innerHTML='<div class="res-oo-grid">'+left+right+'</div>'+summary;
 }
 
 // Um snapshot por render, repassado aos dois blocos. Falha nos blocos novos nunca derruba a Visão Geral.
