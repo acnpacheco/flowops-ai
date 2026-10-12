@@ -901,13 +901,7 @@
   .ab-value-icon{font-size:22px;color:#185FA5;margin-bottom:8px}
   .ab-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
   .ab-chip{padding:5px 13px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:20px;font-size:11px;font-weight:600;color:#185FA5;white-space:nowrap}
-  .ab-chip.ab-chip-ai{background:#eff6ff;border-color:#bfdbfe;color:#185FA5}
   .ab-chip.ab-chip-tool{background:#f0fdf4;border-color:#bbf7d0;color:#059669}
-  .ab-ai-block{background:#f8faff;border:1px solid #bfdbfe;border-left:4px solid #185FA5;border-radius:12px;padding:20px 24px;margin-bottom:20px}
-  .ab-ai-block-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-  .ab-ai-block-hd i{font-size:22px;color:#185FA5}
-  .ab-ai-block-title{font-size:13px;font-weight:700;color:#185FA5}
-  .ab-ai-body{font-size:13px;line-height:1.75;color:#374151}
   .ab-ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
   @media(max-width:640px){.ab-ps-grid{grid-template-columns:1fr}}
   .ab-ps-card{background:#fff;border-radius:12px;border:1px solid #e5e5e3;padding:18px}
@@ -1744,7 +1738,7 @@
   <div id="prel" class="fp">
     <div class="cf-header">
       <p class="cf-title">Relatórios</p>
-      <p class="cf-sub">Relatórios de Sprint Planning, Forecast, Daily Digest e encerramento, gerados a partir dos dados do painel. O aprimoramento com Claude é opcional.</p>
+      <p class="cf-sub">Relatórios de Sprint Planning, Forecast, Daily Digest e encerramento, gerados a partir dos dados do painel. O aprimoramento de texto é opcional.</p>
     </div>
     <div class="snav">
       <button class="stab on" onclick="sr(this,'ssp')"><i class="ti ti-clipboard-list"></i> Sprint planning</button>
@@ -2232,7 +2226,7 @@
           <div style="display:flex;gap:6px">
             <button class="gen-tab on" onclick="switchGenInput(this,'gUpload')"><i class="ti ti-file-upload"></i> Arquivo</button>
             <button class="gen-tab" onclick="switchGenInput(this,'gPaste')"><i class="ti ti-clipboard-text"></i> Colar texto</button>
-            <button class="gen-tab" onclick="switchGenInput(this,'gData')"><i class="ti ti-database"></i> Dados FlowOps AI</button>
+            <button class="gen-tab" onclick="switchGenInput(this,'gData')"><i class="ti ti-database"></i> Dados do painel</button>
           </div>
         </div>
 
@@ -2263,7 +2257,7 @@
             </div>
             <div id="dataPreview" style="font-size:12px;color:#374151;line-height:1.9"></div>
           </div>
-          <p style="font-size:11px;color:#6b7280">O relatório usa os dados da sprint selecionada nos filtros. <strong>Não é necessária API key</strong> para a geração básica. O aprimoramento com Claude é opcional e envia o relatório à API da Anthropic.</p>
+          <p style="font-size:11px;color:#6b7280">O relatório usa os dados da sprint selecionada nos filtros. <strong>A geração a partir dos dados do painel não exige API key.</strong> Arquivo, texto colado e o aprimoramento de texto enviam o conteúdo à API da Anthropic e usam a sua chave.</p>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px">
@@ -2299,7 +2293,7 @@
         </div>
         <pre id="aiOutput" style="font-size:13px;line-height:1.75;white-space:pre-wrap;color:#111827;background:#f9fafb;padding:16px;border-radius:8px;border:1px solid #e5e5e3;font-family:inherit;margin:0"></pre>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
-          <button id="enhanceBtn" onclick="enhanceWithAI()" style="display:none;font-size:12px;background:var(--clr-info);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;display:flex;align-items:center;gap:5px;font-weight:500"><i class="ti ti-edit"></i> Aprimorar com Claude</button>
+          <button id="enhanceBtn" onclick="enhanceWithAI()" style="display:none;font-size:12px;background:var(--clr-info);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;display:flex;align-items:center;gap:5px;font-weight:500"><i class="ti ti-edit"></i> Aprimorar texto</button>
           <p id="genOutputSource" style="font-size:11px;color:#9ca3af;margin:0;text-align:right;flex:1"></p>
         </div>
       </div>
@@ -2370,7 +2364,7 @@
         <p class="ab-hero-role"><i class="ti ti-user" style="font-size:13px;margin-right:4px"></i>Agile Master · Scrum Master · Gestão de Processos e Melhoria Contínua</p>
         <p class="ab-hero-body">
           Atuo no apoio a squads e times de desenvolvimento de produtos, com foco em consolidação de métricas, geração de relatórios executivos, acompanhamento de riscos e apoio à tomada de decisão baseada em dados.<br><br>
-          Foi dessa vivência prática que nasceu o <strong>FlowOps AI</strong>: uma solução criada para reduzir o esforço operacional e transformar dados dispersos em informações estratégicas com apoio de Inteligência Artificial.
+          Foi dessa vivência prática que nasceu o <strong>FlowOps AI</strong>: uma solução criada para reduzir o esforço operacional e transformar dados dispersos em informações claras para decisão.
         </p>
         <a class="ab-linkedin" href="https://www.linkedin.com/in/acnpacheco/" target="_blank" rel="noopener noreferrer">
           <i class="ti ti-brand-linkedin"></i> LinkedIn
@@ -2382,7 +2376,7 @@
     <div class="ab-section-hd"><i class="ti ti-target"></i> Proposta de Valor</div>
     <div class="ab-value">
       <div class="ab-value-icon"><i class="ti ti-bulb"></i></div>
-      Mais do que desenvolver um dashboard, meu objetivo é utilizar Inteligência Artificial para apoiar líderes ágeis na tomada de decisão, aumentar a previsibilidade das entregas e liberar tempo para atividades estratégicas de maior valor agregado.
+      Mais do que desenvolver um dashboard, meu objetivo é apoiar líderes ágeis na tomada de decisão com dados confiáveis, aumentar a previsibilidade das entregas e liberar tempo para atividades de maior valor agregado.
     </div>
 
     <!-- Seção 3 — Especialidades -->
@@ -2402,23 +2396,8 @@
         <span class="ab-chip ab-chip-tool">Jira</span>
         <span class="ab-chip ab-chip-tool">Confluence</span>
         <span class="ab-chip ab-chip-tool">Azure DevOps</span>
-        <span class="ab-chip ab-chip-ai">IA aplicada à Agilidade</span>
-        <span class="ab-chip ab-chip-ai">Engenharia de Prompts</span>
-        <span class="ab-chip ab-chip-ai">Automação com IA</span>
-        <span class="ab-chip ab-chip-ai">Análise orientada por dados</span>
+        <span class="ab-chip">Análise orientada por dados</span>
       </div>
-    </div>
-
-    <!-- Seção 4 — Entusiasta de IA -->
-    <div class="ab-section-hd"><i class="ti ti-bulb"></i> Entusiasta de IA</div>
-    <div class="ab-ai-block" style="margin-bottom:20px">
-      <div class="ab-ai-block-hd">
-        <i class="ti ti-bulb"></i>
-        <span class="ab-ai-block-title">Inteligência Artificial como alavanca estratégica</span>
-      </div>
-      <p class="ab-ai-body">
-        Sou uma entusiasta de Inteligência Artificial e acredito no potencial da tecnologia para ampliar a capacidade humana, automatizar tarefas repetitivas e apoiar decisões mais rápidas e assertivas. Busco constantemente aprender, experimentar novas abordagens e integrar IA à gestão ágil e à melhoria contínua.
-      </p>
     </div>
 
     <!-- Seção 5 — Propósito -->
@@ -2439,9 +2418,9 @@
           <span>Solução proposta</span>
         </div>
         <div class="ab-ps-item"><span class="ab-ps-dot dot-ok"></span>Centralizar indicadores relevantes em um único painel</div>
-        <div class="ab-ps-item"><span class="ab-ps-dot dot-ok"></span>Automatizar análises e geração de status reports</div>
+        <div class="ab-ps-item"><span class="ab-ps-dot dot-ok"></span>Gerar status reports a partir dos dados do painel</div>
         <div class="ab-ps-item"><span class="ab-ps-dot dot-ok"></span>Apoiar previsibilidade e gestão baseada em dados</div>
-        <div class="ab-ps-item"><span class="ab-ps-dot dot-ok"></span>Gerar insights e recomendações com IA</div>
+        <div class="ab-ps-item"><span class="ab-ps-dot dot-ok"></span>Indicar próximas ações a partir dos dados da sprint</div>
         <div class="ab-ps-item"><span class="ab-ps-dot dot-ok"></span>Liberar Scrum Masters para atividades de maior valor estratégico</div>
       </div>
     </div>
@@ -2453,20 +2432,17 @@
         <span>Visão de Futuro — O que vem por aí no FlowOps AI</span>
       </div>
       <div class="ab-future-grid">
-        <div class="ab-future-item"><i class="ti ti-circuit-board"></i>Orquestração de Agentes de IA</div>
         <div class="ab-future-item"><i class="ti ti-map-2"></i>Value Stream Mapping (VSM)</div>
         <div class="ab-future-item"><i class="ti ti-trending-up"></i>Flow Efficiency</div>
         <div class="ab-future-item"><i class="ti ti-chart-dots"></i>Forecasts preditivos com Monte Carlo</div>
-        <div class="ab-future-item"><i class="ti ti-list-check"></i>Recomendações inteligentes por IA</div>
         <div class="ab-future-item"><i class="ti ti-plug-connected"></i>Integração com Jira, Confluence, ADO e GitHub</div>
-        <div class="ab-future-item"><i class="ti ti-target-arrow"></i>IA para apoio à tomada de decisão executiva</div>
       </div>
     </div>
 
     <!-- Seção 7 — Mensagem final -->
     <div class="ab-final">
       <p class="ab-final-quote">
-        O FlowOps AI representa minha visão sobre o futuro da gestão ágil: unir experiência prática, melhoria contínua e Inteligência Artificial para transformar dados em decisões, reduzir desperdícios e potencializar a entrega de valor para pessoas, times e organizações.
+        O FlowOps AI representa minha visão sobre o futuro da gestão ágil: unir experiência prática e melhoria contínua para transformar dados em decisões, reduzir desperdícios e potencializar a entrega de valor para pessoas, times e organizações.
       </p>
       <p style="font-size:12px;color:#185FA5;font-weight:600;margin-top:16px">— Ana Cristina Nunes Pacheco</p>
     </div>
@@ -4078,7 +4054,7 @@ function initGenPage(){
   document.getElementById('genDate').value=new Date().toISOString().split('T')[0];
   const k=localStorage.getItem('fi_api_key');
   const badge=document.getElementById('keyBadge');
-  badge.textContent=k?'API key configurada — o aprimoramento com Claude está disponível':'Para aprimorar com Claude, configure sua API key da Anthropic acima';
+  badge.textContent=k?'API key configurada — o aprimoramento de texto está disponível':'Para aprimorar o texto, configure sua API key da Anthropic acima';
   badge.style.color=k?'#059669':'#d97706';
 }
 
@@ -4095,7 +4071,7 @@ function saveApiKey(){
   s.style.color='#059669';
   document.getElementById('apiKey').value='••••••••••••••••••••';
   const badge=document.getElementById('keyBadge');
-  badge.textContent='API key configurada — o aprimoramento com Claude está disponível';
+  badge.textContent='API key configurada — o aprimoramento de texto está disponível';
   badge.style.color='#059669';
 }
 
@@ -4174,7 +4150,7 @@ async function generateAIReport(){
     const k=localStorage.getItem('fi_api_key');
     const eb=document.getElementById('enhanceBtn');
     eb.style.display=k?'flex':'none';
-    document.getElementById('genOutputSource').textContent='Gerado dos dados FlowOps AI · sem IA';
+    document.getElementById('genOutputSource').textContent='Gerado a partir dos dados do painel';
     setTimeout(()=>out.scrollIntoView({behavior:'smooth'}),100);
     return;
   }
@@ -4420,13 +4396,13 @@ Responda APENAS com o relatório aprimorado, sem comentários adicionais.`;
     if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${resp.status}`);}
     const data=await resp.json();
     document.getElementById('aiOutput').textContent=data.content[0].text;
-    document.getElementById('genOutputSource').textContent='Aprimorado com Claude (Haiku)';
+    document.getElementById('genOutputSource').textContent='Texto aprimorado';
     eb.style.display='none';
   }catch(err){
     showGenErr('Erro ao aprimorar: '+err.message);
   }finally{
     eb.disabled=false;
-    eb.innerHTML='<i class="ti ti-edit"></i> Aprimorar com Claude';
+    eb.innerHTML='<i class="ti ti-edit"></i> Aprimorar texto';
   }
 }
 
@@ -5116,8 +5092,8 @@ ${q} 2026 encerrado com índice de saúde de ${h.total}/100 (${h.total>=85?'Elit
 
 function _mdAIReport(team,q,sp,spLabel,now){
   const raw=(document.getElementById('aiOutput')||{innerText:''}).innerText.trim();
-  if(!raw) return`# Relatório IA — ${team} · ${spLabel}\n\n> Nenhum relatório gerado ainda.\n\n*Gerado pelo FlowOps AI · ${team} · ${now}*\n`;
-  return`# Relatório Gerado por IA — ${team} · ${spLabel}
+  if(!raw) return`# Relatório — ${team} · ${spLabel}\n\n> Nenhum relatório gerado ainda.\n\n*Gerado pelo FlowOps AI · ${team} · ${now}*\n`;
+  return`# Relatório — ${team} · ${spLabel}
 
 > **Gerado pelo FlowOps AI** · ${now}
 
@@ -8339,7 +8315,7 @@ const GL={
     measures:'A confiabilidade de prazo com 85% de certeza histórica — resistente a outliers, diferente da média aritmética.',
     goal:'Oferecer referência estatisticamente robusta para acordos de prazo com stakeholders, substituindo estimativas subjetivas por probabilidades baseadas em dados reais.',
     formula:'P85 = Valor de Lead Time no qual 85% dos itens históricos foram entregues\n(calculado sobre a série histórica de Lead Times das sprints)',
-    howCalc:'O sistema armazena o P85 calculado de cada sprint no campo "p85". A meta configurada é ≤ 20 dias. É usado como referência para Aging, semáforo do card Lead Time P85 e insights automáticos.',
+    howCalc:'O sistema armazena o P85 calculado de cada sprint no campo "p85". A meta configurada é ≤ 20 dias. É usado como referência para Aging, semáforo do card Lead Time P85 e as leituras de risco.',
     interpret:[{lbl:'Saudável',cls:'ok',txt:'P85 ≤ 20 dias e estável — SLA confiável para stakeholders.'},{lbl:'Atenção',cls:'warn',txt:'P85 entre 20 e 26 dias, ou diferença grande vs P50 (alta variabilidade).'},{lbl:'Risco',cls:'bad',txt:'P85 > 26 dias ou crescente por 3+ sprints — SLA comprometido.'}],
     questions:['O P85 está dentro do SLA acordado com os stakeholders?','A diferença entre P50 e P85 é grande? (indica outliers e imprevisibilidade)','O P85 tem crescido nas últimas sprints?','Com que confiança podemos prometer entrega em X dias?'],
     who:['Scrum Master','Product Owner','Squad Leader','Gerente de Tecnologia','Agile Coach'],
@@ -8683,7 +8659,7 @@ const GL={
     short:'Processo e módulo de governança de mudanças do FlowOps AI — centraliza deploys, RDMs e janelas de implantação.',
     what:'GEMUD é o módulo de Gestão e Monitoramento de Mudanças e Deploys do FlowOps AI. Centraliza o planejamento de implantações, aplicação de regras de negócio, rastreabilidade de mudanças e integração com as métricas DORA e de Carga de Falhas.',
     measures:'A maturidade do processo de gestão de mudanças da organização — rastreabilidade, conformidade com regras, previsibilidade e governança das implantações.',
-    goal:'Ser a fonte única de verdade sobre mudanças planejadas, em execução e concluídas — eliminando deploys não rastreados, reduzindo riscos operacionais e fornecendo dados para análises de IA.',
+    goal:'Ser a fonte única de verdade sobre mudanças planejadas, em execução e concluídas — eliminando deploys não rastreados, reduzindo riscos operacionais e fornecendo dados para análises de fluxo e de risco.',
     formula:'Não se aplica — é um processo de governança.\nKPIs do GEMUD: taxa de conformidade com janelas, % de deploys com rollback, % com aprovação registrada, MTTR médio.',
     howCalc:'O módulo Calendário de Deploys do FlowOps AI implementa o GEMUD. Os dados registrados alimentam Deployment Frequency, CFR e MTTR automaticamente quando integrado ao painel DORA.',
     interpret:[{lbl:'Maduro',cls:'ok',txt:'100% dos deploys registrados, com rollback e aprovações. Zero deploys não rastreados.'},{lbl:'Em evolução',cls:'warn',txt:'>80% dos deploys registrados. Alguns campos obrigatórios em branco.'},{lbl:'Inicial',cls:'bad',txt:'<80% dos deploys rastreados ou processo informal sem aprovações.'}],
