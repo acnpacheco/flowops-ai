@@ -984,6 +984,19 @@
     .main-nav::-webkit-scrollbar{display:none}
     .ntab{padding:10px 8px;font-size:12px;gap:4px}
   }
+  /* Estado temporal da sprint — Realizado (encerrada), Atual (em andamento) e Previsão (futura) */
+  .sprint-bar{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;padding:8px 12px;margin-bottom:12px;background:#fff;border:1px solid #e5e5e3;border-radius:8px;font-size:12px;color:#374151}
+  .sb-chip{font-size:11px;font-weight:600;padding:2px 9px;border-radius:12px;border:1px solid;white-space:nowrap}
+  .sb-real{color:var(--clr-neutral);background:#f9fafb;border-color:#d1d5db}
+  .sb-atual{color:var(--clr-info);background:#eff6ff;border-color:#bfdbfe}
+  .sb-prev{color:#b45309;background:#fffbeb;border-color:#fde68a}
+  .sb-txt{font-weight:500;color:#111827}
+  .sb-sub{font-size:11px;color:var(--clr-neutral)}
+  .sprint-nota-sp{display:none}
+  body:is([data-sprint-state="atual"],[data-sprint-state="futura"]) .sprint-nota-sp:not(:empty){display:block;margin-bottom:var(--sp-card-gap)}
+  body:is([data-sprint-state="atual"],[data-sprint-state="futura"]) .sg-panel>:not(.cf-header):not(.sprint-nota-sp){display:none!important}
+  .sn-acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .sh-nota{font-size:11px;color:var(--clr-neutral);margin:6px 0 10px}
 </style>
 </head>
 <body>
@@ -1047,6 +1060,8 @@
 </div><!-- /.site-header -->
 
 <main class="content">
+
+  <div id="sprintBar" class="sprint-bar" role="status" aria-live="polite"></div>
 
   <!-- Visão Geral -->
   <div id="pv" class="fp on">
@@ -2485,7 +2500,6 @@ const DG={
   Q4:{sp:['S1','S2','S3','S4','S5','S6'],pl:[16,16,17,17,18,18],en:[15,15,16,16,17,18],vl:[46,41,52,49,58,63],cap:[52,48,58,56,64,68],tr:[1,1,1,1,1,0],p50:[8,7,7,7,6,6],p85:[11,11,10,10,9,8],p95:[13,12,11,10,10,9],bo:[1,1,1,1,1,0],bc:[14,15,16,17,18,19],rw:[5,4,4,3,3,2],df:[5.8,6.2,6.6,7.0,7.4,7.8],lc:[1.4,1.2,1.1,1.0,0.9,0.8],mt:[2.4,2.1,1.9,1.7,1.5,1.3],cf:[3.4,3.0,2.7,2.4,2.1,1.8]}
 };
 
-const CURRENT_Q='Q2', CURRENT_S=5;
 const SPRINT_DATES={
   Q1:['02/01–15/01','16/01–29/01','30/01–12/02','13/02–26/02','27/02–12/03','13/03–26/03'],
   Q2:['27/03–09/04','10/04–23/04','24/04–07/05','08/05–21/05','22/05–04/06','05/06–18/06'],
@@ -2493,6 +2507,151 @@ const SPRINT_DATES={
   Q4:['11/09–24/09','25/09–08/10','09/10–22/10','23/10–05/11','06/11–19/11','20/11–03/12'],
 };
 const METAS={p85:20,tp:17,vl:55,pct:90,tr:1,bo:3,bc:8,reo:2,res:3,wip:9,aging:2,cfr:10};
+
+// ── Estado temporal da sprint ─────────────────────────────────────────────────────────────
+// Realizado = sprint encerrada · Atual = sprint em andamento · Previsto = sprint futura.
+// As datas vêm de SPRINT_DATES (sem ano; vale SPRINT_ANO). O dataset registra só o FECHAMENTO de cada sprint
+// (não há acompanhamento diário, bloqueios por sprint nem itens em refinamento), então sprints atual e futura não
+// têm resultado realizado: elas são cortadas das séries D/DB/DG (que passam a ter só as sprints encerradas) e o plano
+// de início da sprint atual (pl e cap) fica em SPRINT_PLANO. Nada disso cria dado novo.
+const SPRINT_ANO=2026;
+function sprintHoje(){return new Date();}
+function sprintIntervalo(q,i){
+  const p=(s,fim)=>{const m=/^(\d{2})\/(\d{2})$/.exec(s.trim());const dt=new Date(SPRINT_ANO,+m[2]-1,+m[1]);if(fim)dt.setHours(23,59,59,999);return dt;};
+  const t=SPRINT_DATES[q][i].split('–');
+  return{ini:p(t[0],false),fim:p(t[1],true)};
+}
+// dias úteis de 'de' até 'ate' (inclusive), sem feriados
+function sprintDiasUteis(de,ate){
+  let n=0;const c=new Date(de.getFullYear(),de.getMonth(),de.getDate()),f=new Date(ate.getFullYear(),ate.getMonth(),ate.getDate());
+  for(;c<=f;c.setDate(c.getDate()+1)){const w=c.getDay();if(w!==0&&w!==6)n++;}
+  return n;
+}
+function sprintEstado(q,i){
+  const t=sprintHoje(),r=sprintIntervalo(q,i),total=sprintDiasUteis(r.ini,r.fim);
+  const kind=t<r.ini?'futura':(t<=r.fim?'atual':'encerrada');
+  const e={kind:kind,q:q,i:i,ini:r.ini,fim:r.fim,total:total,datas:SPRINT_DATES[q][i],rot:q+' · S'+(i+1)};
+  if(kind==='atual'){e.dia=Math.min(total,sprintDiasUteis(r.ini,t));e.restam=Math.max(0,total-e.dia);}
+  if(kind==='futura'){const h=new Date(t.getFullYear(),t.getMonth(),t.getDate());e.emDias=Math.round((r.ini-h)/864e5);}
+  return e;
+}
+function sprintsEncerradas(q){let k=0;for(let i=0;i<SPRINT_DATES[q].length;i++) if(sprintEstado(q,i).kind==='encerrada') k++;return k;}
+function sprintUltimaEncerrada(){
+  const qs=Object.keys(SPRINT_DATES);
+  for(let a=qs.length-1;a>=0;a--){const k=sprintsEncerradas(qs[a]);if(k>0) return sprintEstado(qs[a],k-1);}
+  return null;
+}
+// done = todas as sprints encerradas · prog = já começou · plan = ainda não começou
+function sprintQuarterEstado(q){
+  const k=sprintsEncerradas(q);
+  if(k===SPRINT_DATES[q].length) return 'done';
+  return sprintEstado(q,0).kind==='futura'?'plan':'prog';
+}
+function sprintBloqueada(){return sprintEstado(gq(),gi()).kind!=='encerrada';}
+
+const SPRINT_PLANO={};
+[['Time Alpha',D],['Time Beta',DB],['Time Gamma',DG]].forEach(([time,ds])=>Object.keys(ds).forEach(q=>{
+  const d=ds[q],k=sprintsEncerradas(q);
+  for(let i=k;i<d.sp.length;i++) if(sprintEstado(q,i).kind==='atual') SPRINT_PLANO[time]={q:q,i:i,pl:d.pl[i],cap:d.cap[i]};
+  if(k<d.sp.length) Object.keys(d).forEach(f=>{if(Array.isArray(d[f])) d[f]=d[f].slice(0,k);});
+}));
+
+// Sprints encerradas do time, em ordem cronológica (todos os quarters)
+function sprintHistorico(time){
+  const ds=time==='Time Beta'?DB:time==='Time Gamma'?DG:D,out=[];
+  Object.keys(SPRINT_DATES).forEach(q=>{const d=ds[q];for(let i=0;i<d.sp.length;i++) out.push({q:q,i:i,rot:q+' · S'+(i+1),en:d.en[i],pl:d.pl[i],tr:d.tr[i],p85:d.p85[i]});});
+  return out;
+}
+const sprintMediana=a=>{const s=a.slice().sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2;};
+
+function irParaSprint(q,i){
+  const sq=document.getElementById('sQ');sq.value=q;updateSprintOptions();
+  document.getElementById('sS').value=String(i);upd();
+}
+
+function sprintBarHtml(e){
+  const R='<span class="sb-txt">';
+  if(e.kind==='atual') return '<span class="sb-chip sb-atual">Sprint atual</span>'+R+e.rot+' · '+e.datas+' · dia '+e.dia+' de '+e.total+(e.restam?' · restam '+e.restam+(e.restam===1?' dia útil':' dias úteis'):' · último dia')+'</span><span class="sb-sub">Os indicadores de entrega aparecem quando a sprint for encerrada.</span>';
+  if(e.kind==='futura') return '<span class="sb-chip sb-prev">Previsão</span>'+R+e.rot+' · '+e.datas+' · sprint futura, começa '+(e.emDias===1?'amanhã':'em '+e.emDias+' dias')+'</span><span class="sb-sub">Estimativa com base nas sprints encerradas; não é resultado realizado.</span>';
+  return '<span class="sb-chip sb-real">Realizado</span>'+R+e.rot+' · '+e.datas+' · sprint encerrada</span>';
+}
+
+// Texto único para as áreas cujos indicadores só existem depois do fechamento
+function sprintNotaHtml(e){
+  const ult=sprintUltimaEncerrada();
+  const msg=e.kind==='atual'
+    ?'A sprint '+e.rot+' está em andamento (dia '+e.dia+' de '+e.total+'). Os indicadores de entrega desta área são calculados no fechamento da sprint; o painel ainda não recebe o acompanhamento diário.'
+    :'A sprint '+e.rot+' ainda não começou ('+e.datas+'). Indicadores de entrega só existem para sprints encerradas.';
+  return '<div class="cc"><p class="ct">Indicadores indisponíveis para esta sprint</p><p class="cs">'+msg+'</p><div class="sn-acoes">'
+    +'<button class="btn-md" onclick="tab(document.querySelectorAll(\'.ntab\')[0],\'v\')"><i class="ti ti-layout-dashboard"></i> Ver a visão desta sprint</button>'
+    +(ult?'<button class="btn-md" onclick="irParaSprint(\''+ult.q+'\','+ult.i+')"><i class="ti ti-history"></i> Ver a última sprint encerrada ('+ult.rot+')</button>':'')
+    +'</div></div>';
+}
+
+// Visão Geral de sprint atual ou futura: só o que é conhecido; previsão sempre rotulada como previsão
+function sprintHomeHtml(e){
+  const time=document.getElementById('sTeam').value,hist=sprintHistorico(time),ult=sprintUltimaEncerrada();
+  const row=(l,v)=>'<div class="hm-count"><dt>'+l+'</dt><dd>'+v+'</dd></div>';
+  const card=(l,v,m)=>'<div class="as-kcard ak-info"><p class="as-klbl">'+l+'</p><p class="as-kval">'+v+'</p><p class="as-kmeta">'+m+'</p></div>';
+  const grid=c=>'<div class="as-kgrid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-bottom:14px">'+c+'</div>';
+  const btn=ult?'<div class="sn-acoes"><button class="btn-md" onclick="irParaSprint(\''+ult.q+'\','+ult.i+')"><i class="ti ti-history"></i> Ver a última sprint encerrada ('+ult.rot+')</button></div>':'';
+  const refTxt=h=>h.en+' de '+h.pl+' itens entregues · transbordo '+h.tr+' · lead time p85 '+h.p85+'d';
+  if(e.kind==='atual'){
+    const pl=SPRINT_PLANO[time]&&SPRINT_PLANO[time].q===e.q&&SPRINT_PLANO[time].i===e.i?SPRINT_PLANO[time]:null;
+    const h=hist.length?hist[hist.length-1]:null;
+    return '<div class="cc"><p class="ct">Sprint atual · '+e.rot+' ('+e.datas+')</p>'
+      +'<p class="cs">Dia '+e.dia+' de '+e.total+'. O que existe hoje para esta sprint é o plano de início; o resultado só é registrado no fechamento.</p>'
+      +grid(card('Planejado para a sprint',pl?pl.pl+' itens':'—','Plano de início da sprint')+card('Capacity planejada',pl?pl.cap+' SP':'—','Plano de início da sprint')+card('Entregue até hoje','—','Sem acompanhamento diário no dataset'))
+      +(h?'<p class="stitle">Última sprint encerrada · '+h.rot+'</p><dl class="hm-counts">'+row('Resultado',refTxt(h))+'</dl>':'')
+      +btn+'</div>';
+  }
+  const last=hist.slice(-3);
+  if(!last.length) return '<div class="cc"><p class="ct">Previsão · '+e.rot+' ('+e.datas+')</p><p class="cs">Ainda não há sprint encerrada para servir de histórico.</p></div>';
+  const en=sprintMediana(last.map(x=>x.en)),pct=Math.round(sprintMediana(last.map(x=>x.en/x.pl*100))),p85=sprintMediana(last.map(x=>x.p85));
+  const ref=hist[hist.length-1],ant=e.i>0?sprintEstado(e.q,e.i-1):null,antFechada=ant&&ant.kind==='encerrada';
+  const blk=Math.max(0,Math.round(100-(ref.tr/ref.pl*100)*2.5));
+  const faixa=(a)=>Math.min.apply(null,a)+'–'+Math.max.apply(null,a);
+  const base='mediana das últimas '+last.length+' sprints encerradas ('+last.map(x=>x.rot).join(', ')+')';
+  const antNota=antFechada?'':'<p class="sh-nota">A sprint anterior ('+(ant?ant.rot:'—')+') '+(ant&&ant.kind==='atual'?'está em andamento e o dataset não tem transbordo nem bloqueio parciais':'ainda não foi encerrada')+'; o sinal vem da última sprint encerrada.</p>';
+  return '<div class="cc"><p class="ct">Previsão da sprint '+e.rot+' ('+e.datas+')</p>'
+    +'<p class="cs">Estimativa feita só com as sprints encerradas até hoje. Nenhum valor abaixo é resultado realizado desta sprint.</p>'
+    +grid(card('Itens entregues esperados',Math.round(en)+' itens',base+' · faixa '+faixa(last.map(x=>x.en)))+card('Aderência esperada',pct+'%',base)+card('Lead time p85 de referência',Math.round(p85)+'d',base+' · faixa '+faixa(last.map(x=>x.p85))+'d'))
+    +'<p class="stitle">'+(antFechada?'Sinais da sprint anterior':'Sinais da última sprint encerrada')+'</p><dl class="hm-counts">'
+    +row('Transbordo ('+ref.rot+')',ref.tr+(ref.tr===1?' item':' itens')+' · '+Math.round(ref.tr/ref.pl*100)+'% do planejado')
+    +row('Bloqueios ('+ref.rot+')','índice '+blk+'/100, derivado do transbordo (mesmo cálculo da Saúde do time)')+'</dl>'+antNota
+    +'<p class="stitle">Preparação da sprint (grooming e refinamento)</p>'
+    +'<p class="sh-nota">Sem dados neste painel: o dataset não registra itens em refinamento, preparados ou associados à próxima sprint.</p>'
+    +btn+'</div>';
+}
+
+// Cria uma vez os contêineres de aviso e atualiza o estado da sprint selecionada (barra, atributos do body e textos)
+function atualizarEstadoSprint(){
+  const q=gq(),i=gi(),e=sprintEstado(q,i);
+  document.body.setAttribute('data-sprint-state',e.kind);
+  const bar=document.getElementById('sprintBar');
+  if(bar) bar.innerHTML=sprintBarHtml(e);
+  const alvos=[['pv','after'],['pdel','after'],['peq','after'],['plan-plxr','first'],['plan-tl','first'],['res-compare','first']];
+  alvos.forEach(([id,pos])=>{
+    const p=document.getElementById(id);if(!p) return;
+    let n=p.querySelector(':scope > .sprint-nota-sp');
+    if(!n){
+      n=document.createElement('div');n.className='sprint-nota-sp';p.classList.add('sg-panel');
+      const h=p.querySelector(':scope > .cf-header');
+      if(pos==='after'&&h) h.insertAdjacentElement('afterend',n);else p.insertBefore(n,p.firstChild);
+    }
+    n.innerHTML=e.kind==='encerrada'?'':(id==='pv'?sprintHomeHtml(e):sprintNotaHtml(e));
+  });
+}
+
+// Sem indicadores de entrega (sprint atual ou futura): atualiza só o que não depende do resultado da sprint
+function sprintAtualizarSemIndicadores(){
+  renderSpPlanningCapacity();
+  const on=id=>document.getElementById(id).classList.contains('on');
+  if(on('pplan')) renderPlanejamento();
+  if(on('pres')) renderResultados();
+  if(on('ped')) renderOKRs();
+  if(on('ped')&&on('ed-discovery')) renderDiscovery();
+}
 
 let ch={};
 let _mtCh={};
@@ -2524,8 +2683,8 @@ function updateSprintOptions(){
   for(let s=5;s>=0;s--){
     const opt=document.createElement('option');
     opt.value=s;
-    const atual=(q===CURRENT_Q&&s===CURRENT_S)?' · atual':'';
-    opt.textContent=`S${s+1} · ${dates[s]}${atual}`;
+    const k=sprintEstado(q,s).kind,marca=k==='atual'?' · atual':k==='futura'?' · futura':'';
+    opt.textContent=`S${s+1} · ${dates[s]}${marca}`;
     sel.appendChild(opt);
   }
   if([...sel.options].some(o=>o.value===cur)) sel.value=cur;
@@ -2615,6 +2774,8 @@ function setKpi(id,val,delta,unit,invGood){
 function upd(){
   applyTeamColor();
   const q=gq(),d=gd()[q],i=gi();
+  atualizarEstadoSprint();
+  if(sprintBloqueada()){sprintAtualizarSemIndicadores();return;}
 
   // ── KPI cards ─────────────────────────────────────────────
   const pctArr=d.pl.map((v,k)=>Math.round(d.en[k]/v*100));
@@ -2809,6 +2970,7 @@ function drawCFD(d,i){
 }
 
 function drawCharts(){
+  if(sprintBloqueada()) return;
   const q=gq(),d=gd()[q];
   allKc();
   const sp=d.sp;
@@ -2972,9 +3134,10 @@ function renderQuarterReport(){
   const totDel=d.en.reduce((a,b)=>a+b,0);
   const totPlan=d.pl.reduce((a,b)=>a+b,0);
   const totTr=d.tr.reduce((a,b)=>a+b,0);
-  const qState={Q1:'done',Q2:'prog',Q3:'plan',Q4:'plan'};
+  const qState={Q1:sprintQuarterEstado('Q1'),Q2:sprintQuarterEstado('Q2'),Q3:sprintQuarterEstado('Q3'),Q4:sprintQuarterEstado('Q4')};
   const qDates={Q1:'06/01/2026 – 27/03/2026',Q2:'30/03/2026 – 19/06/2026',Q3:'29/06/2026 – 18/09/2026',Q4:'28/09/2026 – 18/12/2026'};
-  const qClose={Q1:'Encerrado em 27/03/2026',Q2:'Em andamento',Q3:'Em planejamento',Q4:'Em planejamento'};
+  const qClose={};
+  Object.keys(qState).forEach(k=>{qClose[k]=qState[k]==='done'?'Encerrado em '+qDates[k].split('–')[1].trim():qState[k]==='prog'?'Em andamento':'Em planejamento';});
   const stateClass={done:'qs-done',prog:'qs-prog',plan:'qs-plan'};
   const stateIcon={done:'ti-circle-check',prog:'ti-player-play',plan:'ti-calendar-event'};
   const state=qState[q];
@@ -3175,7 +3338,7 @@ function renderQuarterReport(){
     <div class="q4-q"><p class="q4-title"><span class="q4-num">?</span>Por que algumas entregas atrasaram?</p>
       <p class="q4-body">${(qd.blocks||[]).length} blockers identificados, ${(qd.impediments||[]).length} impedimentos recorrentes. Principal causa: ${q==='Q1'?'dependências externas mapeadas tardiamente e ambiente de teste instável.':'APIs de terceiros com aprovação lenta.'}</p></div>
     <div class="q4-q"><p class="q4-title"><span class="q4-num">?</span>O que transborba e qual o impacto?</p>
-      <p class="q4-body">${totTr} itens transbordaram (${Math.round(totTr/totPlan*100)}% do planejado). ${(qd.carryovers||[]).map(c=>c.id).join(', ')||'Nenhum'} — absorção planejada para o próximo quarter.</p></div>
+      <p class="q4-body">${plItens(totTr)} ${totTr===1?'transbordou':'transbordaram'} (${Math.round(totTr/totPlan*100)}% do planejado). ${(qd.carryovers||[]).map(c=>c.id).join(', ')||'Nenhum'} — absorção planejada para o próximo quarter.</p></div>
   </div>`;
 
   // SEC 1 — Resumo Executivo
@@ -3497,6 +3660,7 @@ function renderPlanejamento(id){
 }
 
 function renderEqOverview(){
+  if(sprintBloqueada()) return;
   const q=gq(),d=gd()[q],i=gi(),p=Math.max(0,i-1);
   const el=document.getElementById('eq-ov-content');
   if(!el) return;
@@ -3674,6 +3838,7 @@ function renderSpPlanningCapacity(){
 
 // ─── Acompanhamento da Sprint — render principal ──────────────
 function renderAcompanhamento(){
+  if(sprintBloqueada()) return;
   const q=gq(),d=gd()[q],i=gi();
   renderAsResumo(d,i,q);
   renderAsForecast(d,i,q);
@@ -3867,6 +4032,7 @@ function renderAsCapacity(d,i,q){
 }
 
 function renderAsPlxR(d,i,q){
+  if(sprintBloqueada()) return;
   const el=document.getElementById('as-plxr-content');
   if(!el) return;
   const team=document.getElementById('sTeam').value;
@@ -3917,6 +4083,7 @@ function renderAsPlxR(d,i,q){
 }
 
 function renderAsTimeline(d,i,q){
+  if(sprintBloqueada()) return;
   const el=document.getElementById('as-tl-content');
   if(!el) return;
   const team=document.getElementById('sTeam').value;
@@ -4145,6 +4312,7 @@ async function extractDOCXText(file){
 async function generateAIReport(){
   // ── modo Dados FlowOps AI: geração instantânea sem IA ──
   if(document.getElementById('gData').style.display!=='none'){
+    if(sprintBloqueada()){showGenErr('Disponível só para sprints encerradas: a sprint selecionada ainda não tem resultado registrado.');return;}
     const report=generateFromData();
     document.getElementById('aiOutput').textContent=report;
     const out=document.getElementById('genOutput');
@@ -4275,9 +4443,10 @@ async function copyAIReport(ev){
 // ─── Dados FlowOps AI — geração sem IA ──────────────────────
 
 function refreshDataPreview(){
+  if(sprintBloqueada()){const pe=document.getElementById('dataPreview');if(pe) pe.textContent='Disponível só para sprints encerradas: a sprint selecionada ainda não tem resultado registrado.';return;}
   const q=gq(), d=gd()[q], i=gi(), prev=Math.max(0,i-1);
   const h=calcHealth(q);
-  const sp=d.sp[i];
+  const sp=d.sp[i]||'S'+(i+1);
   const ltD=d.p85[i]-d.p85[prev];
   const tpD=d.en[i]-d.en[prev];
   const boD=d.bo[i]-d.bo[prev];
@@ -4309,7 +4478,7 @@ function refreshDataPreview(){
 function generateFromData(){
   const q=gq(), d=gd()[q], i=gi(), prev=Math.max(0,i-1);
   const h=calcHealth(q);
-  const sp=d.sp[i];
+  const sp=d.sp[i]||'S'+(i+1);
   const team=document.getElementById('genTeam').value||'Time Alpha';
   const date=document.getElementById('genDate').value;
   const dateFmt=date?new Date(date+'T12:00:00').toLocaleDateString('pt-BR'):new Date().toLocaleDateString('pt-BR');
@@ -4370,7 +4539,7 @@ async function enhanceWithAI(){
 
   const current=document.getElementById('aiOutput').textContent;
   const q=gq(), d=gd()[q], i=gi();
-  const sp=d.sp[i];
+  const sp=d.sp[i]||'S'+(i+1);
 
   const eb=document.getElementById('enhanceBtn');
   eb.disabled=true;
@@ -4411,6 +4580,7 @@ Responda APENAS com o relatório aprimorado, sem comentários adicionais.`;
 // ─── Comparar times ───────────────────────────────────────────────
 
 function renderMultiTeam(){
+  if(sprintBloqueada()) return;
   const q=gq(), i=gi();
   const teams=[
     {name:'Time Alpha', d:D[q],  color:'#185FA5', bg:'rgba(24,95,165,.15)', cardBg:'linear-gradient(135deg,#f0f7ff,#dbeafe)', cardBorder:'#bfdbfe', iconBg:'#dbeafe', icon:'ti-users'},
@@ -4592,6 +4762,7 @@ function _mdFile(type){
 function _mdNow(){return new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});}
 
 function exportMd(type){
+  if(type==='quarter'?sprintsEncerradas(gq())===0:(type!=='ai-report'&&sprintBloqueada())){alert(type==='quarter'?'Este quarter ainda não tem sprint encerrada.':'Este relatório só fica disponível para sprints encerradas. Selecione uma sprint encerrada.');return;}
   const team=document.getElementById('sTeam').value;
   const q=gq(), i=gi(), d=gd()[q], sp=d.sp[i];
   const now=_mdNow();
@@ -5202,6 +5373,7 @@ function doraHealthStatus(emojis){
 }
 
 function renderDora(){
+  if(sprintBloqueada()) return;
   const q=gq(),d=gd()[q],i=gi(),p=Math.max(0,i-1);
   const rel=calcReliability(d,i),relPrv=calcReliability(d,p);
   const metrics=[
@@ -5556,6 +5728,7 @@ function detectBottleneck(ctTimes){
 }
 
 function renderFlowMetrics(){
+  if(sprintBloqueada()) return;
   const q=gq(), d=gd()[q], i=gi();
   const ct=calcCycleTimes(d,i);
   const wips=calcWIPData(d,i);
@@ -5860,6 +6033,7 @@ function drawCfTrendSparkline(d,i){
 }
 
 function renderCargaFalhas(){
+  if(sprintBloqueada()) return;
   const q=gq(),d=gd()[q],i=gi(),p=Math.max(0,i-1);
   const esc=cfEscaped(d,i),   escP=cfEscaped(d,p);
   const reo=cfReopened(d,i),  reoP=cfReopened(d,p);
@@ -8174,14 +8348,15 @@ const RES_MAX_OBJECTIVES=8;
 function renderOutputOutcome(){
   const el=document.getElementById('res-output-outcome');
   if(!el) return;
-  const E=escHtml,q=gq(),d=gd()[q],ctx=okrPeriodContext(),n=d.sp.length,team=document.getElementById('sTeam').value;
+  const E=escHtml,q=gq(),d=gd()[q],ctx=okrPeriodContext(),n=d.sp.length,team=document.getElementById('sTeam').value,nTot=SPRINT_DATES[q].length;
+  if(n===0){el.innerHTML='<div class="res-oo-grid"><div class="res-oo-card"><div class="hm-col-hd">Entrega (output) · '+E(team)+' · '+q+'</div><p class="hm-empty">Nenhuma sprint deste quarter foi encerrada ainda.</p></div></div>';return;}
   const sum=a=>a.reduce((x,y)=>x+y,0),avg=a=>sum(a)/a.length,periodTxt=ctx.quarter+(ctx.year?' '+ctx.year:'');
   const totEn=sum(d.en),totPl=sum(d.pl),pt=(v,um,pl)=>v+' '+(v===1?um:pl);
   const row=(l,v)=>'<div class="hm-count"><dt>'+l+'</dt><dd>'+v+'</dd></div>';
   const left='<div class="res-oo-card"><div class="hm-col-hd">Entrega (output) · '+E(team)+' · '+q+'</div><dl class="hm-counts">'
-    +row('Sprints no quarter',n)+row('Itens entregues',totEn+' de '+totPl+' planejados ('+Math.round(totEn/totPl*100)+'%)')
+    +row(n<nTot?'Sprints encerradas no quarter':'Sprints no quarter',n<nTot?n+' de '+nTot:n)+row('Itens entregues',totEn+' de '+totPl+' planejados ('+Math.round(totEn/totPl*100)+'%)')
     +row('Throughput médio por sprint',avg(d.en).toFixed(1)+' itens')+row('Velocity média',avg(d.vl).toFixed(1)+' SP')
-    +row('Deployment Frequency média',avg(d.df).toFixed(1)+'/sem')+'</dl><div class="hm-cap">Calculado · todas as sprints do quarter</div></div>';
+    +row('Deployment Frequency média',avg(d.df).toFixed(1)+'/sem')+'</dl><div class="hm-cap">Calculado · '+(n<nTot?'só as sprints encerradas do quarter':'todas as sprints do quarter')+'</div></div>';
   const os=OKR.state(),all=os.data.objectives,objs=all.filter(o=>o.period.quarter===ctx.quarter&&(ctx.year===null||o.period.year===ctx.year))
     .map((o,k)=>({o:o,k:k})).sort((a,b)=>HOME_OBJ_RANK[a.o.status]-HOME_OBJ_RANK[b.o.status]||a.k-b.k).map(x=>x.o);
   let body,summary='';
@@ -8212,6 +8387,7 @@ function renderOutputOutcome(){
 
 // Um snapshot por render, repassado aos dois blocos. Falha nos blocos novos nunca derruba a Visão Geral.
 function renderHome(){
+  if(sprintBloqueada()) return;
   try{const s=homeSnapshot();renderHomeAttention(s,homeSignals(s));renderHomeStrategy(s);}
   catch(e){
     ['homeAttention','homeStrategy'].forEach(id=>{const el=document.getElementById(id);if(el){el.innerHTML='';el.hidden=true;}});
