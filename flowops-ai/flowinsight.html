@@ -2564,6 +2564,26 @@ function sprintHistorico(time){
 }
 const sprintMediana=a=>{const s=a.slice().sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2;};
 
+// Sprint imediatamente anterior em ordem cronológica (a última sprint do quarter anterior, no caso da S1)
+function sprintAnterior(q,i){
+  if(i>0) return sprintEstado(q,i-1);
+  const qs=Object.keys(SPRINT_DATES),a=qs.indexOf(q)-1;
+  return a>=0?sprintEstado(qs[a],SPRINT_DATES[qs[a]].length-1):null;
+}
+// Abertura padrão: a sprint atual pela data. Fora de qualquer sprint conhecida: a última encerrada (data depois da última
+// sprint) ou a primeira sprint (data antes da primeira). Nada é gravado: a seleção só vale para a sessão.
+function sprintInicial(){
+  let atual=null;
+  Object.keys(SPRINT_DATES).forEach(q=>SPRINT_DATES[q].forEach((_,i)=>{if(!atual){const e=sprintEstado(q,i);if(e.kind==='atual') atual=e;}}));
+  const e=atual||sprintUltimaEncerrada();
+  return e?{q:e.q,i:e.i}:{q:Object.keys(SPRINT_DATES)[0],i:0};
+}
+function abrirNoMomentoAtual(){
+  const s=sprintInicial();
+  document.getElementById('sQ').value=s.q;
+  updateSprintOptions();
+  document.getElementById('sS').value=String(s.i);
+}
 function irParaSprint(q,i){
   const sq=document.getElementById('sQ');sq.value=q;updateSprintOptions();
   document.getElementById('sS').value=String(i);upd();
@@ -2608,17 +2628,23 @@ function sprintHomeHtml(e){
   const last=hist.slice(-3);
   if(!last.length) return '<div class="cc"><p class="ct">Previsão · '+e.rot+' ('+e.datas+')</p><p class="cs">Ainda não há sprint encerrada para servir de histórico.</p></div>';
   const en=sprintMediana(last.map(x=>x.en)),pct=Math.round(sprintMediana(last.map(x=>x.en/x.pl*100))),p85=sprintMediana(last.map(x=>x.p85));
-  const ref=hist[hist.length-1],ant=e.i>0?sprintEstado(e.q,e.i-1):null,antFechada=ant&&ant.kind==='encerrada';
-  const blk=Math.max(0,Math.round(100-(ref.tr/ref.pl*100)*2.5));
+  const ref=hist[hist.length-1],ant=sprintAnterior(e.q,e.i),antFechada=!!ant&&ant.kind==='encerrada';
   const faixa=(a)=>Math.min.apply(null,a)+'–'+Math.max.apply(null,a);
   const base='mediana das últimas '+last.length+' sprints encerradas ('+last.map(x=>x.rot).join(', ')+')';
-  const antNota=antFechada?'':'<p class="sh-nota">A sprint anterior ('+(ant?ant.rot:'—')+') '+(ant&&ant.kind==='atual'?'está em andamento e o dataset não tem transbordo nem bloqueio parciais':'ainda não foi encerrada')+'; o sinal vem da última sprint encerrada.</p>';
+  const bloq=h=>Math.max(0,Math.round(100-(h.tr/h.pl*100)*2.5));
+  const trTxt=h=>h.tr+(h.tr===1?' item':' itens')+' · '+Math.round(h.tr/h.pl*100)+'% do planejado';
+  const bloqTxt=h=>'índice '+bloq(h)+'/100, derivado do transbordo (mesmo cálculo da Saúde do time)';
+  const nd='ainda não fechado · indisponível';
+  const antEstado=ant?(ant.kind==='atual'?'em andamento':ant.kind==='futura'?'ainda não começou':'encerrada'):'';
+  const sinais=antFechada
+    ?'<p class="stitle">Sprint anterior · '+ant.rot+' (encerrada)</p><dl class="hm-counts">'+row('Transbordo da sprint anterior',trTxt(ref))+row('Bloqueios da sprint anterior',bloqTxt(ref))+'</dl>'
+    :'<p class="stitle">Sprint anterior</p><dl class="hm-counts">'+row('Sprint anterior',ant?ant.rot+' · '+antEstado:'—')+row('Transbordo da sprint anterior',nd)+row('Bloqueios da sprint anterior',nd)+'</dl>'
+     +'<p class="stitle">Referência histórica · última sprint encerrada ('+ref.rot+')</p><dl class="hm-counts">'+row('Transbordo da última sprint encerrada',trTxt(ref))+row('Bloqueios da última sprint encerrada',bloqTxt(ref))+'</dl>'
+     +'<p class="sh-nota">'+(ant&&ant.kind==='atual'?'O dataset não tem transbordo nem bloqueio parciais da sprint em andamento. ':'A sprint anterior ainda não começou. ')+'A última sprint encerrada serve só como referência histórica; ela não é a sprint anterior.</p>';
   return '<div class="cc"><p class="ct">Previsão da sprint '+e.rot+' ('+e.datas+')</p>'
     +'<p class="cs">Estimativa feita só com as sprints encerradas até hoje. Nenhum valor abaixo é resultado realizado desta sprint.</p>'
     +grid(card('Itens entregues esperados',Math.round(en)+' itens',base+' · faixa '+faixa(last.map(x=>x.en)))+card('Aderência esperada',pct+'%',base)+card('Lead time p85 de referência',Math.round(p85)+'d',base+' · faixa '+faixa(last.map(x=>x.p85))+'d'))
-    +'<p class="stitle">'+(antFechada?'Sinais da sprint anterior':'Sinais da última sprint encerrada')+'</p><dl class="hm-counts">'
-    +row('Transbordo ('+ref.rot+')',ref.tr+(ref.tr===1?' item':' itens')+' · '+Math.round(ref.tr/ref.pl*100)+'% do planejado')
-    +row('Bloqueios ('+ref.rot+')','índice '+blk+'/100, derivado do transbordo (mesmo cálculo da Saúde do time)')+'</dl>'+antNota
+    +sinais
     +'<p class="stitle">Preparação da sprint (grooming e refinamento)</p>'
     +'<p class="sh-nota">Sem dados neste painel: o dataset não registra itens em refinamento, preparados ou associados à próxima sprint.</p>'
     +btn+'</div>';
@@ -9253,7 +9279,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeGlossModal();c
 })();
 
 
-window.onload=function(){ updateSprintOptions(); applyTeamColor(); upd(); markSelects(); };
+window.onload=function(){ abrirNoMomentoAtual(); applyTeamColor(); upd(); markSelects(); };
 </script>
 
 <!-- Glossário Modal -->
