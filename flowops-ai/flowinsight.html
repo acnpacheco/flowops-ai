@@ -26,6 +26,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f4;color:#1c1c1a;font-size:14px;line-height:1.5}
   a{color:inherit}
+  button,input,select,textarea{font-family:inherit}
 
   /* Layout */
   .app{display:flex;flex-direction:column;min-height:100vh}
@@ -345,7 +346,7 @@
   .alert-btn:hover{background:#b45309}
   /* Carga de Falhas v2 */
   .cf-header{margin-bottom:14px}
-  .cf-title{font-size:15px;font-weight:600;color:#111827;margin:0 0 3px}
+  .cf-title{font-size:var(--fs-page-title);font-weight:var(--fw-page-title);color:#111827;margin:0 0 3px}
   .cf-sub{font-size:11px;color:#9ca3af;margin:0}
   .cfst{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
   .cfst-ok{background:#dcfce7;color:#166534}
@@ -411,7 +412,7 @@
   .ai-rec.rec-bad{background:#fff1f2;border-left-color:#dc2626}
   .ai-rec.rec-info{background:#eff6ff;border-left-color:#185FA5}
   .ai-rec-ico{font-size:15px;flex-shrink:0;margin-top:1px}
-  .ai-rec-ico:empty{width:1.37em}
+  .ai-rec-ico:empty{width:15px}
   /* Próximas ações e pontos de atenção — componente único reutilizável */
   .ai-recs-card{border-left:4px solid var(--clr-info);margin-bottom:16px}
   .ai-recs-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
@@ -760,7 +761,7 @@
 
   /* ── Glossário de Métricas ──────────────────────────── */
   .gl-header{margin-bottom:16px}
-  .gl-title{font-size:15px;font-weight:600;color:#111827;margin:0 0 3px}
+  .gl-title{font-size:var(--fs-page-title);font-weight:var(--fw-page-title);color:#111827;margin:0 0 3px}
   .gl-sub{font-size:11px;color:#9ca3af;margin:0 0 14px}
   .gl-search-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
   .gl-search{flex:1;min-width:200px;padding:9px 12px 9px 34px;border:1px solid #d1d5db;border-radius:10px;font-size:13px;color:#111827;background:#fff;outline:none;transition:border-color .15s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:10px center}
@@ -2841,6 +2842,7 @@ function drawCharts(){
   drawCFD(d,gi());
 }
 
+function plItens(n){return n+(n===1?' item':' itens');}
 function renderExecSummary(d,i,q,h,wip,aging,pct,trPct){
   const p85=d.p85[i],tr=d.tr[i],bo=d.bo[i],pl=d.pl[i];
   const tier=tierLabel(h.total);
@@ -2862,7 +2864,7 @@ function renderExecSummary(d,i,q,h,wip,aging,pct,trPct){
   else txt+=`A taxa de entrega de <strong>${pct}%</strong> está abaixo da meta de ${METAS.pct}%, comprometendo a previsibilidade da Sprint. `;
 
   if(!trOk) txt+=`Foram transbordados <strong>${tr} itens</strong> (${trPct}%), gerando impacto direto na próxima sprint. `;
-  if(aging>0) txt+=`<strong>${aging} item${aging>1?'s':''}</strong> apresenta${aging>1?'m':''} aging acima do p85 e requer${aging>1?'em':''} priorização imediata. `;
+  if(aging>0) txt+=`<strong>${plItens(aging)}</strong> apresenta${aging>1?'m':''} aging acima do p85 e requer${aging>1?'em':''} priorização imediata. `;
 
   if(h.total>=85) txt+=`O cenário aponta para uma sprint de alto desempenho.`;
   else if(h.total>=70) txt+=`Ajustes pontuais de fluxo podem elevar o desempenho ao nível de excelência.`;
@@ -2884,7 +2886,7 @@ function renderAIRecs(d,i,q,h,wip,aging,pct,trPct){
   else if(wip>METAS.wip) recs.push({cls:'rec-warn',ico:'🟡',txt:`WIP acima do recomendado (${wip} itens) — evitar iniciar novos itens até que os atuais avancem para revisão ou teste.`});
 
   if(aging>3) recs.push({cls:'rec-bad',ico:'🔴',txt:`${aging} itens com aging acima do p85 — realizar Daily focada exclusivamente em remoção de bloqueios e redistribuição de capacidade.`});
-  else if(aging>0) recs.push({cls:'rec-warn',ico:'🟡',txt:`${aging} item${aging>1?'s':''} com aging elevado — priorizar desbloqueio nas próximas dailys para evitar impacto no Lead Time.`});
+  else if(aging>0) recs.push({cls:'rec-warn',ico:'🟡',txt:`${plItens(aging)} com aging elevado — priorizar desbloqueio nas próximas dailys para evitar impacto no Lead Time.`});
 
   if(pct<METAS.pct*0.85) recs.push({cls:'rec-bad',ico:'🔴',txt:`Taxa de entrega crítica (${pct}%) — reavaliar escopo da Sprint, remover itens de baixo impacto e focar na conclusão dos prioritários.`});
   else if(pct<METAS.pct) recs.push({cls:'rec-warn',ico:'🟡',txt:`Previsibilidade em ${pct}% (meta: ${METAS.pct}%) — identificar os principais bloqueadores e ajustar capacidade para as próximas sprints.`});
@@ -3127,7 +3129,7 @@ function renderQuarterReport(){
   // HEADER
   html+=`<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:16px">
     <div>
-      <h2 style="font-size:18px;font-weight:700;color:#111827;margin:0 0 4px">Relatório de encerramento — ${q} 2026</h2>
+      <h2 style="font-size:16px;font-weight:700;color:#111827;margin:0 0 4px">Relatório de encerramento — ${q} 2026</h2>
       <p style="font-size:12px;color:#6b7280;margin:0">FlowOps AI · Gestão Educacional · ${qDates[q]}</p>
     </div>
     <span class="q-status ${stateClass[state]}"><i class="ti ${stateIcon[state]}"></i>${qClose[q]}</span>
@@ -4035,7 +4037,7 @@ function drawBurndownBurnup(){
     setGroupDot('cgd-bd',[bdEmoji]); setGroupDot('cgd-bu',[bdEmoji]);
     bdIns.innerHTML=`<div style="display:flex;align-items:flex-start;gap:10px">
       <div style="flex:1"><p class="ct">Análise do Burndown</p>
-      <p style="font-size:12px;color:#374151;line-height:1.7;margin-top:6px"><strong>${trend}</strong> — ${lastReal} itens restantes ao final da sprint (${undelivered} eram esperados). ${scopeAdd>0?`Escopo aumentou em ${scopeAdd} itens no D6. `:''}${lastReal>undelivered?`Risco de transbordo de ${lastReal-undelivered} itens adicionais.`:'Sprint dentro do planejado.'}</p></div>
+      <p style="font-size:12px;color:#374151;line-height:1.7;margin-top:6px"><strong>${trend}</strong> — ${plItens(lastReal)} restantes ao final da sprint (${undelivered} eram esperados). ${scopeAdd>0?`Escopo aumentou em ${plItens(scopeAdd)} no D6. `:''}${lastReal>undelivered?`Risco de transbordo de ${plItens(lastReal-undelivered)} adicionais.`:'Sprint dentro do planejado.'}</p></div>
       <div style="text-align:center;min-width:80px">
         <p style="font-size:24px;font-weight:700;color:${lastReal<=undelivered?'#059669':lastReal<=undelivered+Math.round(total*0.15)?'#d97706':'#dc2626'}">${Math.round(delivered/total*100)}%</p>
         <p style="font-size:10px;color:#9ca3af">entregas</p>
