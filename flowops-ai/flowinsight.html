@@ -2500,12 +2500,262 @@ const DG={
   Q4:{sp:['S1','S2','S3','S4','S5','S6'],pl:[16,16,17,17,18,18],en:[15,15,16,16,17,18],vl:[46,41,52,49,58,63],cap:[52,48,58,56,64,68],tr:[1,1,1,1,1,0],p50:[8,7,7,7,6,6],p85:[11,11,10,10,9,8],p95:[13,12,11,10,10,9],bo:[1,1,1,1,1,0],bc:[14,15,16,17,18,19],rw:[5,4,4,3,3,2],df:[5.8,6.2,6.6,7.0,7.4,7.8],lc:[1.4,1.2,1.1,1.0,0.9,0.8],mt:[2.4,2.1,1.9,1.7,1.5,1.3],cf:[3.4,3.0,2.7,2.4,2.1,1.8]}
 };
 
-const SPRINT_DATES={
-  Q1:['02/01–15/01','16/01–29/01','30/01–12/02','13/02–26/02','27/02–12/03','13/03–26/03'],
-  Q2:['27/03–09/04','10/04–23/04','24/04–07/05','08/05–21/05','22/05–04/06','05/06–18/06'],
-  Q3:['19/06–02/07','03/07–16/07','17/07–30/07','31/07–13/08','14/08–27/08','28/08–10/09'],
-  Q4:['11/09–24/09','25/09–08/10','09/10–22/10','23/10–05/11','06/11–19/11','20/11–03/12'],
-};
+// ── Fundação temporal canônica ────────────────────────────────────────────────────────────────
+// Fonte única de ano, quarter, sprint, datas, dias úteis, feriados e janela de planejamento.
+// Funções puras: não leem DOM, armazenamento nem relógio (só hoje() lê o relógio); quem depende de "hoje" o recebe como parâmetro.
+// Datas são textos 'AAAA-MM-DD' locais, sem fuso, e a aritmética usa dias inteiros: nenhuma conversão por UTC.
+// Quarter e sprint são conceitos independentes: todo dia do ano pertence a um quarter, mas pode estar fora de qualquer sprint.
+// Nesta etapa só SPRINT_DATES deriva daqui (mesmo texto de antes); os consumidores visíveis seguem como estavam.
+const FI_TEMPO=(function(){
+  'use strict';
+  const QS=['Q1','Q2','Q3','Q4'];
+  const RX=/^(\d{4})-(\d{2})-(\d{2})$/;
+  const p2=n=>String(n).padStart(2,'0');
+  function deSerial(n){ // dias desde 1970-01-01 → 'AAAA-MM-DD' (calendário civil, sem fuso)
+    n+=719468;
+    const era=Math.floor(n/146097),doe=n-era*146097,yoe=Math.floor((doe-Math.floor(doe/1460)+Math.floor(doe/36524)-Math.floor(doe/146096))/365);
+    const doy=doe-(365*yoe+Math.floor(yoe/4)-Math.floor(yoe/100)),mp=Math.floor((5*doy+2)/153),d=doy-Math.floor((153*mp+2)/5)+1,m=mp<10?mp+3:mp-9;
+    return String(yoe+era*400+(m<=2?1:0)).padStart(4,'0')+'-'+p2(m)+'-'+p2(d);
+  }
+  function serial(s){ // 'AAAA-MM-DD' → dias desde 1970-01-01; NaN se o texto não for uma data que existe
+    const m=RX.exec(s);
+    if(!m) return NaN;
+    const mo=+m[2],d=+m[3],y=+m[1]-(mo<=2?1:0);
+    if(mo<1||mo>12||d<1||d>31) return NaN;
+    const era=Math.floor(y/400),yoe=y-era*400,doy=Math.floor((153*(mo+(mo>2?-3:9))+2)/5)+d-1;
+    const n=era*146097+yoe*365+Math.floor(yoe/4)-Math.floor(yoe/100)+doy-719468;
+    return deSerial(n)===s?n:NaN; // recusa 30/02 e semelhantes
+  }
+  function iso(x){ // texto ou Date → 'AAAA-MM-DD' local; qualquer outra coisa → null
+    if(typeof x==='string') return Number.isNaN(serial(x))?null:x;
+    if(x instanceof Date&&!Number.isNaN(x.getTime())) return String(x.getFullYear()).padStart(4,'0')+'-'+p2(x.getMonth()+1)+'-'+p2(x.getDate());
+    return null;
+  }
+  function diaSemana(s){const n=serial(s);return Number.isNaN(n)?null:(((n+4)%7)+7)%7;} // 0 = domingo … 6 = sábado
+  function ddmm(s){return s.slice(8,10)+'/'+s.slice(5,7);}
+
+  // Cria um conjunto de funções sobre os calendários recebidos. O padrão (FI_TEMPO) usa os calendários de DEFS;
+  // FI_TEMPO.criar(defs) permite testar com calendários próprios, sem alterar o global.
+  function criar(defs){
+    const cals={};
+    function util(c,s){const w=diaSemana(s);return w!==0&&w!==6&&!c.feriadoSet.has(s);}
+    function montar(ano,def){
+      const c={ano:ano,feriados:((def&&def.holidays)||[]).slice().sort(),sprints:[],quarters:[]};
+      c.feriadoSet=new Set(c.feriados);
+      QS.forEach(q=>{
+        ((def&&def.quarters&&def.quarters[q])||[]).forEach((par,i)=>{
+          const ini=par[0],fim=par[1],dias=[];
+          for(let k=serial(ini);k<=serial(fim);k++) dias.push(deSerial(k));
+          const uteis=dias.filter(s=>util(c,s));
+          c.sprints.push(Object.freeze({sprintId:ano+'-'+q+'-S'+(i+1),year:ano,quarter:q,number:i+1,startDate:ini,endDate:fim,workingDays:uteis.length,holidays:Object.freeze(c.feriados.filter(h=>h>=ini&&h<=fim)),firstWorkingDay:uteis.length?uteis[0]:null,lastWorkingDay:uteis.length?uteis[uteis.length-1]:null}));
+        });
+      });
+      // O quarter cobre todos os dias: começa na 1ª sprint (o Q1, em 1º de janeiro) e vai até a véspera da 1ª sprint do seguinte (o último, até 31/12).
+      const ordem=QS.filter(q=>c.sprints.some(s=>s.quarter===q));
+      ordem.forEach((q,k)=>{
+        const sp=c.sprints.filter(s=>s.quarter===q),prox=ordem[k+1]?c.sprints.find(s=>s.quarter===ordem[k+1]).startDate:null,w=def&&def.planningWindows&&def.planningWindows[q];
+        c.quarters.push(Object.freeze({quarterId:ano+'-'+q,year:ano,quarter:q,startDate:k===0?ano+'-01-01':sp[0].startDate,endDate:prox?deSerial(serial(prox)-1):ano+'-12-31',sprintCount:sp.length,planningWindow:w?Object.freeze({startDate:w[0],endDate:w[1]}):null}));
+      });
+      return c;
+    }
+    Object.keys(defs||{}).forEach(a=>{cals[+a]=montar(+a,defs[a]);});
+    const calDe=ano=>cals[ano]||null;
+    const calDaData=d=>d?calDe(+d.slice(0,4)):null;
+    const agora=()=>iso(new Date());
+
+    function sprints(ano){const c=calDe(ano);return c?c.sprints.slice():[];}
+    function quarters(ano){const c=calDe(ano);return c?c.quarters.slice():[];}
+    function sprintPorId(id){
+      const m=/^(\d{4})-Q[1-4]-S\d+$/.exec(typeof id==='string'?id:''),c=m?calDe(+m[1]):null;
+      return c?(c.sprints.find(s=>s.sprintId===id)||null):null;
+    }
+    function quarterPorId(id){
+      const m=/^(\d{4})-Q[1-4]$/.exec(typeof id==='string'?id:''),c=m?calDe(+m[1]):null;
+      return c?(c.quarters.find(q=>q.quarterId===id)||null):null;
+    }
+    function sprintPorData(data){const d=iso(data),c=calDaData(d);return c?(c.sprints.find(s=>d>=s.startDate&&d<=s.endDate)||null):null;}
+    function quarterPorData(data){const d=iso(data),c=calDaData(d);return c?(c.quarters.find(q=>d>=q.startDate&&d<=q.endDate)||null):null;}
+    // Onde a data cai em relação às sprints do ano dela (a janela de planejamento pode sobrepor sprints e não entra aqui).
+    function posicao(data){
+      const d=iso(data);
+      if(!d) return 'data-invalida';
+      const c=calDaData(d);
+      if(!c||!c.sprints.length) return 'sem-calendario';
+      if(c.sprints.some(s=>d>=s.startDate&&d<=s.endDate)) return 'dentro-de-sprint';
+      if(d<c.sprints.reduce((m,s)=>s.startDate<m?s.startDate:m,'9999-12-31')) return 'antes-da-primeira-sprint';
+      if(d>c.sprints.reduce((m,s)=>s.endDate>m?s.endDate:m,'0000-01-01')) return 'depois-da-ultima-sprint';
+      return 'entre-sprints';
+    }
+    // true / false; null quando não dá para saber (data inválida ou ano sem calendário)
+    function foraDeSprint(data){
+      const p=posicao(data);
+      return p==='dentro-de-sprint'?false:(p==='antes-da-primeira-sprint'||p==='entre-sprints'||p==='depois-da-ultima-sprint')?true:null;
+    }
+    function ehFeriado(data){const d=iso(data),c=calDaData(d);return c?c.feriadoSet.has(d):null;}
+    function ehDiaUtil(data){const d=iso(data),c=calDaData(d);return c?util(c,d):null;}
+    // Dias úteis de inicio a fim, inclusive: desconta sábado, domingo e feriado. null se algum dia cair em ano sem calendário.
+    function diasUteis(inicio,fim){
+      const i=iso(inicio),f=iso(fim);
+      if(!i||!f) return null;
+      let n=0;
+      for(let k=serial(i);k<=serial(f);k++){
+        const s=deSerial(k),c=calDaData(s);
+        if(!c) return null;
+        if(util(c,s)) n++;
+      }
+      return n;
+    }
+    function estadoSprint(sprintId,hoje){
+      const s=sprintPorId(sprintId),h=iso(hoje===undefined?agora():hoje);
+      if(!s||!h) return null;
+      return h<s.startDate?'futura':(h>s.endDate?'encerrada':'atual');
+    }
+    function estadoQuarter(quarterId,hoje){
+      const q=quarterPorId(quarterId),h=iso(hoje===undefined?agora():hoje);
+      if(!q||!h) return null;
+      return h<q.startDate?'futuro':(h>q.endDate?'encerrado':'atual');
+    }
+    // Posição da data entre os dias úteis da sprint que a cobre. Em feriado ou fim de semana o número não avança.
+    function diaUtilDaData(data){
+      const d=iso(data),s=sprintPorData(d);
+      if(!s) return null;
+      const w=diaSemana(d),numero=diasUteis(s.startDate,d);
+      return {sprintId:s.sprintId,numero:numero,total:s.workingDays,restam:s.workingDays-numero,ehUtil:ehDiaUtil(d),ehFeriado:ehFeriado(d),ehFimDeSemana:w===0||w===6,ehPrimeiroDiaUtil:d===s.firstWorkingDay,ehUltimoDiaUtil:d===s.lastWorkingDay};
+    }
+    // Dia útil de hoje dentro da sprint; null se a sprint não é a atual
+    function diaUtilAtual(sprintId,hoje){
+      const h=iso(hoje===undefined?agora():hoje);
+      return estadoSprint(sprintId,h)==='atual'?diaUtilDaData(h):null;
+    }
+    function primeiroDiaUtil(sprintId){const s=sprintPorId(sprintId);return s?s.firstWorkingDay:null;}
+    function ultimoDiaUtil(sprintId){const s=sprintPorId(sprintId);return s?s.lastWorkingDay:null;}
+    // Janela de planejamento do quarter: null enquanto não for configurada (nada é importado do CAL)
+    function janelaPlanejamento(quarterId){const q=quarterPorId(quarterId);return q?q.planningWindow:null;}
+    function emJanelaPlanejamento(data){
+      const d=iso(data),c=calDaData(d);
+      if(!c) return null;
+      const q=c.quarters.find(x=>x.planningWindow&&d>=x.planningWindow.startDate&&d<=x.planningWindow.endDate);
+      return q?{quarterId:q.quarterId,startDate:q.planningWindow.startDate,endDate:q.planningWindow.endDate}:null;
+    }
+    // Resposta única sobre uma data. estado: encerrada | atual | futura (sprint que cobre a data, em relação a hoje),
+    // fora-de-sprint (a data é do quarter mas nenhuma sprint a cobre) ou sem-calendario (ano não cadastrado).
+    function resolver(data,hoje){
+      const d=iso(data),h=iso(hoje===undefined?agora():hoje);
+      const r={valida:!!d,data:d,posicao:posicao(data),year:d?+d.slice(0,4):null,quarter:null,sprint:null,estado:null,ehFeriado:null,ehDiaUtil:null,diaUtil:null,planningWindow:null};
+      if(!d) return r;
+      r.quarter=quarterPorData(d);r.sprint=sprintPorData(d);r.ehFeriado=ehFeriado(d);r.ehDiaUtil=ehDiaUtil(d);r.planningWindow=emJanelaPlanejamento(d);
+      if(r.sprint){r.estado=h?estadoSprint(r.sprint.sprintId,h):null;r.diaUtil=diaUtilDaData(d);}
+      else r.estado=r.posicao==='sem-calendario'?'sem-calendario':'fora-de-sprint';
+      return r;
+    }
+    // Lista de problemas do calendário do ano (vazia = consistente)
+    function validar(ano){
+      const c=calDe(ano),pr=[];
+      if(!c) return ['ano '+ano+' sem calendário'];
+      c.sprints.forEach((s,i)=>{
+        if(Number.isNaN(serial(s.startDate))||Number.isNaN(serial(s.endDate))){pr.push(s.sprintId+': data inválida');return;}
+        if(s.startDate>s.endDate) pr.push(s.sprintId+': início depois do fim');
+        if(+s.startDate.slice(0,4)!==ano||+s.endDate.slice(0,4)!==ano) pr.push(s.sprintId+': fora do ano '+ano);
+        if(i&&s.startDate<=c.sprints[i-1].endDate) pr.push(s.sprintId+': sobrepõe '+c.sprints[i-1].sprintId);
+        if(!s.workingDays) pr.push(s.sprintId+': sem dia útil');
+      });
+      QS.forEach(q=>{if(!c.sprints.some(s=>s.quarter===q)) pr.push(q+': sem sprints');});
+      c.feriados.forEach((h,i)=>{
+        if(Number.isNaN(serial(h))) pr.push('feriado '+h+': data inválida');
+        else if(+h.slice(0,4)!==ano) pr.push('feriado '+h+': fora do ano '+ano);
+        if(i&&h===c.feriados[i-1]) pr.push('feriado '+h+': repetido');
+      });
+      c.quarters.forEach(q=>{
+        const w=q.planningWindow;
+        if(!w) return;
+        if(Number.isNaN(serial(w.startDate))||Number.isNaN(serial(w.endDate))) pr.push(q.quarterId+': janela de planejamento com data inválida');
+        else if(w.startDate>w.endDate) pr.push(q.quarterId+': janela de planejamento com início depois do fim');
+        else if(+w.startDate.slice(0,4)!==ano||+w.endDate.slice(0,4)!==ano) pr.push(q.quarterId+': janela de planejamento fora do ano '+ano);
+      });
+      return pr;
+    }
+    // Datas de sprint no texto 'dd/mm–dd/mm' que o app usa hoje (SPRINT_DATES)
+    function sprintDatesCompat(ano){
+      const o={};
+      QS.forEach(q=>{const l=sprints(ano).filter(s=>s.quarter===q);if(l.length) o[q]=l.map(s=>ddmm(s.startDate)+'–'+ddmm(s.endDate));});
+      return o;
+    }
+    return {hoje:agora,normalizarData:iso,diaDaSemana:diaSemana,sprints:sprints,quarters:quarters,sprintPorId:sprintPorId,quarterPorId:quarterPorId,sprintPorData:sprintPorData,quarterPorData:quarterPorData,posicao:posicao,foraDeSprint:foraDeSprint,ehFeriado:ehFeriado,ehDiaUtil:ehDiaUtil,diasUteis:diasUteis,estadoSprint:estadoSprint,estadoQuarter:estadoQuarter,diaUtilDaData:diaUtilDaData,diaUtilAtual:diaUtilAtual,primeiroDiaUtil:primeiroDiaUtil,ultimoDiaUtil:ultimoDiaUtil,janelaPlanejamento:janelaPlanejamento,emJanelaPlanejamento:emJanelaPlanejamento,resolver:resolver,validar:validar,sprintDatesCompat:sprintDatesCompat};
+  }
+
+  // Calendário de 2026: datas das sprints = as aprovadas em SPRINT_DATES (sprints contínuas de 14 dias). Feriados = os do CAL.holidays.
+  // planningWindows fica vazio de propósito: as semanas de planejamento do CAL.quarters pertencem a outro calendário e não são importadas.
+  const DEFS={
+    2026:{
+      quarters:{
+        Q1:[['2026-01-02','2026-01-15'],['2026-01-16','2026-01-29'],['2026-01-30','2026-02-12'],['2026-02-13','2026-02-26'],['2026-02-27','2026-03-12'],['2026-03-13','2026-03-26']],
+        Q2:[['2026-03-27','2026-04-09'],['2026-04-10','2026-04-23'],['2026-04-24','2026-05-07'],['2026-05-08','2026-05-21'],['2026-05-22','2026-06-04'],['2026-06-05','2026-06-18']],
+        Q3:[['2026-06-19','2026-07-02'],['2026-07-03','2026-07-16'],['2026-07-17','2026-07-30'],['2026-07-31','2026-08-13'],['2026-08-14','2026-08-27'],['2026-08-28','2026-09-10']],
+        Q4:[['2026-09-11','2026-09-24'],['2026-09-25','2026-10-08'],['2026-10-09','2026-10-22'],['2026-10-23','2026-11-05'],['2026-11-06','2026-11-19'],['2026-11-20','2026-12-03']]
+      },
+      holidays:['2026-01-01','2026-04-03','2026-04-21','2026-05-01','2026-06-11','2026-09-07','2026-10-12','2026-11-02','2026-11-15','2026-12-25'],
+      planningWindows:{}
+    }
+  };
+  const T=criar(DEFS);
+  T.criar=criar;
+  // Autoteste: devolve {ok,total,falhas}. Roda no console (FI_TEMPO.autoteste()) e na verificação do desenvolvimento; não roda ao abrir o app.
+  T.autoteste=function(){
+    const falhas=[];let total=0;
+    const igual=(nome,obtido,esperado)=>{total++;const a=JSON.stringify(obtido),b=JSON.stringify(esperado);if(a!==b) falhas.push(nome+': obtido '+a+', esperado '+b);};
+    const R=(d,h)=>T.resolver(d,h);
+    const ids=r=>[r.quarter&&r.quarter.quarter,r.sprint&&r.sprint.sprintId];
+    let r=R('2026-10-15','2026-10-15');
+    igual('15/10 quarter e sprint',ids(r),['Q4','2026-Q4-S3']);igual('15/10 estado',r.estado,'atual');igual('15/10 dia útil',[r.diaUtil.numero,r.diaUtil.total,r.diaUtil.restam],[4,9,5]);
+    r=R('2026-10-13','2026-10-13');
+    igual('13/10 sprint',ids(r),['Q4','2026-Q4-S3']);igual('13/10 dia útil',[r.diaUtil.numero,r.diaUtil.total],[2,9]);
+    r=R('2026-10-12','2026-10-12');
+    igual('12/10 sprint',ids(r),['Q4','2026-Q4-S3']);igual('12/10 feriado',[r.ehFeriado,r.ehDiaUtil],[true,false]);igual('12/10 dia útil não avança',[r.diaUtil.numero,r.diaUtil.total],[1,9]);
+    r=R('2026-12-05','2026-12-05');
+    igual('05/12 quarter e sprint',ids(r),['Q4',null]);igual('05/12 estado',[r.estado,r.posicao],['fora-de-sprint','depois-da-ultima-sprint']);igual('05/12 fim de semana',r.ehDiaUtil,false);
+    r=R('2026-12-03','2026-10-15');
+    igual('03/12 sprint',ids(r),['Q4','2026-Q4-S6']);igual('03/12 estado em 15/10',r.estado,'futura');igual('03/12 último dia útil',r.diaUtil.ehUltimoDiaUtil,true);
+    r=R('2026-01-01','2026-10-15');
+    igual('01/01 quarter e sprint',ids(r),['Q1',null]);igual('01/01 estado',[r.estado,r.posicao],['fora-de-sprint','antes-da-primeira-sprint']);
+    ['2025-12-31','2027-01-01'].forEach(d=>{r=R(d,'2026-10-15');igual(d+' sem calendário',[r.quarter,r.sprint,r.estado,r.posicao,r.diaUtil],[null,null,'sem-calendario','sem-calendario',null]);igual(d+' fora de sprint desconhecido',T.foraDeSprint(d),null);});
+    ['2026-02-30','abc','',null,undefined,20261015].forEach((d,i)=>{r=R(d,'2026-10-15');igual('data inválida #'+i,[r.valida,r.quarter,r.sprint,r.estado],[false,null,null,null]);});
+    igual('hoje inválido',R('2026-10-15','xx').estado,null);
+    igual('Date local 23:59',T.normalizarData(new Date(2026,9,15,23,59,59)),'2026-10-15');igual('Date local 00:00',T.normalizarData(new Date(2026,9,15,0,0,0)),'2026-10-15');
+    igual('hoje() é uma data',/^\d{4}-\d{2}-\d{2}$/.test(T.hoje()),true);
+    // as 24 sprints de 2026
+    const S=T.sprints(2026);
+    igual('24 sprints',S.length,24);igual('6 por quarter',['Q1','Q2','Q3','Q4'].map(q=>S.filter(s=>s.quarter===q).length),[6,6,6,6]);
+    igual('ids únicos',new Set(S.map(s=>s.sprintId)).size,24);
+    igual('sem sobreposição, em ordem e contínuas',S.every((x,i)=>!i||deSerial(serial(S[i-1].endDate)+1)===x.startDate),true);
+    igual('dias úteis das 24 sprints',S.reduce((n,s)=>n+s.workingDays,0),233);
+    igual('sprints com 9 dias úteis',S.filter(s=>s.workingDays===9).map(s=>s.sprintId.slice(5)),['Q2-S1','Q2-S2','Q2-S3','Q2-S6','Q3-S6','Q4-S3','Q4-S4']);
+    igual('Q4-S3',(s=>[s.startDate,s.endDate,s.workingDays,s.holidays])(T.sprintPorId('2026-Q4-S3')),['2026-10-09','2026-10-22',9,['2026-10-12']]);
+    igual('Q4-S5 com feriado no domingo',(s=>[s.workingDays,s.holidays])(T.sprintPorId('2026-Q4-S5')),[10,['2026-11-15']]);
+    igual('1º e último dia útil de Q2-S1',[T.primeiroDiaUtil('2026-Q2-S1'),T.ultimoDiaUtil('2026-Q2-S1')],['2026-03-27','2026-04-09']);
+    igual('1º e último dia útil de Q4-S3',[T.primeiroDiaUtil('2026-Q4-S3'),T.ultimoDiaUtil('2026-Q4-S3')],['2026-10-09','2026-10-22']);
+    igual('quarters cobrem o ano',T.quarters(2026).map(q=>[q.quarter,q.startDate,q.endDate]),[['Q1','2026-01-01','2026-03-26'],['Q2','2026-03-27','2026-06-18'],['Q3','2026-06-19','2026-09-10'],['Q4','2026-09-11','2026-12-31']]);
+    igual('estado das sprints do Q4 em 15/10',['S1','S2','S3','S4','S5','S6'].map(n=>T.estadoSprint('2026-Q4-'+n,'2026-10-15')),['encerrada','encerrada','atual','futura','futura','futura']);
+    igual('estado dos quarters em 15/10',['Q1','Q2','Q3','Q4'].map(q=>T.estadoQuarter('2026-'+q,'2026-10-15')),['encerrado','encerrado','encerrado','atual']);
+    igual('id inexistente',[T.sprintPorId('2026-Q4-S7'),T.sprintPorId('2027-Q1-S1'),T.estadoSprint('x','2026-10-15')],[null,null,null]);
+    igual('dia útil atual',[T.diaUtilAtual('2026-Q4-S3','2026-10-15').numero,T.diaUtilAtual('2026-Q4-S4','2026-10-15')],[4,null]);
+    igual('dias úteis do intervalo',[T.diasUteis('2026-10-09','2026-10-22'),T.diasUteis('2026-10-22','2026-10-09'),T.diasUteis('2025-12-30','2026-01-02')],[9,0,null]);
+    igual('janela de planejamento não configurada',[T.janelaPlanejamento('2026-Q4'),T.emJanelaPlanejamento('2026-10-01')],[null,null]);
+    igual('calendário consistente',T.validar(2026),[]);
+    // datas aprovadas e feriados: referência fixa e conferência com o CAL
+    const APROVADAS={Q1:['02/01–15/01','16/01–29/01','30/01–12/02','13/02–26/02','27/02–12/03','13/03–26/03'],Q2:['27/03–09/04','10/04–23/04','24/04–07/05','08/05–21/05','22/05–04/06','05/06–18/06'],Q3:['19/06–02/07','03/07–16/07','17/07–30/07','31/07–13/08','14/08–27/08','28/08–10/09'],Q4:['11/09–24/09','25/09–08/10','09/10–22/10','23/10–05/11','06/11–19/11','20/11–03/12']};
+    igual('datas aprovadas',T.sprintDatesCompat(2026),APROVADAS);
+    if(typeof SPRINT_DATES!=='undefined') igual('SPRINT_DATES igual às aprovadas',SPRINT_DATES,APROVADAS);
+    if(typeof CAL!=='undefined') igual('feriados iguais ao CAL.holidays',DEFS[2026].holidays.slice().sort(),CAL.holidays.slice().sort());
+    // calendário próprio: janela de planejamento configurada, sobreposição e feriado repetido
+    const X=T.criar({2099:{quarters:{Q1:[['2099-01-05','2099-01-18']],Q2:[['2099-04-06','2099-04-19']],Q3:[['2099-07-06','2099-07-19']],Q4:[['2099-10-05','2099-10-18']]},holidays:['2099-01-01'],planningWindows:{Q2:['2099-04-01','2099-04-05']}}});
+    igual('janela configurada',[X.janelaPlanejamento('2099-Q2'),X.emJanelaPlanejamento('2099-04-03'),X.emJanelaPlanejamento('2099-04-06'),X.validar(2099)],[{startDate:'2099-04-01',endDate:'2099-04-05'},{quarterId:'2099-Q2',startDate:'2099-04-01',endDate:'2099-04-05'},null,[]]);
+    const Y=T.criar({2098:{quarters:{Q1:[['2098-01-05','2098-01-18'],['2098-01-15','2098-01-28']],Q2:[],Q3:[['2098-07-06','2098-07-05']],Q4:[['2098-10-05','2098-10-18']]},holidays:['2098-01-01','2098-01-01','2097-12-25'],planningWindows:{Q4:['2098-10-10','2098-10-01']}}});
+    igual('problemas detectados',Y.validar(2098).length>=7,true);
+    return {ok:falhas.length===0,total:total,falhas:falhas};
+  };
+  return T;
+})();
+const SPRINT_DATES=FI_TEMPO.sprintDatesCompat(2026); // derivado da fundação temporal acima: mesmos textos de antes
 const METAS={p85:20,tp:17,vl:55,pct:90,tr:1,bo:3,bc:8,reo:2,res:3,wip:9,aging:2,cfr:10};
 
 // ── Estado temporal da sprint ─────────────────────────────────────────────────────────────
