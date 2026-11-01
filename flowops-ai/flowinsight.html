@@ -712,6 +712,93 @@
     #discModal .depm-foot button{flex:1 1 100%;min-height:40px}
     #discModal .disc-chk{min-height:40px;align-items:center}
   }
+  /* Roadmap 1A (Estratégia > Roadmap) — tokens do Lote 1; reaproveita .dep-btn-new, .dep-empty, .dep-note e o modal .depm-* */
+  .rm-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-card-gap);flex-wrap:wrap;margin-bottom:var(--sp-card-gap)}
+  .rm-ctx{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:var(--fs-body);color:var(--clr-neutral)}
+  .rm-ctx-n{font-size:var(--fs-caption)}
+  .rm-pill{font-size:12px;padding:5px 12px;min-height:32px;border:1px solid #d1d5db;border-radius:16px;background:#fff;color:#374151;cursor:pointer}
+  .rm-pill.on{background:var(--clr-info);border-color:var(--clr-info);color:#fff}
+  .rm-lnk{font-size:var(--fs-caption);color:var(--clr-info);background:none;border:none;cursor:pointer;text-decoration:underline;padding:4px}
+  .rm-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-card-gap);margin-bottom:var(--sp-section-gap)}
+  .rm-q{background:#fff;border:1px solid #e5e5e3;border-radius:8px;padding:10px 12px}
+  .rm-q-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .rm-q-n{font-size:var(--fs-section-hd);font-weight:700;color:#111827}
+  .rm-q-s{font-size:var(--fs-caption);color:var(--clr-neutral)}
+  .rm-q.atual .rm-q-s{color:var(--clr-info);font-weight:600}
+  .rm-q-d{font-size:var(--fs-caption);color:var(--clr-neutral);margin-top:1px}
+  .rm-q-v{display:flex;gap:16px;align-items:flex-end;margin-top:8px}
+  .rm-q-v>div{display:flex;flex-direction:column}
+  .rm-q-v b{font-size:var(--fs-kpi-value);font-weight:var(--fw-kpi-value);line-height:1.1;color:#111827}
+  .rm-q-v span{font-size:var(--fs-kpi-label);font-weight:var(--fw-kpi-label);color:var(--clr-neutral)}
+  .rm-q-dif{margin-left:auto;font-size:12px;font-weight:600;padding:1px 8px;border-radius:10px;border:1px solid var(--clr-neutral);color:#374151}
+  .rm-q-dif.neg{border-color:var(--clr-warn)}.rm-q-dif.pos{border-color:var(--clr-info)}
+  .rm-filtros{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:var(--sp-card-gap)}
+  .rm-lista{background:#fff;border:1px solid #e5e5e3;border-radius:8px;overflow:hidden}
+  .rm-h,.rm-r{display:grid;grid-template-columns:minmax(150px,1.3fr) 72px minmax(170px,1.2fr) 128px 116px 140px 88px minmax(120px,1fr);gap:0 12px;padding:10px 14px;align-items:start}
+  .rm-h{font-size:var(--fs-caption);font-weight:600;color:var(--clr-neutral);border-bottom:1px solid #e5e5e3;background:#fafaf9;align-items:end}
+  .rm-r{border-bottom:1px solid #e5e5e3;cursor:pointer;min-width:0}
+  .rm-r:last-child{border-bottom:0}
+  .rm-r:hover,.rm-r:focus{background:#fafaf9;outline:none}
+  .rm-r:focus-visible{box-shadow:inset 0 0 0 2px var(--clr-info)}
+  .rm-ttl{font-size:var(--fs-body);font-weight:600;color:#111827;line-height:1.3;overflow-wrap:anywhere}
+  .rm-own{font-size:var(--fs-caption);color:var(--clr-neutral);margin-top:2px;overflow-wrap:anywhere}
+  .rm-pq{font-size:15px;font-weight:700;color:#111827}
+  .rm-prv-t{font-size:var(--fs-body);font-weight:500;color:#111827}
+  .rm-prv-t.nd{color:var(--clr-neutral);font-weight:400}
+  .rm-sub{font-size:var(--fs-caption);color:var(--clr-neutral);margin-top:3px}
+  .rm-qlab{display:grid;grid-template-columns:repeat(4,1fr);font-size:10px;font-weight:600;text-align:center}
+  .rm-trk{position:relative;height:10px;margin-top:8px;background:repeating-linear-gradient(90deg,#f3f4f6 0 calc(100%/24 - 1px),#fff calc(100%/24 - 1px) calc(100%/24));border:1px solid #e5e7eb;border-radius:2px}
+  .rm-trk.nd{background:none;border:1px dashed #d1d5db}
+  .rm-qs{position:absolute;top:-1px;bottom:-1px;width:1px;background:#d1d5db}
+  .rm-pl{position:absolute;top:-4px;bottom:-4px;border:1.5px solid var(--clr-info);border-radius:3px;background:rgba(24,95,165,.07)}
+  .rm-fc{position:absolute;top:1px;bottom:1px;border-radius:2px;background:var(--clr-info)}
+  .rm-fc.parc{background:var(--clr-warn)}.rm-fc.full{background:var(--clr-bad)}.rm-fc.ent{background:var(--clr-ok)}
+  .rm-ov{position:absolute;top:-4px;font-size:12px;line-height:1;color:#111827}
+  .rm-ov-l{left:-9px}.rm-ov-r{right:-9px}
+  .rm-hj{position:absolute;top:-6px;bottom:-6px;width:2px;background:#111827}
+  .rm-chip{display:inline-flex;align-items:center;gap:4px;font-size:var(--fs-badge);font-weight:var(--fw-badge);padding:2px 9px;border-radius:12px;border:1px solid var(--rm-c,var(--clr-neutral));color:#374151;white-space:nowrap;line-height:1.35}
+  .rm-chip i{color:var(--rm-c,var(--clr-neutral))}
+  .rm-chip.dash{border-style:dashed}
+  .rm-c-des .rm-chip{white-space:normal;max-width:100%}
+  .rm-c-ok{--rm-c:var(--clr-ok)}.rm-c-warn{--rm-c:var(--clr-warn)}.rm-c-bad{--rm-c:var(--clr-bad)}.rm-c-info{--rm-c:var(--clr-info)}.rm-c-neutral{--rm-c:var(--clr-neutral)}
+  .rm-cf{display:flex;align-items:center;gap:6px;font-size:var(--fs-body);font-weight:500;color:#111827}
+  .rm-cf.nd{color:var(--clr-neutral);font-weight:400}
+  .rm-bars{display:inline-flex;gap:2px;flex:none}
+  .rm-bars b{width:5px;height:12px;border-radius:1px;background:#e5e7eb}
+  .rm-bars b.on{background:#4b5563}
+  .rm-cf.nd .rm-bars b{background:none;border:1px dashed #d1d5db}
+  .rm-rev{font-size:var(--fs-caption);font-weight:600;color:var(--clr-warn);margin-top:3px}
+  .rm-rk{font-size:12px;color:#111827;line-height:1.35;overflow-wrap:anywhere}
+  .rm-rk.nd{color:var(--clr-neutral)}
+  .rm-grp{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap;padding:10px 14px;background:#fafaf9;border-bottom:1px solid #e5e5e3}
+  .rm-grp b{font-size:var(--fs-body);font-weight:700;color:#111827}
+  .rm-grp span{font-size:var(--fs-caption);color:var(--clr-neutral)}
+  .rm-vz{padding:14px;font-size:var(--fs-caption);color:var(--clr-neutral);border-bottom:1px solid #e5e5e3}
+  .rm-nota,.rm-dica{font-size:var(--fs-caption);color:var(--clr-neutral);margin-top:8px}
+  .rm-dica{display:block;margin:0}
+  .rm-lbl,.rm-plx,.rm-dsl{display:none}
+  .rm-plx{font-size:var(--fs-caption);color:var(--clr-neutral);margin-bottom:2px}
+  .rm-plx b{color:#111827;font-size:var(--fs-body)}
+  #rmModal .rm-del{margin-right:auto;border-color:#fca5a5;color:var(--clr-bad)}
+  @media(max-width:1160px){
+    .rm-h{display:none}
+    .rm-r{grid-template-columns:1.25fr 1.15fr .9fr;grid-template-areas:"ini prv est" "ini prv cond" "rk prv cf";gap:6px 16px}
+    .rm-r>.rm-c-ini{grid-area:ini}.rm-r>.rm-c-pq{display:none}.rm-r>.rm-c-prv{grid-area:prv}.rm-r>.rm-c-des{display:none}
+    .rm-r>.rm-c-est{grid-area:est}.rm-r>.rm-c-cond{grid-area:cond}.rm-r>.rm-c-cf{grid-area:cf}.rm-r>.rm-c-rk{grid-area:rk;align-self:end}
+    .rm-plx{display:block}
+    .rm-c-prv .rm-dsl{display:inline-flex;margin-top:6px}
+    .rm-c-cf .rm-lbl,.rm-c-rk .rm-lbl{display:block;font-size:10px;font-weight:600;color:var(--clr-neutral);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+    .rm-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media(max-width:600px){
+    .rm-r{grid-template-columns:1fr 1fr;grid-template-areas:"ini ini" "est cond" "prv prv" "cf rk";gap:8px 12px;padding:12px}
+    .rm-r>.rm-c-rk{align-self:start}
+    .rm-strip{gap:8px}.rm-q{padding:8px 10px}.rm-q-v b{font-size:18px}
+    #ed-roadmap .dep-btn-new,#ed-roadmap .rm-pill{min-height:40px}
+    #rmModal .depm-foot{flex-wrap:wrap}
+    #rmModal .depm-foot button{flex:1 1 100%;min-height:40px}
+    #rmModal .rm-del{margin-right:0}
+  }
   /* Fase 2 — Lote 7 — Visão Geral: Atenção agora e Estratégia e Discovery em resumo (tokens do Lote 1; reaproveita .cc e .dep-msg) */
   .hm-att,.hm-strat{padding:var(--sp-card-pad)}
   .hm-hd{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:4px}
@@ -1386,14 +1473,16 @@
   <div id="ped" class="fp">
     <div class="cf-header">
       <p class="cf-title">Estratégia &amp; Discovery</p>
-      <p class="cf-sub">Objetivos e resultados-chave do período selecionado, e itens em Discovery até a decisão.</p>
+      <p class="cf-sub">Objetivos e resultados-chave do período selecionado, itens em Discovery até a decisão e o Roadmap por Quarter.</p>
     </div>
     <div class="ed-nav">
       <button class="ed-tab on" onclick="edTab(this,'ed-okr')" aria-label="Objetivos" title="Objetivos"><i class="ti ti-target"></i> Objetivos</button>
       <button class="ed-tab" onclick="edTab(this,'ed-discovery')" aria-label="Discovery" title="Discovery"><i class="ti ti-bulb"></i> Discovery</button>
+      <button class="ed-tab" onclick="edTab(this,'ed-roadmap')" aria-label="Roadmap" title="Roadmap"><i class="ti ti-map-2"></i> Roadmap</button>
     </div>
     <div id="ed-okr" class="edp on"></div>
     <div id="ed-discovery" class="edp"></div>
+    <div id="ed-roadmap" class="edp"></div>
   </div>
 
   <!-- DORA -->
@@ -3030,6 +3119,7 @@ function sprintAtualizarSemIndicadores(){
   if(on('pres')) renderResultados();
   if(on('ped')) renderOKRs();
   if(on('ped')&&on('ed-discovery')) renderDiscovery();
+  if(on('ped')&&on('ed-roadmap')) renderRoadmap();
 }
 
 let ch={};
@@ -3237,6 +3327,7 @@ function upd(){
   if(document.getElementById('pdel').classList.contains('on')) renderDelivery();
   if(document.getElementById('ped').classList.contains('on')) renderOKRs();
   if(document.getElementById('ped').classList.contains('on')&&document.getElementById('ed-discovery').classList.contains('on')) renderDiscovery();
+  if(document.getElementById('ped').classList.contains('on')&&document.getElementById('ed-roadmap').classList.contains('on')) renderRoadmap();
   renderHome();
   drawCharts();
 }
@@ -3987,6 +4078,7 @@ function edTab(el,id){
   document.getElementById(id).classList.add('on');
   if(id==='ed-okr') renderOKRs();
   if(id==='ed-discovery') renderDiscovery();
+  if(id==='ed-roadmap') renderRoadmap();
 }
 
 // Pontos de atenção de Engenharia & Qualidade — regra única da Visão de Saúde e da Visão Geral (METAS.cfr, cfZeroStatus, qhsStatus, doraClassify).
@@ -8614,6 +8706,484 @@ const Discovery=(function(){
 })();
 function renderDiscovery(){Discovery.render();}
 
+// ── ESTRATÉGIA > ROADMAP (Roadmap 1A) ──────────────────────────────────────────────
+// Persistência própria em fi_roadmap (envelope com schemaVersion), leitura e gravação seguras no padrão dos módulos de OKR e Discovery.
+// Não altera fi_okr nem fi_discovery. Quarter e sprint vêm do FI_TEMPO, sempre com ano (2026-Q4, 2026-Q4-S6): nunca trimestre civil.
+// O deslocamento NÃO é gravado: é derivado em tempo de execução. A confiança é informada pela pessoa e o FlowOps nunca a altera.
+// O que é gravado em fi_roadmap são CÓDIGOS estáveis; o texto em português existe só nestes mapas código → label (a tela traduz na hora de exibir e nunca grava label).
+const RM_STATES={discovery:'Discovery',planned:'Planejada',in_progress:'Em andamento',paused:'Pausada',delivered:'Entregue',discarded:'Descartada'};
+const RM_CONDS={healthy:'Saudável',at_risk:'Em risco',blocked:'Bloqueada',capacity_gap:'Gap de capacidade',critical_dependency:'Dependência crítica'};
+const RM_CONFS={high:'Alta',medium:'Média',low:'Baixa',not_informed:'Não informada'};
+const RM_RISKS={technical:'Técnico',dependency:'Dependência',capacity:'Capacidade',process:'Processo',quality:'Qualidade',other:'Outro'};
+const RM_SOURCES={manual:'Manual',okr:'Iniciativa de OKR',discovery:'Item de Discovery'};
+// Valores de uma iniciativa nova: só o título é obrigatório; nenhum planejamento nem previsão é inventado.
+// Ausência de enum ou referência opcional é null; texto livre vazio é ''.
+const RM_PADRAO={state:'discovery',condition:'healthy',confidence:'not_informed',owner:'',team:null,baselineQuarter:null,forecastStartSprintId:null,forecastEndSprintId:null,mainRiskCategory:null,mainRiskText:''};
+const Roadmap=(function(){
+  const KEY='fi_roadmap';
+  const RXID=/^roadmap-\d{3,}$/,RXQ=/^(\d{4})-Q([1-4])$/,RXS=/^(\d{4})-Q([1-4])-S([1-6])$/;
+  const MSG_FALHA='Não foi possível salvar neste navegador (sem espaço ou navegação privada). Nada foi alterado e o que você digitou foi mantido. Tente salvar novamente.';
+  const MSG_NOVA='Estes dados foram salvos por uma versão mais nova do FlowOps AI e não serão alterados por esta página.';
+  const MSG_VAZIO='Adicione uma iniciativa ao Roadmap para acompanhar planejamento, previsão, condição e confiança por Quarter.';
+  let data=empty(),issue=null,m=null;
+  const view={ano:null,filtro:'todas',descartadas:false};
+  function empty(){return{schemaVersion:1,counter:0,items:[]};}
+  const clone=x=>JSON.parse(JSON.stringify(x));
+  const isStr=(v,max)=>typeof v==='string'&&v.length<=max;
+  const isoOk=v=>typeof v==='string'&&v.length<=40&&!isNaN(Date.parse(v));
+  const plain=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
+  const has=(c,v)=>typeof v==='string'&&(Array.isArray(c)?c.indexOf(v)>=0:Object.prototype.hasOwnProperty.call(c,v));
+  const lbl=(map,code)=>has(map,code)?map[code]:'';
+  const E=escHtml;
+
+  // Anos com calendário canônico cadastrado no FI_TEMPO (hoje 2026 e 2027)
+  function anos(){const o=[];for(let y=2020;y<=2040;y++) if(FI_TEMPO.quarters(y).length) o.push(y);return o;}
+  const sprintOk=id=>typeof id==='string'&&RXS.test(id)&&!!FI_TEMPO.sprintPorId(id);
+
+  // ── Validação ──
+  // Devolve '' se válido ou o motivo. Não bloqueia previsão que cruza o ano nem previsão fora do quarter planejado: é o que o Roadmap deve mostrar.
+  function checkItem(it){
+    if(!plain(it)) return 'item';
+    if(typeof it.id!=='string'||!RXID.test(it.id)) return 'id';
+    if(!has(RM_SOURCES,it.sourceType)) return 'origem';
+    if(it.sourceType==='manual'?it.sourceId!==null:(it.sourceId!==null&&!(isStr(it.sourceId,80)&&it.sourceId))) return 'referência da origem';
+    if(!isStr(it.title,160)||!it.title.trim()) return 'título';
+    if(!isStr(it.owner,120)) return 'responsável';
+    if(it.team!==null&&(!isStr(it.team,60)||!it.team)) return 'time'; // sem time é null
+    if(it.baselineQuarter!==null){ // vazio (null) é permitido: a iniciativa pode ainda não ter quarter planejado
+      if(typeof it.baselineQuarter!=='string'||!RXQ.test(it.baselineQuarter)) return 'quarter planejado';
+      if(!FI_TEMPO.quarterPorId(it.baselineQuarter)) return 'ano do quarter planejado sem calendário';
+    }
+    const a=it.forecastStartSprintId,b=it.forecastEndSprintId;
+    if((a===null)!==(b===null)) return 'previsão incompleta';
+    if(a!==null){
+      if(!sprintOk(a)||!sprintOk(b)) return 'sprint inexistente';
+      if(FI_TEMPO.sprintPorId(a).startDate>FI_TEMPO.sprintPorId(b).startDate) return 'previsão inicial depois da final';
+    }
+    if(!has(RM_STATES,it.state)) return 'estado';
+    if(!has(RM_CONDS,it.condition)) return 'condição';
+    if(!has(RM_CONFS,it.confidence)) return 'confiança';
+    if(it.confidenceAt!==null&&!isoOk(it.confidenceAt)) return 'data da confiança';
+    if(it.mainRiskCategory!==null&&!has(RM_RISKS,it.mainRiskCategory)) return 'categoria do risco'; // sem categoria é null
+    if(!isStr(it.mainRiskText,160)) return 'texto do risco';
+    if(it.mainRiskText.trim()&&it.mainRiskCategory===null) return 'risco sem categoria';
+    if(!isoOk(it.createdAt)||!isoOk(it.updatedAt)) return 'datas';
+    return '';
+  }
+  function check(d){
+    if(!plain(d)) return 'raiz';
+    if(!Number.isInteger(d.schemaVersion)||d.schemaVersion<1) return 'schemaVersion';
+    if(d.schemaVersion>1) return 'schema mais novo';
+    if(!Number.isInteger(d.counter)||d.counter<0||d.counter>1e9) return 'contador';
+    if(!Array.isArray(d.items)) return 'itens';
+    const seen=new Set();
+    for(const it of d.items){
+      const r=checkItem(it);
+      if(r) return r;
+      if(seen.has(it.id)) return 'id repetido';
+      seen.add(it.id);
+    }
+    return '';
+  }
+  // Reconstrói só os campos conhecidos (o deslocamento nunca entra)
+  function normalize(d){
+    return{schemaVersion:1,counter:d.counter,items:d.items.map(i=>({id:i.id,sourceType:i.sourceType,sourceId:i.sourceId,title:i.title,owner:i.owner,team:i.team,
+      baselineQuarter:i.baselineQuarter,forecastStartSprintId:i.forecastStartSprintId,forecastEndSprintId:i.forecastEndSprintId,
+      state:i.state,condition:i.condition,confidence:i.confidence,confidenceAt:i.confidenceAt,
+      mainRiskCategory:i.mainRiskCategory,mainRiskText:i.mainRiskText,createdAt:i.createdAt,updatedAt:i.updatedAt}))};
+  }
+  // Leitura segura: nunca lança exceção. Valor ilegível ou de versão mais nova fica guardado como está.
+  function load(){
+    issue=null;data=empty();
+    let raw;
+    try{raw=localStorage.getItem(KEY);}catch(e){issue='acesso';return;}
+    if(raw===null) return; // sem exemplo persistido: lista vazia
+    let p;
+    try{p=JSON.parse(raw);}catch(e){issue='ilegivel';return;}
+    if(plain(p)&&Number.isInteger(p.schemaVersion)&&p.schemaVersion>1){issue='nova';return;}
+    if(check(p)){issue='ilegivel';return;}
+    data=normalize(p);
+  }
+  function persist(next){
+    try{localStorage.setItem(KEY,JSON.stringify(next));return{ok:true};}catch(e){return{ok:false,error:e};}
+  }
+  // Toda gravação: monta o estado candidato, valida, persiste e só então troca a memória
+  function commit(mutator){
+    if(issue==='nova') return{ok:false,msg:MSG_NOVA};
+    const next=clone(issue?empty():data);
+    const err=mutator(next);
+    if(err) return{ok:false,msg:err};
+    if(check(next)) return{ok:false,msg:'Os dados informados não são válidos. Revise os campos e tente novamente.'};
+    if(!persist(next).ok) return{ok:false,msg:MSG_FALHA};
+    data=next;issue=null;
+    return{ok:true};
+  }
+  function newId(next){
+    let max=next.counter||0;
+    next.items.forEach(i=>{const x=/-(\d+)$/.exec(i.id||'');if(x) max=Math.max(max,parseInt(x[1],10));});
+    max+=1;next.counter=max;
+    return 'roadmap-'+String(max).padStart(3,'0');
+  }
+
+  // ── Derivações (puras, nada disto é gravado) ──
+  const qIdx=id=>{const x=RXQ.exec(id);return x?(+x[1])*4+(+x[2]-1):NaN;};
+  const sIdxQ=id=>{const x=RXS.exec(id);return x?(+x[1])*4+(+x[2]-1):NaN;};
+  const qLabel=id=>{const x=RXQ.exec(id);return x?'Q'+x[2]+'/'+x[1]:'';};
+  const posTxt=s=>s<=2?'início':s<=4?'meio':'fim';
+  // "fim Q4/2026 → início Q1/2027": o ano fica explícito quando a previsão cruza anos ou sai do ano planejado
+  function forecastText(it){
+    if(it.forecastStartSprintId===null) return null;
+    const a=RXS.exec(it.forecastStartSprintId),b=RXS.exec(it.forecastEndSprintId),by=it.baselineQuarter===null?null:it.baselineQuarter.slice(0,4); // sem quarter planejado, o ano fica sempre explícito
+    const comAno=a[1]!==b[1]||a[1]!==by;
+    const yr=x=>comAno?'/'+x[1]:'';
+    const pa=posTxt(+a[3]),pb=posTxt(+b[3]);
+    if(a[1]===b[1]&&a[2]===b[2]) return pa===pb?pa+' Q'+a[2]+yr(a):pa+'–'+pb+' Q'+a[2]+yr(a);
+    return pa+' Q'+a[2]+yr(a)+' → '+pb+' Q'+b[2]+yr(b);
+  }
+  // No prazo · Cruza o fim do Qn · +N Quarter(s) · Condicionada · Sem previsão · Sem quarter planejado
+  // Com previsão válida o deslocamento é sempre calculado, qualquer que seja a condição. Condicionada só existe SEM previsão e com condição "Dependência crítica".
+  function desloc(it){
+    if(it.forecastStartSprintId===null) return it.condition==='critical_dependency'?{k:'cond',txt:'Condicionada'}:{k:'sem',txt:'Sem previsão'};
+    if(it.baselineQuarter===null) return{k:'semq',txt:'Sem quarter planejado'}; // há previsão, mas não há contra o que comparar
+    const base=qIdx(it.baselineQuarter),qs=sIdxQ(it.forecastStartSprintId),qe=sIdxQ(it.forecastEndSprintId);
+    if(qe<=base) return{k:'ok',txt:'No prazo'};
+    if(qs<=base) return{k:'cruza',txt:'Cruza o fim do Q'+it.baselineQuarter.slice(6)};
+    const n=qs-base;
+    return{k:'mais',txt:'+'+n+(n===1?' Quarter':' Quarters')};
+  }
+  const SEV={blocked:0,at_risk:1,capacity_gap:1,critical_dependency:1,healthy:2};
+  // Ordem: quarter planejado, depois gravidade da condição, depois título; sem quarter planejado fica por último
+  const qKey=id=>id===null?Infinity:qIdx(id);
+  const ordenar=l=>l.slice().sort((a,b)=>{const x=qKey(a.baselineQuarter),y=qKey(b.baselineQuarter);if(x!==y) return x<y?-1:1;return SEV[a.condition]-SEV[b.condition]||a.title.localeCompare(b.title,'pt-BR');});
+  const sprIdx=(id,ano)=>{const x=RXS.exec(id);return(+x[1]-ano)*24+(+x[2]-1)*6+(+x[3]-1);}; // posição na trilha do ano (pode ficar fora de 0..23)
+  // Sem quarter planejado e sem previsão: não pertence a nenhum ano. Vai para o grupo único "Sem planejamento", mostrado uma só vez e fora das contagens dos Quarters.
+  const semPlan=it=>it.baselineQuarter===null&&it.forecastStartSprintId===null&&it.forecastEndSprintId===null;
+  // No ano se o quarter planejado ou a previsão (início ou fim) toca o ano; com previsão e sem quarter planejado, só pela previsão
+  const noAno=(it,ano)=>{
+    if(it.baselineQuarter!==null&&+it.baselineQuarter.slice(0,4)===ano) return true;
+    return it.forecastStartSprintId!==null&&(+it.forecastStartSprintId.slice(0,4)===ano||+it.forecastEndSprintId.slice(0,4)===ano);
+  };
+  const agrupar=(items,ano)=>({doAno:items.filter(i=>noAno(i,ano)),sem:items.filter(semPlan)});
+  const contagem=(l,qid)=>({plan:l.filter(i=>i.baselineQuarter===qid).length,prev:l.filter(i=>i.forecastEndSprintId!==null&&i.forecastEndSprintId.slice(0,7)===qid).length});
+
+  // ── Renderização (todo texto vindo dos dados passa por escHtml; nada de dado em onclick) ──
+  const ST_ICON={discovery:'bulb',planned:'calendar-event',in_progress:'player-play',paused:'player-pause',delivered:'circle-check',discarded:'archive'};
+  const ST_COR={in_progress:'info',delivered:'ok'};
+  const CD={healthy:['ok','circle-check'],at_risk:['warn','alert-triangle'],blocked:['bad','ban'],capacity_gap:['warn','users'],critical_dependency:['warn','link']};
+  const DS={ok:['ok','check'],cruza:['warn','arrow-right'],mais:['bad','arrow-right'],cond:['warn','link'],sem:['neutral','minus'],semq:['neutral','minus']};
+  const chip=(cor,icone,texto,tracejado)=>'<span class="rm-chip rm-c-'+cor+(tracejado?' dash':'')+'"><i class="ti ti-'+icone+'"></i> '+E(texto)+'</span>';
+  const deslocChip=d=>chip(DS[d.k][0],DS[d.k][1],d.txt,d.k==='cond'||d.k==='sem'||d.k==='semq');
+  function trilha(it,ano){
+    const c=i=>(i/24*100).toFixed(3)+'%';
+    const d=desloc(it),semPrev=it.forecastStartSprintId===null;
+    let h='<div class="rm-trk'+(semPrev?' nd':'')+'">';
+    [6,12,18].forEach(i=>{h+='<span class="rm-qs" style="left:'+c(i)+'"></span>';});
+    if(it.baselineQuarter!==null&&+it.baselineQuarter.slice(0,4)===ano) h+='<span class="rm-pl" style="left:'+c((+it.baselineQuarter.slice(6)-1)*6)+';width:25%"></span>';
+    if(!semPrev){
+      const a=sprIdx(it.forecastStartSprintId,ano),b=sprIdx(it.forecastEndSprintId,ano);
+      if(!(b<0||a>23)){
+        const cls=it.state==='delivered'?'ent':d.k==='cruza'?'parc':d.k==='mais'?'full':'';
+        h+='<span class="rm-fc '+cls+'" style="left:'+c(Math.max(0,a))+';width:'+c(Math.min(23,b)-Math.max(0,a)+1)+'"></span>';
+        if(a<0) h+='<span class="rm-ov rm-ov-l" title="Começa antes deste ano"><i class="ti ti-chevron-left"></i></span>';
+        if(b>23) h+='<span class="rm-ov rm-ov-r" title="Termina depois deste ano"><i class="ti ti-chevron-right"></i></span>';
+      } else h+='<span class="rm-ov '+(b<0?'rm-ov-l':'rm-ov-r')+'" title="Previsão em outro ano"><i class="ti ti-chevron-'+(b<0?'left':'right')+'"></i></span>';
+    }
+    const h0=FI_TEMPO.resolver(FI_TEMPO.hoje());
+    if(h0.sprint&&h0.sprint.year===ano) h+='<span class="rm-hj" style="left:'+c((h0.sprint.number-1+(['Q1','Q2','Q3','Q4'].indexOf(h0.sprint.quarter))*6)+.5)+'" title="Hoje"></span>';
+    return h+'</div>';
+  }
+  function confHtml(it){
+    if(it.confidence==='not_informed') return '<div class="rm-cf nd"><span class="rm-bars"><b></b><b></b><b></b></span>'+E(lbl(RM_CONFS,'not_informed'))+'</div>';
+    const n={high:3,medium:2,low:1}[it.confidence];
+    // Sugestão de revisão (regra R1 aprovada): só avisa, nunca altera a confiança informada
+    const rev=it.confidence==='high'&&it.condition==='blocked'?'<div class="rm-rev">Revisar confiança</div>':'';
+    return '<div class="rm-cf"><span class="rm-bars">'+[1,2,3].map(k=>'<b class="'+(k<=n?'on':'')+'"></b>').join('')+'</span>'+E(lbl(RM_CONFS,it.confidence))+'</div>'+rev;
+  }
+  function rowHtml(it,ano){
+    const d=desloc(it),ft=forecastText(it),oe=[it.owner,it.team].filter(Boolean).join(' · ');
+    const risco=it.mainRiskCategory||it.mainRiskText?'<div class="rm-rk"><b>'+E(lbl(RM_RISKS,it.mainRiskCategory))+'</b>'+(it.mainRiskCategory&&it.mainRiskText?': ':'')+E(it.mainRiskText)+'</div>':'<div class="rm-rk nd">Nenhum fator informado</div>';
+    return '<div class="rm-r" role="button" tabindex="0" aria-label="Editar iniciativa: '+E(it.title)+'" data-act="edit" data-id="'+E(it.id)+'" onclick="Roadmap.click(this)" onkeydown="if(event.key===\'Enter\')Roadmap.click(this)">'
+      +'<div class="rm-c-ini"><div class="rm-ttl">'+E(it.title)+'</div>'+(oe?'<div class="rm-own">'+E(oe)+'</div>':'')+'</div>'
+      +'<div class="rm-c-pq"><div class="rm-lbl">Planejado</div><div class="rm-pq">'+E(qLabel(it.baselineQuarter)||'—')+'</div></div>'
+      +'<div class="rm-c-prv"><div class="rm-plx">Planejado <b>'+E(qLabel(it.baselineQuarter)||'—')+'</b></div><div class="rm-lbl">Previsão</div>'
+        +'<div class="rm-prv-t'+(ft?'':' nd')+'">'+(ft?E(ft):'Sem previsão informada')+'</div>'+trilha(it,ano)+'<span class="rm-dsl">'+deslocChip(d)+'</span></div>'
+      +'<div class="rm-c-des">'+deslocChip(d)+(d.sub?'<div class="rm-sub">'+E(d.sub)+'</div>':'')+'</div>'
+      +'<div class="rm-c-est"><div class="rm-lbl">Estado</div>'+chip(ST_COR[it.state]||'neutral',ST_ICON[it.state],lbl(RM_STATES,it.state))+'</div>'
+      +'<div class="rm-c-cond"><div class="rm-lbl">Condição</div>'+chip(CD[it.condition][0],CD[it.condition][1],lbl(RM_CONDS,it.condition))+'</div>'
+      +'<div class="rm-c-cf"><div class="rm-lbl">Confiança informada</div>'+confHtml(it)+'</div>'
+      +'<div class="rm-c-rk"><div class="rm-lbl">Principal risco</div>'+risco+'</div></div>';
+  }
+  function noticeHtml(){
+    const w=t=>depMsgHtml('warn',t);
+    if(issue==='ilegivel') return w('As iniciativas do Roadmap salvas neste navegador não puderam ser lidas. Nada foi apagado e a lista aparece vazia. Ao salvar uma iniciativa, o conteúdo ilegível será substituído.');
+    if(issue==='nova') return w(MSG_NOVA);
+    if(issue==='acesso') return w('Este navegador não permite salvar dados nesta página. As iniciativas registradas agora serão perdidas ao recarregar.');
+    return '';
+  }
+  function render(){
+    const root=document.getElementById('ed-roadmap');
+    if(!root) return;
+    const ys=anos();
+    if(view.ano===null||ys.indexOf(view.ano)<0){const hy=+FI_TEMPO.hoje().slice(0,4);view.ano=ys.indexOf(hy)>=0?hy:ys[0];}
+    const ano=view.ano;
+    const todas=data.items,g=agrupar(todas,ano),doAno=g.doAno,sem=g.sem,ativas=doAno.filter(i=>i.state!=='discarded');
+    const desc=doAno.concat(sem).filter(i=>i.state==='discarded').length;
+    // Mesmos filtros (descartadas, Atenção, Bloqueadas) e mesma ordem na lista do ano e no grupo Sem planejamento
+    const filtra=l=>{
+      let r=l.filter(i=>view.descartadas||i.state!=='discarded');
+      if(view.filtro==='atencao') r=r.filter(i=>i.condition!=='healthy');
+      if(view.filtro==='bloqueadas') r=r.filter(i=>i.condition==='blocked');
+      return ordenar(r);
+    };
+    const lista=filtra(doAno),listaSem=filtra(sem);
+    const pill=(on,label,onclick,extra)=>'<button type="button" class="rm-pill'+(on?' on':'')+'" aria-pressed="'+(on?'true':'false')+'" onclick="'+onclick+'"'+(extra||'')+'>'+label+'</button>';
+    const faixa='<div class="rm-strip">'+FI_TEMPO.quarters(ano).map(q=>{
+      const cn=contagem(ativas,q.quarterId),plan=cn.plan,prev=cn.prev; // o grupo Sem planejamento não entra aqui
+      const est=FI_TEMPO.estadoQuarter(q.quarterId),dif=prev-plan;
+      return '<div class="rm-q'+(est==='atual'?' atual':'')+'"><div class="rm-q-h"><span class="rm-q-n">'+E(qLabel(q.quarterId))+'</span><span class="rm-q-s">'+({encerrado:'Encerrado',atual:'Atual',futuro:'Futuro'}[est]||'')+'</span></div>'
+        +'<div class="rm-q-d">'+E(q.startDate.slice(8,10)+'/'+q.startDate.slice(5,7))+'–'+E(q.endDate.slice(8,10)+'/'+q.endDate.slice(5,7))+'</div>'
+        +'<div class="rm-q-v"><div><b>'+plan+'</b><span>Planejadas</span></div><div><b>'+prev+'</b><span>Previstas</span></div>'+(dif?'<span class="rm-q-dif'+(dif<0?' neg':' pos')+'">'+(dif>0?'+':'−')+Math.abs(dif)+'</span>':'')+'</div></div>';
+    }).join('')+'</div>';
+    const cab='<div class="rm-h"><div>Iniciativa</div><div>Planejado</div><div>Previsão<div class="rm-qlab"><span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span></div></div><div>Deslocamento</div><div>Estado</div><div>Condição</div><div>Confiança informada</div><div>Principal risco</div></div>';
+    let corpo;
+    if(!todas.length) corpo='<div class="dep-empty"><i class="ti ti-map-2" style="font-size:36px;display:block;margin-bottom:10px;color:#d1d5db"></i><p style="font-size:14px;font-weight:500;color:#6b7280;margin-bottom:4px">Nenhuma iniciativa no Roadmap</p><p style="font-size:12px">'+E(MSG_VAZIO)+'</p></div>';
+    else{
+      const fora=todas.length-doAno.length-sem.length;
+      corpo=faixa
+        +'<div class="rm-filtros">'+pill(view.filtro==='todas','Todas','Roadmap.setFiltro(\'todas\')')+pill(view.filtro==='atencao','Atenção','Roadmap.setFiltro(\'atencao\')')+pill(view.filtro==='bloqueadas','Bloqueadas','Roadmap.setFiltro(\'bloqueadas\')')
+        +(desc?'<button type="button" class="rm-lnk" onclick="Roadmap.setDescartadas()">'+(view.descartadas?'Ocultar':'Mostrar')+' descartadas ('+desc+')</button>':'')+'</div>'
+        +(lista.length||listaSem.length?'<div class="rm-lista" role="list">'+cab+lista.map(i=>rowHtml(i,ano)).join('')
+            +(lista.length?'':'<div class="rm-vz">'+(doAno.length?'Nenhuma iniciativa com quarter ou previsão neste filtro.':'Nenhuma iniciativa planejada ou prevista em '+ano+'.')+'</div>')
+            +(listaSem.length?'<div class="rm-grp" role="heading" aria-level="3"><b>Sem planejamento ('+listaSem.length+')</b><span>Sem quarter planejado e sem previsão. Não entram nas contagens dos Quarters.</span></div>'+listaSem.map(i=>rowHtml(i,ano)).join(''):'')+'</div>'
+          :'<div class="dep-empty" style="padding:32px 24px"><p style="font-size:13px;color:#6b7280">Nenhuma iniciativa '+(doAno.length+sem.length?'neste filtro.':'em '+ano+'.')+'</p></div>')
+        +(fora?'<p class="rm-nota">'+fora+(fora===1?' iniciativa está em outro ano e não aparece':' iniciativas estão em outro ano e não aparecem')+' nesta visão.</p>':'');
+    }
+    root.innerHTML='<div class="rm-toolbar"><div class="rm-ctx"><span>Ano:</span>'+ys.map(y=>pill(y===ano,String(y),'Roadmap.setAno('+y+')')).join('')+'<span class="rm-ctx-n">Quarters do calendário canônico</span></div>'
+      +'<button class="dep-btn-new" data-act="new" data-id="" onclick="Roadmap.click(this)"><i class="ti ti-plus"></i> Nova iniciativa</button></div>'
+      +'<p class="dep-note">As iniciativas do Roadmap ficam salvas apenas neste navegador. Planejado, previsão, estado, condição e confiança são informados por você: o FlowOps não os calcula nem os altera. O deslocamento é calculado a cada leitura.</p>'
+      +noticeHtml()+corpo;
+  }
+
+  // ── Editor (modal) ──
+  const box=()=>document.getElementById('rmModalBox');
+  const fld=(label,html,full)=>'<div class="depm-field'+(full?' full':'')+'"><label class="depm-label">'+label+'</label>'+html+'</div>';
+  const row2=(a,b)=>'<div class="depm-row">'+a+b+'</div>';
+  const inp=(name,v,attrs)=>'<input class="depm-input" name="'+name+'" value="'+E(v)+'" '+(attrs||'')+'>';
+  const sel=(name,opts,cur,attrs)=>'<select class="depm-input" name="'+name+'" '+(attrs||'')+'>'+opts.map(o=>'<option value="'+E(o[0])+'"'+(String(cur)===String(o[0])?' selected':'')+'>'+E(o[1])+'</option>').join('')+'</select>';
+  const val=n=>{const e=box().querySelector('[name="'+n+'"]');return e?e.value:'';};
+  const lista1=a=>a.map(x=>[x,x]);
+  const opts=map=>Object.keys(map).map(k=>[k,map[k]]); // [código, label] para os selects: o value é o código, o texto é o label
+  function quarterOpts(){const o=[['','Sem quarter planejado']];anos().forEach(y=>FI_TEMPO.quarters(y).forEach(q=>o.push([q.quarterId,qLabel(q.quarterId)])));return o;}
+  function sprintOpts(cur){
+    let h='<option value="">Sem previsão</option>';
+    anos().forEach(y=>['Q1','Q2','Q3','Q4'].forEach(q=>{
+      const sp=FI_TEMPO.sprints(y).filter(s=>s.quarter===q);
+      if(sp.length) h+='<optgroup label="'+E(q+'/'+y)+'">'+sp.map(s=>'<option value="'+E(s.sprintId)+'"'+(s.sprintId===cur?' selected':'')+'>'+E(q+'/'+y+' · S'+s.number+' ('+s.startDate.slice(8,10)+'/'+s.startDate.slice(5,7)+'–'+s.endDate.slice(8,10)+'/'+s.endDate.slice(5,7)+')')+'</option>').join('')+'</optgroup>';
+    }));
+    return h;
+  }
+  // Itens que já existem em OKR (iniciativas) e em Discovery, só leitura, para apontar a origem. O exemplo nunca é devolvido.
+  function origens(tipo){
+    try{
+      if(tipo==='okr'){const s=OKR.state();return s.issue?[]:s.data.initiatives.map(i=>({id:i.id,title:i.title,owner:i.owner}));}
+      if(tipo==='discovery'){const s=Discovery.state();return s.issue||s.example?[]:s.data.items.map(i=>({id:i.id,title:i.title,owner:i.owner}));}
+    }catch(e){}
+    return [];
+  }
+  function origemOpts(tipo,cur){
+    const l=origens(tipo);
+    return [['',l.length?'Selecione...':'Nenhum item disponível']].concat(l.map(x=>[x.id,x.title])).map(o=>'<option value="'+E(o[0])+'"'+(cur===o[0]?' selected':'')+'>'+E(o[1])+'</option>').join('');
+  }
+  const TIMES=DEP_ENUMS.squad;
+  function formFor(it){
+    const e=!!it,d=e?it:RM_PADRAO; // iniciativa nova: padrões de RM_PADRAO
+    const timeOpts=[['','(sem time)']].concat(lista1(TIMES)).concat(e&&it.team&&!has(TIMES,it.team)?[[it.team,it.team]]:[]);
+    return{title:e?'Editar iniciativa':'Nova iniciativa',body:
+      fld('Título <span>*</span>',inp('title',e?it.title:'','maxlength="160"'),true)
+      +row2(fld('Origem',sel('sourceType',opts(RM_SOURCES),e?it.sourceType:'manual','onchange="Roadmap.origem(this)"')),
+            fld('Item de origem','<select class="depm-input" name="sourceId" onchange="Roadmap.origem(this)"'+((e?it.sourceType:'manual')==='manual'?' disabled':'')+'>'+((e?it.sourceType:'manual')==='manual'?'<option value="">Sem origem</option>':origemOpts(it.sourceType,it.sourceId||''))+'</select>'))
+      +row2(fld('Owner',inp('owner',d.owner,'maxlength="120"')),fld('Time',sel('team',timeOpts,d.team||'')))
+      +fld('Quarter planejado',sel('baselineQuarter',quarterOpts(),d.baselineQuarter||''),true)
+      +row2(fld('Previsão inicial','<select class="depm-input" name="forecastStartSprintId">'+sprintOpts(d.forecastStartSprintId)+'</select>'),fld('Previsão final','<select class="depm-input" name="forecastEndSprintId">'+sprintOpts(d.forecastEndSprintId)+'</select>'))
+      +'<span class="rm-dica">A previsão pode cruzar o ano ou sair do quarter planejado: é o que o Roadmap mostra. Deixe as duas em branco se ainda não há previsão. Sem quarter planejado não há como calcular o deslocamento.</span>'
+      +row2(fld('Estado',sel('state',opts(RM_STATES),d.state)),fld('Condição',sel('condition',opts(RM_CONDS),d.condition)))
+      +row2(fld('Confiança',sel('confidence',opts(RM_CONFS),d.confidence)),fld('Categoria do risco principal',sel('mainRiskCategory',[['','(nenhum)']].concat(opts(RM_RISKS)),d.mainRiskCategory||'')))
+      +fld('Risco principal',inp('mainRiskText',d.mainRiskText,'maxlength="160" placeholder="Ex.: QA insuficiente para o período."'),true)
+      +'<span class="rm-dica">A confiança é a sua leitura. O FlowOps não a calcula nem a altera.</span>'};
+  }
+  const find=(d,id)=>d.items.find(i=>i.id===id)||null;
+  function openModal(act,id){
+    if(act!=='new'&&act!=='edit'&&act!=='del') return;
+    const it=act==='new'?null:find(data,id);
+    if(act!=='new'&&!it) return;
+    m={act:act,id:id};
+    let title,body,foot;
+    if(act==='del'){
+      title='Excluir iniciativa';
+      body='<p>Excluir a iniciativa "'+E(it.title)+'" do Roadmap? Esta ação não pode ser desfeita.</p>';
+      foot='<button class="depm-btn-cancel" onclick="Roadmap.close()">Cancelar</button><button class="depm-btn-save" style="background:var(--clr-bad)" onclick="Roadmap.save()">Confirmar exclusão</button>';
+    } else {
+      const f=formFor(it);title=f.title;body=f.body;
+      foot=(it?'<button class="depm-btn-cancel rm-del" onclick="Roadmap.askDel()">Excluir</button>':'')+'<button class="depm-btn-cancel" onclick="Roadmap.close()">Cancelar</button><button class="depm-btn-save" onclick="Roadmap.save()"><i class="ti ti-device-floppy" style="font-size:13px"></i> Salvar</button>';
+    }
+    box().innerHTML='<div class="depm-head"><div class="depm-head-title">'+E(title)+'</div><button class="depm-close" onclick="Roadmap.close()" aria-label="Fechar"><i class="ti ti-x"></i></button></div>'
+      +'<div class="depm-body">'+body+'</div><div id="rmSaveMsg" class="dep-msg is-bad depm-msg" role="alert" hidden></div><div class="depm-foot">'+foot+'</div>';
+    document.getElementById('rmModal').classList.add('open');document.body.style.overflow='hidden';
+  }
+  function closeModal(){document.getElementById('rmModal').classList.remove('open');document.body.style.overflow='';m=null;}
+  function showMsg(t){const e=document.getElementById('rmSaveMsg');if(!e) return;e.textContent=t;e.hidden=false;if(e.scrollIntoView) e.scrollIntoView({block:'nearest'});}
+  // Origem: troca a lista de itens e, ao escolher um item, preenche título e owner se ainda estiverem vazios
+  function origem(el){
+    if(!m) return;
+    const tipo=val('sourceType'),s=box().querySelector('[name="sourceId"]');
+    if(el.name==='sourceType'){
+      s.disabled=tipo==='manual';
+      s.innerHTML=tipo==='manual'?'<option value="">Sem origem</option>':origemOpts(tipo,'');
+      return;
+    }
+    const o=origens(tipo).find(x=>x.id===el.value);
+    if(!o) return;
+    const t=box().querySelector('[name="title"]'),w=box().querySelector('[name="owner"]');
+    if(t&&!t.value.trim()) t.value=o.title;
+    if(w&&!w.value.trim()) w.value=o.owner||'';
+  }
+  const MSG_CHECK={'título':'Informe o título da iniciativa.','quarter planejado':'Escolha o quarter planejado.','ano do quarter planejado sem calendário':'O ano do quarter planejado não tem calendário canônico.',
+    'previsão incompleta':'Informe a previsão inicial e a final, ou deixe as duas em branco.','sprint inexistente':'Escolha sprints que existem no calendário canônico.',
+    'previsão inicial depois da final':'A previsão inicial não pode ser depois da final.','estado':'Escolha um estado válido.','condição':'Escolha uma condição válida.','confiança':'Escolha uma confiança válida.',
+    'categoria do risco':'Escolha uma categoria de risco válida.','risco sem categoria':'Escolha a categoria do risco principal.'};
+  function save(){
+    if(!m) return;
+    const act=m.act,id=m.id;
+    const done=mut=>{const r=commit(mut);if(!r.ok){showMsg(r.msg);return;}closeModal();render();};
+    if(act==='del') return done(next=>{next.items=next.items.filter(x=>x.id!==id);});
+    const now=new Date().toISOString();
+    const a=val('forecastStartSprintId')||null,b=val('forecastEndSprintId')||null;
+    const tipo=val('sourceType'),sid=tipo==='manual'?null:(val('sourceId')||null);
+    const campos={sourceType:tipo,sourceId:sid,title:val('title').trim(),owner:val('owner').trim(),team:val('team')||null,baselineQuarter:val('baselineQuarter')||null,
+      forecastStartSprintId:a,forecastEndSprintId:b,state:val('state'),condition:val('condition'),confidence:val('confidence'),
+      mainRiskCategory:val('mainRiskCategory')||null,mainRiskText:val('mainRiskText').trim()};
+    const cand={id:'roadmap-000',sourceType:campos.sourceType,sourceId:campos.sourceId,title:campos.title,owner:campos.owner,team:campos.team,baselineQuarter:campos.baselineQuarter,
+      forecastStartSprintId:campos.forecastStartSprintId,forecastEndSprintId:campos.forecastEndSprintId,state:campos.state,condition:campos.condition,confidence:campos.confidence,confidenceAt:null,
+      mainRiskCategory:campos.mainRiskCategory,mainRiskText:campos.mainRiskText,createdAt:now,updatedAt:now}; // mesma ordem de campos do modelo gravado
+    const why=checkItem(cand);
+    if(why) return showMsg(MSG_CHECK[why]||'Os dados informados não são válidos. Revise os campos e tente novamente.');
+    done(next=>{
+      if(act==='new'){
+        Object.assign(cand,{id:newId(next),confidenceAt:campos.confidence==='not_informed'?null:now});
+        next.items.push(cand);
+      } else {
+        const it=find(next,id);if(!it) return 'Iniciativa não encontrada.';
+        const mudou=it.confidence!==campos.confidence;
+        Object.assign(it,campos);
+        if(mudou) it.confidenceAt=campos.confidence==='not_informed'?null:now; // só a pessoa que muda a confiança move a data dela
+        it.updatedAt=now;
+      }
+    });
+  }
+  function click(el){openModal(el.dataset.act||'edit',el.dataset.id||'');}
+  function setAno(y){view.ano=y;render();}
+  function setFiltro(f){view.filtro=f;render();}
+  function setDescartadas(){view.descartadas=!view.descartadas;render();}
+  function askDel(){if(m&&m.act==='edit') openModal('del',m.id);}
+
+  // Autoteste (como o do FI_TEMPO): cenários do Roadmap 1A, regra de Condicionada, enums persistidos e validações. Roda no console: Roadmap.autoteste()
+  function autoteste(){
+    const falhas=[];let total=0;
+    const igual=(nome,o,e)=>{total++;const x=JSON.stringify(o),y=JSON.stringify(e);if(x!==y) falhas.push(nome+': obtido '+x+', esperado '+y);};
+    const base={id:'roadmap-001',sourceType:'manual',sourceId:null,title:'T',owner:'O',team:'Time Alpha',baselineQuarter:'2026-Q2',forecastStartSprintId:null,forecastEndSprintId:null,
+      state:'in_progress',condition:'healthy',confidence:'medium',confidenceAt:'2026-05-18T12:00:00.000Z',mainRiskCategory:null,mainRiskText:'',createdAt:'2026-05-18T12:00:00.000Z',updatedAt:'2026-05-18T12:00:00.000Z'};
+    const mk=o=>Object.assign({},base,o);
+    const dd=o=>{const i=mk(o);return[desloc(i).txt,forecastText(i)];};
+    // Cenários A a F
+    igual('A: planejado Q2/2026, previsto Q2: no prazo',dd({forecastStartSprintId:'2026-Q2-S4',forecastEndSprintId:'2026-Q2-S6'}),['No prazo','meio–fim Q2']);
+    igual('B: Q2-S6 → Q3-S1: cruza o fim do Q2',dd({forecastStartSprintId:'2026-Q2-S6',forecastEndSprintId:'2026-Q3-S1'}),['Cruza o fim do Q2','fim Q2 → início Q3']);
+    igual('C: previsto Q3: +1 Quarter',dd({forecastStartSprintId:'2026-Q3-S1',forecastEndSprintId:'2026-Q3-S3'}),['+1 Quarter','início–meio Q3']);
+    igual('D: planejado Q3, previsto Q4, gap de capacidade: +1 Quarter',dd({baselineQuarter:'2026-Q3',condition:'capacity_gap',forecastStartSprintId:'2026-Q4-S1',forecastEndSprintId:'2026-Q4-S4'}),['+1 Quarter','início–meio Q4']);
+    igual('E: planejado Q4/2026, 2026-Q4-S6 → 2027-Q1-S1: transição entre anos',dd({baselineQuarter:'2026-Q4',forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2027-Q1-S1'}),['Cruza o fim do Q4','fim Q4/2026 → início Q1/2027']);
+    igual('F: sem previsão',dd({}),['Sem previsão',null]);
+    igual('+2 Quarters',dd({baselineQuarter:'2026-Q1',forecastStartSprintId:'2026-Q3-S2',forecastEndSprintId:'2026-Q3-S3'})[0],'+2 Quarters');
+    igual('baseline de 2027 e previsão em 2027 sem ano explícito',dd({baselineQuarter:'2027-Q1',forecastStartSprintId:'2027-Q1-S2',forecastEndSprintId:'2027-Q1-S2'}),['No prazo','início Q1']);
+    // Regra de Condicionada: só SEM previsão e com Dependência crítica; com previsão o deslocamento é o normal
+    igual('dependência crítica COM previsão no quarter: No prazo',desloc(mk({condition:'critical_dependency',forecastStartSprintId:'2026-Q2-S3',forecastEndSprintId:'2026-Q2-S5'})),{k:'ok',txt:'No prazo'});
+    igual('dependência crítica COM previsão cruzando: Cruza o fim do Q2',desloc(mk({condition:'critical_dependency',forecastStartSprintId:'2026-Q2-S6',forecastEndSprintId:'2026-Q3-S1'})),{k:'cruza',txt:'Cruza o fim do Q2'});
+    igual('dependência crítica COM previsão em Q3: +1 Quarter',desloc(mk({condition:'critical_dependency',forecastStartSprintId:'2026-Q3-S1',forecastEndSprintId:'2026-Q3-S3'})),{k:'mais',txt:'+1 Quarter'});
+    igual('dependência crítica COM previsão em Q4: +2 Quarters',desloc(mk({condition:'critical_dependency',forecastStartSprintId:'2026-Q4-S1',forecastEndSprintId:'2026-Q4-S2'})).txt,'+2 Quarters');
+    igual('dependência crítica SEM previsão: Condicionada',desloc(mk({condition:'critical_dependency'})),{k:'cond',txt:'Condicionada'});
+    igual('saudável SEM previsão: Sem previsão',desloc(mk({condition:'healthy'})),{k:'sem',txt:'Sem previsão'});
+    igual('em risco SEM previsão: Sem previsão',desloc(mk({condition:'at_risk'})).txt,'Sem previsão');
+    igual('bloqueada SEM previsão: Sem previsão',desloc(mk({condition:'blocked'})).txt,'Sem previsão');
+    igual('dependência crítica SEM previsão e SEM quarter planejado: Condicionada',desloc(mk({condition:'critical_dependency',baselineQuarter:null})).txt,'Condicionada');
+    // Sem quarter planejado
+    igual('com previsão e sem quarter planejado: não calcula deslocamento',desloc(mk({baselineQuarter:null,forecastStartSprintId:'2026-Q3-S1',forecastEndSprintId:'2026-Q3-S2'})),{k:'semq',txt:'Sem quarter planejado'});
+    igual('sem quarter planejado: previsão com ano explícito',forecastText(mk({baselineQuarter:null,forecastStartSprintId:'2026-Q3-S1',forecastEndSprintId:'2026-Q3-S2'})),'início Q3/2026');
+    // Grupo "Sem planejamento": sem quarter e sem previsão, uma única vez, fora dos anos e das contagens dos Quarters
+    igual('só é Sem planejamento quem não tem quarter nem previsão',[semPlan(mk({baselineQuarter:null})),semPlan(mk({})),semPlan(mk({baselineQuarter:null,forecastStartSprintId:'2026-Q3-S1',forecastEndSprintId:'2026-Q3-S2'}))],[true,false,false]);
+    igual('sem quarter e sem previsão não pertence a nenhum ano',[2026,2027].map(y=>noAno(mk({baselineQuarter:null}),y)),[false,false]);
+    const gA=mk({id:'roadmap-001',title:'A',baselineQuarter:null}),gB=mk({id:'roadmap-002',title:'B',baselineQuarter:null,forecastStartSprintId:'2027-Q1-S1',forecastEndSprintId:'2027-Q1-S2'}),gC=mk({id:'roadmap-003',title:'C',baselineQuarter:'2026-Q2'});
+    const g26=agrupar([gA,gB,gC],2026),g27=agrupar([gA,gB,gC],2027);
+    igual('2026: lista do ano e grupo Sem planejamento',[g26.doAno.map(i=>i.title),g26.sem.map(i=>i.title)],[['C'],['A']]);
+    igual('2027: lista do ano e grupo Sem planejamento',[g27.doAno.map(i=>i.title),g27.sem.map(i=>i.title)],[['B'],['A']]);
+    igual('o item sem planejamento aparece uma única vez em cada visão e nunca na lista do ano',[g26,g27].map(g=>[g.doAno.filter(i=>i.title==='A').length,g.sem.filter(i=>i.title==='A').length]),[[0,1],[0,1]]);
+    igual('contagens dos Quarters ignoram o item sem planejamento',[2026,2027].reduce((a,y)=>a.concat(FI_TEMPO.quarters(y).map(q=>{const c=contagem([gA],q.quarterId);return c.plan+c.prev;})),[]),[0,0,0,0,0,0,0,0]);
+    igual('com previsão e sem quarter planejado, a contagem usa a previsão',contagem([gB],'2027-Q1'),{plan:0,prev:1});
+    igual('com previsão cruzando anos e sem quarter planejado, aparece nos dois anos',[2026,2027].map(y=>noAno(mk({baselineQuarter:null,forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2027-Q1-S1'}),y)),[true,true]);
+    igual('sem quarter e com previsão só aparece onde a previsão toca',[2026,2027].map(y=>noAno(mk({baselineQuarter:null,forecastStartSprintId:'2027-Q1-S1',forecastEndSprintId:'2027-Q1-S2'}),y)),[false,true]);
+    igual('ordenação: quarter planejado, gravidade, título; sem quarter por último',ordenar([mk({title:'Z',baselineQuarter:null}),mk({title:'B',baselineQuarter:'2026-Q3'}),mk({title:'A',baselineQuarter:'2026-Q2'}),mk({title:'C',baselineQuarter:'2026-Q2',condition:'blocked'})]).map(i=>i.title),['C','A','B','Z']);
+    // Validações
+    igual('item válido',checkItem(mk({})),'');
+    igual('previsão cruzando o ano não é bloqueada',checkItem(mk({baselineQuarter:'2026-Q4',forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2027-Q1-S1'})),'');
+    igual('previsão fora do quarter planejado não é bloqueada',checkItem(mk({forecastStartSprintId:'2026-Q4-S1',forecastEndSprintId:'2026-Q4-S2'})),'');
+    igual('previsão inicial depois da final',checkItem(mk({forecastStartSprintId:'2026-Q3-S1',forecastEndSprintId:'2026-Q2-S6'})),'previsão inicial depois da final');
+    igual('sprintId inexistente',checkItem(mk({forecastStartSprintId:'2028-Q1-S1',forecastEndSprintId:'2028-Q1-S2'})),'sprint inexistente');
+    igual('previsão só com início',checkItem(mk({forecastStartSprintId:'2026-Q2-S1'})),'previsão incompleta');
+    igual('quarter planejado vazio (null) é permitido',checkItem(mk({baselineQuarter:null})),'');
+    igual('baseline de ano sem calendário',checkItem(mk({baselineQuarter:'2028-Q1'})),'ano do quarter planejado sem calendário');
+    igual('baseline sem ano (só Q4)',checkItem(mk({baselineQuarter:'Q4'})),'quarter planejado');
+    igual('baseline vazia como texto não vale',checkItem(mk({baselineQuarter:''})),'quarter planejado');
+    igual('confiança inválida',checkItem(mk({confidence:'very_high'})),'confiança');
+    igual('estado inválido',checkItem(mk({state:'late'})),'estado');
+    igual('condição inválida',checkItem(mk({condition:'green'})),'condição');
+    igual('risco com texto e sem categoria',checkItem(mk({mainRiskText:'x'})),'risco sem categoria');
+    igual('risco com categoria e texto',checkItem(mk({mainRiskCategory:'capacity',mainRiskText:'QA insuficiente para o período.'})),'');
+    // Enums persistidos: códigos estáveis, nunca rótulos
+    igual('códigos de estado',Object.keys(RM_STATES),['discovery','planned','in_progress','paused','delivered','discarded']);
+    igual('códigos de condição',Object.keys(RM_CONDS),['healthy','at_risk','blocked','capacity_gap','critical_dependency']);
+    igual('códigos de confiança',Object.keys(RM_CONFS),['high','medium','low','not_informed']);
+    igual('códigos de risco',Object.keys(RM_RISKS),['technical','dependency','capacity','process','quality','other']);
+    igual('códigos de origem',Object.keys(RM_SOURCES),['manual','okr','discovery']);
+    igual('mapa código → label',[lbl(RM_STATES,'in_progress'),lbl(RM_CONDS,'critical_dependency'),lbl(RM_CONFS,'not_informed'),lbl(RM_RISKS,'technical'),lbl(RM_SOURCES,'okr')],['Em andamento','Dependência crítica','Não informada','Técnico','Iniciativa de OKR']);
+    igual('código inexistente não tem label',[lbl(RM_STATES,'Planejada'),lbl(RM_STATES,'constructor'),lbl(RM_CONDS,null)],['','','']);
+    igual('todos os códigos de estado são válidos',Object.keys(RM_STATES).filter(k=>checkItem(mk({state:k}))!==''),[]);
+    igual('todos os códigos de condição são válidos',Object.keys(RM_CONDS).filter(k=>checkItem(mk({condition:k}))!==''),[]);
+    igual('todos os códigos de confiança são válidos',Object.keys(RM_CONFS).filter(k=>checkItem(mk({confidence:k}))!==''),[]);
+    igual('todos os códigos de risco são válidos',Object.keys(RM_RISKS).filter(k=>checkItem(mk({mainRiskCategory:k}))!==''),[]);
+    igual('rótulo em português no estado é recusado',Object.values(RM_STATES).filter(v=>checkItem(mk({state:v}))!=='estado'),[]);
+    igual('rótulo em português na condição é recusado',Object.values(RM_CONDS).filter(v=>checkItem(mk({condition:v}))!=='condição'),[]);
+    igual('rótulo em português na confiança é recusado',Object.values(RM_CONFS).filter(v=>checkItem(mk({confidence:v}))!=='confiança'),[]);
+    igual('rótulo em português na categoria do risco é recusado',Object.values(RM_RISKS).filter(v=>checkItem(mk({mainRiskCategory:v}))!=='categoria do risco'),[]);
+    igual('propriedade herdada do objeto não vale como código',checkItem(mk({state:'constructor'})),'estado');
+    // Padrões de uma iniciativa nova
+    igual('padrões de uma iniciativa nova',RM_PADRAO,{state:'discovery',condition:'healthy',confidence:'not_informed',owner:'',team:null,baselineQuarter:null,forecastStartSprintId:null,forecastEndSprintId:null,mainRiskCategory:null,mainRiskText:''});
+    igual('ausência: enum e referência opcional são null; texto livre vazio é string vazia',[RM_PADRAO.mainRiskCategory,RM_PADRAO.team,RM_PADRAO.baselineQuarter,RM_PADRAO.forecastStartSprintId,RM_PADRAO.mainRiskText,RM_PADRAO.owner],[null,null,null,null,'','']);
+    igual('categoria do risco vazia como texto não vale (ausência é null)',checkItem(mk({mainRiskCategory:''})),'categoria do risco');
+    igual('time vazio como texto não vale (ausência é null)',checkItem(mk({team:''})),'time');
+    igual('time ausente (null) é válido',checkItem(mk({team:null})),'');
+    igual('categoria ausente (null) com texto livre vazio é válida',checkItem(mk({mainRiskCategory:null,mainRiskText:''})),'');
+    igual('iniciativa nova só com título é válida',checkItem(mk(Object.assign({},RM_PADRAO,{confidenceAt:null}))),'');
+    // Modelo gravado
+    igual('deslocamento não faz parte do modelo gravado',Object.keys(normalize({counter:1,items:[mk({})]}).items[0]).filter(k=>/desloc|shift/i.test(k)),[]);
+    igual('campos do modelo mínimo',Object.keys(normalize({counter:1,items:[mk({})]}).items[0]),['id','sourceType','sourceId','title','owner','team','baselineQuarter','forecastStartSprintId','forecastEndSprintId','state','condition','confidence','confidenceAt','mainRiskCategory','mainRiskText','createdAt','updatedAt']);
+    igual('anos com calendário canônico',anos(),[2026,2027]);
+    return{ok:falhas.length===0,total:total,falhas:falhas};
+  }
+
+  load();
+  return{render:render,click:click,close:closeModal,save:save,origem:origem,askDel:askDel,setAno:setAno,setFiltro:setFiltro,setDescartadas:setDescartadas,
+    derive:it=>({desloc:desloc(it),forecastText:forecastText(it)}),validate:checkItem,autoteste:autoteste,
+    state:()=>({issue:issue,data:clone(data)})};
+})();
+function renderRoadmap(){Roadmap.render();}
+
 // ── VISÃO GERAL — Atenção agora e Estratégia e Discovery em resumo (Fase 2 — Lote 7) ──────────
 // Um único snapshot por render: OKR.state() e Discovery.state() são lidos uma vez (sem ler localStorage) e passados aos renderizadores.
 // Só dados realmente salvos: os exemplos dos Lotes 5 e 6 nunca aparecem aqui. Nada é calculado além do que os módulos e Engenharia & Qualidade já calculam.
@@ -9663,6 +10233,11 @@ window.onload=function(){ abrirNoMomentoAtual(); applyTeamColor(); upd(); markSe
 <!-- Discovery — editor de itens (reaproveita o visual .depm-*) -->
 <div class="depm-overlay" id="discModal" onclick="if(event.target===this)Discovery.close()">
   <div class="depm-box" id="discModalBox"></div>
+</div>
+
+<!-- Roadmap — editor de iniciativas (reaproveita o visual .depm-*) -->
+<div class="depm-overlay" id="rmModal" onclick="if(event.target===this)Roadmap.close()">
+  <div class="depm-box" id="rmModalBox"></div>
 </div>
 
 <!-- ── Modal Detalhe — Saúde da Qualidade ── -->
