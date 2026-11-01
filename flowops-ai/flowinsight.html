@@ -488,6 +488,7 @@
   .cal-day-holiday{background:#fee2e2;color:#991b1b;font-weight:700}
   .cal-day-today{outline:2px solid #185FA5;outline-offset:-1px;border-radius:4px;font-weight:700}
   .cal-day-weekend{color:#d1d5db}
+  .cal-day-fora{background-image:repeating-linear-gradient(135deg,#e5e7eb 0 3px,transparent 3px 6px);color:#6b7280}
   /* Quarter table */
   .cal-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px}
   .cal-tbl th{padding:8px 10px;background:#f9fafb;color:#6b7280;font-weight:600;font-size:11px;text-align:left;border-bottom:2px solid #e5e5e3}
@@ -506,6 +507,7 @@
   .spr-card{background:#fff;border:1px solid #e5e5e3;border-radius:12px;padding:14px 16px;position:relative}
   .spr-card.spr-current{border-color:#185FA5;box-shadow:0 0 0 2px rgba(24,95,165,.12)}
   .spr-card.spr-next{border-color:#059669}
+  .spr-card.spr-fora{border:1.5px dashed #9ca3af;background-image:repeating-linear-gradient(135deg,#f3f4f6 0 4px,transparent 4px 8px)}
   .spr-card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
   .spr-card-name{font-size:13px;font-weight:700;color:#111827}
   .spr-card-q{font-size:10px;color:#9ca3af;font-weight:500}
@@ -990,6 +992,7 @@
   .sb-real{color:var(--clr-neutral);background:#f9fafb;border-color:#d1d5db}
   .sb-atual{color:var(--clr-info);background:#eff6ff;border-color:#bfdbfe}
   .sb-prev{color:#b45309;background:#fffbeb;border-color:#fde68a}
+  .sb-fora{color:#374151;background:#f3f4f6;border-color:#9ca3af;border-style:dashed}
   .sb-txt{font-weight:500;color:#111827}
   .sb-sub{font-size:11px;color:var(--clr-neutral)}
   .sprint-nota-sp{display:none}
@@ -2554,7 +2557,10 @@ const FI_TEMPO=(function(){
       const ordem=QS.filter(q=>c.sprints.some(s=>s.quarter===q));
       ordem.forEach((q,k)=>{
         const sp=c.sprints.filter(s=>s.quarter===q),prox=ordem[k+1]?c.sprints.find(s=>s.quarter===ordem[k+1]).startDate:null,w=def&&def.planningWindows&&def.planningWindows[q];
-        c.quarters.push(Object.freeze({quarterId:ano+'-'+q,year:ano,quarter:q,startDate:k===0?ano+'-01-01':sp[0].startDate,endDate:prox?deSerial(serial(prox)-1):ano+'-12-31',sprintCount:sp.length,planningWindow:w?Object.freeze({startDate:w[0],endDate:w[1]}):null}));
+        const ini=k===0?ano+'-01-01':sp[0].startDate,fim=prox?deSerial(serial(prox)-1):ano+'-12-31';
+        let tot=0;
+        for(let n=serial(ini);n<=serial(fim);n++) if(util(c,deSerial(n))) tot++;
+        c.quarters.push(Object.freeze({quarterId:ano+'-'+q,year:ano,quarter:q,startDate:ini,endDate:fim,sprintCount:sp.length,workingDays:tot,sprintWorkingDays:sp.reduce((n,s)=>n+s.workingDays,0),planningWindow:w?Object.freeze({startDate:w[0],endDate:w[1]}):null}));
       });
       return c;
     }
@@ -2648,6 +2654,19 @@ const FI_TEMPO=(function(){
       else r.estado=r.posicao==='sem-calendario'?'sem-calendario':'fora-de-sprint';
       return r;
     }
+    // Dias de cada quarter que nenhuma sprint cobre (antes da 1ª sprint, entre sprints, depois da última), com os dias úteis de cada trecho
+    function periodosForaDeSprint(ano){
+      const c=calDe(ano),out=[];
+      if(!c) return out;
+      c.quarters.forEach(q=>{
+        const sp=c.sprints.filter(s=>s.quarter===q.quarter),pedacos=[];
+        let cur=serial(q.startDate);
+        sp.forEach(s=>{const a=serial(s.startDate),b=serial(s.endDate);if(a>cur) pedacos.push([cur,a-1]);cur=b+1;});
+        if(cur<=serial(q.endDate)) pedacos.push([cur,serial(q.endDate)]);
+        pedacos.forEach(([a,b])=>{let n=0;for(let k=a;k<=b;k++) if(util(c,deSerial(k))) n++;out.push({quarter:q.quarter,quarterId:q.quarterId,startDate:deSerial(a),endDate:deSerial(b),workingDays:n});});
+      });
+      return out;
+    }
     // Lista de problemas do calendário do ano (vazia = consistente)
     function validar(ano){
       const c=calDe(ano),pr=[];
@@ -2680,7 +2699,7 @@ const FI_TEMPO=(function(){
       QS.forEach(q=>{const l=sprints(ano).filter(s=>s.quarter===q);if(l.length) o[q]=l.map(s=>ddmm(s.startDate)+'–'+ddmm(s.endDate));});
       return o;
     }
-    return {hoje:agora,normalizarData:iso,diaDaSemana:diaSemana,sprints:sprints,quarters:quarters,sprintPorId:sprintPorId,quarterPorId:quarterPorId,sprintPorData:sprintPorData,quarterPorData:quarterPorData,posicao:posicao,foraDeSprint:foraDeSprint,ehFeriado:ehFeriado,ehDiaUtil:ehDiaUtil,diasUteis:diasUteis,estadoSprint:estadoSprint,estadoQuarter:estadoQuarter,diaUtilDaData:diaUtilDaData,diaUtilAtual:diaUtilAtual,primeiroDiaUtil:primeiroDiaUtil,ultimoDiaUtil:ultimoDiaUtil,janelaPlanejamento:janelaPlanejamento,emJanelaPlanejamento:emJanelaPlanejamento,resolver:resolver,validar:validar,sprintDatesCompat:sprintDatesCompat};
+    return {hoje:agora,normalizarData:iso,diaDaSemana:diaSemana,sprints:sprints,quarters:quarters,sprintPorId:sprintPorId,quarterPorId:quarterPorId,sprintPorData:sprintPorData,quarterPorData:quarterPorData,posicao:posicao,foraDeSprint:foraDeSprint,ehFeriado:ehFeriado,ehDiaUtil:ehDiaUtil,diasUteis:diasUteis,estadoSprint:estadoSprint,estadoQuarter:estadoQuarter,diaUtilDaData:diaUtilDaData,diaUtilAtual:diaUtilAtual,primeiroDiaUtil:primeiroDiaUtil,ultimoDiaUtil:ultimoDiaUtil,janelaPlanejamento:janelaPlanejamento,emJanelaPlanejamento:emJanelaPlanejamento,resolver:resolver,validar:validar,sprintDatesCompat:sprintDatesCompat,periodosForaDeSprint:periodosForaDeSprint};
   }
 
   // Calendário de 2026: datas das sprints = as aprovadas em SPRINT_DATES (sprints contínuas de 14 dias). Feriados = os do CAL.holidays.
@@ -2740,6 +2759,9 @@ const FI_TEMPO=(function(){
     igual('dia útil atual',[T.diaUtilAtual('2026-Q4-S3','2026-10-15').numero,T.diaUtilAtual('2026-Q4-S4','2026-10-15')],[4,null]);
     igual('dias úteis do intervalo',[T.diasUteis('2026-10-09','2026-10-22'),T.diasUteis('2026-10-22','2026-10-09'),T.diasUteis('2025-12-30','2026-01-02')],[9,0,null]);
     igual('janela de planejamento não configurada',[T.janelaPlanejamento('2026-Q4'),T.emJanelaPlanejamento('2026-10-01')],[null,null]);
+    igual('dias úteis do quarter e em sprints',T.quarters(2026).map(q=>[q.quarter,q.workingDays,q.sprintWorkingDays]),[['Q1',60,60],['Q2',56,56],['Q3',59,59],['Q4',77,58]]);
+    igual('períodos fora de sprint',T.periodosForaDeSprint(2026),[{quarter:'Q1',quarterId:'2026-Q1',startDate:'2026-01-01',endDate:'2026-01-01',workingDays:0},{quarter:'Q4',quarterId:'2026-Q4',startDate:'2026-12-04',endDate:'2026-12-31',workingDays:19}]);
+    igual('ano sem calendário não tem períodos fora de sprint',T.periodosForaDeSprint(2027),[]);
     igual('calendário consistente',T.validar(2026),[]);
     // datas aprovadas e feriados: referência fixa e conferência com o CAL
     const APROVADAS={Q1:['02/01–15/01','16/01–29/01','30/01–12/02','13/02–26/02','27/02–12/03','13/03–26/03'],Q2:['27/03–09/04','10/04–23/04','24/04–07/05','08/05–21/05','22/05–04/06','05/06–18/06'],Q3:['19/06–02/07','03/07–16/07','17/07–30/07','31/07–13/08','14/08–27/08','28/08–10/09'],Q4:['11/09–24/09','25/09–08/10','09/10–22/10','23/10–05/11','06/11–19/11','20/11–03/12']};
@@ -2755,6 +2777,8 @@ const FI_TEMPO=(function(){
   };
   return T;
 })();
+// Quarter de uma data 'AAAA-MM-DD' pela fundação temporal (o Q4 inclui os dias fora de sprint). Só uma data de ano sem calendário cadastrado volta ao trimestre civil.
+function quarterDeData(iso){const q=FI_TEMPO.quarterPorData(iso);return q?q.quarter:'Q'+Math.ceil(+String(iso).slice(5,7)/3);}
 const SPRINT_DATES=FI_TEMPO.sprintDatesCompat(2026); // derivado da fundação temporal acima: mesmos textos de antes
 const METAS={p85:20,tp:17,vl:55,pct:90,tr:1,bo:3,bc:8,reo:2,res:3,wip:9,aging:2,cfr:10};
 
@@ -2771,19 +2795,32 @@ function sprintIntervalo(q,i){
   const t=SPRINT_DATES[q][i].split('–');
   return{ini:p(t[0],false),fim:p(t[1],true)};
 }
-// dias úteis de 'de' até 'ate' (inclusive), sem feriados
-function sprintDiasUteis(de,ate){
-  let n=0;const c=new Date(de.getFullYear(),de.getMonth(),de.getDate()),f=new Date(ate.getFullYear(),ate.getMonth(),ate.getDate());
-  for(;c<=f;c.setDate(c.getDate()+1)){const w=c.getDay();if(w!==0&&w!==6)n++;}
-  return n;
-}
+// Dias úteis e feriados vêm da fundação temporal (FI_TEMPO): sábado, domingo e feriado não contam. O estado (kind) segue pelo relógio, como antes.
 function sprintEstado(q,i){
-  const t=sprintHoje(),r=sprintIntervalo(q,i),total=sprintDiasUteis(r.ini,r.fim);
+  const t=sprintHoje(),r=sprintIntervalo(q,i),s=FI_TEMPO.sprintPorId(SPRINT_ANO+'-'+q+'-S'+(i+1));
   const kind=t<r.ini?'futura':(t<=r.fim?'atual':'encerrada');
-  const e={kind:kind,q:q,i:i,ini:r.ini,fim:r.fim,total:total,datas:SPRINT_DATES[q][i],rot:q+' · S'+(i+1)};
-  if(kind==='atual'){e.dia=Math.min(total,sprintDiasUteis(r.ini,t));e.restam=Math.max(0,total-e.dia);}
+  const e={kind:kind,q:q,i:i,ini:r.ini,fim:r.fim,total:s.workingDays,datas:SPRINT_DATES[q][i],rot:q+' · S'+(i+1),feriados:s.holidays.filter(h=>{const w=FI_TEMPO.diaDaSemana(h);return w!==0&&w!==6;})};
+  if(kind==='atual'){const d=FI_TEMPO.diaUtilDaData(FI_TEMPO.normalizarData(t));e.dia=d.numero;e.restam=d.restam;e.feriadoHoje=d.ehFeriado;e.fimDeSemana=d.ehFimDeSemana;e.ultimoDia=d.ehUltimoDiaUtil;}
   if(kind==='futura'){const h=new Date(t.getFullYear(),t.getMonth(),t.getDate());e.emDias=Math.round((r.ini-h)/864e5);}
   return e;
+}
+// "dia 4 de 9 úteis"; em feriado ou fim de semana o número não avança e o texto diz por quê
+function sprintDiaTxt(e){
+  if(e.feriadoHoje) return e.dia+' de '+e.total+' úteis concluídos · hoje é feriado';
+  if(e.fimDeSemana) return e.dia+' de '+e.total+' úteis concluídos · hoje é fim de semana';
+  return 'dia '+e.dia+' de '+e.total+' úteis';
+}
+function sprintFeriadosTxt(e){
+  const l=(e.feriados||[]).map(h=>h.slice(8,10)+'/'+h.slice(5,7));
+  if(!l.length) return '';
+  return (l.length===1?l[0]+' é feriado e não entra':l.slice(0,-1).join(', ')+' e '+l[l.length-1]+' são feriados e não entram')+' na contagem.';
+}
+// Tooltip do seletor de sprint: id, período e dias úteis (texto simples; não muda o tamanho do seletor)
+function sprintTituloSeletor(q,i){
+  const s=FI_TEMPO.sprintPorId(SPRINT_ANO+'-'+q+'-S'+(i+1));
+  if(!s) return '';
+  const f=h=>h.slice(8,10)+'/'+h.slice(5,7),fer=s.holidays.filter(h=>{const w=FI_TEMPO.diaDaSemana(h);return w!==0&&w!==6;});
+  return s.sprintId+' · '+f(s.startDate)+' a '+f(s.endDate)+' · '+s.workingDays+' dias úteis'+(fer.length?' ('+(s.workingDays+fer.length)+' dias de semana, menos '+(fer.length===1?'o feriado':'os feriados')+' de '+fer.map(f).join(', ')+')':'');
 }
 function sprintsEncerradas(q){let k=0;for(let i=0;i<SPRINT_DATES[q].length;i++) if(sprintEstado(q,i).kind==='encerrada') k++;return k;}
 function sprintUltimaEncerrada(){
@@ -2841,7 +2878,7 @@ function irParaSprint(q,i){
 
 function sprintBarHtml(e){
   const R='<span class="sb-txt">';
-  if(e.kind==='atual') return '<span class="sb-chip sb-atual">Sprint atual</span>'+R+e.rot+' · '+e.datas+' · dia '+e.dia+' de '+e.total+(e.restam?' · restam '+e.restam+(e.restam===1?' dia útil':' dias úteis'):' · último dia')+'</span><span class="sb-sub">Os indicadores de entrega aparecem quando a sprint for encerrada.</span>';
+  if(e.kind==='atual') return '<span class="sb-chip sb-atual">Sprint atual</span>'+R+e.rot+' · '+e.datas+' · '+sprintDiaTxt(e)+(e.ultimoDia?' · último dia útil':(e.restam?' · restam '+e.restam:''))+'</span><span class="sb-sub">'+(sprintFeriadosTxt(e)?sprintFeriadosTxt(e)+' ':'')+'Os indicadores de entrega aparecem quando a sprint for encerrada.</span>';
   if(e.kind==='futura') return '<span class="sb-chip sb-prev">Previsão</span>'+R+e.rot+' · '+e.datas+' · sprint futura, começa '+(e.emDias===1?'amanhã':'em '+e.emDias+' dias')+'</span><span class="sb-sub">Estimativa com base nas sprints encerradas; não é resultado realizado.</span>';
   return '<span class="sb-chip sb-real">Realizado</span>'+R+e.rot+' · '+e.datas+' · sprint encerrada</span>';
 }
@@ -2850,7 +2887,7 @@ function sprintBarHtml(e){
 function sprintNotaHtml(e){
   const ult=sprintUltimaEncerrada();
   const msg=e.kind==='atual'
-    ?'A sprint '+e.rot+' está em andamento (dia '+e.dia+' de '+e.total+'). Os indicadores de entrega desta área são calculados no fechamento da sprint; o painel ainda não recebe o acompanhamento diário.'
+    ?'A sprint '+e.rot+' está em andamento ('+sprintDiaTxt(e)+'). Os indicadores de entrega desta área são calculados no fechamento da sprint; o painel ainda não recebe o acompanhamento diário.'
     :'A sprint '+e.rot+' ainda não começou ('+e.datas+'). Indicadores de entrega só existem para sprints encerradas.';
   return '<div class="cc"><p class="ct">Indicadores indisponíveis para esta sprint</p><p class="cs">'+msg+'</p><div class="sn-acoes">'
     +'<button class="btn-md" onclick="tab(document.querySelectorAll(\'.ntab\')[0],\'v\')"><i class="ti ti-layout-dashboard"></i> Ver a visão desta sprint</button>'
@@ -2870,7 +2907,7 @@ function sprintHomeHtml(e){
     const pl=SPRINT_PLANO[time]&&SPRINT_PLANO[time].q===e.q&&SPRINT_PLANO[time].i===e.i?SPRINT_PLANO[time]:null;
     const h=hist.length?hist[hist.length-1]:null;
     return '<div class="cc"><p class="ct">Sprint atual · '+e.rot+' ('+e.datas+')</p>'
-      +'<p class="cs">Dia '+e.dia+' de '+e.total+'. O que existe hoje para esta sprint é o plano de início; o resultado só é registrado no fechamento.</p>'
+      +'<p class="cs">'+sprintDiaTxt(e).replace(/^d/,'D')+'. O que existe hoje para esta sprint é o plano de início; o resultado só é registrado no fechamento.</p>'
       +grid(card('Planejado para a sprint',pl?pl.pl+' itens':'—','Plano de início da sprint')+card('Capacity planejada',pl?pl.cap+' SP':'—','Plano de início da sprint')+card('Entregue até hoje','—','Sem acompanhamento diário no dataset'))
       +(h?'<p class="stitle">Última sprint encerrada · '+h.rot+'</p><dl class="hm-counts">'+row('Resultado',refTxt(h))+'</dl>':'')
       +btn+'</div>';
@@ -2900,12 +2937,29 @@ function sprintHomeHtml(e){
     +btn+'</div>';
 }
 
+// Hoje fora de qualquer sprint (ex.: 05/12 = Q4 · fora de sprint): linha acima da barra, sem trocar a sprint escolhida
+function sprintAvisoForaDeSprint(){
+  const bar=document.getElementById('sprintBar');
+  if(!bar) return;
+  let aviso=document.getElementById('sprintBarFora');
+  const h=FI_TEMPO.resolver(FI_TEMPO.hoje());
+  if(h.estado!=='fora-de-sprint'){if(aviso) aviso.remove();return;}
+  if(!aviso){aviso=document.createElement('div');aviso.id='sprintBarFora';aviso.className='sprint-bar';bar.insertAdjacentElement('beforebegin',aviso);}
+  const ult=sprintUltimaEncerrada();let prox=null;
+  Object.keys(SPRINT_DATES).forEach(q=>SPRINT_DATES[q].forEach((_,i)=>{if(!prox){const x=sprintEstado(q,i);if(x.kind==='futura') prox=x;}}));
+  aviso.innerHTML='<span class="sb-chip sb-fora">Fora de sprint</span><span class="sb-txt">'+h.quarter.quarter+' · hoje, '+h.data.slice(8,10)+'/'+h.data.slice(5,7)+'/'+h.data.slice(0,4)+', não há sprint em andamento</span><span class="sb-sub">'
+    +(ult?'Última: '+ult.rot+', encerrada em '+ult.datas.split('–')[1]+'. ':'')+(prox?'Próxima: '+prox.rot+', começa em '+prox.datas.split('–')[0]+'.':'Próxima: não cadastrada.')+'</span>';
+}
+
 // Cria uma vez os contêineres de aviso e atualiza o estado da sprint selecionada (barra, atributos do body e textos)
 function atualizarEstadoSprint(){
   const q=gq(),i=gi(),e=sprintEstado(q,i);
   document.body.setAttribute('data-sprint-state',e.kind);
   const bar=document.getElementById('sprintBar');
   if(bar) bar.innerHTML=sprintBarHtml(e);
+  const selS=document.getElementById('sS');
+  if(selS) selS.title=sprintTituloSeletor(q,i);
+  sprintAvisoForaDeSprint();
   const alvos=[['pv','after'],['pdel','after'],['peq','after'],['plan-plxr','first'],['plan-tl','first'],['res-compare','first']];
   alvos.forEach(([id,pos])=>{
     const p=document.getElementById(id);if(!p) return;
@@ -3411,7 +3465,7 @@ function renderQuarterReport(){
   const totPlan=d.pl.reduce((a,b)=>a+b,0);
   const totTr=d.tr.reduce((a,b)=>a+b,0);
   const qState={Q1:sprintQuarterEstado('Q1'),Q2:sprintQuarterEstado('Q2'),Q3:sprintQuarterEstado('Q3'),Q4:sprintQuarterEstado('Q4')};
-  const qDates={Q1:'06/01/2026 – 27/03/2026',Q2:'30/03/2026 – 19/06/2026',Q3:'29/06/2026 – 18/09/2026',Q4:'28/09/2026 – 18/12/2026'};
+  const qDates={};FI_TEMPO.quarters(SPRINT_ANO).forEach(x=>{qDates[x.quarter]=calBR(x.startDate)+' – '+calBR(x.endDate);});
   const qClose={};
   Object.keys(qState).forEach(k=>{qClose[k]=qState[k]==='done'?'Encerrado em '+qDates[k].split('–')[1].trim():qState[k]==='prog'?'Em andamento':'Em planejamento';});
   const stateClass={done:'qs-done',prog:'qs-prog',plan:'qs-plan'};
@@ -5043,8 +5097,7 @@ function exportMd(type){
   const q=gq(), i=gi(), d=gd()[q], sp=d.sp[i];
   const now=_mdNow();
   const spLabel=q+'-'+sp;
-  const SPRINT_DATES_LOCAL={Q1:['06/01–16/01','19/01–30/01','02/02–13/02','16/02–27/02','02/03–13/03','16/03–27/03'],Q2:['06/04–17/04','20/04–01/05','04/05–15/05','18/05–29/05','01/06–12/06','15/06–26/06'],Q3:['06/07–17/07','20/07–31/07','03/08–14/08','17/08–28/08','31/08–11/09','14/09–25/09'],Q4:['05/10–16/10','19/10–30/10','02/11–13/11','16/11–27/11','30/11–11/12','14/12–25/12']};
-  const spDate=SPRINT_DATES_LOCAL[q]?SPRINT_DATES_LOCAL[q][i]:'—';
+  const spDate=(FI_TEMPO.sprintDatesCompat(SPRINT_ANO)[q]||[])[i]||'—';
   let md='';
   if(type==='sprint-planning') md=_mdSprintPlanning(team,q,sp,spLabel,spDate,now,d,i);
   else if(type==='forecast') md=_mdForecast(team,q,sp,spLabel,spDate,now,d,i);
@@ -6876,50 +6929,34 @@ function calTab(el,tab){
 }
 
 // ── ABA: QUARTERS ────────────────────────────────────────────────
+// Lê a fundação temporal (FI_TEMPO): quarter e sprint são independentes e um dia pode ser do quarter sem pertencer a sprint.
+const CAL_COR_QUARTER={Q1:'#6b7280',Q2:'#185FA5',Q3:'#059669',Q4:'#7c3aed'};
+function calBR(iso){return iso.slice(8,10)+'/'+iso.slice(5,7)+'/'+iso.slice(0,4);}
 function renderCalQuarters(){
   const MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
                 'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
   const DOWS=['D','S','T','Q','Q','S','S'];
-  const todayStr=calDtStr(new Date());
+  const ano=SPRINT_ANO,hoje=FI_TEMPO.hoje();
 
-  // Build lookup for date→type
-  const dayType={};
-  CAL.quarters.forEach(q=>{
-    q.sprints.forEach(s=>{
-      let d=calParseDt(s.start);const e=calParseDt(s.end);
-      while(d<=e){dayType[calDtStr(d)]=dayType[calDtStr(d)]||{type:'sprint',qColor:q.color,qlabel:q.id,slabel:s.id};d.setDate(d.getDate()+1);}
-    });
-    if(q.planningNext){
-      let d=calParseDt(q.planningNext.start);const e=calParseDt(q.planningNext.end);
-      while(d<=e){dayType[calDtStr(d)]={type:'plan',label:q.planningNext.label};d.setDate(d.getDate()+1);}
-    }
-  });
-  CAL.holidays.forEach(h=>{if(h.startsWith('2026'))dayType[h]={...dayType[h],holiday:true};});
-
-  // Mini calendars
+  // Mini calendários
   let yearGrid='<div class="cal-year-grid">';
   for(let m=0;m<12;m++){
-    const firstDay=new Date(2026,m,1);
-    const lastDay=new Date(2026,m+1,0);
+    const diasNoMes=new Date(ano,m+1,0).getDate(),primeiro=new Date(ano,m,1).getDay();
     let cells='';
-    for(let i=0;i<firstDay.getDay();i++) cells+='<div class="cal-day cal-day-empty"></div>';
-    for(let d=1;d<=lastDay.getDate();d++){
-      const ds=`2026-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      const info=dayType[ds]||{};
-      const isWE=new Date(2026,m,d).getDay()===0||new Date(2026,m,d).getDay()===6;
-      let cls='cal-day';
-      if(info.holiday) cls+=' cal-day-holiday';
-      else if(info.type==='plan') cls+=' cal-day-plan';
-      else if(info.type==='sprint') cls+=' cal-day-sprint';
-      else if(isWE) cls+=' cal-day-weekend';
-      if(ds===todayStr) cls+=' cal-day-today';
-      let style='';
-      if(info.type==='sprint'&&!info.holiday) style=`style="background:${info.qColor}22;color:${info.qColor};font-weight:600"`;
-      cells+=`<div class="${cls}" ${style} title="${info.type==='sprint'?info.qlabel+' '+info.slabel:info.type==='plan'?info.label:info.holiday?'Feriado':''}">${d}</div>`;
+    for(let i=0;i<primeiro;i++) cells+='<div class="cal-day cal-day-empty"></div>';
+    for(let d=1;d<=diasNoMes;d++){
+      const ds=ano+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+      const r=FI_TEMPO.resolver(ds,hoje);
+      let cls='cal-day',style='',title='';
+      if(r.ehFeriado){cls+=' cal-day-holiday';title='Feriado'+(r.sprint?'':' · '+r.quarter.quarter+' · fora de sprint');}
+      else if(r.sprint){const c=CAL_COR_QUARTER[r.quarter.quarter];cls+=' cal-day-sprint';style='style="background:'+c+'22;color:'+c+';font-weight:600"';title=r.quarter.quarter+' '+r.sprint.sprintId.slice(-2);}
+      else{cls+=' cal-day-fora';title=(r.quarter?r.quarter.quarter+' · ':'')+'fora de sprint';}
+      if(ds===hoje) cls+=' cal-day-today';
+      cells+='<div class="'+cls+'" '+style+' title="'+title+'">'+d+'</div>';
     }
     yearGrid+=`<div class="cal-month">
       <div class="cal-month-title">${MONTHS[m]}</div>
-      <div class="cal-month-dow">${DOWS.map(d=>`<div class="cal-dow">${d}</div>`).join('')}</div>
+      <div class="cal-month-dow">${DOWS.map(x=>`<div class="cal-dow">${x}</div>`).join('')}</div>
       <div class="cal-month-grid">${cells}</div>
     </div>`;
   }
@@ -6928,30 +6965,31 @@ function renderCalQuarters(){
   // Legenda
   const legend=`<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;margin-bottom:16px;align-items:center">
     <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#dbeafe;vertical-align:middle;margin-right:4px"></span>Sprint</span>
-    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#ede9fe;vertical-align:middle;margin-right:4px"></span>Sem. Planejamento</span>
+    <span><span class="cal-day-fora" style="display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid #d1d5db;vertical-align:middle;margin-right:4px"></span>Fora de sprint</span>
     <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#fee2e2;vertical-align:middle;margin-right:4px"></span>Feriado</span>
     <span style="display:flex;align-items:center;gap:4px"><span style="display:inline-block;width:12px;height:12px;border-radius:3px;border:2px solid #185FA5;vertical-align:middle"></span>Hoje</span>
   </div>`;
 
-  // Tabela de quarters
+  // Tabela de quarters (estado calculado pela data de hoje; nada digitado)
   function statusBadge(st){
-    if(st==='andamento') return'<span class="cal-badge cal-badge-and">● Em andamento</span>';
-    if(st==='planejado') return'<span class="cal-badge cal-badge-plan">○ Planejado</span>';
+    if(st==='atual') return'<span class="cal-badge cal-badge-and">● Atual</span>';
+    if(st==='futuro') return'<span class="cal-badge cal-badge-plan">○ Futuro</span>';
     return'<span class="cal-badge cal-badge-enc">✓ Encerrado</span>';
   }
   let tbl=`<table class="cal-tbl"><thead><tr>
-    <th>Quarter</th><th>Início</th><th>Encerramento</th><th>Sprints</th><th>Dias Úteis</th><th>Semana Planejamento</th><th>Status</th>
+    <th>Quarter</th><th>Início</th><th>Encerramento</th><th>Sprints</th><th>Dias úteis em sprints</th><th>Janela de planejamento</th><th>Status</th>
   </tr></thead><tbody>`;
-  CAL.quarters.forEach(q=>{
-    const s0=q.sprints[0].start, sN=q.sprints[q.sprints.length-1].end;
-    const du=calWorkdays(s0,sN);
-    const pn=q.planningNext;
+  FI_TEMPO.quarters(ano).forEach(q=>{
+    const sp=FI_TEMPO.sprints(ano).filter(s=>s.quarter===q.quarter),pw=q.planningWindow;
+    const ini=sp[0].startDate!==q.startDate?'<br><small style="color:#9ca3af;font-size:10px">sprints a partir de '+calBR(sp[0].startDate).slice(0,5)+'</small>':'';
+    const fim=sp[sp.length-1].endDate!==q.endDate?'<br><small style="color:#9ca3af;font-size:10px">sprints até '+calBR(sp[sp.length-1].endDate).slice(0,5)+'; depois, fora de sprint</small>':'';
+    const fora=q.workingDays-q.sprintWorkingDays;
     tbl+=`<tr>
-      <td><span class="cal-q-dot" style="background:${q.color}"></span><strong>${q.label}</strong></td>
-      <td>${calFmtBR(s0)}</td><td>${calFmtBR(sN)}</td>
-      <td>${q.sprints.length} sprints</td><td>${du} dias</td>
-      <td>${pn?`<span class="cal-badge cal-badge-plan-wk">${pn.label}</span><br><small style="color:#9ca3af;font-size:10px">${calFmtBR(pn.start)} – ${calFmtBR(pn.end)}</small>`:'—'}</td>
-      <td>${statusBadge(q.status)}</td>
+      <td><span class="cal-q-dot" style="background:${CAL_COR_QUARTER[q.quarter]}"></span><strong>${q.quarter} ${ano}</strong></td>
+      <td>${calBR(q.startDate)}${ini}</td><td>${calBR(q.endDate)}${fim}</td>
+      <td>${q.sprintCount} sprints</td><td>${q.sprintWorkingDays} dias${fora?'<br><small style="color:#9ca3af;font-size:10px">+'+fora+' fora de sprint</small>':''}</td>
+      <td>${pw?calBR(pw.startDate)+' – '+calBR(pw.endDate):'<span class="cal-badge" style="background:#f3f4f6;color:#6b7280">Não configurada</span>'}</td>
+      <td>${statusBadge(FI_TEMPO.estadoQuarter(q.quarterId,hoje))}</td>
     </tr>`;
   });
   tbl+='</tbody></table>';
@@ -6961,108 +6999,95 @@ function renderCalQuarters(){
 
 // ── ABA: SPRINTS ─────────────────────────────────────────────────
 function renderCalSprints(){
-  const today=new Date(); const todayStr=calDtStr(today);
-  let _qFilter='all';
+  const ano=SPRINT_ANO,hoje=FI_TEMPO.hoje();
+  const todos=FI_TEMPO.sprints(ano),quartersLista=FI_TEMPO.quarters(ano),foraLista=FI_TEMPO.periodosForaDeSprint(ano);
+  const rotulo=s=>s.quarter+' '+s.sprintId.slice(-2);
 
-  function sprintStatus(s){
-    const st=calParseDt(s.start), en=calParseDt(s.end);
-    en.setHours(23,59,59,999); // s.end é a meia-noite do último dia: o dia inteiro pertence à sprint
-    if(today>=st&&today<=en) return'current';
-    const tomorrow=new Date(today);tomorrow.setDate(tomorrow.getDate()+1);
-    // next sprint: first sprint where start > today
-    return today<st?'future':'past';
-  }
-
-  let nextFound=false;
-  const allSprints=[];
-  CAL.quarters.forEach(q=>{
-    q.sprints.forEach(s=>{
-      const st=sprintStatus(s);
-      allSprints.push({...s,qId:q.id,qLabel:q.label,qColor:q.color,st});
-    });
-    if(q.planningNext) allSprints.push({isPlanWk:true,qId:q.id,qLabel:q.label,...q.planningNext,st:'planwk'});
-  });
-  // Mark next sprint
-  for(const sp of allSprints){
-    if(!sp.isPlanWk&&sp.st==='future'&&!nextFound){sp.st='next';nextFound=true;}
-  }
-
-  // Current sprint box
-  const cur=allSprints.find(s=>!s.isPlanWk&&s.st==='current');
+  // Caixa de hoje: sprint atual, ou hoje fora de sprint
+  const rh=FI_TEMPO.resolver(hoje,hoje);
   let todayBox='';
-  if(cur){
-    const elapsed=calWorkdays(cur.start,todayStr);
-    const total=calWorkdays(cur.start,cur.end);
-    const remaining=calWorkdays(todayStr,cur.end);
-    const pct=Math.round(elapsed/total*100);
-    const lwd=calDtStr(calGetLastWorkday(cur.end));
-    const isLastDay=todayStr===lwd;
+  if(rh.sprint&&rh.estado==='atual'){
+    const s=rh.sprint,e=sprintEstado(s.quarter,s.number-1),pct=Math.round(e.dia/e.total*100);
+    const fer=sprintFeriadosTxt(e);
     todayBox=`<div class="cal-today-box">
       <div>
-        <div class="cal-today-main">Sprint atual: ${cur.qId} ${cur.id} — ${calFmtBR(cur.start)} a ${calFmtBR(cur.end)}</div>
-        <div class="cal-today-sub">${remaining} dias úteis restantes · ${elapsed}/${total} dias decorridos${isLastDay?' · Último dia útil!':''}</div>
+        <div class="cal-today-main">Sprint atual: ${rotulo(s)} — ${calBR(s.startDate)} a ${calBR(s.endDate)}</div>
+        <div class="cal-today-sub">${e.restam?e.restam+' dias úteis restantes · ':''}${sprintDiaTxt(e)}${fer?' · '+fer:''}${e.ultimoDia?' · Último dia útil!':''}</div>
         <div style="margin-top:6px"><div class="spr-prog-track" style="width:220px"><div class="spr-prog-fill" style="width:${pct}%;background:#185FA5"></div></div></div>
       </div>
       <div class="cal-today-pills">
-        <span class="cal-badge cal-badge-and">Sprint em andamento</span>
-        ${isLastDay?'<span class="cal-badge" style="background:#fee2e2;color:#dc2626">Último dia</span>':''}
+        <span class="cal-badge cal-badge-and">Atual</span>
+        ${e.ultimoDia?'<span class="cal-badge" style="background:#fee2e2;color:#dc2626">Último dia</span>':''}
       </div>
+    </div>`;
+  }else if(rh.estado==='fora-de-sprint'){
+    todayBox=`<div class="cal-today-box">
+      <div>
+        <div class="cal-today-main">Hoje, ${calBR(rh.data)}: ${rh.quarter.quarter} · fora de sprint</div>
+        <div class="cal-today-sub">Não há sprint em andamento. O quarter ${rh.quarter.quarter} continua até ${calBR(rh.quarter.endDate)}.</div>
+      </div>
+      <div class="cal-today-pills"><span class="cal-badge" style="background:#f3f4f6;color:#6b7280">Fora de sprint</span></div>
     </div>`;
   }
 
-  // Filter pills
+  // Filtros por quarter
   let filterHtml=`<div class="ccal-filters" id="sprFilterRow">
     <button class="ccal-fil on" onclick="calSprintFilter('all',this)">Todos</button>
-    ${CAL.quarters.map(q=>`<button class="ccal-fil" onclick="calSprintFilter('${q.id}',this)">${q.label}</button>`).join('')}
+    ${quartersLista.map(q=>`<button class="ccal-fil" onclick="calSprintFilter('${q.quarter}',this)">${q.quarter} ${ano}</button>`).join('')}
   </div>`;
 
-  // Cards
-  function buildCards(qf){
-    let cards='';
-    allSprints.forEach(sp=>{
-      if(qf!=='all'&&sp.qId!==qf) return;
-      if(sp.isPlanWk){
-        cards+=`<div class="spr-card" style="border-left:4px solid #7c3aed">
-          <div class="spr-card-hd">
-            <div><div class="spr-card-name"><i class="ti ti-users" style="font-size:12px;color:#7c3aed"></i> ${sp.label}</div>
-            <div class="spr-card-q">${sp.qLabel}</div></div>
-            <span class="cal-badge cal-badge-plan-wk">Planejamento</span>
-          </div>
-          <div class="spr-period">${calFmtBR(sp.start)} — ${calFmtBR(sp.end)}</div>
-          <div class="spr-meta"><span class="spr-meta-item"><span class="spr-meta-lbl">Dias úteis:</span> ${calWorkdays(sp.start,sp.end)}</span></div>
-        </div>`;
-        return;
-      }
-      const du=calWorkdays(sp.start,sp.end);
-      const bestWin=calBestDeployWindow(sp);
-      const bestStr=bestWin?calDtStr(bestWin):null;
-      const bestFmt=bestWin?bestWin.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'2-digit'}):'—';
-      let stBadge='';
-      if(sp.st==='current') stBadge='<span class="cal-badge cal-badge-and">● Em andamento</span>';
-      else if(sp.st==='next') stBadge='<span class="cal-badge cal-badge-plan">→ Próxima</span>';
-      else if(sp.st==='past') stBadge='<span class="cal-badge cal-badge-enc">✓ Encerrada</span>';
-      else stBadge='<span class="cal-badge cal-badge-enc">○ Planejada</span>';
-      let progress='';
-      if(sp.st==='current'){
-        const el=calWorkdays(sp.start,todayStr), tot=calWorkdays(sp.start,sp.end);
-        const pct=Math.min(100,Math.round(el/tot*100));
-        progress=`<div class="spr-progress"><div style="font-size:10px;color:#9ca3af">${pct}% concluído</div><div class="spr-prog-track"><div class="spr-prog-fill" style="width:${pct}%"></div></div></div>`;
-      }
-      const cardCls='spr-card'+(sp.st==='current'?' spr-current':sp.st==='next'?' spr-next':'');
-      cards+=`<div class="${cardCls}">
+  // Cards: sprints de cada quarter e, junto, os dias do quarter que nenhuma sprint cobre
+  function cardSprint(s){
+    const e=sprintEstado(s.quarter,s.number-1);
+    const du=s.workingDays;
+    const bestWin=calBestDeployWindow({start:s.startDate,end:s.endDate});
+    const bestFmt=bestWin?bestWin.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'2-digit'}):'—';
+    let stBadge='';
+    if(e.kind==='atual') stBadge='<span class="cal-badge cal-badge-and">● Atual</span>';
+    else if(e.kind==='encerrada') stBadge='<span class="cal-badge cal-badge-enc">✓ Encerrada</span>';
+    else stBadge='<span class="cal-badge cal-badge-enc">○ Futura</span>';
+    let progress='';
+    if(e.kind==='atual'){
+      const pct=Math.min(100,Math.round(e.dia/e.total*100));
+      progress=`<div class="spr-progress"><div style="font-size:10px;color:#9ca3af">${pct}% concluído</div><div class="spr-prog-track"><div class="spr-prog-fill" style="width:${pct}%"></div></div></div>`;
+    }
+    const fer=e.feriados.length?`<div style="margin-top:6px;font-size:11px;color:#991b1b">Feriado: ${e.feriados.map(h=>calBR(h).slice(0,5)).join(', ')} (não conta como dia útil)</div>`:'';
+    return `<div class="spr-card${e.kind==='atual'?' spr-current':''}">
         <div class="spr-card-hd">
-          <div><div class="spr-card-name">${sp.qId} · ${sp.id}</div><div class="spr-card-q">${sp.qLabel}</div></div>
+          <div><div class="spr-card-name">${s.quarter} · ${s.sprintId.slice(-2)}</div><div class="spr-card-q">${s.quarter} ${ano}</div></div>
           ${stBadge}
         </div>
-        <div class="spr-period">${calFmtBR(sp.start)} — ${calFmtBR(sp.end)}</div>
+        <div class="spr-period">${calBR(s.startDate)} — ${calBR(s.endDate)}</div>
         <div class="spr-meta">
           <span class="spr-meta-item"><span class="spr-meta-lbl">Dias úteis:</span> ${du}</span>
-          <span class="spr-meta-item"><span class="spr-meta-lbl">1º dia útil:</span> ${calGetFirstWorkday(sp.start).toLocaleDateString('pt-BR')}</span>
-          <span class="spr-meta-item"><span class="spr-meta-lbl">Últ. dia útil:</span> ${calGetLastWorkday(sp.end).toLocaleDateString('pt-BR')}</span>
+          <span class="spr-meta-item"><span class="spr-meta-lbl">1º dia útil:</span> ${calBR(s.firstWorkingDay)}</span>
+          <span class="spr-meta-item"><span class="spr-meta-lbl">Últ. dia útil:</span> ${calBR(s.lastWorkingDay)}</span>
         </div>
-        ${bestStr?`<div style="margin-top:10px;display:flex;align-items:center;gap:6px"><span style="font-size:11px;color:#6b7280">Melhor janela deploy:</span><span class="win-pill win-ok">🟢 ${bestFmt}</span></div>`:''}
+        ${fer}
+        ${bestWin?`<div style="margin-top:10px;display:flex;align-items:center;gap:6px"><span style="font-size:11px;color:#6b7280">Melhor janela deploy:</span><span class="win-pill win-ok">🟢 ${bestFmt}</span></div>`:''}
         ${progress}
       </div>`;
+  }
+  function cardFora(p,q){
+    const pw=q.planningWindow;
+    return `<div class="spr-card spr-fora" style="grid-column:1/-1">
+        <div class="spr-card-hd">
+          <div><div class="spr-card-name">${p.quarter} · fora de sprint</div><div class="spr-card-q">${p.quarter} ${ano}</div></div>
+          <span class="cal-badge" style="background:#f3f4f6;color:#6b7280">Fora de sprint</span>
+        </div>
+        <div class="spr-period">${calBR(p.startDate)} — ${calBR(p.endDate)}</div>
+        <div class="spr-meta"><span class="spr-meta-item"><span class="spr-meta-lbl">Dias úteis:</span> ${p.workingDays}</span></div>
+        <div style="margin-top:8px;font-size:11.5px;color:#374151">Estes dias pertencem ao ${p.quarter}, mas nenhuma sprint os cobre. Janela de planejamento do ${p.quarter}: ${pw?calBR(pw.startDate)+' – '+calBR(pw.endDate):'<b style="color:#6d28d9">não configurada</b>'}.</div>
+      </div>`;
+  }
+  function buildCards(qf){
+    let cards='';
+    quartersLista.forEach(q=>{
+      if(qf!=='all'&&q.quarter!==qf) return;
+      const sp=todos.filter(s=>s.quarter===q.quarter),gaps=foraLista.filter(p=>p.quarter===q.quarter);
+      gaps.filter(p=>p.startDate<sp[0].startDate).forEach(p=>{cards+=cardFora(p,q);});
+      sp.forEach(s=>{cards+=cardSprint(s);});
+      gaps.filter(p=>p.startDate>sp[0].startDate).forEach(p=>{cards+=cardFora(p,q);});
     });
     return cards||'<p style="color:#9ca3af;font-size:13px;text-align:center;padding:24px 0">Nenhuma sprint encontrada.</p>';
   }
@@ -7182,6 +7207,7 @@ function renderCalDeploys(){
 
   const hasDeps=CAL.deploys.length>0;
   document.getElementById('calContent').innerHTML=`
+    <div class="dep-msg" role="status" id="depAvisoTemporal">Deploys ainda usam a classificação temporal anterior. A reconciliação será feita em etapa separada.</div>
     <div class="dep-toolbar">
       <button class="dep-btn-new" onclick="openDepModal(-1)"><i class="ti ti-plus"></i> Novo Deploy / RDM</button>
       <span style="font-size:12px;color:#9ca3af;margin-left:4px" id="depCount">${CAL.deploys.length} deploy(s) agendado(s)</span>
@@ -7240,7 +7266,7 @@ function openDepModal(idx){
       </div>
       <div class="depm-row">
         <div class="depm-field"><label class="depm-label">Ambiente <span>*</span></label><select class="depm-input" id="df_ambiente" onchange="_depFormAmb=this.value;checkDeployDateLive(document.getElementById('df_date').value)">${sel(ambientes,dep.ambiente||'Produção')}</select></div>
-        <div class="depm-field"><label class="depm-label">Quarter / Sprint</label><input class="depm-input" id="df_qsprint" value="${escHtml(dep.qsprint)}" placeholder="Preenchido automaticamente" readonly style="background:#f9fafb;color:#6b7280"></div>
+        <div class="depm-field"><label class="depm-label">Quarter / Sprint</label><input class="depm-input" id="df_qsprint" value="${escHtml(dep.qsprint)}" placeholder="Preenchido automaticamente" readonly style="background:#f9fafb;color:#6b7280"><span class="dep-note" style="margin:0;line-height:1.35">Classificação temporária: Deploys ainda usam o calendário anterior até a reconciliação.</span></div>
       </div>
       <div class="depm-rule-box" id="depRuleBox"></div>
       <div id="depExcBox" style="display:none;flex-direction:column;gap:10px">
@@ -8211,7 +8237,7 @@ const Discovery=(function(){
   const fmtDate=d=>d&&d.length>=10?d.slice(8,10)+'/'+d.slice(5,7)+'/'+d.slice(0,4):'';
   const chip=(c,icon,text)=>'<span class="disc-chip disc-c-'+c+'"><i class="ti ti-'+icon+'"></i> '+text+'</span>';
   const btn=(act,id,parent,label,cls)=>'<button class="disc-btn'+(cls?' '+cls:'')+'" data-act="'+act+'" data-id="'+E(id)+'" data-parent="'+E(parent)+'" onclick="Discovery.click(this)">'+label+'</button>';
-  const decQ=i=>'Q'+Math.ceil(+i.decision.date.slice(5,7)/3);
+  const decQ=i=>quarterDeData(i.decision.date);
   const decY=i=>+i.decision.date.slice(0,4);
   const decMatches=(i,ctx)=>decQ(i)===ctx.quarter&&(ctx.year===null||decY(i)===ctx.year);
   function sinceTxt(it){ // tempo na etapa: informação factual, calculada da data de entrada
@@ -8531,7 +8557,7 @@ function homeSnapshot(){
   const objectives=okr.data.objectives.filter(o=>o.period.quarter===ctx.quarter&&(ctx.year===null||o.period.year===ctx.year))
     .map((o,k)=>({o:o,k:k})).sort((a,b)=>HOME_OBJ_RANK[a.o.status]-HOME_OBJ_RANK[b.o.status]||a.k-b.k).map(x=>x.o);
   const items=disc.data.items;
-  const decQ=it=>'Q'+Math.ceil(+it.decision.date.slice(5,7)/3),decY=it=>+it.decision.date.slice(0,4);
+  const decQ=it=>quarterDeData(it.decision.date),decY=it=>+it.decision.date.slice(0,4);
   const decided=items.filter(it=>it.decision&&decQ(it)===ctx.quarter&&(ctx.year===null||decY(it)===ctx.year));
   return{ctx:ctx,okr:okr,disc:disc,objectives:objectives,
     open:items.filter(it=>!it.decision),
