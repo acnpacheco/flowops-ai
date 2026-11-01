@@ -2709,6 +2709,11 @@ const FI_TEMPO=(function(){
 
   // Calendário de 2026: datas das sprints = as aprovadas em SPRINT_DATES (sprints contínuas de 14 dias). Feriados = os do CAL.holidays.
   // planningWindows fica vazio de propósito: as semanas de planejamento do CAL.quarters pertencem a outro calendário e não são importadas.
+  // Calendário de 2027 (regra C): a 1ª sprint começa na primeira sexta-feira a partir de 1º de janeiro (01/01/2027); sprints de 14 dias corridos, de sexta a quinta,
+  // 6 por quarter e contínuas; a 24ª termina em 02/12/2027 e a sobra do ano fica fora de sprint, como em 2026. Feriados: fixos nacionais, Sexta-feira Santa,
+  // Corpus Christi e 20/11 (Consciência Negra); o Carnaval fica fora. Para um novo ano basta acrescentar a entrada aqui.
+  // DÍVIDA DE CALENDÁRIO (2026 mantido como estava, não corrigido): a lista de feriados de 2026 traz Corpus Christi em 11/06, mas fontes oficiais indicam 04/06/2026;
+  // e 20/11/2026 (Consciência Negra, sexta-feira) não consta da lista de 2026, embora conste da de 2027.
   const DEFS={
     2026:{
       quarters:{
@@ -2718,6 +2723,16 @@ const FI_TEMPO=(function(){
         Q4:[['2026-09-11','2026-09-24'],['2026-09-25','2026-10-08'],['2026-10-09','2026-10-22'],['2026-10-23','2026-11-05'],['2026-11-06','2026-11-19'],['2026-11-20','2026-12-03']]
       },
       holidays:['2026-01-01','2026-04-03','2026-04-21','2026-05-01','2026-06-11','2026-09-07','2026-10-12','2026-11-02','2026-11-15','2026-12-25'],
+      planningWindows:{}
+    },
+    2027:{
+      quarters:{
+        Q1:[['2027-01-01','2027-01-14'],['2027-01-15','2027-01-28'],['2027-01-29','2027-02-11'],['2027-02-12','2027-02-25'],['2027-02-26','2027-03-11'],['2027-03-12','2027-03-25']],
+        Q2:[['2027-03-26','2027-04-08'],['2027-04-09','2027-04-22'],['2027-04-23','2027-05-06'],['2027-05-07','2027-05-20'],['2027-05-21','2027-06-03'],['2027-06-04','2027-06-17']],
+        Q3:[['2027-06-18','2027-07-01'],['2027-07-02','2027-07-15'],['2027-07-16','2027-07-29'],['2027-07-30','2027-08-12'],['2027-08-13','2027-08-26'],['2027-08-27','2027-09-09']],
+        Q4:[['2027-09-10','2027-09-23'],['2027-09-24','2027-10-07'],['2027-10-08','2027-10-21'],['2027-10-22','2027-11-04'],['2027-11-05','2027-11-18'],['2027-11-19','2027-12-02']]
+      },
+      holidays:['2027-01-01','2027-03-26','2027-04-21','2027-05-01','2027-05-27','2027-09-07','2027-10-12','2027-11-02','2027-11-15','2027-11-20','2027-12-25'],
       planningWindows:{}
     }
   };
@@ -2741,7 +2756,7 @@ const FI_TEMPO=(function(){
     igual('03/12 sprint',ids(r),['Q4','2026-Q4-S6']);igual('03/12 estado em 15/10',r.estado,'futura');igual('03/12 último dia útil',r.diaUtil.ehUltimoDiaUtil,true);
     r=R('2026-01-01','2026-10-15');
     igual('01/01 quarter e sprint',ids(r),['Q1',null]);igual('01/01 estado',[r.estado,r.posicao],['fora-de-sprint','antes-da-primeira-sprint']);
-    ['2025-12-31','2027-01-01'].forEach(d=>{r=R(d,'2026-10-15');igual(d+' sem calendário',[r.quarter,r.sprint,r.estado,r.posicao,r.diaUtil],[null,null,'sem-calendario','sem-calendario',null]);igual(d+' fora de sprint desconhecido',T.foraDeSprint(d),null);});
+    ['2025-12-31','2028-01-01'].forEach(d=>{r=R(d,'2026-10-15');igual(d+' sem calendário',[r.quarter,r.sprint,r.estado,r.posicao,r.diaUtil],[null,null,'sem-calendario','sem-calendario',null]);igual(d+' fora de sprint desconhecido',T.foraDeSprint(d),null);});
     ['2026-02-30','abc','',null,undefined,20261015].forEach((d,i)=>{r=R(d,'2026-10-15');igual('data inválida #'+i,[r.valida,r.quarter,r.sprint,r.estado],[false,null,null,null]);});
     igual('hoje inválido',R('2026-10-15','xx').estado,null);
     igual('Date local 23:59',T.normalizarData(new Date(2026,9,15,23,59,59)),'2026-10-15');igual('Date local 00:00',T.normalizarData(new Date(2026,9,15,0,0,0)),'2026-10-15');
@@ -2760,13 +2775,13 @@ const FI_TEMPO=(function(){
     igual('quarters cobrem o ano',T.quarters(2026).map(q=>[q.quarter,q.startDate,q.endDate]),[['Q1','2026-01-01','2026-03-26'],['Q2','2026-03-27','2026-06-18'],['Q3','2026-06-19','2026-09-10'],['Q4','2026-09-11','2026-12-31']]);
     igual('estado das sprints do Q4 em 15/10',['S1','S2','S3','S4','S5','S6'].map(n=>T.estadoSprint('2026-Q4-'+n,'2026-10-15')),['encerrada','encerrada','atual','futura','futura','futura']);
     igual('estado dos quarters em 15/10',['Q1','Q2','Q3','Q4'].map(q=>T.estadoQuarter('2026-'+q,'2026-10-15')),['encerrado','encerrado','encerrado','atual']);
-    igual('id inexistente',[T.sprintPorId('2026-Q4-S7'),T.sprintPorId('2027-Q1-S1'),T.estadoSprint('x','2026-10-15')],[null,null,null]);
+    igual('id inexistente',[T.sprintPorId('2026-Q4-S7'),T.sprintPorId('2028-Q1-S1'),T.estadoSprint('x','2026-10-15')],[null,null,null]);
     igual('dia útil atual',[T.diaUtilAtual('2026-Q4-S3','2026-10-15').numero,T.diaUtilAtual('2026-Q4-S4','2026-10-15')],[4,null]);
     igual('dias úteis do intervalo',[T.diasUteis('2026-10-09','2026-10-22'),T.diasUteis('2026-10-22','2026-10-09'),T.diasUteis('2025-12-30','2026-01-02')],[9,0,null]);
     igual('janela de planejamento não configurada',[T.janelaPlanejamento('2026-Q4'),T.emJanelaPlanejamento('2026-10-01')],[null,null]);
     igual('dias úteis do quarter e em sprints',T.quarters(2026).map(q=>[q.quarter,q.workingDays,q.sprintWorkingDays]),[['Q1',60,60],['Q2',56,56],['Q3',59,59],['Q4',77,58]]);
     igual('períodos fora de sprint',T.periodosForaDeSprint(2026),[{quarter:'Q1',quarterId:'2026-Q1',startDate:'2026-01-01',endDate:'2026-01-01',workingDays:0},{quarter:'Q4',quarterId:'2026-Q4',startDate:'2026-12-04',endDate:'2026-12-31',workingDays:19}]);
-    igual('ano sem calendário não tem períodos fora de sprint',T.periodosForaDeSprint(2027),[]);
+    igual('ano sem calendário não tem períodos fora de sprint',T.periodosForaDeSprint(2028),[]);
     igual('calendário consistente',T.validar(2026),[]);
     // datas aprovadas e feriados: referência fixa e conferência com o CAL
     const APROVADAS={Q1:['02/01–15/01','16/01–29/01','30/01–12/02','13/02–26/02','27/02–12/03','13/03–26/03'],Q2:['27/03–09/04','10/04–23/04','24/04–07/05','08/05–21/05','22/05–04/06','05/06–18/06'],Q3:['19/06–02/07','03/07–16/07','17/07–30/07','31/07–13/08','14/08–27/08','28/08–10/09'],Q4:['11/09–24/09','25/09–08/10','09/10–22/10','23/10–05/11','06/11–19/11','20/11–03/12']};
@@ -2778,6 +2793,35 @@ const FI_TEMPO=(function(){
     igual('janela configurada',[X.janelaPlanejamento('2099-Q2'),X.emJanelaPlanejamento('2099-04-03'),X.emJanelaPlanejamento('2099-04-06'),X.validar(2099)],[{startDate:'2099-04-01',endDate:'2099-04-05'},{quarterId:'2099-Q2',startDate:'2099-04-01',endDate:'2099-04-05'},null,[]]);
     const Y=T.criar({2098:{quarters:{Q1:[['2098-01-05','2098-01-18'],['2098-01-15','2098-01-28']],Q2:[],Q3:[['2098-07-06','2098-07-05']],Q4:[['2098-10-05','2098-10-18']]},holidays:['2098-01-01','2098-01-01','2097-12-25'],planningWindows:{Q4:['2098-10-10','2098-10-01']}}});
     igual('problemas detectados',Y.validar(2098).length>=7,true);
+    // 2027 (regra C): 1ª sprint na primeira sexta-feira de janeiro; 14 dias, de sexta a quinta; 6 por quarter; contínuas
+    const S27=T.sprints(2027),Q27=T.quarters(2027);
+    igual('2027 reconhecido (24 sprints, 4 quarters, consistente, data de 2027 resolve)',[S27.length,Q27.length,T.validar(2027),R('2027-06-15','2027-06-15').posicao],[24,4,[],'dentro-de-sprint']);
+    igual('2027-Q1-S1',(s=>[s.startDate,s.endDate,s.workingDays,s.holidays,s.firstWorkingDay,s.lastWorkingDay])(T.sprintPorId('2027-Q1-S1')),['2027-01-01','2027-01-14',9,['2027-01-01'],'2027-01-04','2027-01-14']);
+    igual('2027: 6 por quarter, 14 dias, sexta a quinta, 1ª na primeira sexta de janeiro',[['Q1','Q2','Q3','Q4'].map(q=>S27.filter(s=>s.quarter===q).length),S27.every(s=>serial(s.endDate)-serial(s.startDate)===13&&T.diaDaSemana(s.startDate)===5&&T.diaDaSemana(s.endDate)===4),S27[0].startDate,T.diaDaSemana('2027-01-01')],[[6,6,6,6],true,'2027-01-01',5]);
+    igual('2027: quarters, dias úteis e dias úteis em sprints',Q27.map(q=>[q.quarter,q.startDate,q.endDate,q.workingDays,q.sprintWorkingDays]),[['Q1','2027-01-01','2027-03-25',59,59],['Q2','2027-03-26','2027-06-17',57,57],['Q3','2027-06-18','2027-09-09',59,59],['Q4','2027-09-10','2027-12-31',78,57]]);
+    igual('2027: total de dias úteis',Q27.reduce((n,q)=>n+q.workingDays,0),253);
+    const h27=[];for(let k=serial('2027-01-01');k<=serial('2027-12-31');k++){const d=deSerial(k);if(T.ehFeriado(d)) h27.push(d);}
+    igual('feriados de 2027',h27,['2027-01-01','2027-03-26','2027-04-21','2027-05-01','2027-05-27','2027-09-07','2027-10-12','2027-11-02','2027-11-15','2027-11-20','2027-12-25']);
+    igual('2027: sobra do ano fora de sprint',T.periodosForaDeSprint(2027),[{quarter:'Q4',quarterId:'2027-Q4',startDate:'2027-12-03',endDate:'2027-12-31',workingDays:21}]);
+    igual('2027: janela de planejamento não configurada',[T.janelaPlanejamento('2027-Q1'),T.emJanelaPlanejamento('2027-01-05')],[null,null]);
+    // virada de ano
+    r=R('2026-12-31','2026-10-15');igual('31/12/2026 (último dia de 2026)',[ids(r),r.year,r.estado,r.posicao,r.ehDiaUtil],[['Q4',null],2026,'fora-de-sprint','depois-da-ultima-sprint',true]);
+    r=R('2027-01-01','2026-10-15');igual('01/01/2027 (primeiro dia de 2027)',[ids(r),r.year,r.ehFeriado,r.ehDiaUtil,r.estado],[['Q1','2027-Q1-S1'],2027,true,false,'futura']);
+    igual('transição Q4/2026 → Q1/2027 sem lacuna',[T.quarters(2026)[3].endDate,T.quarters(2027)[0].startDate,T.normalizarData(new Date(2026,11,32))],['2026-12-31','2027-01-01','2027-01-01']);
+    // previsão atravessando anos: fim do Q4/2026 → início do Q1/2027
+    const fa=T.sprintPorId('2026-Q4-S6'),fb=T.sprintPorId('2027-Q1-S1');
+    igual('previsão atravessando anos: extremos resolvem e ordenam',[ids(R(fa.startDate,'2026-10-15')),ids(R(fb.endDate,'2026-10-15')),R(fb.endDate,'2026-10-15').posicao,'2026-Q4-S6'<'2027-Q1-S1'],[['Q4','2026-Q4-S6'],['Q1','2027-Q1-S1'],'dentro-de-sprint',true]);
+    igual('previsão atravessando anos: dias úteis do intervalo',T.diasUteis(fa.startDate,fb.endDate),38);
+    igual('previsão atravessando anos: nenhum dia sem calendário',(()=>{let n=0;for(let k=serial(fa.startDate);k<=serial(fb.endDate);k++){if(R(deSerial(k),'2026-10-15').estado==='sem-calendario') n++;}return n;})(),0);
+    // ids únicos e sem sobreposição entre 2026 e 2027
+    const S48=T.sprints(2026).concat(S27);
+    igual('48 sprintIds únicos entre 2026 e 2027',[S48.length,new Set(S48.map(s=>s.sprintId)).size],[48,48]);
+    igual('sem sobreposição: cada sprint começa depois do fim da anterior',S48.every((x,i)=>!i||serial(x.startDate)>serial(S48[i-1].endDate)),true);
+    igual('2027 contínuas e depois do fim de 2026',[S27.every((x,i)=>!i||deSerial(serial(S27[i-1].endDate)+1)===x.startDate),T.sprints(2026)[23].endDate<S27[0].startDate],[true,true]);
+    // 2026 inalterado: impressão digital (FNV-1a) das sprints, quarters, períodos fora de sprint, feriados e textos de SPRINT_DATES, calculada antes da extensão
+    const fnv=s=>{let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}return h.toString(16).padStart(8,'0');};
+    const h26=[];for(let k=0;k<365;k++){const d=T.normalizarData(new Date(2026,0,1+k));if(T.ehFeriado(d)) h26.push(d);}
+    igual('2026 inalterado (impressão digital)',fnv(JSON.stringify([T.sprints(2026).map(s=>[s.sprintId,s.startDate,s.endDate,s.workingDays,s.firstWorkingDay,s.lastWorkingDay,s.holidays]),T.quarters(2026).map(q=>[q.quarterId,q.startDate,q.endDate,q.sprintCount,q.workingDays,q.sprintWorkingDays,q.planningWindow]),T.periodosForaDeSprint(2026),h26,T.sprintDatesCompat(2026)])),'155cba39');
     return {ok:falhas.length===0,total:total,falhas:falhas};
   };
   return T;
