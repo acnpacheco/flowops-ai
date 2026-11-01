@@ -538,6 +538,8 @@
   .dep-meta{display:flex;gap:10px;font-size:11px;color:#6b7280;flex-wrap:wrap;margin-bottom:8px}
   .dep-insight{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 10px;font-size:11px;color:#374151;display:flex;flex-direction:column;gap:3px}
   .dep-insight-ok{background:#f0fdf4;border-color:#bbf7d0}
+  .dep-insight-info{background:#f9fafb;border-color:#e5e7eb}
+  .dep-insight+.dep-insight{margin-top:6px}
   .dep-actions{display:flex;gap:6px;margin-top:8px}
   .dep-btn-edit{font-size:11px;padding:4px 10px;border:1px solid #d1d5db;border-radius:6px;background:#f9fafb;cursor:pointer;color:#374151}
   .dep-btn-del{font-size:11px;padding:4px 10px;border:1px solid #fca5a5;border-radius:6px;background:#fff1f2;cursor:pointer;color:#dc2626}
@@ -566,6 +568,9 @@
   .depm-rule-box{background:#fffbeb;border:1px solid #fde68a;border-left:3px solid #d97706;border-radius:0 8px 8px 0;padding:10px 12px;font-size:11px;color:#374151;display:none}
   .depm-rule-box.block{background:#fff1f2;border-color:#fca5a5;border-left-color:#dc2626}
   .depm-rule-box.show{display:block}
+  .depm-info{display:none;background:#f9fafb;border:1px solid #e5e7eb;border-left:3px solid #9ca3af;border-radius:0 8px 8px 0;padding:8px 12px;font-size:11px;color:#4b5563}
+  .depm-info.show{display:block}
+  .depm-info ul{margin:0;padding-left:14px}
   .depm-foot{padding:14px 22px;border-top:1px solid #f3f4f6;display:flex;justify-content:flex-end;gap:8px}
   .depm-btn-cancel{padding:8px 16px;font-size:12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;cursor:pointer;color:#374151}
   .depm-btn-save{padding:8px 18px;font-size:12px;font-weight:600;border:none;border-radius:8px;background:#185FA5;color:#fff;cursor:pointer}
@@ -6789,6 +6794,9 @@ const BIZ_RULES = {
 };
 
 // ── Utilitários de data ───────────────────────────────────────────
+// Parte 4B.2A: os Deploys classificam e avaliam as regras pelo FI_TEMPO. Do calendário anterior (CAL) ainda são lidos CAL.holidays
+// (calBestDeployWindow, aba Sprints) e CAL.deploys (lista em memória). calGetSprintForDate, calIsInPlanningWeek, calGetFirstWorkday,
+// calGetLastWorkday, calHorizon, calHorizonNote e CAL.quarters ficaram sem uso e podem sair na limpeza futura.
 function calParseDt(s){const[y,m,d]=s.split('-');return new Date(+y,+m-1,+d);}
 function calDtStr(dt){return dt.toISOString().split('T')[0];}
 function calFmtBR(s){const d=calParseDt(s);return d.toLocaleDateString('pt-BR');}
@@ -6861,33 +6869,50 @@ function calHorizonNote(dateStr){
 }
 
 // ── Regra de negócio ─────────────────────────────────────────────
+// ── Classificação temporal do Deploy (Fase 2 — Parte 4B.2A) ──────────────────────
+// A data do Deploy é a fonte da verdade: data → FI_TEMPO → quarter → sprint ou fora de sprint. CAL.quarters não classifica mais nada.
+const DEP_SEM_CALENDARIO='Sem calendário canônico disponível';
+const DEP_MSG_FORA_DE_SPRINT='Este deploy está dentro do Quarter, mas fora de uma sprint cadastrada.';
+const DEP_MSG_REGRA4='Regra 4 não avaliável — janela de planejamento não configurada.';
+function depClassificar(dateStr){
+  const r=FI_TEMPO.resolver(dateStr,dateStr);
+  if(!r.valida) return{estado:'invalida',rotulo:'',quarter:null,sprint:null};
+  if(r.posicao==='sem-calendario') return{estado:'sem-calendario',rotulo:DEP_SEM_CALENDARIO,quarter:null,sprint:null}; // não inventa quarter nem sprint
+  if(r.sprint) return{estado:'sprint',rotulo:r.quarter.quarter+' · S'+r.sprint.number,quarter:r.quarter,sprint:r.sprint};
+  return{estado:'fora-de-sprint',rotulo:r.quarter.quarter+' · Fora de sprint',quarter:r.quarter,sprint:null};
+}
+
+// Devolve {status, reasons, notices}. "notices" são avisos informativos (fora de sprint, Regra 4 não avaliável): nunca bloqueiam e não contam como violação.
 function checkDeployDate(dateStr,currentId){
-  if(!dateStr) return{status:'warn',reasons:['Data não informada']};
-  const dt=calParseDt(dateStr);
+  if(!dateStr) return{status:'warn',reasons:['Data não informada'],notices:[]};
+  const cls=depClassificar(dateStr);
+  if(cls.estado==='invalida') return{status:'warn',reasons:['Data inválida'],notices:[]};
+  const notices=[];
+  if(cls.estado==='fora-de-sprint') notices.push({code:'FS',text:DEP_MSG_FORA_DE_SPRINT});
+  // Regra 4: com a janela de planejamento do quarter não configurada a regra não é avaliável, e isso nunca é apresentado como "sem risco"
+  if(cls.quarter&&!cls.quarter.planningWindow) notices.push({code:'R4',text:DEP_MSG_REGRA4});
+  const w=FI_TEMPO.diaDaSemana(dateStr);
+  if(w===0||w===6) return{status:'block',reasons:['Final de semana — deploy não permitido'],notices:notices};
+  if(FI_TEMPO.ehFeriado(dateStr)===true) return{status:'block',reasons:['Feriado nacional — deploy não permitido'],notices:notices};
   const blockReasons=[],warnReasons=[];
-  if(calIsWeekend(dt)) return{status:'block',reasons:['Final de semana — deploy não permitido']};
-  if(calIsHoliday(dt)) return{status:'block',reasons:['Feriado nacional — deploy não permitido']};
-  // Fora do calendário cadastrado (D20): atenção explícita, sem avaliar o que não existe nos dados
-  const hzNote=calHorizonNote(dateStr);
-  if(hzNote) warnReasons.push(hzNote);
+  // Sem calendário canônico para o ano: só a classificação temporal fica indisponível; o resto continua valendo
+  if(cls.estado==='sem-calendario') warnReasons.push(DEP_SEM_CALENDARIO+'. Feriados, sprints e períodos de freeze não puderam ser avaliados.');
   // Regra 5 — Change Freeze
   const freeze=calIsInFreeze(dateStr);
   if(freeze) blockReasons.push('Período de Change Freeze: '+freeze.label+' (Regra 5)');
-  // Regra 4 — Semana de Planejamento
-  const pw=calIsInPlanningWeek(dateStr);
-  if(pw&&BIZ_RULES.blockPlanningWeek) blockReasons.push('Semana de Planejamento do Quarter: '+pw.label+' (Regra 4)');
-  // Regras 1 e 2 — 1º e último dia útil da Sprint
-  const sp=calGetSprintForDate(dateStr);
-  if(sp){
-    const fwd=calGetFirstWorkday(sp.sprint.start);
-    const lwd=calGetLastWorkday(sp.sprint.end);
-    if(BIZ_RULES.blockFirstDay&&calDtStr(fwd)===dateStr) blockReasons.push('Primeiro dia útil da Sprint '+sp.q+' '+sp.s+' — deploy não recomendado (Regra 1)');
-    if(BIZ_RULES.blockLastDay&&calDtStr(lwd)===dateStr) blockReasons.push('Último dia útil da Sprint '+sp.q+' '+sp.s+' — deploy não recomendado (Regra 2)');
+  // Regra 4 — janela de planejamento canônica (quando configurada)
+  const pw=FI_TEMPO.emJanelaPlanejamento(dateStr);
+  if(pw&&BIZ_RULES.blockPlanningWeek) blockReasons.push('Semana de Planejamento do Quarter: '+pw.quarterId+' (Regra 4)');
+  // Regras 1 e 2 — 1º e último dia útil da Sprint canônica
+  if(cls.sprint){
+    const ref=cls.quarter.quarter+' S'+cls.sprint.number;
+    if(BIZ_RULES.blockFirstDay&&cls.sprint.firstWorkingDay===dateStr) blockReasons.push('Primeiro dia útil da Sprint '+ref+' — deploy não recomendado (Regra 1)');
+    if(BIZ_RULES.blockLastDay&&cls.sprint.lastWorkingDay===dateStr) blockReasons.push('Último dia útil da Sprint '+ref+' — deploy não recomendado (Regra 2)');
   }
-  // Regra 3 — Véspera de feriado (bloqueio)
+  // Regra 3 — Véspera de feriado (bloqueio); fim de semana e feriado já foram tratados acima
   if(BIZ_RULES.blockHolidayEve){
-    const next=new Date(dt);next.setDate(next.getDate()+1);
-    if(calIsHoliday(next)) blockReasons.push('Véspera de feriado — risco operacional elevado (Regra 3)');
+    const prox=FI_TEMPO.normalizarData(new Date(+dateStr.slice(0,4),+dateStr.slice(5,7)-1,+dateStr.slice(8,10)+1));
+    if(prox&&FI_TEMPO.ehFeriado(prox)===true) blockReasons.push('Véspera de feriado — risco operacional elevado (Regra 3)');
   }
   // Regra 9 — Conflito de data (excluindo o próprio registro em edição)
   const conflicts=CAL.deploys.filter(d=>d.date===dateStr&&d.id!==currentId);
@@ -6898,9 +6923,9 @@ function checkDeployDate(dateStr,currentId){
     if(sameEnv.length>0) blockReasons.push('Mesmo sistema e ambiente já têm deploy nesta data (Regra 9 — bloqueio)');
   }
   const allReasons=[...blockReasons,...warnReasons];
-  if(blockReasons.length>0) return{status:'block',reasons:allReasons};
-  if(warnReasons.length>0) return{status:'warn',reasons:allReasons};
-  return{status:'ok',reasons:[]};
+  if(blockReasons.length>0) return{status:'block',reasons:allReasons,notices:notices};
+  if(warnReasons.length>0) return{status:'warn',reasons:allReasons,notices:notices};
+  return{status:'ok',reasons:[],notices:notices};
 }
 // auxiliares para detecção de conflito por sistema+ambiente
 let _depFormAmb='',_depFormSis='';
@@ -6913,7 +6938,7 @@ function calDeployInsights(dep){
   if(!dep.approvalPO&&(dep.criticidade==='Crítica'||dep.criticidade==='Alta')) ins.push('Aprovação do Product Owner pendente');
   if(!dep.approvalTL&&dep.criticidade==='Crítica') ins.push('Aprovação do Tech Lead pendente');
   const finalStatus=ins.some(i=>i.includes('Regra 5')||i.includes('Regra 4')||i.includes('Regra 1')||i.includes('Regra 2')||i.includes('Regra 3'))?'block':check.status;
-  return{status:finalStatus,messages:ins};
+  return{status:finalStatus,messages:ins,notices:check.notices||[]};
 }
 
 // ── Render principal ─────────────────────────────────────────────
@@ -7104,7 +7129,7 @@ function renderCalSprints(){
 
 // ── ABA: DEPLOYS ─────────────────────────────────────────────────
 function renderCalDeploys(){
-  const riskLabel={ok:'🟢 Janela recomendada',warn:'🟡 Atenção',block:'🔴 Janela bloqueada'};
+  const riskLabel={ok:'🟢 Sem violação',warn:'🟡 Atenção',block:'🔴 Janela bloqueada'}; // "ok" só diz que não há violação nas regras avaliadas (não é "janela recomendada"): a Regra 4 segue não avaliável
   const statusColor={Agendado:'#185FA5',background:'#dbeafe','Em execução':'#d97706',Concluído:'#059669',Cancelado:'#9ca3af'};
   const tipoColor={Programada:'#185FA5',Emergencial:'#dc2626',Corretiva:'#d97706'};
   const critColor={Crítica:'#dc2626',Alta:'#d97706',Média:'#185FA5',Baixa:'#6b7280'};
@@ -7129,9 +7154,10 @@ function renderCalDeploys(){
     return list.map((dep,fi)=>{
       const idx=CAL.deploys.indexOf(dep);
       const ins=calDeployInsights(dep);
-      const insHtml=ins.messages.length
+      const noticeHtml=(ins.notices||[]).map(n=>`<div class="dep-insight dep-insight-info">${escHtml(n.text)}</div>`).join('');
+      const insHtml=(ins.messages.length
         ?`<div class="dep-insight${ins.status==='ok'?' dep-insight-ok':''}">${ins.messages.map(m=>`<div>${escHtml(m)}</div>`).join('')}</div>`
-        :`<div class="dep-insight dep-insight-ok">Nenhuma violação de regra identificada.</div>`;
+        :`<div class="dep-insight dep-insight-ok">${(ins.notices||[]).length?'Nenhuma violação nas regras avaliadas.':'Nenhuma violação de regra identificada.'}</div>`)+noticeHtml;
       const stColor=dep.status==='Concluído'?'#059669':dep.status==='Cancelado'?'#9ca3af':dep.status==='Em execução'?'#d97706':'#185FA5';
       const stBg=dep.status==='Concluído'?'#f0fdf4':dep.status==='Cancelado'?'#f3f4f6':dep.status==='Em execução'?'#fffbeb':'#dbeafe';
       const histTip=dep.history&&dep.history.length?` title="Última alteração: ${escHtml(dep.history[dep.history.length-1].at)}"`:'' ;
@@ -7207,7 +7233,6 @@ function renderCalDeploys(){
 
   const hasDeps=CAL.deploys.length>0;
   document.getElementById('calContent').innerHTML=`
-    <div class="dep-msg" role="status" id="depAvisoTemporal">Deploys ainda usam a classificação temporal anterior. A reconciliação será feita em etapa separada.</div>
     <div class="dep-toolbar">
       <button class="dep-btn-new" onclick="openDepModal(-1)"><i class="ti ti-plus"></i> Novo Deploy / RDM</button>
       <span style="font-size:12px;color:#9ca3af;margin-left:4px" id="depCount">${CAL.deploys.length} deploy(s) agendado(s)</span>
@@ -7266,9 +7291,10 @@ function openDepModal(idx){
       </div>
       <div class="depm-row">
         <div class="depm-field"><label class="depm-label">Ambiente <span>*</span></label><select class="depm-input" id="df_ambiente" onchange="_depFormAmb=this.value;checkDeployDateLive(document.getElementById('df_date').value)">${sel(ambientes,dep.ambiente||'Produção')}</select></div>
-        <div class="depm-field"><label class="depm-label">Quarter / Sprint</label><input class="depm-input" id="df_qsprint" value="${escHtml(dep.qsprint)}" placeholder="Preenchido automaticamente" readonly style="background:#f9fafb;color:#6b7280"><span class="dep-note" style="margin:0;line-height:1.35">Classificação temporária: Deploys ainda usam o calendário anterior até a reconciliação.</span></div>
+        <div class="depm-field"><label class="depm-label">Quarter / Sprint</label><input class="depm-input" id="df_qsprint" value="${escHtml(dep.qsprint)}" placeholder="Preenchido automaticamente" readonly style="background:#f9fafb;color:#6b7280"></div>
       </div>
       <div class="depm-rule-box" id="depRuleBox"></div>
+      <div class="depm-info" id="depInfoBox"></div>
       <div id="depExcBox" style="display:none;flex-direction:column;gap:10px">
         <div class="depm-field full"><label class="depm-label">Tipo de exceção <span>*</span></label><select class="depm-input" id="df_excType">${sel(BIZ_RULES.exceptionalTypes,dep.excType)}</select></div>
         <div class="depm-field full"><label class="depm-label">Justificativa obrigatória <span>*</span></label><textarea class="depm-input" id="df_justif" rows="2" placeholder="Descreva a justificativa para o deploy excepcional...">${escHtml(dep.justificativa)}</textarea></div>
@@ -7320,16 +7346,31 @@ function closeDepModal(){
 }
 
 function checkDeployDateLive(dateStr){
-  if(!dateStr) return;
-  // Auto-preenche Quarter/Sprint
-  const sp=calGetSprintForDate(dateStr);
   const qsEl=document.getElementById('df_qsprint');
-  if(qsEl) qsEl.value=sp?sp.q+' · '+sp.s:'Fora de sprint';
+  const box=document.getElementById('depRuleBox');
+  const infoBox=document.getElementById('depInfoBox');
+  const excBox=document.getElementById('depExcBox');
+  if(!dateStr){ // data apagada: não há o que classificar; o que foi digitado nos outros campos fica como está
+    if(qsEl) qsEl.value='';
+    if(box){box.className='depm-rule-box';box.innerHTML='';}
+    if(infoBox){infoBox.className='depm-info';infoBox.innerHTML='';}
+    if(excBox) excBox.style.display='none';
+    return;
+  }
+  // Quarter/Sprint vêm da data (FI_TEMPO). Em edição, se a data não mudou, a classificação gravada é mantida.
+  const prev=_editDepIdx>=0?CAL.deploys[_editDepIdx]:null;
+  const keep=prev&&prev.date===dateStr&&prev.qsprint;
+  if(qsEl) qsEl.value=keep?prev.qsprint:depClassificar(dateStr).rotulo;
   // Verifica regras
   const curId=_editDepIdx>=0?(CAL.deploys[_editDepIdx]||{}).id:null;
   const check=checkDeployDate(dateStr,curId);
-  const box=document.getElementById('depRuleBox');
-  const excBox=document.getElementById('depExcBox');
+  if(infoBox){
+    const li=[];
+    if(check.status==='ok') li.push('Regras 1, 2 e 3 avaliadas: sem restrição para esta data.');
+    (check.notices||[]).forEach(n=>li.push(n.text));
+    infoBox.className='depm-info'+(li.length?' show':'');
+    infoBox.innerHTML=li.length?'<ul>'+li.map(t=>'<li>'+escHtml(t)+'</li>').join('')+'</ul>':'';
+  }
   if(!box) return;
   if(check.status==='ok'){
     box.className='depm-rule-box';box.innerHTML='';
@@ -7369,7 +7410,9 @@ function saveDepModal(){
     if(!c('df_apoPO')||!c('df_apoTL')){alert('Deploy excepcional requer aprovação do Product Owner E do Tech Lead.');return;}
   }
   const now=new Date().toLocaleDateString('pt-BR')+' '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  const sp=calGetSprintForDate(date);
+  // Quarter/Sprint: a data é a fonte da verdade (FI_TEMPO). Em edição, só recalcula se a data mudou.
+  const prevDep=_editDepIdx>=0?CAL.deploys[_editDepIdx]:null;
+  const qsprint=(prevDep&&prevDep.date===date&&prevDep.qsprint)?prevDep.qsprint:depClassificar(date).rotulo;
   const dep={
     id: _editDepIdx>=0?(CAL.deploys[_editDepIdx].id||calNextDepId()):calNextDepId(),
     createdAt: _editDepIdx>=0?(CAL.deploys[_editDepIdx].createdAt||now):now,
@@ -7381,7 +7424,7 @@ function saveDepModal(){
     responsavel:v('df_resp').trim(),
     criticidade:v('df_crit'),
     status:v('df_status'),
-    qsprint:sp?sp.q+' · '+sp.s:'Fora de sprint',
+    qsprint,
     epic:v('df_epic').trim(),
     feature:v('df_feature').trim(),
     us:v('df_us').trim(),
@@ -7477,7 +7520,7 @@ const DepBackup=(function(){
       else if(DEP_BOOL_FIELDS.includes(f)) o[f]=!!it[f];
       else o[f]=typeof it[f]==='string'?it[f]:'';
     });
-    if(!o.qsprint){const sp=calGetSprintForDate(o.date);o.qsprint=sp?sp.q+' · '+sp.s:'Fora de sprint';}
+    if(!o.qsprint) o.qsprint=depClassificar(o.date).rotulo;
     return o;
   }
   // "Igual" = mesmo conteúdo em todos os campos gravados (qsprint é derivado da data e fica de fora)
