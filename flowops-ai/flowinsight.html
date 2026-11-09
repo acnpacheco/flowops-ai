@@ -774,6 +774,80 @@
   .rm-grp b{font-size:var(--fs-body);font-weight:700;color:#111827}
   .rm-grp span{font-size:var(--fs-caption);color:var(--clr-neutral)}
   .rm-vz{padding:14px;font-size:var(--fs-caption);color:var(--clr-neutral);border-bottom:1px solid #e5e5e3}
+  /* Roadmap 1B.1 — painel lateral de detalhe, aviso de confiança e histórico de previsão (tokens do Lote 1; reaproveita .rm-chip, .rm-trk, .rm-cf e .dep-msg) */
+  .rm-tb-a{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  #rmHistBox{display:flex;flex-direction:column;gap:12px}
+  #rmHistBox[hidden]{display:none}
+  .rm-dec-a{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .rm-cap-av{color:#b45309;font-weight:600}
+  .rm-d-capav{margin-top:12px;border:1px solid #e5e7eb;border-left:3px solid var(--clr-warn);background:#fff;border-radius:0 8px 8px 0;padding:9px 12px;font-size:12px;color:#92400e}
+  .rm-d-capav .ti{vertical-align:-1px}
+  .rm-tb-a .dep-btn-new:disabled{opacity:.5;cursor:not-allowed}
+  #rmDec{z-index:2100}
+  #rmDec .depm-foot{flex-wrap:wrap}
+  .rm-pnl-ov{position:fixed;inset:0;background:rgba(17,24,39,.38);z-index:1900;display:none;justify-content:flex-end}
+  .rm-pnl-ov.open{display:flex}
+  .rm-pnl{background:#fff;width:min(720px,100%);height:100%;overflow-y:auto;box-shadow:-10px 0 30px rgba(0,0,0,.18);outline:none;animation:rmPnlIn .16s ease-out}
+  @keyframes rmPnlIn{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}
+  @media(prefers-reduced-motion:reduce){.rm-pnl{animation:none}}
+  .rm-pnl-h{position:sticky;top:0;z-index:2;background:#fff;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 20px 12px;border-bottom:1px solid #f0f0ee}
+  .rm-pnl-ttl{font-size:16px;font-weight:700;color:#111827;line-height:1.3;overflow-wrap:anywhere}
+  .rm-pnl-sub{font-size:var(--fs-caption);color:var(--clr-neutral);margin-top:3px}
+  .rm-pnl-act{display:flex;gap:8px;align-items:center;flex:none}
+  .rm-pb{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;min-height:32px;font-size:12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#374151;cursor:pointer}
+  .rm-pb:hover{background:#f9fafb}
+  .rm-pb.pri{border-color:var(--clr-info);color:var(--clr-info);font-weight:600}
+  .rm-px{width:32px;height:32px;border-radius:8px;border:1px solid #e5e5e3;background:#f9fafb;color:#4b5563;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+  .rm-d-res{padding:14px 20px 16px;background:#fafaf9;border-bottom:1px solid #e5e5e3}
+  .rm-d-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 18px}
+  .rm-d-c.full{grid-column:1/-1}
+  .rm-d-k{font-size:10px;font-weight:600;color:var(--clr-neutral);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+  .rm-d-v{font-size:var(--fs-body);color:#111827;line-height:1.4;overflow-wrap:anywhere}
+  .rm-d-pq{font-size:15px;font-weight:700}
+  .rm-d-mut{color:var(--clr-neutral)}.rm-d-s{font-size:var(--fs-caption);margin-top:3px}
+  .rm-d-res .rm-trk{margin-top:7px}
+  .rm-d-hint{margin-top:12px;border:1px solid #fde68a;border-left:3px solid var(--clr-warn);background:#fffbeb;border-radius:0 8px 8px 0;padding:10px 12px;font-size:12px;color:#374151}
+  .rm-d-hint-t{font-weight:600;color:#92400e}
+  .rm-d-hint ul{margin:6px 0 0 16px}
+  .rm-d-hint-a{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .rm-d-sec{border-bottom:1px solid #e5e5e3}
+  .rm-d-sec>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 20px;min-height:46px}
+  .rm-d-sec>summary::-webkit-details-marker{display:none}
+  .rm-d-sec>summary:hover{background:#fafaf9}
+  .rm-d-sec>summary>.ti-chevron-down{color:var(--clr-neutral);transition:transform .15s;flex:none}
+  .rm-d-sec[open]>summary>.ti-chevron-down{transform:rotate(180deg)}
+  .rm-d-sn{font-weight:600;font-size:var(--fs-body);color:#111827;width:158px;flex:none}
+  .rm-d-ss{flex:1;font-size:12px;color:#4b5563;min-width:0}
+  .rm-d-sb{padding:2px 20px 16px}
+  .rm-d-hist{margin-top:8px;border:1px solid #e5e5e3;border-radius:8px;overflow:hidden}
+  .rm-d-hr{display:grid;grid-template-columns:92px minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.1fr);gap:4px 14px;padding:10px 12px;border-bottom:1px solid #f0f0ee;align-items:start;background:#fff}
+  .rm-d-hr:last-child{border-bottom:0}
+  .rm-d-hr.hd{background:#fafaf9;font-size:10px;font-weight:600;color:var(--clr-neutral);text-transform:uppercase;letter-spacing:.04em;padding:7px 12px}
+  .rm-d-hr.cur{background:rgba(24,95,165,.04)}
+  .rm-d-hr .dt{font-size:12px;color:#111827;font-weight:600}
+  .rm-d-hr .mv{font-size:var(--fs-body);font-weight:600;color:#111827;line-height:1.4}
+  .rm-d-hr .mv .ar{color:var(--clr-neutral);font-weight:400;margin:0 3px}
+  .rm-d-hr .by{font-size:12px;color:#374151;overflow-wrap:anywhere}
+  .rm-d-hr .mo{font-size:12px;color:#4b5563;overflow-wrap:anywhere}
+  .rm-d-hr .tgs{margin-top:4px;display:flex;gap:5px;flex-wrap:wrap}
+  .rm-d-nota{font-size:var(--fs-caption);color:var(--clr-neutral);margin-top:8px;line-height:1.45}
+  .rm-d-vz{font-size:12px;color:var(--clr-neutral);padding:6px 0 0}
+  .rm-d-fim{padding:10px 20px 14px;font-size:var(--fs-caption);color:var(--clr-neutral)}
+  #rmPanelMsg{margin:12px 20px 0}
+  @media(max-width:600px){
+    .rm-pnl-h{padding:12px 14px}
+    .rm-d-res{padding:12px 14px}
+    .rm-d-g{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .rm-d-sec>summary{flex-wrap:wrap;padding:11px 14px;gap:4px 8px}
+    .rm-d-sn{width:auto;flex:1}
+    .rm-d-ss{flex:1 1 100%;order:3}
+    .rm-d-sb{padding:2px 14px 14px}
+    .rm-d-hr{grid-template-columns:1fr}.rm-d-hr.hd{display:none}
+    .rm-d-fim{padding:10px 14px 14px}
+    #rmPanelMsg{margin:12px 14px 0}
+    .rm-pb,.rm-px{min-height:40px}.rm-px{width:40px;height:40px}
+    #ed-roadmap .btn-export{min-height:40px}
+  }
   .rm-nota,.rm-dica{font-size:var(--fs-caption);color:var(--clr-neutral);margin-top:8px}
   .rm-dica{display:block;margin:0}
   .rm-lbl,.rm-plx,.rm-dsl{display:none}
@@ -4023,6 +4097,7 @@ function renderQuarterReport(){
 }
 
 function tab(el,id){
+  try{Roadmap.closePanel();}catch(e){}
   document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
   document.querySelectorAll('.fp').forEach(p=>p.classList.remove('on'));
@@ -4079,6 +4154,7 @@ function edTab(el,id){
   if(id==='ed-okr') renderOKRs();
   if(id==='ed-discovery') renderDiscovery();
   if(id==='ed-roadmap') renderRoadmap();
+  else{try{Roadmap.closePanel();}catch(e){}}
 }
 
 // Pontos de atenção de Engenharia & Qualidade — regra única da Visão de Saúde e da Visão Geral (METAS.cfr, cfZeroStatus, qhsStatus, doraClassify).
@@ -8719,15 +8795,30 @@ const RM_SOURCES={manual:'Manual',okr:'Iniciativa de OKR',discovery:'Item de Dis
 // Valores de uma iniciativa nova: só o título é obrigatório; nenhum planejamento nem previsão é inventado.
 // Ausência de enum ou referência opcional é null; texto livre vazio é ''.
 const RM_PADRAO={state:'discovery',condition:'healthy',confidence:'not_informed',owner:'',team:null,baselineQuarter:null,forecastStartSprintId:null,forecastEndSprintId:null,mainRiskCategory:null,mainRiskText:''};
+// Tipos de mudança de previsão (gravados como código; a tela traduz). Qualquer mudança efetiva de previsão atualiza relevantChangeAt.
+const RM_CHG={initial_forecast:'Primeira previsão',postponed:'Adiada',anticipated:'Antecipada',range_changed:'Faixa alterada',cleared:'Removida'};
+// Unidades da capacidade (código estável; a tela traduz). A capacidade ainda não tem interface: só o formato, a validação e a preservação.
+const RM_UNITS={people:'Pessoas',fte:'FTE',points:'Pontos',hours:'Horas',other:'Outro'};
+// Decisão registrada para a fatia de Bloqueios (ainda sem interface): o aging principal será calculado em dias corridos a partir da data de início;
+// dias úteis poderão aparecer depois como informação complementar, quando o FI_TEMPO cobrir o período.
 const Roadmap=(function(){
-  const KEY='fi_roadmap';
+  const KEY='fi_roadmap',BKEY='fi_roadmap_v1_backup',SCHEMA=2,EXPORT_FORMAT='flowops-roadmap-backup';
   const RXID=/^roadmap-\d{3,}$/,RXQ=/^(\d{4})-Q([1-4])$/,RXS=/^(\d{4})-Q([1-4])-S([1-6])$/;
   const MSG_FALHA='Não foi possível salvar neste navegador (sem espaço ou navegação privada). Nada foi alterado e o que você digitou foi mantido. Tente salvar novamente.';
   const MSG_NOVA='Estes dados foram salvos por uma versão mais nova do FlowOps AI e não serão alterados por esta página.';
   const MSG_VAZIO='Adicione uma iniciativa ao Roadmap para acompanhar planejamento, previsão, condição e confiança por Quarter.';
-  let data=empty(),issue=null,m=null;
-  const view={ano:null,filtro:'todas',descartadas:false};
-  function empty(){return{schemaVersion:1,counter:0,items:[]};}
+  const MSG_CONFLITO='Os dados do Roadmap foram alterados em outra aba ou janela depois que esta página foi carregada. Nada foi gravado e o que você alterou aqui não foi aplicado. Recarregue os dados para continuar; assim nenhum registro da outra aba se perde.';
+  const MSG_BACKUP_EXISTE='Já existe uma cópia de segurança da versão anterior (fi_roadmap_v1_backup) com conteúdo diferente dos dados salvos agora. O FlowOps não a sobrescreve sozinho; por isso não converteu nem gravou nada. Escolha uma das opções na janela que se abriu.';
+  const MSG_BACKUP_FALHA='Não foi possível criar a cópia de segurança dos dados atuais. Por isso nada foi convertido nem gravado e o que você digitou foi mantido. Tente novamente.';
+  const MSG_INV='Não foi possível registrar a mudança de previsão junto com a gravação. Nada foi alterado.';
+  const MSG_CAP='Há dados de capacidade que não puderam ser interpretados.';
+  const MSG_ILEGIVEL='Os dados do Roadmap salvos neste navegador não puderam ser lidos e foram mantidos sem alteração. Nada foi gravado. Use as opções do aviso na lista para exportar o conteúdo ou começar uma lista nova.';
+  const MSG_NAO_JSON='O conteúdo salvo para o Roadmap neste navegador não é um JSON válido e não pôde ser lido. Ele foi mantido exatamente como está: nada foi apagado, convertido nem substituído. Enquanto isso, o Roadmap fica somente leitura.';
+  const MSG_JSON_INVALIDO='As iniciativas do Roadmap salvas neste navegador são um JSON válido, mas não seguem o formato esperado e não puderam ser lidas. O conteúdo foi mantido exatamente como está: nada foi apagado, convertido nem substituído. Enquanto isso, o Roadmap fica somente leitura.';
+  let m=null,pnl=null,dec=null;
+  const view={ano:null,filtro:'todas',descartadas:false,aviso:null,histAberto:false};
+  function zeroCont(){return{forecastChange:0,dependency:0,blocker:0,capacity:0,evidence:0};}
+  function empty(){return{schemaVersion:SCHEMA,revision:0,counter:0,counters:zeroCont(),items:[]};}
   const clone=x=>JSON.parse(JSON.stringify(x));
   const isStr=(v,max)=>typeof v==='string'&&v.length<=max;
   const isoOk=v=>typeof v==='string'&&v.length<=40&&!isNaN(Date.parse(v));
@@ -8742,7 +8833,7 @@ const Roadmap=(function(){
 
   // ── Validação ──
   // Devolve '' se válido ou o motivo. Não bloqueia previsão que cruza o ano nem previsão fora do quarter planejado: é o que o Roadmap deve mostrar.
-  function checkItem(it){
+  function checkCore(it){
     if(!plain(it)) return 'item';
     if(typeof it.id!=='string'||!RXID.test(it.id)) return 'id';
     if(!has(RM_SOURCES,it.sourceType)) return 'origem';
@@ -8770,53 +8861,257 @@ const Roadmap=(function(){
     if(!isoOk(it.createdAt)||!isoOk(it.updatedAt)) return 'datas';
     return '';
   }
+  // ── Schema versão 2 (Roadmap 1B.1) ──
+  const RXHID=/^fch-\d{3,}$/,RXCID=/^cap-\d{3,}$/;
+  const numId=id=>parseInt(id.slice(4),10);
+  const CONTADORES=['forecastChange','dependency','blocker','capacity','evidence'];
+  // Em cada lista do item, o nome do contador do envelope e o prefixo dos ids (padrão do módulo de OKR: um contador por tipo, nunca reaproveitado)
+  const LISTA_ID={forecastChange:['forecastHistory','fch'],capacity:['capacity','cap'],dependency:['dependencies','dep'],blocker:['blockers','blk'],evidence:['evidences','evd']};
+  // Mudança de previsão: tipo derivado das pontas, gravado como código. Ids de sprint têm largura fixa, então a ordem textual é a ordem do calendário.
+  function classificar(ps,pe,ns,ne){
+    if(ps===null&&ns===null) return null;
+    if(ps===null) return 'initial_forecast';
+    if(ns===null) return 'cleared';
+    if(ps===ns&&pe===ne) return null;
+    if(ne>pe) return 'postponed';
+    if(ne<pe) return 'anticipated';
+    return 'range_changed';
+  }
+  function checkHist(e){
+    if(!plain(e)) return 'histórico de previsão';
+    if(typeof e.id!=='string'||!RXHID.test(e.id)) return 'id do histórico';
+    const par=(a,b)=>(a===null&&b===null)||(sprintOk(a)&&sprintOk(b)&&a<=b);
+    if(!par(e.previousStartSprintId,e.previousEndSprintId)||!par(e.newStartSprintId,e.newEndSprintId)) return 'sprint do histórico';
+    if(!isoOk(e.changedAt)) return 'data da mudança';
+    if(!isStr(e.changedBy,120)) return 'responsável pela mudança';
+    if(!isStr(e.reason,240)) return 'motivo da mudança';
+    if(!has(RM_CHG,e.changeType)||classificar(e.previousStartSprintId,e.previousEndSprintId,e.newStartSprintId,e.newEndSprintId)!==e.changeType) return 'tipo da mudança';
+    return '';
+  }
+  // Entrada de capacidade (formato definido agora, sem interface): uma sprint, necessária, disponível, unidade explícita e observação.
+  function checkCap(e){
+    if(!plain(e)) return 'capacidade';
+    if(typeof e.id!=='string'||!RXCID.test(e.id)) return 'id da capacidade';
+    if(!sprintOk(e.sprintId)) return 'sprint da capacidade';
+    const num=v=>typeof v==='number'&&isFinite(v)&&v>=0&&v<=1e6;
+    if(!num(e.required)||!num(e.available)) return 'valores da capacidade';
+    if(!has(RM_UNITS,e.unit)) return 'unidade da capacidade';
+    if(!isStr(e.note,240)) return 'observação da capacidade';
+    return '';
+  }
+  // Premissa de tolerância: erro ESTRUTURAL do envelope (não JSON, schema incompatível, estrutura principal, items, contadores) põe o Roadmap inteiro
+  // em somente leitura; subregistro inválido de uma iniciativa não. Por isso capacity[] não é validado aqui: cada entrada é conferida em capacidadeLer(),
+  // que deixa a inválida de fora dos cálculos e a mantém guardada como está.
+  // Vale também, no futuro, para dependencies, blockers e evidences: quando ganharem formato, um subregistro inválido não deverá derrubar o Roadmap.
+  // Hoje elas ainda não têm formato nem tela: exige-se só lista de objetos e o conteúdo é preservado como está.
+  function checkExt(it){
+    if(it.conditionAt!==null&&!isoOk(it.conditionAt)) return 'data da condição';
+    if(it.relevantChangeAt!==null&&!isoOk(it.relevantChangeAt)) return 'data da mudança relevante';
+    for(const k of ['dependencies','blockers','evidences']){
+      if(!Array.isArray(it[k])||it[k].length>500||it[k].some(x=>!plain(x))) return 'lista '+k;
+    }
+    if(!Array.isArray(it.forecastHistory)||it.forecastHistory.length>1000) return 'histórico de previsão';
+    for(const e of it.forecastHistory){const r=checkHist(e);if(r) return r;}
+    return '';
+  }
+  // Leitura tolerante da capacidade de uma iniciativa: as entradas válidas (formato certo e id ainda não usado por uma entrada anterior) ficam disponíveis para
+  // cálculo; todo o resto é contado como "não interpretado" e continua guardado como está. Qualquer cálculo de capacidade deve passar por aqui.
+  function capacidadeLer(it,items){
+    const l=it.capacity;
+    if(l===undefined) return{validas:[],invalidas:0};
+    if(!Array.isArray(l)) return{validas:[],invalidas:1};
+    const vistos=new Set();
+    if(items) for(const o of items){
+      if(o.id===it.id) break;
+      if(Array.isArray(o.capacity)) o.capacity.forEach(e=>{if(checkCap(e)==='') vistos.add(e.id);});
+    }
+    const validas=[];let invalidas=0;
+    for(const e of l){
+      if(checkCap(e)===''&&!vistos.has(e.id)){validas.push(e);vistos.add(e.id);}else invalidas++;
+    }
+    return{validas:validas,invalidas:invalidas};
+  }
+  function checkItem(it){return checkCore(it)||checkExt(it);}
+  function checkCont(c){
+    if(!plain(c)) return 'contadores';
+    for(const k of CONTADORES) if(!Number.isInteger(c[k])||c[k]<0||c[k]>1e9) return 'contadores';
+    return '';
+  }
   function check(d){
     if(!plain(d)) return 'raiz';
     if(!Number.isInteger(d.schemaVersion)||d.schemaVersion<1) return 'schemaVersion';
-    if(d.schemaVersion>1) return 'schema mais novo';
+    if(d.schemaVersion>SCHEMA) return 'schema mais novo';
     if(!Number.isInteger(d.counter)||d.counter<0||d.counter>1e9) return 'contador';
     if(!Array.isArray(d.items)) return 'itens';
-    const seen=new Set();
+    const v2=d.schemaVersion===2;
+    if(v2){
+      if(!Number.isInteger(d.revision)||d.revision<1||d.revision>1e9) return 'revisão';
+      const rc=checkCont(d.counters);
+      if(rc) return rc;
+    }
+    const seen=new Set(),ids={forecastChange:new Set()},max={forecastChange:0};
     for(const it of d.items){
-      const r=checkItem(it);
+      const r=v2?checkItem(it):checkCore(it);
       if(r) return r;
       if(seen.has(it.id)) return 'id repetido';
       seen.add(it.id);
+      if(v2) for(const k of ['forecastChange']) for(const e of it[LISTA_ID[k][0]]){
+        if(ids[k].has(e.id)) return 'id repetido ('+LISTA_ID[k][0]+')';
+        ids[k].add(e.id);max[k]=Math.max(max[k],numId(e.id));
+      }
+    }
+    if(v2) for(const k of ['forecastChange']) if(d.counters[k]<max[k]) return 'contador de '+LISTA_ID[k][0];
+    return '';
+  }
+  const lista=l=>Array.isArray(l)?clone(l):[];
+  // Capacidade: a entrada válida com exatamente os seis campos sai na ordem do formato; qualquer outra coisa (inválida, com campos a mais, ou a capacity inteira
+  // que nem é lista) é guardada exatamente como veio.
+  const capNorm=l=>Array.isArray(l)?l.map(e=>checkCap(e)===''&&Object.keys(e).length===6?{id:e.id,sprintId:e.sprintId,required:e.required,available:e.available,unit:e.unit,note:e.note}:clone(e)):(l===undefined?[]:clone(l));
+  // Reconstrói o envelope na forma da versão 2 (o deslocamento nunca entra). Um item da versão 1 ganha os campos novos vazios, só em memória.
+  function normalize(d){
+    const ct=plain(d.counters)?d.counters:{};
+    return{schemaVersion:SCHEMA,revision:Number.isInteger(d.revision)?d.revision:0,counter:d.counter,
+      counters:{forecastChange:ct.forecastChange||0,dependency:ct.dependency||0,blocker:ct.blocker||0,capacity:ct.capacity||0,evidence:ct.evidence||0},
+      items:d.items.map(i=>({id:i.id,sourceType:i.sourceType,sourceId:i.sourceId,title:i.title,owner:i.owner,team:i.team,
+      baselineQuarter:i.baselineQuarter,forecastStartSprintId:i.forecastStartSprintId,forecastEndSprintId:i.forecastEndSprintId,
+      state:i.state,condition:i.condition,conditionAt:i.conditionAt===undefined?null:i.conditionAt,confidence:i.confidence,confidenceAt:i.confidenceAt,relevantChangeAt:i.relevantChangeAt===undefined?null:i.relevantChangeAt,
+      mainRiskCategory:i.mainRiskCategory,mainRiskText:i.mainRiskText,
+      dependencies:lista(i.dependencies),blockers:lista(i.blockers),
+      capacity:capNorm(i.capacity),
+      evidences:lista(i.evidences),
+      forecastHistory:(Array.isArray(i.forecastHistory)?i.forecastHistory:[]).map(e=>({id:e.id,previousStartSprintId:e.previousStartSprintId,previousEndSprintId:e.previousEndSprintId,newStartSprintId:e.newStartSprintId,newEndSprintId:e.newEndSprintId,changedAt:e.changedAt,changedBy:e.changedBy,reason:e.reason,changeType:e.changeType})),
+      createdAt:i.createdAt,updatedAt:i.updatedAt}))};
+  }
+  const find=(d,id)=>d.items.find(i=>i.id===id)||null;
+  const igualFc=(a,b,c,d)=>a===c&&b===d;
+  // Próximo id de uma lista (fch-001, cap-001, ...): sempre maior que o contador do envelope e que qualquer id existente, então nunca é reaproveitado
+  function novoIdLista(next,kind){
+    const c=LISTA_ID[kind];
+    let max=next.counters[kind]||0;
+    next.items.forEach(i=>(Array.isArray(i[c[0]])?i[c[0]]:[]).forEach(e=>{const x=/-(\d+)$/.exec(e&&typeof e.id==='string'?e.id:'');if(x) max=Math.max(max,parseInt(x[1],10));}));
+    max+=1;next.counters[kind]=max;
+    return c[1]+'-'+String(max).padStart(3,'0');
+  }
+
+  // Invariante de escrita (append-only): a previsão só muda junto com UMA entrada nova e correspondente no histórico; entradas antigas continuam presentes,
+  // com o mesmo id e o mesmo conteúdo; a entrada nova tem id novo (nunca visto antes) e o contador só cresce.
+  function invariante(prev,next){
+    const pm=new Map(prev.items.map(i=>[i.id,i])),idsPrev=new Set(),novos=new Set();
+    prev.items.forEach(i=>i.forecastHistory.forEach(e=>idsPrev.add(e.id)));
+    if(next.counters.forecastChange<prev.counters.forecastChange) return 'contador do histórico diminuiu';
+    for(const it of next.items){
+      const h=it.forecastHistory,p=pm.get(it.id),ph=p?p.forecastHistory:[];
+      if(h.length<ph.length) return 'registro do histórico removido';
+      for(let k=0;k<ph.length;k++){
+        if(h[k].id!==ph[k].id) return 'id do histórico alterado';
+        if(JSON.stringify(h[k])!==JSON.stringify(ph[k])) return 'registro do histórico alterado';
+      }
+      const add=h.slice(ph.length);
+      for(const e of add){
+        if(idsPrev.has(e.id)||novos.has(e.id)) return 'id do histórico reaproveitado';
+        if(numId(e.id)<=prev.counters.forecastChange) return 'id do histórico não é novo';
+        novos.add(e.id);
+      }
+      if(!p){
+        if(add.length!==(it.forecastStartSprintId===null?0:1)) return 'histórico do item novo';
+        if(add.length&&(add[0].changeType!=='initial_forecast'||!igualFc(add[0].newStartSprintId,add[0].newEndSprintId,it.forecastStartSprintId,it.forecastEndSprintId))) return 'primeira previsão';
+        continue;
+      }
+      const mudou=!igualFc(p.forecastStartSprintId,p.forecastEndSprintId,it.forecastStartSprintId,it.forecastEndSprintId);
+      if(!mudou&&add.length!==0) return 'entrada de histórico sem mudança de previsão';
+      if(mudou){
+        if(add.length!==1) return 'previsão alterada sem entrada correspondente';
+        const e=add[0];
+        if(!igualFc(e.previousStartSprintId,e.previousEndSprintId,p.forecastStartSprintId,p.forecastEndSprintId)||!igualFc(e.newStartSprintId,e.newEndSprintId,it.forecastStartSprintId,it.forecastEndSprintId)) return 'entrada diferente da mudança';
+      }
     }
     return '';
   }
-  // Reconstrói só os campos conhecidos (o deslocamento nunca entra)
-  function normalize(d){
-    return{schemaVersion:1,counter:d.counter,items:d.items.map(i=>({id:i.id,sourceType:i.sourceType,sourceId:i.sourceId,title:i.title,owner:i.owner,team:i.team,
-      baselineQuarter:i.baselineQuarter,forecastStartSprintId:i.forecastStartSprintId,forecastEndSprintId:i.forecastEndSprintId,
-      state:i.state,condition:i.condition,confidence:i.confidence,confidenceAt:i.confidenceAt,
-      mainRiskCategory:i.mainRiskCategory,mainRiskText:i.mainRiskText,createdAt:i.createdAt,updatedAt:i.updatedAt}))};
-  }
-  // Leitura segura: nunca lança exceção. Valor ilegível ou de versão mais nova fica guardado como está.
-  function load(){
-    issue=null;data=empty();
-    let raw;
-    try{raw=localStorage.getItem(KEY);}catch(e){issue='acesso';return;}
-    if(raw===null) return; // sem exemplo persistido: lista vazia
-    let p;
-    try{p=JSON.parse(raw);}catch(e){issue='ilegivel';return;}
-    if(plain(p)&&Number.isInteger(p.schemaVersion)&&p.schemaVersion>1){issue='nova';return;}
-    if(check(p)){issue='ilegivel';return;}
-    data=normalize(p);
-  }
-  function persist(next){
-    try{localStorage.setItem(KEY,JSON.stringify(next));return{ok:true};}catch(e){return{ok:false,error:e};}
-  }
-  // Toda gravação: monta o estado candidato, valida, persiste e só então troca a memória
-  function commit(mutator){
-    if(issue==='nova') return{ok:false,msg:MSG_NOVA};
-    const next=clone(issue?empty():data);
-    const err=mutator(next);
-    if(err) return{ok:false,msg:err};
-    if(check(next)) return{ok:false,msg:'Os dados informados não são válidos. Revise os campos e tente novamente.'};
-    if(!persist(next).ok) return{ok:false,msg:MSG_FALHA};
-    data=next;issue=null;
-    return{ok:true};
+
+  // ── Núcleo de persistência (uma instância por armazenamento; os testes usam armazenamentos falsos) ──
+  // Leitura segura: nunca lança exceção. Valor ilegível, de formato inválido ou de versão mais nova fica guardado como está: nada é apagado nem substituído sozinho.
+  // Gravação: confere a revisão antes de gravar; se outra aba mudou os dados, não grava nada (sem merge). Versão 1 só é convertida na primeira gravação,
+  // depois de a cópia integral estar em BKEY e conferida. Conteúdo ilegível só é trocado por uma lista nova por ação explícita (recomecar), também depois da cópia.
+  // Limitação conhecida (concorrência): o localStorage não tem gravação condicional. A revisão e a releitura protegem contra uma aba DESATUALIZADA
+  // (a situação normal), mas duas gravações praticamente simultâneas em abas diferentes podem, em tese, competir: no Chrome, o que uma aba grava leva
+  // alguns milissegundos para aparecer na outra. Não há lock nem merge nesta versão.
+  function criarNucleo(store){
+    let data=empty(),issue=null,detalhe=null,conflito=false,base={ver:0,rev:0,raw:null};
+    const lerRaw=()=>{try{return{ok:true,raw:store.get(KEY)};}catch(e){return{ok:false,raw:null};}};
+    function inspecionar(raw){
+      if(raw===null||raw===undefined) return{ver:0,rev:0};
+      let p;try{p=JSON.parse(raw);}catch(e){return{ver:-1,rev:0,json:false};}
+      if(!plain(p)||!Number.isInteger(p.schemaVersion)||p.schemaVersion<1) return{ver:-1,rev:0,json:true,p:p};
+      if(p.schemaVersion>SCHEMA) return{ver:9,rev:0,json:true,p:p};
+      return{ver:p.schemaVersion,rev:p.schemaVersion===2&&Number.isInteger(p.revision)?p.revision:0,json:true,p:p};
+    }
+    function load(){
+      issue=null;detalhe=null;data=empty();conflito=false;base={ver:0,rev:0,raw:null};
+      const r=lerRaw();
+      if(!r.ok){issue='acesso';return;}
+      const inf=inspecionar(r.raw);
+      base={ver:inf.ver,rev:inf.rev,raw:r.raw};
+      if(inf.ver===0) return; // sem exemplo persistido: lista vazia
+      if(inf.ver===-1){issue='ilegivel';detalhe=inf.json?'json_invalido':'nao_json';return;}
+      if(inf.ver===9){issue='nova';return;}
+      if(check(inf.p)){issue='ilegivel';detalhe='json_invalido';return;}
+      data=normalize(inf.p);
+    }
+    // Cópia integral do conteúdo bruto, conferida por leitura. Só sobrescreve uma cópia diferente se a pessoa autorizou (substituir);
+    // se a conferência falhar, devolve a cópia que existia antes (ou remove a que acabou de ser criada).
+    function backupV1(raw,substituir){
+      let ex;
+      try{ex=store.get(BKEY);}catch(e){return{ok:false,msg:MSG_BACKUP_FALHA};}
+      if(ex!==null&&ex===raw) return{ok:true};
+      if(ex!==null&&!substituir) return{ok:false,msg:MSG_BACKUP_EXISTE,backupConflito:true};
+      try{store.set(BKEY,raw);}catch(e){return{ok:false,msg:MSG_BACKUP_FALHA};}
+      let lido=null;try{lido=store.get(BKEY);}catch(e){}
+      if(lido===raw) return{ok:true,substituiu:ex!==null};
+      try{if(ex!==null) store.set(BKEY,ex);else store.remove(BKEY);}catch(e){}
+      return{ok:false,msg:MSG_BACKUP_FALHA};
+    }
+    // Toda gravação: confere a revisão, monta o estado candidato, valida, (se for o caso) guarda a cópia do conteúdo anterior, persiste e só então troca a memória.
+    // opts.substituirBackup: a pessoa autorizou trocar a cópia antiga. opts.recomecar: a pessoa pediu uma lista nova no lugar de conteúdo ilegível.
+    function commit(mutator,opts){
+      opts=opts||{};
+      if(issue==='nova') return{ok:false,msg:MSG_NOVA};
+      if(issue==='ilegivel'&&!opts.recomecar) return{ok:false,bloqueado:true,msg:MSG_ILEGIVEL};
+      const cur=lerRaw();
+      if(!cur.ok) return{ok:false,msg:MSG_FALHA};
+      const ci=inspecionar(cur.raw);
+      if(ci.ver===9) return{ok:false,msg:MSG_NOVA};
+      if(ci.ver!==base.ver||ci.rev!==base.rev||cur.raw!==base.raw){conflito=true;return{ok:false,conflict:true,msg:MSG_CONFLITO};}
+      const prev=issue?empty():data,next=clone(prev);
+      const err=mutator(next);
+      if(err) return{ok:false,msg:err};
+      next.schemaVersion=SCHEMA;next.revision=base.rev+1;
+      if(invariante(prev,next)) return{ok:false,msg:MSG_INV};
+      if(check(next)) return{ok:false,msg:'Os dados informados não são válidos. Revise os campos e tente novamente.'};
+      const converte=issue===null&&base.ver===1,recomeca=issue==='ilegivel';
+      if(converte||recomeca){const b=backupV1(base.raw,opts.substituirBackup);if(!b.ok) return{ok:false,msg:b.msg,backupConflito:!!b.backupConflito};}
+      const txt=JSON.stringify(next);
+      try{store.set(KEY,txt);}catch(e){return{ok:false,msg:MSG_FALHA};}
+      data=next;issue=null;detalhe=null;conflito=false;base={ver:2,rev:next.revision,raw:txt};
+      return{ok:true,convertido:converte,recomecou:recomeca,revision:next.revision};
+    }
+    // Exportação do que está salvo agora (lido do armazenamento, não da memória): schemaVersion, revisão, data de geração e conteúdo integral.
+    // Conteúdo que não é JSON, ou que não segue o formato, também sai com o texto original (rawText). incluirCopiaV1 junta a cópia antiga de BKEY.
+    function exportar(agora,op){
+      const r=lerRaw();
+      if(!r.ok) return{ok:false,msg:'Este navegador não permite ler os dados salvos. Nada foi exportado.'};
+      if(r.raw===null) return{ok:false,msg:'Não há iniciativas do Roadmap salvas para exportar.'};
+      const inf=inspecionar(r.raw),quando=agora||new Date().toISOString();
+      let obj;
+      if(inf.ver===-1&&!inf.json) obj={format:EXPORT_FORMAT,generatedAt:quando,schemaVersion:null,revision:null,readable:false,valid:false,data:null,rawText:r.raw};
+      else{
+        const sv=plain(inf.p)&&Number.isInteger(inf.p.schemaVersion)?inf.p.schemaVersion:null,valido=inf.ver>=1&&inf.ver<=2&&!check(inf.p);
+        obj={format:EXPORT_FORMAT,generatedAt:quando,schemaVersion:sv,revision:sv===1?0:(plain(inf.p)&&Number.isInteger(inf.p.revision)?inf.p.revision:null),readable:true,valid:valido,data:inf.p};
+        if(!valido) obj.rawText=r.raw;
+      }
+      if(op&&op.incluirCopiaV1){let b=null;try{b=store.get(BKEY);}catch(e){}obj.previousV1Backup=b;}
+      return{ok:true,filename:'flowops-roadmap-backup-'+quando.slice(0,10)+'.json',json:JSON.stringify(obj,null,2),obj:obj};
+    }
+    return{load:load,commit:commit,exportar:exportar,get:()=>data,issue:()=>issue,detalhe:()=>detalhe,conflito:()=>conflito,base:()=>({ver:base.ver,rev:base.rev})};
   }
   function newId(next){
     let max=next.counter||0;
@@ -8824,6 +9119,54 @@ const Roadmap=(function(){
     max+=1;next.counter=max;
     return 'roadmap-'+String(max).padStart(3,'0');
   }
+
+  // ── Mudança de previsão, Condição e confiança (puras, usadas pela gravação e pelos testes) ──
+  // Qualquer mudança efetiva de previsão (os cinco tipos) e qualquer mudança de Condição atualizam relevantChangeAt.
+  const condicaoRelevante=(de,para)=>de!==para;
+  function entradaHist(id,ps,pe,ns,ne,now,cx,owner){
+    return{id:id,previousStartSprintId:ps,previousEndSprintId:pe,newStartSprintId:ns,newEndSprintId:ne,changedAt:now,changedBy:(cx.by||owner||'').slice(0,120),reason:(cx.reason||'').slice(0,240),changeType:classificar(ps,pe,ns,ne)};
+  }
+  // act 'new' cria a iniciativa; 'edit' altera. A mudança de previsão e a entrada do histórico nascem no mesmo estado candidato, que o commit grava de uma vez.
+  function aplicarEdicao(next,act,id,c,cx,now){
+    if(act==='new'){
+      const it={id:newId(next),sourceType:c.sourceType,sourceId:c.sourceId,title:c.title,owner:c.owner,team:c.team,baselineQuarter:c.baselineQuarter,
+        forecastStartSprintId:c.forecastStartSprintId,forecastEndSprintId:c.forecastEndSprintId,state:c.state,condition:c.condition,conditionAt:null,
+        confidence:c.confidence,confidenceAt:c.confidence==='not_informed'?null:now,relevantChangeAt:null,mainRiskCategory:c.mainRiskCategory,mainRiskText:c.mainRiskText,
+        dependencies:[],blockers:[],capacity:[],evidences:[],forecastHistory:[],createdAt:now,updatedAt:now};
+      if(it.forecastStartSprintId!==null){
+        it.forecastHistory.push(entradaHist(novoIdLista(next,'forecastChange'),null,null,it.forecastStartSprintId,it.forecastEndSprintId,now,cx,it.owner));
+        it.relevantChangeAt=now; // a primeira previsão também é uma mudança de previsão
+      }
+      next.items.push(it);
+      return '';
+    }
+    const it=find(next,id);
+    if(!it) return 'Iniciativa não encontrada.';
+    const ps=it.forecastStartSprintId,pe=it.forecastEndSprintId,condAnt=it.condition;
+    const mudouConf=it.confidence!==c.confidence,mudouCond=condAnt!==c.condition,mudouPrev=!igualFc(ps,pe,c.forecastStartSprintId,c.forecastEndSprintId);
+    Object.assign(it,c);
+    if(mudouConf) it.confidenceAt=c.confidence==='not_informed'?null:now; // só a pessoa que muda a confiança move a data dela
+    if(mudouCond){it.conditionAt=now;if(condicaoRelevante(condAnt,c.condition)) it.relevantChangeAt=now;}
+    if(mudouPrev){
+      it.forecastHistory.push(entradaHist(novoIdLista(next,'forecastChange'),ps,pe,c.forecastStartSprintId,c.forecastEndSprintId,now,cx,it.owner));
+      it.relevantChangeAt=now;
+    }
+    it.updatedAt=now;
+    return '';
+  }
+  // "Confirmar confiança atual": mesmo valor, nova data. Não mexe em Condição, previsão nem em relevantChangeAt.
+  function confirmarConfianca(it,now){
+    if(it.confidence==='not_informed') return 'Não há confiança informada para confirmar.';
+    it.confidenceAt=now;it.updatedAt=now;
+    return '';
+  }
+  // Avisos sobre a confiança: só sinalizam, nunca alteram o valor informado. R1 e R4 (R2 e R3 chegam com capacidade e dependências).
+  // R4 é só a comparação temporal relevantChangeAt > confidenceAt: não olha o tipo da mudança.
+  const r1=it=>it.confidence==='high'&&it.condition==='blocked';
+  const r4=it=>it.confidenceAt!==null&&it.relevantChangeAt!==null&&Date.parse(it.relevantChangeAt)>Date.parse(it.confidenceAt);
+  const avisosConfianca=it=>{const a=[];if(r1(it)) a.push({k:'r1',txt:'Confiança Alta com condição Bloqueada.'});if(r4(it)) a.push({k:'r4',txt:'A confiança ainda não foi revisada após a última mudança relevante.'});return a;};
+  const revisarConfianca=it=>r1(it)||r4(it);
+  const core=criarNucleo({get:k=>localStorage.getItem(k),set:(k,v)=>localStorage.setItem(k,v),remove:k=>localStorage.removeItem(k)});
 
   // ── Derivações (puras, nada disto é gravado) ──
   const qIdx=id=>{const x=RXQ.exec(id);return x?(+x[1])*4+(+x[2]-1):NaN;};
@@ -8892,18 +9235,18 @@ const Roadmap=(function(){
     if(h0.sprint&&h0.sprint.year===ano) h+='<span class="rm-hj" style="left:'+c((h0.sprint.number-1+(['Q1','Q2','Q3','Q4'].indexOf(h0.sprint.quarter))*6)+.5)+'" title="Hoje"></span>';
     return h+'</div>';
   }
-  function confHtml(it){
+  function confBars(it){
     if(it.confidence==='not_informed') return '<div class="rm-cf nd"><span class="rm-bars"><b></b><b></b><b></b></span>'+E(lbl(RM_CONFS,'not_informed'))+'</div>';
     const n={high:3,medium:2,low:1}[it.confidence];
-    // Sugestão de revisão (regra R1 aprovada): só avisa, nunca altera a confiança informada
-    const rev=it.confidence==='high'&&it.condition==='blocked'?'<div class="rm-rev">Revisar confiança</div>':'';
-    return '<div class="rm-cf"><span class="rm-bars">'+[1,2,3].map(k=>'<b class="'+(k<=n?'on':'')+'"></b>').join('')+'</span>'+E(lbl(RM_CONFS,it.confidence))+'</div>'+rev;
+    return '<div class="rm-cf"><span class="rm-bars">'+[1,2,3].map(k=>'<b class="'+(k<=n?'on':'')+'"></b>').join('')+'</span>'+E(lbl(RM_CONFS,it.confidence))+'</div>';
   }
+  // Sugestão de revisão (R1 e R4): só avisa, nunca altera a confiança informada
+  const confHtml=it=>confBars(it)+(revisarConfianca(it)?'<div class="rm-rev">Revisar confiança</div>':'');
   function rowHtml(it,ano){
-    const d=desloc(it),ft=forecastText(it),oe=[it.owner,it.team].filter(Boolean).join(' · ');
+    const d=desloc(it),ft=forecastText(it),oe=[it.owner,it.team].filter(Boolean).join(' · '),cap=capacidadeLer(it,core.get().items);
     const risco=it.mainRiskCategory||it.mainRiskText?'<div class="rm-rk"><b>'+E(lbl(RM_RISKS,it.mainRiskCategory))+'</b>'+(it.mainRiskCategory&&it.mainRiskText?': ':'')+E(it.mainRiskText)+'</div>':'<div class="rm-rk nd">Nenhum fator informado</div>';
-    return '<div class="rm-r" role="button" tabindex="0" aria-label="Editar iniciativa: '+E(it.title)+'" data-act="edit" data-id="'+E(it.id)+'" onclick="Roadmap.click(this)" onkeydown="if(event.key===\'Enter\')Roadmap.click(this)">'
-      +'<div class="rm-c-ini"><div class="rm-ttl">'+E(it.title)+'</div>'+(oe?'<div class="rm-own">'+E(oe)+'</div>':'')+'</div>'
+    return '<div class="rm-r" role="button" tabindex="0" aria-label="Abrir detalhes da iniciativa: '+E(it.title)+'" data-act="detail" data-id="'+E(it.id)+'" onclick="Roadmap.click(this)" onkeydown="if(event.key===\'Enter\')Roadmap.click(this)">'
+      +'<div class="rm-c-ini"><div class="rm-ttl">'+E(it.title)+'</div>'+(oe?'<div class="rm-own">'+E(oe)+'</div>':'')+(cap.invalidas?'<div class="rm-own rm-cap-av" title="'+E(MSG_CAP)+'"><i class="ti ti-alert-triangle"></i> Dados de capacidade não interpretados</div>':'')+'</div>'
       +'<div class="rm-c-pq"><div class="rm-lbl">Planejado</div><div class="rm-pq">'+E(qLabel(it.baselineQuarter)||'—')+'</div></div>'
       +'<div class="rm-c-prv"><div class="rm-plx">Planejado <b>'+E(qLabel(it.baselineQuarter)||'—')+'</b></div><div class="rm-lbl">Previsão</div>'
         +'<div class="rm-prv-t'+(ft?'':' nd')+'">'+(ft?E(ft):'Sem previsão informada')+'</div>'+trilha(it,ano)+'<span class="rm-dsl">'+deslocChip(d)+'</span></div>'
@@ -8914,11 +9257,15 @@ const Roadmap=(function(){
       +'<div class="rm-c-rk"><div class="rm-lbl">Principal risco</div>'+risco+'</div></div>';
   }
   function noticeHtml(){
-    const w=t=>depMsgHtml('warn',t);
-    if(issue==='ilegivel') return w('As iniciativas do Roadmap salvas neste navegador não puderam ser lidas. Nada foi apagado e a lista aparece vazia. Ao salvar uma iniciativa, o conteúdo ilegível será substituído.');
-    if(issue==='nova') return w(MSG_NOVA);
-    if(issue==='acesso') return w('Este navegador não permite salvar dados nesta página. As iniciativas registradas agora serão perdidas ao recarregar.');
-    return '';
+    const w=t=>depMsgHtml('warn',t),iss=core.issue();
+    let h='';
+    if(iss==='ilegivel') h+='<div class="dep-msg is-warn" role="status">'+E(core.detalhe()==='nao_json'?MSG_NAO_JSON:MSG_JSON_INVALIDO)
+      +'<div class="rm-dec-a"><button type="button" class="rm-pb" onclick="Roadmap.exportar()">Exportar conteúdo atual</button><button type="button" class="rm-pb" onclick="Roadmap.iniciarRecomeco()">Começar uma lista nova</button></div></div>';
+    if(iss==='nova') h+=w(MSG_NOVA);
+    if(iss==='acesso') h+=w('Este navegador não permite salvar dados nesta página. As iniciativas registradas agora serão perdidas ao recarregar.');
+    if(core.conflito()) h+='<div class="dep-msg is-bad" role="alert">'+E(MSG_CONFLITO)+' <button type="button" class="rm-pb pri" onclick="Roadmap.recarregar()">Recarregar dados</button></div>';
+    if(view.aviso) h+=depMsgHtml(view.aviso.k,view.aviso.t);
+    return h;
   }
   function render(){
     const root=document.getElementById('ed-roadmap');
@@ -8926,7 +9273,7 @@ const Roadmap=(function(){
     const ys=anos();
     if(view.ano===null||ys.indexOf(view.ano)<0){const hy=+FI_TEMPO.hoje().slice(0,4);view.ano=ys.indexOf(hy)>=0?hy:ys[0];}
     const ano=view.ano;
-    const todas=data.items,g=agrupar(todas,ano),doAno=g.doAno,sem=g.sem,ativas=doAno.filter(i=>i.state!=='discarded');
+    const todas=core.get().items,g=agrupar(todas,ano),doAno=g.doAno,sem=g.sem,ativas=doAno.filter(i=>i.state!=='discarded');
     const desc=doAno.concat(sem).filter(i=>i.state==='discarded').length;
     // Mesmos filtros (descartadas, Atenção, Bloqueadas) e mesma ordem na lista do ano e no grupo Sem planejamento
     const filtra=l=>{
@@ -8946,7 +9293,7 @@ const Roadmap=(function(){
     }).join('')+'</div>';
     const cab='<div class="rm-h"><div>Iniciativa</div><div>Planejado</div><div>Previsão<div class="rm-qlab"><span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span></div></div><div>Deslocamento</div><div>Estado</div><div>Condição</div><div>Confiança informada</div><div>Principal risco</div></div>';
     let corpo;
-    if(!todas.length) corpo='<div class="dep-empty"><i class="ti ti-map-2" style="font-size:36px;display:block;margin-bottom:10px;color:#d1d5db"></i><p style="font-size:14px;font-weight:500;color:#6b7280;margin-bottom:4px">Nenhuma iniciativa no Roadmap</p><p style="font-size:12px">'+E(MSG_VAZIO)+'</p></div>';
+    if(!todas.length) corpo=(core.issue()==='ilegivel'||core.issue()==='nova')?'':'<div class="dep-empty"><i class="ti ti-map-2" style="font-size:36px;display:block;margin-bottom:10px;color:#d1d5db"></i><p style="font-size:14px;font-weight:500;color:#6b7280;margin-bottom:4px">Nenhuma iniciativa no Roadmap</p><p style="font-size:12px">'+E(MSG_VAZIO)+'</p></div>';
     else{
       const fora=todas.length-doAno.length-sem.length;
       corpo=faixa
@@ -8959,8 +9306,8 @@ const Roadmap=(function(){
         +(fora?'<p class="rm-nota">'+fora+(fora===1?' iniciativa está em outro ano e não aparece':' iniciativas estão em outro ano e não aparecem')+' nesta visão.</p>':'');
     }
     root.innerHTML='<div class="rm-toolbar"><div class="rm-ctx"><span>Ano:</span>'+ys.map(y=>pill(y===ano,String(y),'Roadmap.setAno('+y+')')).join('')+'<span class="rm-ctx-n">Quarters do calendário canônico</span></div>'
-      +'<button class="dep-btn-new" data-act="new" data-id="" onclick="Roadmap.click(this)"><i class="ti ti-plus"></i> Nova iniciativa</button></div>'
-      +'<p class="dep-note">As iniciativas do Roadmap ficam salvas apenas neste navegador. Planejado, previsão, estado, condição e confiança são informados por você: o FlowOps não os calcula nem os altera. O deslocamento é calculado a cada leitura.</p>'
+      +'<div class="rm-tb-a"><button type="button" class="btn-export" onclick="Roadmap.exportar()"><i class="ti ti-download"></i> Exportar backup</button><button class="dep-btn-new" data-act="new" data-id="" onclick="Roadmap.click(this)"'+(core.issue()==='ilegivel'?' disabled title="Os dados salvos não puderam ser lidos: use as opções do aviso para continuar."':'')+'><i class="ti ti-plus"></i> Nova iniciativa</button></div></div>'
+      +'<p class="dep-note">As iniciativas do Roadmap ficam salvas apenas neste navegador. Planejado, previsão, estado, condição e confiança são informados por você: o FlowOps não os calcula nem os altera. O deslocamento é calculado a cada leitura. Exporte um backup para guardar uma cópia dos dados.</p>'
       +noticeHtml()+corpo;
   }
 
@@ -9004,23 +9351,23 @@ const Roadmap=(function(){
             fld('Item de origem','<select class="depm-input" name="sourceId" onchange="Roadmap.origem(this)"'+((e?it.sourceType:'manual')==='manual'?' disabled':'')+'>'+((e?it.sourceType:'manual')==='manual'?'<option value="">Sem origem</option>':origemOpts(it.sourceType,it.sourceId||''))+'</select>'))
       +row2(fld('Owner',inp('owner',d.owner,'maxlength="120"')),fld('Time',sel('team',timeOpts,d.team||'')))
       +fld('Quarter planejado',sel('baselineQuarter',quarterOpts(),d.baselineQuarter||''),true)
-      +row2(fld('Previsão inicial','<select class="depm-input" name="forecastStartSprintId">'+sprintOpts(d.forecastStartSprintId)+'</select>'),fld('Previsão final','<select class="depm-input" name="forecastEndSprintId">'+sprintOpts(d.forecastEndSprintId)+'</select>'))
+      +row2(fld('Previsão inicial','<select class="depm-input" name="forecastStartSprintId" onchange="Roadmap.prev()">'+sprintOpts(d.forecastStartSprintId)+'</select>'),fld('Previsão final','<select class="depm-input" name="forecastEndSprintId" onchange="Roadmap.prev()">'+sprintOpts(d.forecastEndSprintId)+'</select>'))
       +'<span class="rm-dica">A previsão pode cruzar o ano ou sair do quarter planejado: é o que o Roadmap mostra. Deixe as duas em branco se ainda não há previsão. Sem quarter planejado não há como calcular o deslocamento.</span>'
+      +'<div id="rmHistBox" hidden><div class="depm-info show" id="rmHistInfo"></div>'+row2(fld('Alterado por',inp('changedBy',e?it.owner:'','maxlength="120" placeholder="Padrão: o owner"')),fld('Motivo da mudança (opcional)',inp('changeReason','','maxlength="240"')))+'</div>'
       +row2(fld('Estado',sel('state',opts(RM_STATES),d.state)),fld('Condição',sel('condition',opts(RM_CONDS),d.condition)))
       +row2(fld('Confiança',sel('confidence',opts(RM_CONFS),d.confidence)),fld('Categoria do risco principal',sel('mainRiskCategory',[['','(nenhum)']].concat(opts(RM_RISKS)),d.mainRiskCategory||'')))
       +fld('Risco principal',inp('mainRiskText',d.mainRiskText,'maxlength="160" placeholder="Ex.: QA insuficiente para o período."'),true)
       +'<span class="rm-dica">A confiança é a sua leitura. O FlowOps não a calcula nem a altera.</span>'};
   }
-  const find=(d,id)=>d.items.find(i=>i.id===id)||null;
   function openModal(act,id){
     if(act!=='new'&&act!=='edit'&&act!=='del') return;
-    const it=act==='new'?null:find(data,id);
+    const it=act==='new'?null:find(core.get(),id);
     if(act!=='new'&&!it) return;
-    m={act:act,id:id};
+    m={act:act,id:id,orig:it?{s:it.forecastStartSprintId,e:it.forecastEndSprintId}:{s:null,e:null}};view.aviso=null;
     let title,body,foot;
     if(act==='del'){
       title='Excluir iniciativa';
-      body='<p>Excluir a iniciativa "'+E(it.title)+'" do Roadmap? Esta ação não pode ser desfeita.</p>';
+      body='<p>Excluir a iniciativa "'+E(it.title)+'" do Roadmap? Esta ação não pode ser desfeita.'+(it.forecastHistory.length?' O histórico de previsão dela ('+it.forecastHistory.length+(it.forecastHistory.length===1?' registro':' registros')+') será excluído junto.':'')+'</p>';
       foot='<button class="depm-btn-cancel" onclick="Roadmap.close()">Cancelar</button><button class="depm-btn-save" style="background:var(--clr-bad)" onclick="Roadmap.save()">Confirmar exclusão</button>';
     } else {
       const f=formFor(it);title=f.title;body=f.body;
@@ -9028,10 +9375,27 @@ const Roadmap=(function(){
     }
     box().innerHTML='<div class="depm-head"><div class="depm-head-title">'+E(title)+'</div><button class="depm-close" onclick="Roadmap.close()" aria-label="Fechar"><i class="ti ti-x"></i></button></div>'
       +'<div class="depm-body">'+body+'</div><div id="rmSaveMsg" class="dep-msg is-bad depm-msg" role="alert" hidden></div><div class="depm-foot">'+foot+'</div>';
-    document.getElementById('rmModal').classList.add('open');document.body.style.overflow='hidden';
+    document.getElementById('rmModal').classList.add('open');travar();if(act!=='del') atualizarMudanca();
   }
-  function closeModal(){document.getElementById('rmModal').classList.remove('open');document.body.style.overflow='';m=null;}
-  function showMsg(t){const e=document.getElementById('rmSaveMsg');if(!e) return;e.textContent=t;e.hidden=false;if(e.scrollIntoView) e.scrollIntoView({block:'nearest'});}
+  function closeModal(){document.getElementById('rmModal').classList.remove('open');m=null;travar();}
+  // Aviso no formulário: só aparece quando a previsão será definida ou alterada. Os campos "Alterado por" e "Motivo" só são usados nesse caso.
+  function atualizarMudanca(){
+    const hb=document.getElementById('rmHistBox');
+    if(!hb||!m||m.act==='del') return;
+    const a=val('forecastStartSprintId')||null,b=val('forecastEndSprintId')||null,o=m.orig;
+    const muda=(a===null)===(b===null)&&!igualFc(a,b,o.s,o.e);
+    hb.hidden=!muda;
+    if(!muda) return;
+    const txt=o.s===null?'Primeira previsão: '+faixaLab(a,b,true)+'.':(a===null?'Previsão removida (era '+faixaLab(o.s,o.e,true)+').':'Previsão alterada: '+faixaLab(o.s,o.e,true)+' → '+faixaLab(a,b,true)+'.');
+    document.getElementById('rmHistInfo').textContent=txt+' Este registro entra no histórico de previsão e não poderá ser editado depois.';
+  }
+  function showMsg(t,conflito){
+    const e=document.getElementById('rmSaveMsg');
+    if(!e) return;
+    e.innerHTML=E(t)+(conflito?' <button type="button" class="depm-btn-cancel" style="margin-top:8px" onclick="Roadmap.recarregar()">Recarregar dados</button>':'');
+    e.hidden=false;
+    if(e.scrollIntoView) e.scrollIntoView({block:'nearest'});
+  }
   // Origem: troca a lista de itens e, ao escolher um item, preenche título e owner se ainda estiverem vazios
   function origem(el){
     if(!m) return;
@@ -9054,44 +9418,250 @@ const Roadmap=(function(){
   function save(){
     if(!m) return;
     const act=m.act,id=m.id;
-    const done=mut=>{const r=commit(mut);if(!r.ok){showMsg(r.msg);return;}closeModal();render();};
-    if(act==='del') return done(next=>{next.items=next.items.filter(x=>x.id!==id);});
+    const done=(mut,opts)=>{
+      const r=core.commit(mut,opts);
+      if(!r.ok){
+        showMsg(r.msg,r.conflict);
+        if(r.backupConflito) decAbrir('backup',s=>done(mut,{substituirBackup:s}));
+        return;
+      }
+      closeModal();
+      aposGravar(r);
+      render();renderPainel();
+    };
+    if(act==='del') return done(next=>{next.items=next.items.filter(x=>x.id!==id);return '';});
     const now=new Date().toISOString();
     const a=val('forecastStartSprintId')||null,b=val('forecastEndSprintId')||null;
     const tipo=val('sourceType'),sid=tipo==='manual'?null:(val('sourceId')||null);
     const campos={sourceType:tipo,sourceId:sid,title:val('title').trim(),owner:val('owner').trim(),team:val('team')||null,baselineQuarter:val('baselineQuarter')||null,
       forecastStartSprintId:a,forecastEndSprintId:b,state:val('state'),condition:val('condition'),confidence:val('confidence'),
       mainRiskCategory:val('mainRiskCategory')||null,mainRiskText:val('mainRiskText').trim()};
+    const cx={by:val('changedBy').trim(),reason:val('changeReason').trim()};
     const cand={id:'roadmap-000',sourceType:campos.sourceType,sourceId:campos.sourceId,title:campos.title,owner:campos.owner,team:campos.team,baselineQuarter:campos.baselineQuarter,
-      forecastStartSprintId:campos.forecastStartSprintId,forecastEndSprintId:campos.forecastEndSprintId,state:campos.state,condition:campos.condition,confidence:campos.confidence,confidenceAt:null,
-      mainRiskCategory:campos.mainRiskCategory,mainRiskText:campos.mainRiskText,createdAt:now,updatedAt:now}; // mesma ordem de campos do modelo gravado
+      forecastStartSprintId:campos.forecastStartSprintId,forecastEndSprintId:campos.forecastEndSprintId,state:campos.state,condition:campos.condition,conditionAt:null,confidence:campos.confidence,confidenceAt:null,relevantChangeAt:null,
+      mainRiskCategory:campos.mainRiskCategory,mainRiskText:campos.mainRiskText,dependencies:[],blockers:[],capacity:[],evidences:[],forecastHistory:[],createdAt:now,updatedAt:now}; // mesma ordem de campos do modelo gravado
     const why=checkItem(cand);
     if(why) return showMsg(MSG_CHECK[why]||'Os dados informados não são válidos. Revise os campos e tente novamente.');
-    done(next=>{
-      if(act==='new'){
-        Object.assign(cand,{id:newId(next),confidenceAt:campos.confidence==='not_informed'?null:now});
-        next.items.push(cand);
-      } else {
-        const it=find(next,id);if(!it) return 'Iniciativa não encontrada.';
-        const mudou=it.confidence!==campos.confidence;
-        Object.assign(it,campos);
-        if(mudou) it.confidenceAt=campos.confidence==='not_informed'?null:now; // só a pessoa que muda a confiança move a data dela
-        it.updatedAt=now;
-      }
-    });
+    done(next=>aplicarEdicao(next,act,id,campos,cx,now));
   }
-  function click(el){openModal(el.dataset.act||'edit',el.dataset.id||'');}
+  function click(el){const act=el.dataset.act||'detail',id=el.dataset.id||'';if(act==='detail') abrirPainel(id);else openModal(act,id);}
   function setAno(y){view.ano=y;render();}
   function setFiltro(f){view.filtro=f;render();}
   function setDescartadas(){view.descartadas=!view.descartadas;render();}
   function askDel(){if(m&&m.act==='edit') openModal('del',m.id);}
+
+  // ── Painel lateral de detalhe (Roadmap 1B.1): Resumo, aviso de confiança e Histórico de previsão ──
+  const fmtD=iso=>{const d=new Date(iso);return isNaN(d)?'':d.toLocaleDateString('pt-BR');};
+  const fmtDH=iso=>{const d=new Date(iso);return isNaN(d)?'':d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});};
+  const sprLab=(id,ano)=>{const x=RXS.exec(id);return'Q'+x[2]+(ano?'/'+x[1]:'')+' · S'+x[3];};
+  const faixaLab=(s,e,ano)=>{
+    if(s===null) return'Sem previsão';
+    if(s===e) return sprLab(s,ano);
+    const a=RXS.exec(s),b=RXS.exec(e);
+    return a[1]===b[1]&&a[2]===b[2]?sprLab(s,ano)+' a S'+b[3]:sprLab(s,ano)+' a '+sprLab(e,ano);
+  };
+  // O ano fica explícito quando baseline, previsão ou histórico do item tocam mais de um ano
+  function anoExplicito(it){
+    const ys=new Set();
+    if(it.baselineQuarter!==null) ys.add(it.baselineQuarter.slice(0,4));
+    [it.forecastStartSprintId,it.forecastEndSprintId].forEach(x=>{if(x!==null) ys.add(x.slice(0,4));});
+    it.forecastHistory.forEach(h=>[h.previousStartSprintId,h.previousEndSprintId,h.newStartSprintId,h.newEndSprintId].forEach(x=>{if(x!==null) ys.add(x.slice(0,4));}));
+    return ys.size>1;
+  }
+  const anoRef=it=>it.baselineQuarter!==null?+it.baselineQuarter.slice(0,4):it.forecastStartSprintId!==null?+it.forecastStartSprintId.slice(0,4):(view.ano||+FI_TEMPO.hoje().slice(0,4));
+  const celula=(k,v,full)=>'<div class="rm-d-c'+(full?' full':'')+'"><div class="rm-d-k">'+k+'</div><div class="rm-d-v">'+v+'</div></div>';
+  function avisoHtml(it,av){
+    if(!av.length) return '';
+    const datas=av.some(a=>a.k==='r4')?'<div class="rm-d-mut rm-d-s">Última mudança relevante: '+E(fmtDH(it.relevantChangeAt))+'. Confiança informada: '+E(fmtDH(it.confidenceAt))+'.</div>':'';
+    const nota=av.some(a=>a.k==='r1')?'<div class="rm-d-mut rm-d-s">Confirmar a confiança não apaga o aviso de Alta com Bloqueada: ele continua enquanto as duas coisas forem verdade.</div>':'';
+    return '<div class="rm-d-hint" role="status"><div class="rm-d-hint-t">Há sinais que merecem revisão da confiança.</div><ul>'+av.map(a=>'<li>'+E(a.txt)+'</li>').join('')+'</ul>'+datas+nota
+      +'<div class="rm-d-hint-a"><button type="button" class="rm-pb pri" data-id="'+E(it.id)+'" onclick="Roadmap.confirmar(this)">Confirmar confiança atual</button><button type="button" class="rm-pb" onclick="Roadmap.alterarConfianca()">Alterar confiança</button></div></div>';
+  }
+  function histHtml(it){
+    const ano=anoExplicito(it),h=it.forecastHistory.slice().reverse();
+    const resumo=h.length?h.length+(h.length===1?' registro':' registros')+' · última mudança em '+fmtD(h[0].changedAt):'Nenhum registro';
+    let corpo;
+    if(!h.length) corpo='<p class="rm-d-vz">Nenhuma mudança de previsão registrada. As mudanças feitas daqui para a frente entram aqui automaticamente.</p>';
+    else{
+      const cur=h[0]&&igualFc(h[0].newStartSprintId,h[0].newEndSprintId,it.forecastStartSprintId,it.forecastEndSprintId);
+      corpo='<div class="rm-d-hist"><div class="rm-d-hr hd"><div>Data</div><div>Previsão</div><div>Alterado por</div><div>Motivo</div></div>'
+        +h.map((e,i)=>'<div class="rm-d-hr'+(i===0&&cur?' cur':'')+'" data-hid="'+E(e.id)+'"><div class="dt">'+E(fmtD(e.changedAt))+'</div><div><div class="mv">'+E(faixaLab(e.previousStartSprintId,e.previousEndSprintId,ano))+'<span class="ar">→</span>'+E(faixaLab(e.newStartSprintId,e.newEndSprintId,ano))+'</div>'
+          +'<div class="tgs">'+(i===0&&cur?chip('info','point','Atual'):'')+chip(e.changeType==='postponed'?'warn':e.changeType==='anticipated'?'ok':'neutral',e.changeType==='postponed'?'arrow-right':e.changeType==='anticipated'?'arrow-left':'minus',lbl(RM_CHG,e.changeType))+'</div></div>'
+          +'<div class="by">'+(e.changedBy?E(e.changedBy):'<span class="rm-d-mut">Não informado</span>')+'</div><div class="mo">'+(e.reason?E(e.reason):'<span class="rm-d-mut">Sem motivo informado</span>')+'</div></div>').join('')+'</div>';
+      const primeira=it.forecastHistory[0];
+      if(primeira.changeType!=='initial_forecast') corpo+='<p class="rm-d-nota">Histórico registrado a partir de '+E(fmtD(primeira.changedAt))+'. Mudanças de previsão anteriores a essa data não foram registradas.</p>';
+      if(!cur) corpo+='<p class="rm-d-nota">A previsão atual não corresponde ao último registro do histórico.</p>';
+    }
+    corpo+='<p class="rm-d-nota"><i class="ti ti-lock"></i> Registro append-only: o FlowOps acrescenta linhas e nunca edita nem remove as anteriores. O tipo de cada mudança é gravado no momento dela.</p>';
+    return '<details class="rm-d-sec" id="rmDHist"'+(view.histAberto?' open':'')+' ontoggle="Roadmap.histToggle(this)"><summary><span class="rm-d-sn">Histórico de previsão</span><span class="rm-d-ss">'+E(resumo)+'</span><i class="ti ti-chevron-down"></i></summary><div class="rm-d-sb">'+corpo+'</div></details>';
+  }
+  // Aviso de capacidade: aparece só quando há entrada que não pôde ser interpretada; nada é corrigido nem apagado
+  function capAvisoHtml(it){
+    const c=capacidadeLer(it,core.get().items);
+    if(!c.invalidas) return '';
+    return '<div class="rm-d-capav" role="status"><i class="ti ti-alert-triangle"></i> '+E(MSG_CAP)+'<div class="rm-d-mut rm-d-s">'+c.invalidas+(c.invalidas===1?' registro de capacidade foi preservado sem alteração e não entra':' registros de capacidade foram preservados sem alteração e não entram')+' em nenhum cálculo.</div></div>';
+  }
+  function painelHtml(it){
+    const d=desloc(it),ft=forecastText(it),av=avisosConfianca(it);
+    const risco=it.mainRiskCategory!==null||it.mainRiskText?'<b>'+E(lbl(RM_RISKS,it.mainRiskCategory))+'</b>'+(it.mainRiskCategory!==null&&it.mainRiskText?': ':'')+E(it.mainRiskText):'<span class="rm-d-mut">Nenhum fator informado</span>';
+    const oe=[it.owner,it.team].filter(Boolean).join(' · ');
+    return '<div class="rm-pnl-h"><div><div class="rm-pnl-ttl" id="rmPanelTtl">'+E(it.title)+'</div>'+(oe?'<div class="rm-pnl-sub">'+E(oe)+'</div>':'')+'</div>'
+        +'<div class="rm-pnl-act"><button type="button" class="rm-pb" onclick="Roadmap.editarDoPainel()"><i class="ti ti-pencil"></i> Editar resumo</button><button type="button" class="rm-px" onclick="Roadmap.closePanel()" aria-label="Fechar painel"><i class="ti ti-x"></i></button></div></div>'
+      +'<div id="rmPanelMsg" class="dep-msg is-bad" role="alert" hidden></div>'
+      +'<div class="rm-d-res"><div class="rm-d-g">'
+        +celula('Planejado','<span class="rm-d-pq">'+E(qLabel(it.baselineQuarter)||'—')+'</span>')
+        +celula('Previsão atual',(ft?'<div>'+E(ft)+'</div>':'<div class="rm-d-mut">Sem previsão informada</div>')+trilha(it,anoRef(it)))
+        +celula('Deslocamento',deslocChip(d))
+        +celula('Estado',chip(ST_COR[it.state]||'neutral',ST_ICON[it.state],lbl(RM_STATES,it.state)))
+        +celula('Condição',chip(CD[it.condition][0],CD[it.condition][1],lbl(RM_CONDS,it.condition))+(it.conditionAt?'<div class="rm-d-mut rm-d-s">alterada em '+E(fmtD(it.conditionAt))+'</div>':''))
+        +celula('Confiança informada',confBars(it)+(it.confidenceAt?'<div class="rm-d-mut rm-d-s">em '+E(fmtD(it.confidenceAt))+'</div>':''))
+        +celula('Principal risco',risco,true)
+      +'</div>'+capAvisoHtml(it)+avisoHtml(it,av)+'</div>'
+      +histHtml(it)
+      +'<p class="rm-d-fim">Dados informados por você, salvos só neste navegador. As mudanças de previsão são registradas automaticamente e não podem ser editadas.</p>';
+  }
+  const pnlEl=()=>document.getElementById('rmPanel'),pnlBox=()=>document.getElementById('rmPanelBox');
+  function travar(){document.body.style.overflow=(pnl!==null||m!==null||dec!==null)?'hidden':'';}
+  function renderPainel(){
+    if(pnl===null) return;
+    const it=find(core.get(),pnl);
+    if(!it){fecharPainel();return;}
+    const topo=pnlBox().scrollTop;
+    pnlBox().innerHTML=painelHtml(it);
+    pnlBox().scrollTop=topo;
+  }
+  function abrirPainel(id){
+    const it=find(core.get(),id);
+    if(!it) return;
+    pnl=id;view.aviso=null;
+    renderPainel();
+    pnlEl().classList.add('open');pnlEl().setAttribute('aria-hidden','false');travar();
+    pnlBox().focus();
+  }
+  function fecharPainel(){
+    if(pnl===null) return;
+    const id=pnl;pnl=null;
+    pnlEl().classList.remove('open');pnlEl().setAttribute('aria-hidden','true');travar();
+    const r=document.querySelector('#ed-roadmap [data-id="'+id+'"]');
+    if(r&&r.offsetParent!==null) r.focus();
+  }
+  function painelMsg(t,conflito){
+    const e=document.getElementById('rmPanelMsg');
+    if(!e) return;
+    e.innerHTML=E(t)+(conflito?' <button type="button" class="rm-pb pri" onclick="Roadmap.recarregar()">Recarregar dados</button>':'');
+    e.hidden=false;
+    if(e.scrollIntoView) e.scrollIntoView({block:'nearest'});
+  }
+  // Depois de uma gravação que deu certo: avisa se os dados foram convertidos ou se começou uma lista nova
+  function aposGravar(r){
+    view.aviso=r.convertido?{k:'ok',t:'Os dados do Roadmap foram convertidos para a versão 2. A cópia integral da versão anterior ficou guardada em '+BKEY+'.'}:null;
+  }
+  function confirmar(el,opts){
+    const id=el&&el.dataset?el.dataset.id:el;
+    const r=core.commit(next=>{const it=find(next,id);return it?confirmarConfianca(it,new Date().toISOString()):'Iniciativa não encontrada.';},opts);
+    if(!r.ok){
+      painelMsg(r.msg,r.conflict);
+      if(r.backupConflito) decAbrir('backup',s=>confirmar(id,{substituirBackup:s}));
+      return;
+    }
+    aposGravar(r);render();renderPainel();
+  }
+  function alterarConfianca(){
+    if(pnl===null) return;
+    openModal('edit',pnl);
+    const s=box()&&box().querySelector('[name="confidence"]');
+    if(s) s.focus();
+  }
+  function editarDoPainel(){if(pnl!==null) openModal('edit',pnl);}
+  function histToggle(el){view.histAberto=!!el.open;}
+  // Recarrega da memória do navegador o que está salvo (depois de um conflito entre abas); o que estava no formulário não é aplicado
+  function recarregar(){
+    core.load();
+    if(m) closeModal();
+    decFechar();
+    render();renderPainel();
+  }
+  function exportData(){return core.exportar();}
+  // comCopia: junta o texto da cópia antiga (fi_roadmap_v1_backup) ao arquivo, para que nada dela se perca se a pessoa decidir substituí-la
+  function exportar(comCopia){
+    const r=core.exportar(undefined,{incluirCopiaV1:comCopia===true});
+    if(!r.ok){view.aviso={k:'warn',t:r.msg};render();return r;}
+    downloadJSON(r.filename,r.json);
+    view.aviso={k:'ok',t:'Backup gerado: '+r.filename+' (schemaVersion '+r.obj.schemaVersion+', revisão '+r.obj.revision+').'};
+    render();
+    return r;
+  }
+
+  // ── Decisões da pessoa (diálogo): cópia antiga diferente e lista nova no lugar de conteúdo ilegível ──
+  // Nada aqui acontece sozinho: cada caminho que apaga ou substitui algo pede confirmação explícita.
+  const decEl=()=>document.getElementById('rmDec'),decBox=()=>document.getElementById('rmDecBox');
+  function decAbrir(tipo,retry){
+    dec={tipo:tipo,retry:retry,confirmando:tipo==='recomecar'};
+    decRender();
+    decEl().classList.add('open');decEl().setAttribute('aria-hidden','false');travar();
+    const b=decBox().querySelector('button');if(b) b.focus();
+  }
+  function decFechar(){
+    if(dec===null) return;
+    dec=null;
+    decEl().classList.remove('open');decEl().setAttribute('aria-hidden','true');decBox().innerHTML='';travar();
+  }
+  function decRender(){
+    const bt=(cod,t,cls)=>'<button type="button" class="'+(cls||'depm-btn-cancel')+'" onclick="Roadmap.decidir(\''+cod+'\')">'+E(t)+'</button>';
+    let titulo,texto,foot;
+    if(dec.tipo==='backup'&&!dec.confirmando){
+      titulo='Já existe uma cópia de segurança diferente';
+      texto='Existe uma cópia da versão anterior em '+BKEY+' com conteúdo diferente dos dados salvos agora. O FlowOps não a sobrescreve sozinho; por isso não converteu nem gravou nada. Exporte os dados atuais (o arquivo inclui o texto da cópia antiga) ou substitua a cópia antiga e continue.';
+      foot=bt('exportar','Exportar dados atuais')+bt('substituir','Substituir a cópia antiga e continuar')+bt('fechar','Cancelar');
+    }else if(dec.tipo==='backup'){
+      titulo='Confirmar a substituição';
+      texto='A cópia antiga em '+BKEY+' será apagada e substituída pela cópia dos dados atuais (versão 1). Depois o FlowOps converte os dados e grava a sua alteração. Esta ação não pode ser desfeita pela tela.';
+      foot=bt('sim','Sim, substituir a cópia antiga e continuar','depm-btn-save')+bt('voltar','Voltar');
+    }else{
+      titulo='Começar uma lista nova';
+      texto='O conteúdo salvo agora não pôde ser lido. Ele será copiado, sem nenhuma alteração, para '+BKEY+' e só então substituído por uma lista vazia. Exporte antes se quiser uma cópia sua. Esta ação não pode ser desfeita pela tela.';
+      foot=bt('exportar','Exportar conteúdo atual')+bt('sim','Sim, começar uma lista nova','depm-btn-save')+bt('fechar','Cancelar');
+    }
+    decBox().innerHTML='<div class="depm-head"><div class="depm-head-title">'+E(titulo)+'</div></div><div class="depm-body"><p>'+E(texto)+'</p></div><div class="depm-foot">'+foot+'</div>';
+  }
+  function decidir(a){
+    if(dec===null) return;
+    if(a==='fechar'){decFechar();return;}
+    if(a==='exportar'){
+      const r=exportar(dec.tipo==='backup');
+      const p=decBox().querySelector('.depm-body');
+      if(p) p.insertAdjacentHTML('beforeend','<p class="rm-dica" role="status">'+E(r.ok?'Arquivo gerado: '+r.filename+'.':r.msg)+'</p>');
+      return;
+    }
+    if(a==='substituir'){dec.confirmando=true;decRender();return;}
+    if(a==='voltar'){dec.confirmando=false;decRender();return;}
+    if(a==='sim'){const f=dec.retry,subst=dec.tipo==='backup';decFechar();f(subst);}
+  }
+  // Lista nova no lugar de conteúdo ilegível: só por ação explícita; o conteúdo bruto vai para BKEY antes
+  function recomecar(subst){
+    const r=core.commit(()=>'',{recomecar:true,substituirBackup:subst});
+    if(!r.ok){
+      if(r.backupConflito){decAbrir('backup',s=>recomecar(s));return;}
+      view.aviso={k:'warn',t:r.msg};render();return;
+    }
+    view.aviso={k:'ok',t:'Uma lista nova foi criada. O conteúdo anterior ficou guardado, sem alteração, em '+BKEY+'.'};
+    render();
+  }
+  function iniciarRecomeco(){decAbrir('recomecar',s=>recomecar(s));}
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Escape') return;
+    if(dec!==null){decFechar();return;}
+    if(m!==null){closeModal();return;}
+    if(pnl!==null) fecharPainel();
+  });
+
 
   // Autoteste (como o do FI_TEMPO): cenários do Roadmap 1A, regra de Condicionada, enums persistidos e validações. Roda no console: Roadmap.autoteste()
   function autoteste(){
     const falhas=[];let total=0;
     const igual=(nome,o,e)=>{total++;const x=JSON.stringify(o),y=JSON.stringify(e);if(x!==y) falhas.push(nome+': obtido '+x+', esperado '+y);};
     const base={id:'roadmap-001',sourceType:'manual',sourceId:null,title:'T',owner:'O',team:'Time Alpha',baselineQuarter:'2026-Q2',forecastStartSprintId:null,forecastEndSprintId:null,
-      state:'in_progress',condition:'healthy',confidence:'medium',confidenceAt:'2026-05-18T12:00:00.000Z',mainRiskCategory:null,mainRiskText:'',createdAt:'2026-05-18T12:00:00.000Z',updatedAt:'2026-05-18T12:00:00.000Z'};
+      state:'in_progress',condition:'healthy',conditionAt:null,confidence:'medium',confidenceAt:'2026-05-18T12:00:00.000Z',relevantChangeAt:null,mainRiskCategory:null,mainRiskText:'',dependencies:[],blockers:[],capacity:[],evidences:[],forecastHistory:[],createdAt:'2026-05-18T12:00:00.000Z',updatedAt:'2026-05-18T12:00:00.000Z'};
     const mk=o=>Object.assign({},base,o);
     const dd=o=>{const i=mk(o);return[desloc(i).txt,forecastText(i)];};
     // Cenários A a F
@@ -9172,15 +9742,287 @@ const Roadmap=(function(){
     igual('iniciativa nova só com título é válida',checkItem(mk(Object.assign({},RM_PADRAO,{confidenceAt:null}))),'');
     // Modelo gravado
     igual('deslocamento não faz parte do modelo gravado',Object.keys(normalize({counter:1,items:[mk({})]}).items[0]).filter(k=>/desloc|shift/i.test(k)),[]);
-    igual('campos do modelo mínimo',Object.keys(normalize({counter:1,items:[mk({})]}).items[0]),['id','sourceType','sourceId','title','owner','team','baselineQuarter','forecastStartSprintId','forecastEndSprintId','state','condition','confidence','confidenceAt','mainRiskCategory','mainRiskText','createdAt','updatedAt']);
     igual('anos com calendário canônico',anos(),[2026,2027]);
+    // ── Roadmap 1B.1: schema v2, migração, revisão, histórico de previsão, capacidade, backup e confiança ──
+    // Tudo roda em armazenamentos falsos (um Map por "aba"): nada disto lê nem grava o navegador de verdade.
+    const fake=()=>{const mp=new Map();return{mp:mp,falha:false,get(k){return mp.has(k)?mp.get(k):null;},set(k,v){if(this.falha) throw new Error('cota');mp.set(k,v);},remove(k){mp.delete(k);}};};
+    const T0='2026-11-01T12:00:00.000Z',T1='2026-11-02T12:00:00.000Z',T2='2026-11-03T12:00:00.000Z',T3='2026-11-04T12:00:00.000Z',T4='2026-11-05T12:00:00.000Z',T5='2026-11-06T12:00:00.000Z',T6='2026-11-07T12:00:00.000Z';
+    const v1it=o=>Object.assign({id:'roadmap-001',sourceType:'manual',sourceId:null,title:'Legado',owner:'Ana',team:null,baselineQuarter:'2026-Q4',forecastStartSprintId:'2026-Q4-S5',forecastEndSprintId:'2026-Q4-S5',
+      state:'in_progress',condition:'healthy',confidence:'high',confidenceAt:T0,mainRiskCategory:null,mainRiskText:'',createdAt:T0,updatedAt:T0},o||{});
+    const v1raw=JSON.stringify({schemaVersion:1,counter:1,items:[v1it()]});
+    const camp=(it,o)=>Object.assign({sourceType:it.sourceType,sourceId:it.sourceId,title:it.title,owner:it.owner,team:it.team,baselineQuarter:it.baselineQuarter,forecastStartSprintId:it.forecastStartSprintId,
+      forecastEndSprintId:it.forecastEndSprintId,state:it.state,condition:it.condition,confidence:it.confidence,mainRiskCategory:it.mainRiskCategory,mainRiskText:it.mainRiskText},o||{});
+    const edita=(nu,id,o,now,cx,opts)=>nu.commit(next=>aplicarEdicao(next,'edit',id,camp(find(next,id),o),cx||{by:'',reason:''},now),opts);
+    const cria=(nu,o,now,cx,opts)=>nu.commit(next=>aplicarEdicao(next,'new',null,Object.assign({sourceType:'manual',sourceId:null,title:'Nova',owner:'Bia',team:null,baselineQuarter:'2026-Q4',forecastStartSprintId:null,forecastEndSprintId:null,
+      state:'discovery',condition:'healthy',confidence:'not_informed',mainRiskCategory:null,mainRiskText:''},o||{}),cx||{by:'',reason:''},now),opts);
+    const armV1=()=>{const s=fake();s.set(KEY,v1raw);const n=criarNucleo(s);n.load();return{s:s,n:n};};
+    const cont0={forecastChange:0,dependency:0,blocker:0,capacity:0,evidence:0};
+    const he=(id,ps,pe,ns,ne,now)=>entradaHist(id,ps,pe,ns,ne,now||T1,{by:'A',reason:''},'x');
+    // Classificação do tipo da mudança
+    igual('tipos de mudança de previsão',[classificar(null,null,'2026-Q4-S5','2026-Q4-S6'),classificar('2026-Q4-S5','2026-Q4-S5','2026-Q4-S6','2026-Q4-S6'),classificar('2026-Q4-S6','2026-Q4-S6','2026-Q4-S5','2026-Q4-S5'),
+      classificar('2026-Q4-S4','2026-Q4-S6','2026-Q4-S5','2026-Q4-S6'),classificar('2026-Q4-S5','2026-Q4-S6',null,null),classificar('2026-Q4-S5','2026-Q4-S6','2026-Q4-S5','2026-Q4-S6'),classificar(null,null,null,null)],
+      ['initial_forecast','postponed','anticipated','range_changed','cleared',null,null]);
+    igual('códigos dos tipos de mudança',Object.keys(RM_CHG),['initial_forecast','postponed','anticipated','range_changed','cleared']);
+    // relevantChangeAt: qualquer mudança efetiva de previsão (os cinco tipos) e qualquer mudança de Condição
+    const Q=criarNucleo(fake());Q.load();
+    cria(Q,{title:'Sequência',confidence:'high'},T0);
+    const passo=(o,now)=>{edita(Q,'roadmap-001',o,now);const it=Q.get().items[0],h=it.forecastHistory;return[h.length?h[h.length-1].changeType:null,it.relevantChangeAt,h.length];};
+    igual('item novo sem previsão: relevantChangeAt vazio',[Q.get().items[0].relevantChangeAt,Q.get().items[0].forecastHistory.length],[null,0]);
+    igual('primeira previsão (initial_forecast) atualiza relevantChangeAt',passo({forecastStartSprintId:'2026-Q4-S5',forecastEndSprintId:'2026-Q4-S5'},T1),['initial_forecast',T1,1]);
+    igual('adiamento (postponed) atualiza relevantChangeAt',passo({forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T2),['postponed',T2,2]);
+    igual('antecipação (anticipated) atualiza relevantChangeAt',passo({forecastStartSprintId:'2026-Q4-S5',forecastEndSprintId:'2026-Q4-S5'},T3),['anticipated',T3,3]);
+    igual('mudança de faixa (range_changed) atualiza relevantChangeAt',passo({forecastStartSprintId:'2026-Q4-S4',forecastEndSprintId:'2026-Q4-S5'},T4),['range_changed',T4,4]);
+    igual('remoção da previsão (cleared) atualiza relevantChangeAt',passo({forecastStartSprintId:null,forecastEndSprintId:null},T5),['cleared',T5,5]);
+    igual('salvar sem mudar a previsão não atualiza relevantChangeAt nem cria entrada',passo({title:'Só o título'},T6),['cleared',T5,5]);
+    edita(Q,'roadmap-001',{condition:'at_risk'},T6);
+    igual('mudança de Condição continua atualizando conditionAt e relevantChangeAt',[Q.get().items[0].conditionAt,Q.get().items[0].relevantChangeAt],[T6,T6]);
+    igual('os ids do histórico saem em sequência e únicos',Q.get().items[0].forecastHistory.map(e=>e.id),['fch-001','fch-002','fch-003','fch-004','fch-005']);
+    igual('o contador do histórico acompanha o último id',Q.get().counters.forecastChange,5);
+    const Qn=criarNucleo(fake());Qn.load();
+    cria(Qn,{title:'Já com previsão',forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T2);
+    igual('item criado com previsão: initial_forecast com id e relevantChangeAt',[Qn.get().items[0].forecastHistory.map(e=>[e.id,e.changeType]),Qn.get().items[0].relevantChangeAt,Qn.get().items[0].confidenceAt],[[['fch-001','initial_forecast']],T2,null]);
+    // R4 depende só da comparação temporal
+    igual('R4 usa só relevantChangeAt e confidenceAt (o tipo da mudança não entra)',[
+      r4(mk({confidenceAt:T1,relevantChangeAt:T2,forecastHistory:[]})),
+      r4(mk({confidenceAt:T1,relevantChangeAt:T2,forecastHistory:[he('fch-001',null,null,'2026-Q4-S5','2026-Q4-S5')]})),
+      r4(mk({confidenceAt:T3,relevantChangeAt:T2,forecastHistory:[he('fch-001','2026-Q4-S5','2026-Q4-S5','2026-Q4-S6','2026-Q4-S6')]})),
+      r4(mk({confidenceAt:T1,relevantChangeAt:T2,forecastHistory:[he('fch-001','2026-Q4-S6','2026-Q4-S6',null,null)]}))],[true,true,false,true]);
+    // A: a versão 1 abre sem ser convertida
+    const A=armV1();
+    igual('A: V1 abre sem conversão, sem backup e sem gravar',[A.n.issue(),A.s.get(KEY)===v1raw,A.s.mp.has(BKEY),A.n.get().items.length,A.n.get().items[0].forecastHistory.length,A.n.base()],[null,true,false,1,0,{ver:1,rev:0}]);
+    igual('A: em memória o item da V1 ganha os campos novos vazios',[A.n.get().items[0].dependencies,A.n.get().items[0].blockers,A.n.get().items[0].capacity,A.n.get().items[0].evidences,A.n.get().items[0].conditionAt,A.n.get().items[0].relevantChangeAt,A.n.get().counters],[[],[],[],[],null,null,cont0]);
+    // B: primeira gravação cria o backup, converte e põe revision 1; a seguinte vira 2
+    const rB=edita(A.n,'roadmap-001',{title:'Legado 2'},T1);
+    const sB=JSON.parse(A.s.get(KEY));
+    igual('B: primeira gravação: backup integral da V1, V2 e revision 1',[rB.ok,rB.convertido,A.s.get(BKEY)===v1raw,sB.schemaVersion,sB.revision],[true,true,true,2,1]);
+    igual('B: a conversão não inventa histórico nem dados',[sB.items[0].forecastHistory.length,sB.items[0].dependencies.length,sB.items[0].capacity.length,sB.items[0].relevantChangeAt,sB.items[0].conditionAt,sB.items[0].title,sB.counters],[0,0,0,null,null,'Legado 2',cont0]);
+    const rB2=edita(A.n,'roadmap-001',{title:'Legado 3'},T1);
+    igual('B: a segunda gravação não refaz o backup e sobe a revision',[rB2.ok,rB2.convertido,A.s.get(BKEY)===v1raw,JSON.parse(A.s.get(KEY)).revision],[true,false,true,2]);
+    // Backup existente e diferente: nunca é sobrescrito sozinho
+    const Bx=armV1();Bx.s.set(BKEY,'cópia antiga');
+    const rBx=edita(Bx.n,'roadmap-001',{title:'X'},T1);
+    igual('backup existente e diferente: bloqueia, não sobrescreve e não converte',[rBx.ok,rBx.backupConflito,rBx.msg===MSG_BACKUP_EXISTE,Bx.s.get(BKEY),Bx.s.get(KEY)===v1raw,Bx.n.get().items[0].title],[false,true,true,'cópia antiga',true,'Legado']);
+    const rBx2=edita(Bx.n,'roadmap-001',{title:'X'},T1);
+    igual('backup existente e diferente: tentar de novo sem autorização continua bloqueado',[rBx2.ok,Bx.s.get(BKEY)],[false,'cópia antiga']);
+    const rBx3=edita(Bx.n,'roadmap-001',{title:'X'},T1,null,{substituirBackup:true});
+    igual('substituição autorizada: troca a cópia antiga pela V1 atual, converte e grava',[rBx3.ok,rBx3.convertido,Bx.s.get(BKEY)===v1raw,JSON.parse(Bx.s.get(KEY)).revision,Bx.n.get().items[0].title],[true,true,true,1,'X']);
+    const Bf2=armV1();Bf2.s.set(BKEY,'cópia antiga');
+    const setOrig=Bf2.s.set.bind(Bf2.s);Bf2.s.set=(k,v)=>{if(k===BKEY) throw new Error('cota');setOrig(k,v);};
+    const rBf2=edita(Bf2.n,'roadmap-001',{title:'X'},T1,null,{substituirBackup:true});
+    igual('substituição autorizada mas a gravação da cópia falha: a cópia antiga fica e nada é convertido',[rBf2.ok,rBf2.msg===MSG_BACKUP_FALHA,Bf2.s.get(BKEY),Bf2.s.get(KEY)===v1raw],[false,true,'cópia antiga',true]);
+    const Bm=armV1();Bm.s.set(BKEY,'cópia antiga');
+    let uma=true;const setM=Bm.s.set.bind(Bm.s);Bm.s.set=(k,v)=>{if(k===BKEY&&uma){uma=false;Bm.s.mp.set(k,'corrompida');return;}setM(k,v);};
+    const rBm=edita(Bm.n,'roadmap-001',{title:'X'},T1,null,{substituirBackup:true});
+    igual('substituição que não confere na leitura: devolve a cópia antiga e não converte',[rBm.ok,rBm.msg===MSG_BACKUP_FALHA,Bm.s.get(BKEY),Bm.s.get(KEY)===v1raw],[false,true,'cópia antiga',true]);
+    const Bi=armV1();Bi.s.set(BKEY,v1raw);
+    igual('backup existente e idêntico: segue e converte',edita(Bi.n,'roadmap-001',{title:'X'},T1).ok,true);
+    const Bf=armV1();Bf.s.falha=true;
+    const rBf=edita(Bf.n,'roadmap-001',{title:'X'},T1);
+    igual('falha ao gravar o backup: nada convertido',[rBf.ok,rBf.msg===MSG_BACKUP_FALHA,Bf.s.get(KEY)===v1raw,Bf.s.mp.has(BKEY),Bf.n.get().items[0].title],[false,true,true,false,'Legado']);
+    const Bv=armV1();const gravaMenos=Bv.s.set.bind(Bv.s);Bv.s.set=(k,v)=>{if(k===BKEY){Bv.s.mp.set(k,'diferente');return;}gravaMenos(k,v);};
+    const rBv=edita(Bv.n,'roadmap-001',{title:'X'},T1);
+    igual('backup que não confere na leitura: nada convertido e a cópia ruim é removida',[rBv.ok,rBv.msg===MSG_BACKUP_FALHA,Bv.s.get(KEY)===v1raw,Bv.s.mp.has(BKEY)],[false,true,true,false]);
+    // V1 inválida e conteúdo que não é JSON: nada é descartado, convertido nem substituído sozinho
+    const lixo=fake();lixo.set(KEY,'{lixo');const nL=criarNucleo(lixo);nL.load();
+    const rL=cria(nL,{title:'Tentativa'},T1);
+    igual('conteúdo não JSON: aviso, bloqueio da gravação e string original intacta',[nL.issue(),nL.detalhe(),rL.ok,rL.bloqueado,rL.msg===MSG_ILEGIVEL,lixo.get(KEY),lixo.mp.has(BKEY)],['ilegivel','nao_json',false,true,true,'{lixo',false]);
+    const v1ruim=JSON.stringify({schemaVersion:1,counter:1,items:[v1it({state:'Planejada'})]});
+    const sI=fake();sI.set(KEY,v1ruim);const nI=criarNucleo(sI);nI.load();
+    const rI0=cria(nI,{title:'Tentativa'},T1);
+    igual('V1 parseável mas inválida: aviso, não converte, não grava e o conteúdo bruto fica como está',[nI.issue(),nI.detalhe(),rI0.ok,rI0.bloqueado,sI.get(KEY)===v1ruim,sI.mp.has(BKEY)],['ilegivel','json_invalido',false,true,true,false]);
+    const sO=fake();sO.set(KEY,'[1,2,3]');const nO=criarNucleo(sO);nO.load();
+    igual('JSON que não é um envelope: tratado como inválido e preservado',[nO.issue(),nO.detalhe(),cria(nO,{},T1).ok,sO.get(KEY)],['ilegivel','json_invalido',false,'[1,2,3]']);
+    const sV2=fake();sV2.set(KEY,JSON.stringify({schemaVersion:2,counter:0,items:[]}));const nV2=criarNucleo(sV2);nV2.load();
+    igual('V2 sem revision/contadores: inválida, preservada e bloqueada',[nV2.issue(),nV2.detalhe(),cria(nV2,{},T1).ok,sV2.get(KEY)],['ilegivel','json_invalido',false,JSON.stringify({schemaVersion:2,counter:0,items:[]})]);
+    // exportar o conteúdo antes de qualquer decisão
+    const eL=nL.exportar(T4).obj,eI=nI.exportar(T4).obj;
+    igual('exportação do conteúdo não JSON guarda a string original',[eL.readable,eL.valid,eL.rawText,eL.data],[false,false,'{lixo',null]);
+    igual('exportação da V1 inválida guarda o texto original e os dados lidos',[eI.readable,eI.valid,eI.schemaVersion,eI.rawText===v1ruim,eI.data.items.length],[true,false,1,true,1]);
+    // lista nova no lugar do conteúdo ilegível: só por ação explícita, depois da cópia
+    const rR=nL.commit(()=>'',{recomecar:true});
+    igual('lista nova (não JSON): copia a string original para BKEY e só então grava a V2 vazia',[rR.ok,rR.recomecou,lixo.get(BKEY),JSON.parse(lixo.get(KEY)).revision,JSON.parse(lixo.get(KEY)).items.length,nL.issue()],[true,true,'{lixo',1,0,null]);
+    const sI2=fake();sI2.set(KEY,v1ruim);sI2.set(BKEY,'cópia antiga');const nI2=criarNucleo(sI2);nI2.load();
+    const rR2=nI2.commit(()=>'',{recomecar:true});
+    igual('lista nova com cópia antiga diferente: bloqueia e não toca em nada',[rR2.ok,rR2.backupConflito,sI2.get(KEY)===v1ruim,sI2.get(BKEY)],[false,true,true,'cópia antiga']);
+    const rR3=nI2.commit(()=>'',{recomecar:true,substituirBackup:true});
+    igual('lista nova com substituição autorizada: a V1 inválida vai inteira para BKEY',[rR3.ok,sI2.get(BKEY)===v1ruim,JSON.parse(sI2.get(KEY)).schemaVersion],[true,true,2]);
+    const eC=armV1();eC.s.set(BKEY,'cópia antiga');
+    const eCx=eC.n.exportar(T4,{incluirCopiaV1:true}).obj;
+    igual('exportação com a cópia antiga inclui o texto dela',[eCx.previousV1Backup,eC.n.exportar(T4).obj.previousV1Backup===undefined],['cópia antiga',true]);
+    // Condição, confirmar e R1
+    const C=armV1();
+    cria(C.n,{forecastStartSprintId:'2026-Q4-S4',forecastEndSprintId:'2026-Q4-S5'},T1,{by:'',reason:'Primeira estimativa'});
+    const nC=C.n.get().items[1];
+    igual('C: iniciativa nova com previsão cria initial_forecast com id e relevantChangeAt',[nC.forecastHistory.length,nC.forecastHistory[0].id,nC.forecastHistory[0].changeType,nC.forecastHistory[0].previousStartSprintId,nC.forecastHistory[0].newEndSprintId,nC.forecastHistory[0].changedBy,nC.forecastHistory[0].reason,nC.relevantChangeAt],[1,'fch-001','initial_forecast',null,'2026-Q4-S5','Bia','Primeira estimativa',T1]);
+    cria(C.n,{title:'Sem previsão'},T1);
+    igual('C: iniciativa nova sem previsão não cria histórico',[C.n.get().items[2].forecastHistory.length,C.n.get().items[2].relevantChangeAt],[0,null]);
+    edita(C.n,'roadmap-003',{forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T2);
+    const n3=C.n.get().items[2];
+    igual('C: definir a previsão depois cria initial_forecast com id novo e atualiza relevantChangeAt',[n3.forecastHistory.map(e=>[e.id,e.changeType]),n3.relevantChangeAt,C.n.get().counters.forecastChange],[[['fch-002','initial_forecast']],T2,2]);
+    const D=armV1();
+    edita(D.n,'roadmap-001',{title:'Legado'},T1);
+    const rD=edita(D.n,'roadmap-001',{forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T2,{by:'Rafa',reason:'Retrabalho'});
+    const iD=D.n.get().items[0];
+    igual('D: adiamento: muda a previsão, cria postponed com id e atualiza relevantChangeAt',[rD.ok,iD.forecastStartSprintId,iD.forecastHistory.length,iD.forecastHistory[0].id,iD.forecastHistory[0].changeType,iD.forecastHistory[0].previousEndSprintId,iD.forecastHistory[0].newEndSprintId,iD.forecastHistory[0].changedBy,iD.forecastHistory[0].reason,iD.relevantChangeAt],
+      [true,'2026-Q4-S6',1,'fch-001','postponed','2026-Q4-S5','2026-Q4-S6','Rafa','Retrabalho',T2]);
+    igual('D: adiamento depois da confiança informada gera R4 (confiança desatualizada)',[r4(iD),avisosConfianca(iD).map(a=>a.k),iD.confidenceAt],[true,['r4'],T0]);
+    edita(D.n,'roadmap-001',{forecastStartSprintId:'2026-Q4-S5',forecastEndSprintId:'2026-Q4-S5'},T3);
+    edita(D.n,'roadmap-001',{forecastStartSprintId:'2026-Q4-S4',forecastEndSprintId:'2026-Q4-S5'},T3);
+    edita(D.n,'roadmap-001',{forecastStartSprintId:null,forecastEndSprintId:null},T3);
+    const hD=D.n.get().items[0].forecastHistory;
+    igual('antecipada, faixa alterada e removida: tipos e previous/new de cada mudança',[hD.map(e=>e.changeType),hD[3].previousStartSprintId,hD[3].previousEndSprintId,hD[3].newStartSprintId,hD[3].newEndSprintId],[['postponed','anticipated','range_changed','cleared'],'2026-Q4-S4','2026-Q4-S5',null,null]);
+    igual('as três últimas mudanças também moveram relevantChangeAt',D.n.get().items[0].relevantChangeAt,T3);
+    const Cd=armV1();
+    edita(Cd.n,'roadmap-001',{condition:'at_risk'},T2);
+    const iCd=Cd.n.get().items[0];
+    igual('mudança de Condição atualiza conditionAt e relevantChangeAt',[iCd.conditionAt,iCd.relevantChangeAt,iCd.forecastHistory.length,r4(iCd)],[T2,T2,0,true]);
+    edita(Cd.n,'roadmap-001',{title:'Só o título'},T3);
+    igual('editar sem mudar Condição nem previsão não mexe em conditionAt, relevantChangeAt nem no histórico',[Cd.n.get().items[0].conditionAt,Cd.n.get().items[0].relevantChangeAt,Cd.n.get().items[0].forecastHistory.length],[T2,T2,0]);
+    const rE=Cd.n.commit(next=>confirmarConfianca(find(next,'roadmap-001'),T4));
+    const iE=Cd.n.get().items[0];
+    igual('E: confirmar mantém a confiança, atualiza confidenceAt e remove R4',[rE.ok,iE.confidence,iE.confidenceAt,iE.relevantChangeAt,r4(iE),avisosConfianca(iE).length],[true,'high',T4,T2,false,0]);
+    igual('E: confirmar não mexe em Condição nem em previsão',[iE.condition,iE.conditionAt,iE.forecastHistory.length],['at_risk',T2,0]);
+    igual('E: sem confiança informada não há o que confirmar',Cd.n.commit(next=>{const it=find(next,'roadmap-001');it.confidence='not_informed';it.confidenceAt=null;return confirmarConfianca(it,T4);}).ok,false);
+    const F=armV1();
+    edita(F.n,'roadmap-001',{condition:'blocked'},T2);
+    let iF=F.n.get().items[0];
+    igual('F: Alta + Bloqueada mostra R1 (e R4, porque a Condição mudou)',[r1(iF),avisosConfianca(iF).map(a=>a.k)],[true,['r1','r4']]);
+    F.n.commit(next=>confirmarConfianca(find(next,'roadmap-001'),T4));
+    iF=F.n.get().items[0];
+    igual('F: confirmar a confiança remove R4 e NÃO remove R1',[r1(iF),r4(iF),avisosConfianca(iF).map(a=>a.k),iF.confidence],[true,false,['r1'],'high']);
+    edita(F.n,'roadmap-001',{confidence:'medium'},T4);
+    igual('F: com confiança Média, R1 não vale',avisosConfianca(F.n.get().items[0]).map(a=>a.k),[]);
+    igual('R4 nunca vale sem confiança informada',r4(mk({confidenceAt:null,relevantChangeAt:T2,confidence:'not_informed'})),false);
+    igual('R4 exige que a mudança relevante seja posterior (igual não basta)',[r4(mk({confidenceAt:T2,relevantChangeAt:T2})),r4(mk({confidenceAt:T1,relevantChangeAt:T2})),r4(mk({confidenceAt:T3,relevantChangeAt:T2})),r4(mk({confidenceAt:T1,relevantChangeAt:null}))],[false,true,false,false]);
+    // G: duas abas
+    const G=armV1(),Gb=criarNucleo(G.s);Gb.load();
+    edita(Gb,'roadmap-001',{forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T2,{by:'Aba B',reason:'Mudou na aba B'});
+    const antesG=G.s.get(KEY);
+    const rG=edita(G.n,'roadmap-001',{title:'Aba A desatualizada'},T3);
+    igual('G: gravação desatualizada (V1 → V2 em outra aba) é bloqueada e nada se perde',[rG.ok,rG.conflict,rG.msg===MSG_CONFLITO,G.s.get(KEY)===antesG,JSON.parse(G.s.get(KEY)).items[0].forecastHistory.length,G.n.conflito()],[false,true,true,true,1,true]);
+    const G2=criarNucleo(G.s);G2.load();const G3=criarNucleo(G.s);G3.load();
+    edita(G3,'roadmap-001',{forecastStartSprintId:'2027-Q1-S1',forecastEndSprintId:'2027-Q1-S1'},T3,{by:'Aba B',reason:'Segunda'});
+    const rG2=edita(G2,'roadmap-001',{forecastStartSprintId:'2026-Q4-S5',forecastEndSprintId:'2026-Q4-S5'},T4,{by:'Aba A',reason:'Sobrescreveria'});
+    igual('G: revisions diferentes (V2 e V2): a aba antiga é bloqueada e o histórico da outra aba fica',[rG2.ok,rG2.conflict,JSON.parse(G.s.get(KEY)).revision,JSON.parse(G.s.get(KEY)).items[0].forecastHistory.map(e=>[e.id,e.reason])],[false,true,2,[['fch-001','Mudou na aba B'],['fch-002','Segunda']]]);
+    G2.load();
+    igual('G: depois de recarregar a aba grava normalmente, com id novo',[edita(G2,'roadmap-001',{forecastStartSprintId:'2026-Q4-S5',forecastEndSprintId:'2026-Q4-S5'},T4,{by:'Aba A',reason:'Depois de recarregar'}).ok,JSON.parse(G.s.get(KEY)).revision,JSON.parse(G.s.get(KEY)).items[0].forecastHistory.map(e=>e.id)],[true,3,['fch-001','fch-002','fch-003']]);
+    const Gm=armV1(),Gn=criarNucleo(Gm.s);Gn.load();Gm.s.set(KEY,v1raw.replace('Legado','Alterado fora'));
+    igual('G: dado sem revisão (V1) alterado por fora também bloqueia',[edita(Gn,'roadmap-001',{title:'Z'},T1).conflict,Gm.s.mp.has(BKEY)],[true,false]);
+    // H: falha de persistência
+    const H=armV1();edita(H.n,'roadmap-001',{title:'ok'},T1);
+    const antesH=H.s.get(KEY),itH=clone(H.n.get().items[0]);
+    H.s.falha=true;
+    const rH=edita(H.n,'roadmap-001',{forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T2,{by:'X',reason:'Falha'});
+    igual('H: falha de persistência: previsão e histórico não ficam divergentes, nem em memória nem no armazenamento',[rH.ok,rH.msg===MSG_FALHA,H.s.get(KEY)===antesH,JSON.stringify(H.n.get().items[0])===JSON.stringify(itH),H.n.get().items[0].forecastHistory.length,H.n.get().items[0].forecastEndSprintId,H.n.get().items[0].relevantChangeAt,H.n.get().counters.forecastChange],[false,true,true,true,0,'2026-Q4-S5',null,0]);
+    H.s.falha=false;
+    igual('H: depois da falha, tentar de novo funciona e grava as duas coisas juntas',[edita(H.n,'roadmap-001',{forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T2,{by:'X',reason:'Agora'}).ok,H.n.get().items[0].forecastEndSprintId,H.n.get().items[0].forecastHistory.map(e=>e.id)],[true,'2026-Q4-S6',['fch-001']]);
+    // Invariante: a previsão não muda sem entrada; o histórico não é editado, apagado nem reaproveita id
+    const Iv=armV1();edita(Iv.n,'roadmap-001',{forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T2);
+    const adulterar=f=>{const r=Iv.n.commit(next=>{f(find(next,'roadmap-001'),next);return '';});return[r.ok,r.msg===MSG_INV];};
+    igual('invariante: previsão alterada sem entrada correspondente é recusada',adulterar(it=>{it.forecastEndSprintId='2027-Q1-S1';it.forecastStartSprintId='2027-Q1-S1';}),[false,true]);
+    igual('invariante: conteúdo de entrada antiga alterado é recusado',adulterar(it=>{it.forecastHistory[0].reason='reescrito';}),[false,true]);
+    igual('invariante: id de entrada antiga alterado é recusado',adulterar(it=>{it.forecastHistory[0].id='fch-009';}),[false,true]);
+    igual('invariante: entrada antiga removida é recusada',adulterar(it=>{it.forecastHistory.pop();}),[false,true]);
+    igual('invariante: entrada acrescentada sem mudar a previsão é recusada',adulterar((it,nx)=>{nx.counters.forecastChange=2;it.forecastHistory.push(he('fch-002','2026-Q4-S6','2026-Q4-S6','2026-Q4-S5','2026-Q4-S5',T3));}),[false,true]);
+    igual('invariante: entrada que não bate com a mudança é recusada',adulterar((it,nx)=>{nx.counters.forecastChange=2;it.forecastStartSprintId='2026-Q4-S5';it.forecastEndSprintId='2026-Q4-S5';it.forecastHistory.push(he('fch-002','2026-Q4-S6','2026-Q4-S6','2026-Q4-S4','2026-Q4-S4',T3));}),[false,true]);
+    igual('invariante: entrada nova com id já usado é recusada',adulterar(it=>{it.forecastStartSprintId='2026-Q4-S5';it.forecastEndSprintId='2026-Q4-S5';it.forecastHistory.push(he('fch-001','2026-Q4-S6','2026-Q4-S6','2026-Q4-S5','2026-Q4-S5',T3));}),[false,true]);
+    igual('invariante: entrada nova com id que não passa do contador é recusada',adulterar(it=>{it.forecastStartSprintId='2026-Q4-S5';it.forecastEndSprintId='2026-Q4-S5';it.forecastHistory.push(he('fch-000','2026-Q4-S6','2026-Q4-S6','2026-Q4-S5','2026-Q4-S5',T3));}),[false,true]);
+    igual('invariante: contador do histórico que diminui é recusado',adulterar((it,nx)=>{nx.counters.forecastChange=0;}),[false,true]);
+    igual('invariante: nada foi gravado nas tentativas recusadas',[JSON.parse(Iv.s.get(KEY)).items[0].forecastHistory.map(e=>e.id),JSON.parse(Iv.s.get(KEY)).revision,JSON.parse(Iv.s.get(KEY)).counters.forecastChange],[['fch-001'],1,1]);
+    edita(Iv.n,'roadmap-001',{forecastStartSprintId:'2026-Q4-S5',forecastEndSprintId:'2026-Q4-S5'},T3);
+    igual('mudança legítima: id novo, contador avança, entrada antiga idêntica',[Iv.n.get().items[0].forecastHistory.map(e=>e.id),Iv.n.get().counters.forecastChange,Iv.n.get().items[0].forecastHistory[0].reason],[['fch-001','fch-002'],2,'']);
+    // Excluir a iniciativa leva o histórico dela e não reaproveita ids depois
+    const Ex2=armV1();edita(Ex2.n,'roadmap-001',{forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T2);
+    Ex2.n.commit(next=>{next.items=next.items.filter(i=>i.id!=='roadmap-001');return '';});
+    cria(Ex2.n,{title:'Depois da exclusão',forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T3);
+    igual('excluir o item não deixa o contador voltar: o id do histórico seguinte é novo',[Ex2.n.get().items.map(i=>i.id),Ex2.n.get().items[0].forecastHistory.map(e=>e.id)],[['roadmap-002'],['fch-002']]);
+    // Validação do histórico, dos ids, dos contadores e dos formatos novos
+    igual('histórico válido',checkItem(mk({forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6',forecastHistory:[he('fch-001',null,null,'2026-Q4-S6','2026-Q4-S6')]})),'');
+    igual('histórico sem id ou com id fora do padrão é recusado',[checkItem(mk({forecastHistory:[Object.assign(he('fch-001',null,null,'2026-Q4-S6','2026-Q4-S6'),{id:'x1'})]})),checkItem(mk({forecastHistory:[Object.assign(he('fch-001',null,null,'2026-Q4-S6','2026-Q4-S6'),{id:undefined})]}))],['id do histórico','id do histórico']);
+    igual('histórico com tipo que não bate é recusado',checkItem(mk({forecastHistory:[Object.assign(he('fch-001',null,null,'2026-Q4-S6','2026-Q4-S6'),{changeType:'postponed'})]})),'tipo da mudança');
+    igual('histórico com rótulo em português no tipo é recusado',checkItem(mk({forecastHistory:[Object.assign(he('fch-001',null,null,'2026-Q4-S6','2026-Q4-S6'),{changeType:'Adiada'})]})),'tipo da mudança');
+    igual('histórico com sprint inexistente é recusado',checkItem(mk({forecastHistory:[{id:'fch-001',previousStartSprintId:null,previousEndSprintId:null,newStartSprintId:'2028-Q1-S1',newEndSprintId:'2028-Q1-S1',changedAt:T1,changedBy:'',reason:'',changeType:'initial_forecast'}]})),'sprint do histórico');
+    igual('histórico com mudança vazia é recusado',checkItem(mk({forecastHistory:[{id:'fch-001',previousStartSprintId:null,previousEndSprintId:null,newStartSprintId:null,newEndSprintId:null,changedAt:T1,changedBy:'',reason:'',changeType:'cleared'}]})),'tipo da mudança');
+    const envA=(its,ct)=>({schemaVersion:2,revision:1,counter:2,counters:Object.assign({},cont0,ct||{}),items:its});
+    const hA=mk({id:'roadmap-001',forecastHistory:[he('fch-001',null,null,'2026-Q4-S5','2026-Q4-S5')],forecastStartSprintId:'2026-Q4-S5',forecastEndSprintId:'2026-Q4-S5'});
+    const hB=mk({id:'roadmap-002',forecastHistory:[he('fch-001',null,null,'2026-Q4-S6','2026-Q4-S6')],forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'});
+    igual('id de histórico repetido entre itens é recusado',check(envA([hA,hB],{forecastChange:1})),'id repetido (forecastHistory)');
+    igual('contador do histórico menor que o maior id é recusado',check(envA([hA],{forecastChange:0})),'contador de forecastHistory');
+    igual('envelope com contadores certos é válido',check(envA([hA],{forecastChange:1})),'');
+    igual('envelope V2 sem contadores, ou com contador inválido, é recusado',[check({schemaVersion:2,revision:1,counter:0,items:[]}),check(Object.assign(envA([]),{counters:Object.assign({},cont0,{blocker:-1})})),check(Object.assign(envA([]),{counters:{forecastChange:0}}))],['contadores','contadores','contadores']);
+    igual('envelope V2 exige revision inteira maior que zero',[check(Object.assign(envA([]),{revision:0})),check(envA([])),check(Object.assign(envA([]),{schemaVersion:3}))],['revisão','','schema mais novo']);
+    igual('envelope V1 continua válido com os campos antigos',check({schemaVersion:1,counter:1,items:[v1it()]}),'');
+    igual('conditionAt e relevantChangeAt: null ou ISO',[checkItem(mk({conditionAt:'x'})),checkItem(mk({relevantChangeAt:'x'})),checkItem(mk({conditionAt:T1,relevantChangeAt:T2}))],['data da condição','data da mudança relevante','']);
+    // capacity[]: formato definido, validado entrada a entrada. Uma entrada inválida NÃO derruba o Roadmap: fica preservada como está,
+    // fora dos cálculos, e a iniciativa sinaliza que há dados de capacidade que não puderam ser interpretados.
+    const cp=(o)=>Object.assign({id:'cap-001',sprintId:'2026-Q4-S6',required:6,available:4,unit:'people',note:'QA reduzido'},o||{});
+    igual('códigos de unidade da capacidade',Object.keys(RM_UNITS),['people','fte','points','hours','other']);
+    igual('capacity: entrada válida',checkCap(cp()),'');
+    igual('capacity: todas as unidades válidas são aceitas',Object.keys(RM_UNITS).filter(u=>checkCap(cp({unit:u}))!==''),[]);
+    igual('capacity: rótulo em português no lugar do código da unidade é inválido',Object.values(RM_UNITS).filter(v=>checkCap(cp({unit:v}))!=='unidade da capacidade'),[]);
+    igual('capacity: unidade ausente, id fora do padrão, sprint inexistente, valor negativo ou não numérico, observação que não é texto, entrada que não é objeto',[checkCap(cp({unit:null})),checkCap(cp({id:'c1'})),checkCap(cp({sprintId:'2028-Q1-S1'})),checkCap(cp({required:-1})),checkCap(cp({available:'4'})),checkCap(cp({note:7})),checkCap('texto'),checkCap(null)],['unidade da capacidade','id da capacidade','sprint da capacidade','valores da capacidade','valores da capacidade','observação da capacidade','capacidade','capacidade']);
+    igual('capacity: valores decimais e zero são aceitos',checkCap(cp({required:0,available:2.5,unit:'fte'})),'');
+    igual('capacity: normalização põe na ordem do formato a entrada válida com os seis campos e preserva as demais exatamente como estão',JSON.stringify(normalize({counter:1,counters:Object.assign({},cont0,{capacity:2}),items:[mk({capacity:[{note:'n',unit:'hours',available:2,required:3,sprintId:'2026-Q4-S6',id:'cap-001'},{id:'cap-002',sprintId:'2026-Q4-S6',required:1,available:1,unit:'fte',note:'',extra:true},{x:1},'solto',null]})]}).items[0].capacity),
+      JSON.stringify([{id:'cap-001',sprintId:'2026-Q4-S6',required:3,available:2,unit:'hours',note:'n'},{id:'cap-002',sprintId:'2026-Q4-S6',required:1,available:1,unit:'fte',note:'',extra:true},{x:1},'solto',null]));
+    // Uma entrada válida e uma inválida na mesma iniciativa
+    const invA={id:'cap-009',sprintId:'2026-Q4-S6',required:'seis',available:4,unit:'Pessoas',note:'inválida'};
+    const capMix=[cp(),invA,cp({id:'cap-002',sprintId:'2026-Q4-S5',required:8,available:8,unit:'points'})];
+    const itMix=mk({id:'roadmap-001',capacity:capMix,forecastStartSprintId:null,forecastEndSprintId:null}),itSimples=mk({id:'roadmap-002',title:'Outra iniciativa',forecastStartSprintId:null,forecastEndSprintId:null});
+    igual('capacity válida + inválida: o item continua válido e o envelope não tem erro global',[checkItem(itMix),check(envA([itMix,itSimples],{capacity:2}))],['','']);
+    const lm=capacidadeLer(itMix,[itMix,itSimples]);
+    igual('capacity válida continua disponível e a inválida fica de fora, contada',[lm.validas.map(e=>e.id),lm.invalidas],[['cap-001','cap-002'],1]);
+    igual('a entrada inválida não entra em cálculo (gap = disponível − necessária só sobre as válidas)',lm.validas.map(e=>e.available-e.required),[-2,0]);
+    igual('a leitura da capacidade compara pelo id da iniciativa (uma cópia do item dá o mesmo resultado)',capacidadeLer(clone(itMix),[itMix,itSimples]),lm);
+    igual('iniciativa sem capacidade: nada a sinalizar',capacidadeLer(itSimples,[itMix,itSimples]),{validas:[],invalidas:0});
+    igual('capacity que nem é lista: preservada, sinalizada como 1 registro não interpretado e sem derrubar nada',[checkItem(mk({capacity:'texto solto'})),capacidadeLer(mk({capacity:'texto solto'})),capacidadeLer(mk({capacity:null})),JSON.stringify(normalize({counter:1,counters:cont0,items:[mk({capacity:'texto solto'})]}).items[0].capacity)],['',{validas:[],invalidas:1},{validas:[],invalidas:1},JSON.stringify('texto solto')]);
+    const dup1=mk({id:'roadmap-001',capacity:[cp()]}),dup2=mk({id:'roadmap-002',capacity:[cp()]});
+    igual('id de capacidade repetido: o primeiro vale e o repetido fica de fora, sem erro global',[check(envA([dup1,dup2],{capacity:1})),capacidadeLer(dup1,[dup1,dup2]).validas.length,capacidadeLer(dup2,[dup1,dup2]).validas.length,capacidadeLer(dup2,[dup1,dup2]).invalidas],['',1,0,1]);
+    igual('contador de capacidade menor que o maior id não é erro; o id seguinte continua sendo novo',[check(envA([mk({capacity:[cp()]})],{capacity:0})),novoIdLista({counters:Object.assign({},cont0),items:[mk({capacity:[cp(),invA,{id:7},null]})]},'capacity')],['','cap-010']);
+    // Pelo núcleo de persistência: abre, preserva e grava normalmente
+    const sC=fake();const rawC=JSON.stringify(envA([itMix,itSimples],{capacity:2}));sC.set(KEY,rawC);
+    const nC2=criarNucleo(sC);nC2.load();
+    igual('capacity com entrada inválida: o Roadmap não entra em estado global de erro e as duas iniciativas aparecem',[nC2.issue(),nC2.detalhe(),nC2.get().items.map(i=>i.id),nC2.conflito()],[null,null,['roadmap-001','roadmap-002'],false]);
+    igual('o conteúdo original (válidas e inválida) é preservado como está',JSON.stringify(nC2.get().items[0].capacity),JSON.stringify(capMix));
+    const rE1=edita(nC2,'roadmap-002',{title:'Outra editada'},T3);
+    const rE2=edita(nC2,'roadmap-001',{title:'Com capacidade editada'},T3);
+    const salvoC=JSON.parse(sC.get(KEY));
+    igual('editar as duas iniciativas grava normalmente e o conteúdo de capacidade (inclusive o inválido) sai idêntico',[rE1.ok,rE2.ok,JSON.stringify(salvoC.items[0].capacity),salvoC.items[1].title,salvoC.items[0].title,salvoC.revision],[true,true,JSON.stringify(capMix),'Outra editada','Com capacidade editada',3]);
+    igual('criar uma iniciativa nova com capacidade inválida presente também funciona',cria(nC2,{title:'Nova iniciativa'},T4).ok,true);
+    igual('mudar a previsão da iniciativa com capacidade inválida cria o histórico normalmente',[edita(nC2,'roadmap-001',{forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T4,{by:'A',reason:'x'}).ok,nC2.get().items[0].forecastHistory.map(e=>e.changeType),JSON.stringify(nC2.get().items[0].capacity)],[true,['initial_forecast'],JSON.stringify(capMix)]);
+    const eCap=criarNucleo(sC).exportar(T4);
+    igual('a exportação leva a capacidade inválida junto, sem alterar',JSON.stringify(JSON.parse(eCap.json).data.items[0].capacity),JSON.stringify(capMix));
+    const sNA=fake();sNA.set(KEY,JSON.stringify(envA([mk({id:'roadmap-001',capacity:'texto solto',forecastStartSprintId:null,forecastEndSprintId:null})],{})));const nNA=criarNucleo(sNA);nNA.load();
+    edita(nNA,'roadmap-001',{title:'Editada'},T3);
+    igual('capacity que nem é lista: o Roadmap abre, edita e preserva o valor original',[nNA.issue(),JSON.parse(sNA.get(KEY)).items[0].capacity,JSON.parse(sNA.get(KEY)).items[0].title],[null,'texto solto','Editada']);
+    // Erros estruturais do envelope continuam colocando o Roadmap inteiro em modo somente leitura
+    igual('erro estrutural do envelope continua global (items, counters, schema, estrutura principal)',[check(Object.assign(envA([]),{items:'x'})),check(Object.assign(envA([]),{counters:null})),check(Object.assign(envA([]),{schemaVersion:3})),check([]),check(Object.assign(envA([]),{counter:-1}))],['itens','contadores','schema mais novo','raiz','contador']);
+    // Premissa registrada para as próximas listas: hoje dependencies, blockers e evidences ainda exigem lista de objetos (sem formato próprio)
+    igual('dependencies, blockers e evidences ainda aceitam só lista de objetos e são preservadas',[checkItem(mk({dependencies:[{x:1}],blockers:[{y:2}],evidences:[{w:4}]})),normalize({counter:1,items:[mk({dependencies:[{x:1}],blockers:[{y:2}],evidences:[{w:4}]})]}).items[0].dependencies],['',[{x:1}]]);
+    igual('dependencies, blockers e evidences que não são lista de objetos ainda são recusadas (a tolerância chega com o formato de cada uma); capacity é tolerante',[checkItem(mk({dependencies:'x'})),checkItem(mk({blockers:[1]})),checkItem(mk({capacity:null})),checkItem(mk({evidences:{}}))],['lista dependencies','lista blockers','','lista evidences']);
+    // I: exportação
+    const Ex=armV1();edita(Ex.n,'roadmap-001',{forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T2,{by:'Rafa',reason:'Export'});
+    const eI2=Ex.n.exportar(T4),oI=JSON.parse(eI2.json);
+    igual('I: exportação: JSON válido, V2, revision, data de geração e conteúdo integral',[eI2.ok,oI.format,oI.schemaVersion,oI.revision,oI.generatedAt,oI.readable,oI.valid,JSON.stringify(oI.data)===Ex.s.get(KEY),eI2.filename,oI.rawText],[true,EXPORT_FORMAT,2,1,T4,true,true,true,'flowops-roadmap-backup-2026-11-05.json',undefined]);
+    igual('I: o conteúdo exportado traz o histórico com ids',oI.data.items[0].forecastHistory.map(e=>e.id),['fch-001']);
+    const eV1=armV1().n.exportar(T4),oV1=JSON.parse(eV1.json);
+    igual('I: exportar a V1 sem convertê-la',[oV1.schemaVersion,oV1.revision,oV1.valid,JSON.stringify(oV1.data)===v1raw],[1,0,true,true]);
+    igual('I: sem dados salvos não há o que exportar',criarNucleo(fake()).exportar(T4).ok,false);
+    const sNv=fake();sNv.set(KEY,JSON.stringify({schemaVersion:3,revision:9,counter:0,items:[]}));const nNv=criarNucleo(sNv);nNv.load();
+    igual('schema mais novo: só leitura, nada é gravado',[nNv.issue(),edita(nNv,'x',{},T1).ok,sNv.get(KEY)===JSON.stringify({schemaVersion:3,revision:9,counter:0,items:[]})],['nova',false,true]);
+    // Modelo gravado na V2
+    igual('campos do envelope V2 (ordem canônica) e contadores',[Object.keys(normalize({counter:1,items:[mk({})]})),Object.keys(empty().counters)],[['schemaVersion','revision','counter','counters','items'],CONTADORES]);
+    igual('campos do item na V2 (ordem canônica)',Object.keys(normalize({counter:1,items:[mk({})]}).items[0]),['id','sourceType','sourceId','title','owner','team','baselineQuarter','forecastStartSprintId','forecastEndSprintId','state','condition','conditionAt','confidence','confidenceAt','relevantChangeAt','mainRiskCategory','mainRiskText','dependencies','blockers','capacity','evidences','forecastHistory','createdAt','updatedAt']);
+    igual('campos de uma entrada de histórico (com id)',Object.keys(he('fch-001',null,null,'2026-Q4-S5','2026-Q4-S5')),['id','previousStartSprintId','previousEndSprintId','newStartSprintId','newEndSprintId','changedAt','changedBy','reason','changeType']);
+    igual('mudança de Condição é relevante (regra centralizada)',[condicaoRelevante('healthy','blocked'),condicaoRelevante('blocked','blocked')],[true,false]);
+    igual('chaves de armazenamento',[KEY,BKEY,SCHEMA],['fi_roadmap','fi_roadmap_v1_backup',2]);
     return{ok:falhas.length===0,total:total,falhas:falhas};
   }
 
-  load();
+  core.load();
   return{render:render,click:click,close:closeModal,save:save,origem:origem,askDel:askDel,setAno:setAno,setFiltro:setFiltro,setDescartadas:setDescartadas,
-    derive:it=>({desloc:desloc(it),forecastText:forecastText(it)}),validate:checkItem,autoteste:autoteste,
-    state:()=>({issue:issue,data:clone(data)})};
+    closePanel:fecharPainel,confirmar:confirmar,alterarConfianca:alterarConfianca,editarDoPainel:editarDoPainel,histToggle:histToggle,recarregar:recarregar,prev:atualizarMudanca,exportar:exportar,exportData:exportData,capacidade:it=>capacidadeLer(it,core.get().items),decidir:decidir,iniciarRecomeco:iniciarRecomeco,
+    derive:it=>({desloc:desloc(it),forecastText:forecastText(it),avisos:avisosConfianca(it)}),validate:checkItem,autoteste:autoteste,
+    state:()=>({issue:core.issue(),detalhe:core.detalhe(),conflito:core.conflito(),base:core.base(),panel:pnl,data:clone(core.get())})};
 })();
 function renderRoadmap(){Roadmap.render();}
 
@@ -10238,6 +11080,14 @@ window.onload=function(){ abrirNoMomentoAtual(); applyTeamColor(); upd(); markSe
 <!-- Roadmap — editor de iniciativas (reaproveita o visual .depm-*) -->
 <div class="depm-overlay" id="rmModal" onclick="if(event.target===this)Roadmap.close()">
   <div class="depm-box" id="rmModalBox"></div>
+</div>
+<!-- Roadmap 1B.1 — painel lateral de detalhe da iniciativa -->
+<div class="rm-pnl-ov" id="rmPanel" aria-hidden="true" onclick="if(event.target===this)Roadmap.closePanel()">
+  <aside class="rm-pnl" id="rmPanelBox" role="dialog" aria-modal="true" aria-labelledby="rmPanelTtl" tabindex="-1"></aside>
+</div>
+<!-- Roadmap 1B.1 — decisões da pessoa: cópia antiga diferente e lista nova no lugar de conteúdo ilegível -->
+<div class="depm-overlay" id="rmDec" aria-hidden="true">
+  <div class="depm-box" id="rmDecBox" role="dialog" aria-modal="true"></div>
 </div>
 
 <!-- ── Modal Detalhe — Saúde da Qualidade ── -->
