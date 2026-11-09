@@ -833,6 +833,60 @@
   .rm-d-nota{font-size:var(--fs-caption);color:var(--clr-neutral);margin-top:8px;line-height:1.45}
   .rm-d-vz{font-size:12px;color:var(--clr-neutral);padding:6px 0 0}
   .rm-d-fim{padding:10px 20px 14px;font-size:var(--fs-caption);color:var(--clr-neutral)}
+  /* Roadmap 1B.2a — seção Dependências do painel (tokens do app; sem cores novas) */
+  .dp-sep{color:#9ca3af}.dp-w{color:#b45309;font-weight:600}.dp-b{color:var(--clr-bad);font-weight:600}
+  .dp-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0 10px;flex-wrap:wrap}
+  .dp-bar .t{font-size:12px;color:var(--clr-neutral)}
+  .dp-av{margin:0 0 10px;padding:9px 12px;font-size:12px;border:1px solid #e5e5e3;border-left:3px solid var(--clr-neutral);border-radius:0 8px 8px 0;background:#fff;color:#374151}
+  .dp-av.is-ok{border-left-color:var(--clr-ok)}.dp-av.is-bad{border-left-color:var(--clr-bad)}
+  .dp-list{border:1px solid #e5e5e3;border-radius:8px;overflow:hidden;background:#fff}
+  .dp-r{padding:10px 12px;border-bottom:1px solid #f0f0ee;min-width:0}
+  .dp-r:last-child{border-bottom:0}
+  .dp-r.exp{background:#fafaf9}
+  .dp-hd{cursor:pointer;min-width:0}
+  .dp-hd:hover{opacity:.92}
+  .dp-hd:focus-visible{outline:2px solid var(--clr-info);outline-offset:3px;border-radius:6px}
+  .dp-top{display:flex;align-items:flex-start;gap:8px}
+  .dp-t{flex:1;min-width:0;font-size:var(--fs-body);font-weight:600;color:#111827;line-height:1.35;overflow-wrap:anywhere}
+  .dp-r.fechada .dp-t{color:#4b5563;font-weight:500}
+  .dp-chips{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;flex:none;max-width:50%}
+  .dp-ch{color:var(--clr-neutral);flex:none;margin-top:2px;transition:transform .15s}
+  .dp-r.exp .dp-ch{transform:rotate(180deg)}
+  .dp-m{font-size:12px;color:#4b5563;margin-top:3px;display:flex;flex-wrap:wrap;gap:2px 0}
+  .dp-m>span:not(:last-child)::after{content:"\00b7";margin:0 6px;color:#9ca3af;font-weight:400}
+  .dp-m .b{color:var(--clr-bad);font-weight:600}.dp-m .mut{color:var(--clr-neutral)}
+  .dp-x{margin-top:10px;padding-top:10px;border-top:1px dashed #e5e5e3}
+  .dp-dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 16px}
+  .dp-dl .rm-d-c.full{grid-column:1/-1}
+  .dp-dl .rm-d-v{font-size:12px}
+  .dp-act{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .dp-conf{margin-top:12px;border:1px solid #e5e7eb;border-left:3px solid var(--clr-warn);border-radius:0 8px 8px 0;padding:9px 12px;font-size:12px;background:#fff;color:#374151}
+  .dp-enc{margin-top:10px}
+  .dp-enc>summary{list-style:none;cursor:pointer;font-size:12px;font-weight:600;color:#4b5563;display:flex;align-items:center;gap:6px;padding:6px 2px;min-height:32px}
+  .dp-enc>summary::-webkit-details-marker{display:none}
+  .dp-enc>summary .ti{transition:transform .15s}
+  .dp-enc[open]>summary .ti{transform:rotate(90deg)}
+  .dp-vz{font-size:12px;color:var(--clr-neutral);padding:4px 0 2px}
+  .dp-form{border:1px solid #d1d5db;border-radius:8px;padding:12px;background:#fff;margin-bottom:10px}
+  .dp-r.dp-ed{padding:0;background:none}.dp-r.dp-ed .dp-form{margin:0;border:0;border-radius:0}
+  .dp-form h4{font-size:13px;margin-bottom:10px;color:#111827}
+  .dp-form .depm-row+.depm-row,.dp-form .depm-field+.depm-row,.dp-form .depm-row+.depm-field{margin-top:10px}
+  .dp-form textarea.depm-input{min-height:56px;resize:vertical}
+  .dp-help{font-size:11px;color:var(--clr-neutral);line-height:1.4}
+  .dp-err{font-size:11px;color:var(--clr-bad);font-weight:600}
+  .dp-formact{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+  .dp-inv details{margin-top:6px;color:#374151}
+  .dp-inv summary{cursor:pointer;font-size:11px;color:var(--clr-info)}
+  .dp-inv pre{margin-top:6px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:8px;font-size:11px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere;color:#374151;font-family:ui-monospace,Consolas,monospace;max-height:220px;overflow:auto}
+  .rm-pb[disabled]{opacity:.5;cursor:not-allowed}
+  @media(max-width:600px){
+    .dp-top{flex-wrap:wrap}.dp-chips{max-width:none;flex:1 1 100%;order:3;justify-content:flex-start}
+    .dp-dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .dp-act .rm-pb,.dp-formact .rm-pb,.dp-bar .rm-pb,.dp-av .rm-pb{min-height:40px}
+    .dp-enc>summary{min-height:40px}
+    .dp-form .depm-row{grid-template-columns:1fr}
+    .dp-hd{min-height:40px}
+  }
   #rmPanelMsg{margin:12px 20px 0}
   @media(max-width:600px){
     .rm-pnl-h{padding:12px 14px}
@@ -8799,6 +8853,10 @@ const RM_PADRAO={state:'discovery',condition:'healthy',confidence:'not_informed'
 const RM_CHG={initial_forecast:'Primeira previsão',postponed:'Adiada',anticipated:'Antecipada',range_changed:'Faixa alterada',cleared:'Removida'};
 // Unidades da capacidade (código estável; a tela traduz). A capacidade ainda não tem interface: só o formato, a validação e a preservação.
 const RM_UNITS={people:'Pessoas',fte:'FTE',points:'Pontos',hours:'Horas',other:'Outro'};
+// Dependências (Roadmap 1B.2a): códigos estáveis gravados; a tela traduz. O tipo é descritivo e não alimenta nenhuma regra.
+const RM_DEP_TYPES={team:'Time / Área',technical:'Técnica',vendor:'Fornecedor',business:'Negócio',environment:'Ambiente',approval:'Aprovação',other:'Outro'};
+const RM_DEP_CRITS={low:'Baixa',medium:'Média',high:'Alta',critical:'Crítica'};
+const RM_DEP_STATS={open:'Aberta',monitoring:'Em acompanhamento',resolved:'Resolvida',cancelled:'Cancelada'};
 // Decisão registrada para a fatia de Bloqueios (ainda sem interface): o aging principal será calculado em dias corridos a partir da data de início;
 // dias úteis poderão aparecer depois como informação complementar, quando o FI_TEMPO cobrir o período.
 const Roadmap=(function(){
@@ -8812,11 +8870,15 @@ const Roadmap=(function(){
   const MSG_BACKUP_FALHA='Não foi possível criar a cópia de segurança dos dados atuais. Por isso nada foi convertido nem gravado e o que você digitou foi mantido. Tente novamente.';
   const MSG_INV='Não foi possível registrar a mudança de previsão junto com a gravação. Nada foi alterado.';
   const MSG_CAP='Há dados de capacidade que não puderam ser interpretados.';
+  const MSG_DEP='Há dados de dependência que não puderam ser interpretados.';
+  const MSG_INV_DEP='Não foi possível registrar a mudança de dependência. Nada foi alterado.';
+  const MSG_DEP_LISTA='Há dados de dependência desta iniciativa que não puderam ser interpretados como uma lista. Nada foi alterado: o conteúdo foi preservado e não é possível acrescentar nem alterar dependências enquanto isso durar.';
+  const MSG_DEP_REC='Os dados foram recarregados depois de um conflito. O que você digitou foi mantido, mas ainda não foi salvo: confira antes de salvar.';
   const MSG_ILEGIVEL='Os dados do Roadmap salvos neste navegador não puderam ser lidos e foram mantidos sem alteração. Nada foi gravado. Use as opções do aviso na lista para exportar o conteúdo ou começar uma lista nova.';
   const MSG_NAO_JSON='O conteúdo salvo para o Roadmap neste navegador não é um JSON válido e não pôde ser lido. Ele foi mantido exatamente como está: nada foi apagado, convertido nem substituído. Enquanto isso, o Roadmap fica somente leitura.';
   const MSG_JSON_INVALIDO='As iniciativas do Roadmap salvas neste navegador são um JSON válido, mas não seguem o formato esperado e não puderam ser lidas. O conteúdo foi mantido exatamente como está: nada foi apagado, convertido nem substituído. Enquanto isso, o Roadmap fica somente leitura.';
   let m=null,pnl=null,dec=null;
-  const view={ano:null,filtro:'todas',descartadas:false,aviso:null,histAberto:false};
+  const view={ano:null,filtro:'todas',descartadas:false,aviso:null,histAberto:false,depUi:{}};
   function zeroCont(){return{forecastChange:0,dependency:0,blocker:0,capacity:0,evidence:0};}
   function empty(){return{schemaVersion:SCHEMA,revision:0,counter:0,counters:zeroCont(),items:[]};}
   const clone=x=>JSON.parse(JSON.stringify(x));
@@ -8902,12 +8964,12 @@ const Roadmap=(function(){
   // Premissa de tolerância: erro ESTRUTURAL do envelope (não JSON, schema incompatível, estrutura principal, items, contadores) põe o Roadmap inteiro
   // em somente leitura; subregistro inválido de uma iniciativa não. Por isso capacity[] não é validado aqui: cada entrada é conferida em capacidadeLer(),
   // que deixa a inválida de fora dos cálculos e a mantém guardada como está.
-  // Vale também, no futuro, para dependencies, blockers e evidences: quando ganharem formato, um subregistro inválido não deverá derrubar o Roadmap.
-  // Hoje elas ainda não têm formato nem tela: exige-se só lista de objetos e o conteúdo é preservado como está.
+  // Vale também para dependencies (formato na 1B.2a: dependenciasLer) e, no futuro, para blockers e evidences: quando ganharem formato, um subregistro inválido não deverá derrubar o Roadmap.
+  // Blockers e evidences ainda não têm formato nem tela: exige-se só lista de objetos e o conteúdo é preservado como está.
   function checkExt(it){
     if(it.conditionAt!==null&&!isoOk(it.conditionAt)) return 'data da condição';
     if(it.relevantChangeAt!==null&&!isoOk(it.relevantChangeAt)) return 'data da mudança relevante';
-    for(const k of ['dependencies','blockers','evidences']){
+    for(const k of ['blockers','evidences']){
       if(!Array.isArray(it[k])||it[k].length>500||it[k].some(x=>!plain(x))) return 'lista '+k;
     }
     if(!Array.isArray(it.forecastHistory)||it.forecastHistory.length>1000) return 'histórico de previsão';
@@ -8930,6 +8992,81 @@ const Roadmap=(function(){
       if(checkCap(e)===''&&!vistos.has(e.id)){validas.push(e);vistos.add(e.id);}else invalidas++;
     }
     return{validas:validas,invalidas:invalidas};
+  }
+  // ── Dependências (Roadmap 1B.2a): formato, leitura tolerante e derivações ──
+  // Cada entrada de dependencies[] é conferida sozinha. Entrada inválida NÃO derruba a iniciativa nem o Roadmap: fica guardada exatamente como veio,
+  // fora de todo cálculo, e a iniciativa sinaliza que há dados de dependência que não puderam ser interpretados (mesma premissa de capacity[]).
+  // Nesta fatia NÃO existem R3 nem relevantChangeAt por dependência: nada daqui toca em relevantChangeAt, confidenceAt, Condição ou R4 (ficam para a 1B.2b).
+  const RXDEP=/^dep-\d{3,}$/,DEP_RANK={critical:3,high:2,medium:1,low:0};
+  // Data esperada: AAAA-MM-DD, data real entre 2000 e 2100, sem horário e sem fuso (nunca é convertida para UTC)
+  function depDataOk(s){
+    if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+    const p=s.split('-').map(Number);
+    if(p[0]<2000||p[0]>2100) return false;
+    const t=new Date(Date.UTC(p[0],p[1]-1,p[2]));
+    return t.getUTCFullYear()===p[0]&&t.getUTCMonth()===p[1]-1&&t.getUTCDate()===p[2];
+  }
+  // Devolve '' se a entrada é válida ou o motivo. Os valores gravados são sempre códigos; a ausência de data é null.
+  function checkDep(e){
+    if(!plain(e)) return 'dependência';
+    if(typeof e.id!=='string'||!RXDEP.test(e.id)) return 'id da dependência';
+    if(typeof e.description!=='string'||!e.description.trim()||e.description.length>160) return 'descrição da dependência';
+    if(!has(RM_DEP_TYPES,e.type)) return 'tipo da dependência';
+    if(typeof e.responsible!=='string'||e.responsible.length>120) return 'responsável da dependência';
+    if(!has(RM_DEP_CRITS,e.criticality)) return 'criticidade da dependência';
+    if(!has(RM_DEP_STATS,e.status)) return 'situação da dependência';
+    if(e.expectedDate!==null&&!depDataOk(e.expectedDate)) return 'data esperada da dependência';
+    if(typeof e.note!=='string'||e.note.length>240) return 'observação da dependência';
+    if(!isoOk(e.createdAt)||!isoOk(e.updatedAt)||!isoOk(e.statusAt)) return 'datas da dependência';
+    return '';
+  }
+  // Leitura tolerante: as entradas válidas (formato certo e id ainda não usado por uma entrada válida anterior, nesta ou em outra iniciativa) ficam disponíveis
+  // para cálculo; todo o resto é contado como "não interpretado" e continua guardado como está (preservadas, na ordem original). Qualquer cálculo ou tela de
+  // dependências deve passar por aqui. validas contém as próprias entradas da lista (não cópias).
+  function dependenciasLer(it,items){
+    const l=it.dependencies;
+    if(l===undefined) return{validas:[],invalidas:0,preservadas:[]};
+    if(!Array.isArray(l)) return{validas:[],invalidas:1,preservadas:[l]};
+    const vistos=new Set();
+    if(items) for(const o of items){
+      if(o.id===it.id) break;
+      if(Array.isArray(o.dependencies)) o.dependencies.forEach(e=>{if(checkDep(e)==='') vistos.add(e.id);});
+    }
+    const validas=[],preservadas=[];
+    for(const e of l){
+      if(checkDep(e)===''&&!vistos.has(e.id)){validas.push(e);vistos.add(e.id);}else preservadas.push(e);
+    }
+    return{validas:validas,invalidas:preservadas.length,preservadas:preservadas};
+  }
+  // Derivações (puras; nada é gravado). "hoje" é a data local AAAA-MM-DD (FI_TEMPO.hoje()); todas as contas são em dias corridos entre datas locais, nunca UTC.
+  const depAtiva=e=>e.status==='open'||e.status==='monitoring';
+  const depDiaNum=s=>{const p=s.split('-');return Math.round(Date.UTC(+p[0],+p[1]-1,+p[2])/864e5);};
+  const depDiaLocal=iso=>{const d=new Date(iso),z=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate());};
+  const depPl=n=>n+(n===1?' dia':' dias');
+  const depFmt=s=>s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4);
+  // Atraso: só dependência ativa com data esperada ANTERIOR a hoje (vence hoje não é atraso). Nunca muda a situação.
+  const depAtraso=(e,hoje)=>{if(!depAtiva(e)||e.expectedDate===null) return 0;const n=depDiaNum(hoje)-depDiaNum(e.expectedDate);return n>0?n:0;};
+  // Duração em dias corridos a partir do REGISTRO (createdAt); a duração nunca usa updatedAt. Resolvida e cancelada contam até statusAt.
+  function depAging(e,hoje){
+    const ini=depDiaNum(depDiaLocal(e.createdAt));
+    if(depAtiva(e)){const n=Math.max(0,depDiaNum(hoje)-ini);return n===0?'Registrada hoje':'Em aberto há '+depPl(n);}
+    const n=Math.max(0,depDiaNum(depDiaLocal(e.statusAt))-ini),w=e.status==='resolved'?'Resolvida':'Cancelada';
+    return n===0?w+' no mesmo dia':w+' após '+depPl(n);
+  }
+  // Ativas: maior criticidade primeiro (Crítica antes de Alta, Média, Baixa), depois as mais antigas; no empate, pelo id. Encerradas: a mais recente primeiro.
+  const depOrdenar=l=>l.slice().sort((a,b)=>DEP_RANK[b.criticality]-DEP_RANK[a.criticality]||Date.parse(a.createdAt)-Date.parse(b.createdAt)||(a.id<b.id?-1:a.id>b.id?1:0));
+  const depOrdenarEnc=l=>l.slice().sort((a,b)=>Date.parse(b.statusAt)-Date.parse(a.statusAt)||(a.id<b.id?1:a.id>b.id?-1:0));
+  // Resumo do cabeçalho da seção: só o que pede atenção. Encerradas nunca entram em "ativas", "críticas" nem "vencidas". c: '' neutro, 'w' âmbar, 'b' vermelho.
+  function depResumo(it,hoje,items){
+    const L=dependenciasLer(it,items),at=L.validas.filter(depAtiva),enc=L.validas.length-at.length,cr=at.filter(e=>e.criticality==='critical').length,
+      ve=at.filter(e=>depAtraso(e,hoje)>0).length,f=[],p=(n,s,pl)=>n+' '+(n===1?s:pl);
+    if(!L.validas.length&&!L.invalidas) return[{t:'Sem dependências',c:''}];
+    if(at.length) f.push({t:p(at.length,'ativa','ativas'),c:''});
+    else if(L.validas.length) f.push({t:'Nenhuma ativa · '+p(enc,'encerrada','encerradas'),c:''});
+    if(cr) f.push({t:p(cr,'crítica','críticas'),c:''});
+    if(ve) f.push({t:p(ve,'vencida','vencidas'),c:'b'});
+    if(L.invalidas) f.push({t:p(L.invalidas,'não interpretada','não interpretadas'),c:'w'});
+    return f;
   }
   function checkItem(it){return checkCore(it)||checkExt(it);}
   function checkCont(c){
@@ -8967,6 +9104,9 @@ const Roadmap=(function(){
   // Capacidade: a entrada válida com exatamente os seis campos sai na ordem do formato; qualquer outra coisa (inválida, com campos a mais, ou a capacity inteira
   // que nem é lista) é guardada exatamente como veio.
   const capNorm=l=>Array.isArray(l)?l.map(e=>checkCap(e)===''&&Object.keys(e).length===6?{id:e.id,sprintId:e.sprintId,required:e.required,available:e.available,unit:e.unit,note:e.note}:clone(e)):(l===undefined?[]:clone(l));
+  // Dependências: a entrada válida com exatamente os 11 campos sai na ordem do formato; qualquer outra coisa (inválida, com campo a mais, ou a lista inteira que nem é lista) é guardada exatamente como veio.
+  const DEP_KEYS=['id','description','type','responsible','criticality','status','expectedDate','note','createdAt','updatedAt','statusAt'];
+  const depNorm=l=>Array.isArray(l)?l.map(e=>checkDep(e)===''&&Object.keys(e).length===11?DEP_KEYS.reduce((o,k)=>{o[k]=e[k];return o;},{}):clone(e)):(l===undefined?[]:clone(l));
   // Reconstrói o envelope na forma da versão 2 (o deslocamento nunca entra). Um item da versão 1 ganha os campos novos vazios, só em memória.
   function normalize(d){
     const ct=plain(d.counters)?d.counters:{};
@@ -8976,7 +9116,7 @@ const Roadmap=(function(){
       baselineQuarter:i.baselineQuarter,forecastStartSprintId:i.forecastStartSprintId,forecastEndSprintId:i.forecastEndSprintId,
       state:i.state,condition:i.condition,conditionAt:i.conditionAt===undefined?null:i.conditionAt,confidence:i.confidence,confidenceAt:i.confidenceAt,relevantChangeAt:i.relevantChangeAt===undefined?null:i.relevantChangeAt,
       mainRiskCategory:i.mainRiskCategory,mainRiskText:i.mainRiskText,
-      dependencies:lista(i.dependencies),blockers:lista(i.blockers),
+      dependencies:depNorm(i.dependencies),blockers:lista(i.blockers),
       capacity:capNorm(i.capacity),
       evidences:lista(i.evidences),
       forecastHistory:(Array.isArray(i.forecastHistory)?i.forecastHistory:[]).map(e=>({id:e.id,previousStartSprintId:e.previousStartSprintId,previousEndSprintId:e.previousEndSprintId,newStartSprintId:e.newStartSprintId,newEndSprintId:e.newEndSprintId,changedAt:e.changedAt,changedBy:e.changedBy,reason:e.reason,changeType:e.changeType})),
@@ -9028,6 +9168,33 @@ const Roadmap=(function(){
     return '';
   }
 
+  // Invariante de escrita das dependências: nenhum registro de dependencies[] desaparece (nem o inválido); id e createdAt de cada registro válido nunca mudam;
+  // o registro inválido continua exatamente igual; só se acrescentam registros ao fim, com id novo (maior que o contador anterior e nunca visto antes);
+  // o contador só cresce; uma iniciativa nova nasce sem dependências. É o que torna a exclusão física impossível por acidente.
+  function invarianteDeps(prev,next){
+    if(next.counters.dependency<prev.counters.dependency) return 'contador de dependências diminuiu';
+    const pm=new Map(prev.items.map(i=>[i.id,i])),idsPrev=new Set(),novos=new Set();
+    prev.items.forEach(i=>{if(Array.isArray(i.dependencies)) i.dependencies.forEach(e=>{if(plain(e)&&typeof e.id==='string') idsPrev.add(e.id);});});
+    for(const it of next.items){
+      const p=pm.get(it.id),nl=it.dependencies;
+      if(!p){if(!Array.isArray(nl)||nl.length) return 'iniciativa nova com dependências';continue;}
+      const pl=p.dependencies;
+      if(!Array.isArray(pl)){if(JSON.stringify(nl)!==JSON.stringify(pl)) return 'conteúdo de dependências que não é lista foi alterado';continue;}
+      if(!Array.isArray(nl)||nl.length<pl.length) return 'registro de dependência removido';
+      for(let k=0;k<pl.length;k++){
+        const a=pl[k],b=nl[k];
+        if(checkDep(a)!==''){if(JSON.stringify(a)!==JSON.stringify(b)) return 'registro de dependência não interpretado foi alterado';continue;}
+        if(!plain(b)||b.id!==a.id||b.createdAt!==a.createdAt) return 'id ou data de registro de dependência alterado';
+      }
+      for(let k=pl.length;k<nl.length;k++){
+        const e=nl[k];
+        if(!plain(e)||typeof e.id!=='string'||idsPrev.has(e.id)||novos.has(e.id)) return 'id de dependência reaproveitado';
+        if(!RXDEP.test(e.id)||numId(e.id)<=prev.counters.dependency) return 'id de dependência não é novo';
+        novos.add(e.id);
+      }
+    }
+    return '';
+  }
   // ── Núcleo de persistência (uma instância por armazenamento; os testes usam armazenamentos falsos) ──
   // Leitura segura: nunca lança exceção. Valor ilegível, de formato inválido ou de versão mais nova fica guardado como está: nada é apagado nem substituído sozinho.
   // Gravação: confere a revisão antes de gravar; se outra aba mudou os dados, não grava nada (sem merge). Versão 1 só é convertida na primeira gravação,
@@ -9086,6 +9253,7 @@ const Roadmap=(function(){
       if(err) return{ok:false,msg:err};
       next.schemaVersion=SCHEMA;next.revision=base.rev+1;
       if(invariante(prev,next)) return{ok:false,msg:MSG_INV};
+      if(invarianteDeps(prev,next)) return{ok:false,msg:MSG_INV_DEP};
       if(check(next)) return{ok:false,msg:'Os dados informados não são válidos. Revise os campos e tente novamente.'};
       const converte=issue===null&&base.ver===1,recomeca=issue==='ilegivel';
       if(converte||recomeca){const b=backupV1(base.raw,opts.substituirBackup);if(!b.ok) return{ok:false,msg:b.msg,backupConflito:!!b.backupConflito};}
@@ -9158,6 +9326,64 @@ const Roadmap=(function(){
   function confirmarConfianca(it,now){
     if(it.confidence==='not_informed') return 'Não há confiança informada para confirmar.';
     it.confidenceAt=now;it.updatedAt=now;
+    return '';
+  }
+  // ── Dependências (Roadmap 1B.2a): gravação ──
+  // Cada ação é UMA chamada a commit: herda a revisão, a releitura contra aba desatualizada e a conferência de invariantes. Nenhuma toca em relevantChangeAt,
+  // confidenceAt, Condição nem R4 (R3 e depRelevante chegam na 1B.2b). Só muda a lista dependencies e o updatedAt da iniciativa. Não existe exclusão física.
+  const DEP_MSG={description:'Informe a descrição da dependência.',type:'Escolha o tipo da dependência.',criticality:'Escolha a criticidade.',responsible:'O responsável pode ter no máximo 120 caracteres.',
+    expectedDate:'Informe uma data válida ou deixe em branco.',note:'A observação pode ter no máximo 240 caracteres.',status:'Escolha uma situação válida.'};
+  const depTxt=x=>String(x===undefined||x===null?'':x).trim();
+  const depCampos=v=>({description:depTxt(v.description),type:v.type||'',criticality:v.criticality||'',responsible:depTxt(v.responsible),
+    expectedDate:(v.expectedDate===undefined||v.expectedDate===null||v.expectedDate==='')?null:v.expectedDate,note:depTxt(v.note),status:v.status});
+  // Erros por campo; tipo e criticidade são obrigatórios e não têm valor padrão
+  function depErros(c){
+    const er={};
+    if(!c.description) er.description=DEP_MSG.description;
+    else if(c.description.length>160) er.description='A descrição pode ter no máximo 160 caracteres.';
+    if(!has(RM_DEP_TYPES,c.type)) er.type=DEP_MSG.type;
+    if(!has(RM_DEP_CRITS,c.criticality)) er.criticality=DEP_MSG.criticality;
+    if(c.responsible.length>120) er.responsible=DEP_MSG.responsible;
+    if(c.expectedDate!==null&&!depDataOk(c.expectedDate)) er.expectedDate=DEP_MSG.expectedDate;
+    if(c.note.length>240) er.note=DEP_MSG.note;
+    if(c.status!==undefined&&c.status!=='open'&&c.status!=='monitoring') er.status=DEP_MSG.status;
+    return er;
+  }
+  // act: create | edit | resolve | cancel | reopen. statusAt só muda quando a situação muda; updatedAt muda em qualquer alteração.
+  function aplicarDependencia(next,act,itemId,depId,v,now){
+    const it=find(next,itemId);
+    if(!it) return 'Iniciativa não encontrada.';
+    if(!Array.isArray(it.dependencies)) return MSG_DEP_LISTA;
+    if(act==='create'){
+      const c=depCampos(v||{});c.status=undefined; // uma dependência nova sempre nasce Aberta
+      const er=depErros(c),k=Object.keys(er)[0];
+      if(k) return er[k];
+      it.dependencies.push({id:novoIdLista(next,'dependency'),description:c.description,type:c.type,responsible:c.responsible,criticality:c.criticality,status:'open',
+        expectedDate:c.expectedDate,note:c.note,createdAt:now,updatedAt:now,statusAt:now});
+      it.updatedAt=now;
+      return '';
+    }
+    const e=dependenciasLer(it,next.items).validas.find(x=>x.id===depId);
+    if(!e) return 'Dependência não encontrada. Recarregue os dados e tente de novo.';
+    if(act==='edit'){
+      if(!depAtiva(e)) return 'Reabra a dependência para editá-la.';
+      const c=depCampos(v||{}),er=depErros(c),k=Object.keys(er)[0];
+      if(k) return er[k];
+      const st=c.status===undefined?e.status:c.status;
+      if(e.description===c.description&&e.type===c.type&&e.responsible===c.responsible&&e.criticality===c.criticality&&e.expectedDate===c.expectedDate&&e.note===c.note&&e.status===st) return ''; // nada mudou: nada é carimbado
+      e.description=c.description;e.type=c.type;e.responsible=c.responsible;e.criticality=c.criticality;e.expectedDate=c.expectedDate;e.note=c.note;
+      if(st!==e.status){e.status=st;e.statusAt=now;}
+      e.updatedAt=now;it.updatedAt=now;
+      return '';
+    }
+    if(act==='resolve'||act==='cancel'){
+      if(!depAtiva(e)) return 'Só uma dependência ativa pode ser '+(act==='resolve'?'resolvida':'cancelada')+'.';
+      e.status=act==='resolve'?'resolved':'cancelled';
+    }else if(act==='reopen'){
+      if(depAtiva(e)) return 'Esta dependência já está ativa.';
+      e.status='open';
+    }else return 'Ação inválida.';
+    e.statusAt=now;e.updatedAt=now;it.updatedAt=now;
     return '';
   }
   // Avisos sobre a confiança: só sinalizam, nunca alteram o valor informado. R1 e R4 (R2 e R3 chegam com capacidade e dependências).
@@ -9243,10 +9469,10 @@ const Roadmap=(function(){
   // Sugestão de revisão (R1 e R4): só avisa, nunca altera a confiança informada
   const confHtml=it=>confBars(it)+(revisarConfianca(it)?'<div class="rm-rev">Revisar confiança</div>':'');
   function rowHtml(it,ano){
-    const d=desloc(it),ft=forecastText(it),oe=[it.owner,it.team].filter(Boolean).join(' · '),cap=capacidadeLer(it,core.get().items);
+    const d=desloc(it),ft=forecastText(it),oe=[it.owner,it.team].filter(Boolean).join(' · '),cap=capacidadeLer(it,core.get().items),dpd=dependenciasLer(it,core.get().items);
     const risco=it.mainRiskCategory||it.mainRiskText?'<div class="rm-rk"><b>'+E(lbl(RM_RISKS,it.mainRiskCategory))+'</b>'+(it.mainRiskCategory&&it.mainRiskText?': ':'')+E(it.mainRiskText)+'</div>':'<div class="rm-rk nd">Nenhum fator informado</div>';
     return '<div class="rm-r" role="button" tabindex="0" aria-label="Abrir detalhes da iniciativa: '+E(it.title)+'" data-act="detail" data-id="'+E(it.id)+'" onclick="Roadmap.click(this)" onkeydown="if(event.key===\'Enter\')Roadmap.click(this)">'
-      +'<div class="rm-c-ini"><div class="rm-ttl">'+E(it.title)+'</div>'+(oe?'<div class="rm-own">'+E(oe)+'</div>':'')+(cap.invalidas?'<div class="rm-own rm-cap-av" title="'+E(MSG_CAP)+'"><i class="ti ti-alert-triangle"></i> Dados de capacidade não interpretados</div>':'')+'</div>'
+      +'<div class="rm-c-ini"><div class="rm-ttl">'+E(it.title)+'</div>'+(oe?'<div class="rm-own">'+E(oe)+'</div>':'')+marcaDadosHtml(cap,dpd)+'</div>'
       +'<div class="rm-c-pq"><div class="rm-lbl">Planejado</div><div class="rm-pq">'+E(qLabel(it.baselineQuarter)||'—')+'</div></div>'
       +'<div class="rm-c-prv"><div class="rm-plx">Planejado <b>'+E(qLabel(it.baselineQuarter)||'—')+'</b></div><div class="rm-lbl">Previsão</div>'
         +'<div class="rm-prv-t'+(ft?'':' nd')+'">'+(ft?E(ft):'Sem previsão informada')+'</div>'+trilha(it,ano)+'<span class="rm-dsl">'+deslocChip(d)+'</span></div>'
@@ -9359,6 +9585,7 @@ const Roadmap=(function(){
       +fld('Risco principal',inp('mainRiskText',d.mainRiskText,'maxlength="160" placeholder="Ex.: QA insuficiente para o período."'),true)
       +'<span class="rm-dica">A confiança é a sua leitura. O FlowOps não a calcula nem a altera.</span>'};
   }
+  const nDepExcl=it=>Array.isArray(it.dependencies)?it.dependencies.length:(it.dependencies===undefined?0:1);
   function openModal(act,id){
     if(act!=='new'&&act!=='edit'&&act!=='del') return;
     const it=act==='new'?null:find(core.get(),id);
@@ -9367,7 +9594,7 @@ const Roadmap=(function(){
     let title,body,foot;
     if(act==='del'){
       title='Excluir iniciativa';
-      body='<p>Excluir a iniciativa "'+E(it.title)+'" do Roadmap? Esta ação não pode ser desfeita.'+(it.forecastHistory.length?' O histórico de previsão dela ('+it.forecastHistory.length+(it.forecastHistory.length===1?' registro':' registros')+') será excluído junto.':'')+'</p>';
+      body='<p>Excluir a iniciativa "'+E(it.title)+'" do Roadmap? Esta ação não pode ser desfeita.'+(it.forecastHistory.length?' O histórico de previsão dela ('+it.forecastHistory.length+(it.forecastHistory.length===1?' registro':' registros')+') será excluído junto.':'')+(nDepExcl(it)?' Os registros de dependência desta iniciativa ('+nDepExcl(it)+') também serão excluídos.':'')+'</p>';
       foot='<button class="depm-btn-cancel" onclick="Roadmap.close()">Cancelar</button><button class="depm-btn-save" style="background:var(--clr-bad)" onclick="Roadmap.save()">Confirmar exclusão</button>';
     } else {
       const f=formFor(it);title=f.title;body=f.body;
@@ -9426,6 +9653,7 @@ const Roadmap=(function(){
         return;
       }
       closeModal();
+      if(act==='del') delete view.depUi[id];
       aposGravar(r);
       render();renderPainel();
     };
@@ -9501,6 +9729,148 @@ const Roadmap=(function(){
     if(!c.invalidas) return '';
     return '<div class="rm-d-capav" role="status"><i class="ti ti-alert-triangle"></i> '+E(MSG_CAP)+'<div class="rm-d-mut rm-d-s">'+c.invalidas+(c.invalidas===1?' registro de capacidade foi preservado sem alteração e não entra':' registros de capacidade foram preservados sem alteração e não entram')+' em nenhum cálculo.</div></div>';
   }
+  // ── Seção Dependências no painel (Roadmap 1B.2a) ──
+  // O estado da seção vive só em memória, por iniciativa (nada disto é gravado): seção aberta, linha expandida, grupo Encerradas, cancelamento pedindo
+  // confirmação e o RASCUNHO do formulário. O painel é redesenhado por inteiro a cada gravação; por isso o que a pessoa digita é copiado para cá a cada
+  // tecla e o formulário é sempre redesenhado a partir daqui. Fechar o painel (Esc, fundo, X) ou trocar de aba NÃO apaga o rascunho; ele só some quando a
+  // pessoa salva, descarta ou recarrega a página. Um formulário por vez, para que nada seja substituído em silêncio.
+  const dUi=id=>view.depUi[id]||(view.depUi[id]={aberta:false,exp:null,enc:false,cancelar:null,form:null,aviso:null});
+  const depVazio=()=>({description:'',type:'',criticality:'',responsible:'',expectedDate:'',note:'',status:'open'});
+  const depChip=(cor,icone,texto,tracejado)=>'<span class="rm-chip rm-c-'+cor+(tracejado?' dash':'')+'">'+(icone?'<i class="ti ti-'+icone+'"></i> ':'')+E(texto)+'</span>';
+  const depCritChip=e=>e.criticality==='critical'?depChip('bad','alert-octagon',lbl(RM_DEP_CRITS,'critical')):depChip('neutral',null,lbl(RM_DEP_CRITS,e.criticality));
+  const depStatChip=e=>e.status==='resolved'?depChip('ok','check',lbl(RM_DEP_STATS,e.status)):e.status==='cancelled'?depChip('neutral','ban',lbl(RM_DEP_STATS,e.status),true):depChip('neutral',e.status==='monitoring'?'eye':'circle',lbl(RM_DEP_STATS,e.status));
+  const depFrags=f=>f.map((x,i)=>(i?'<span class="dp-sep"> · </span>':'')+'<span'+(x.c==='w'?' class="dp-w"':x.c==='b'?' class="dp-b"':'')+'>'+E(x.t)+'</span>').join('');
+  const depBtn=(a,d,txt,cls,icone,off)=>'<button type="button" class="rm-pb'+(cls?' '+cls:'')+'" data-a="'+a+'"'+(d?' data-d="'+E(d)+'"':'')+(off?' disabled':'')+' onclick="Roadmap.depAcao(this,event)">'+(icone?'<i class="ti ti-'+icone+'"></i> ':'')+txt+'</button>';
+  function depLinhaHtml(e,ui,hoje){
+    const exp=ui.exp===e.id,fecha=!depAtiva(e),atr=depAtraso(e,hoje),off=!!ui.form;
+    let data;
+    if(depAtiva(e)) data=e.expectedDate===null?'<span class="mut">Sem data esperada</span>':atr?'<span class="b">Data esperada '+E(depFmt(e.expectedDate))+' · '+E(depPl(atr))+' em atraso</span>':'<span>Data esperada '+E(depFmt(e.expectedDate))+'</span>';
+    else data=e.expectedDate===null?'':'<span class="mut">Data esperada era '+E(depFmt(e.expectedDate))+'</span>';
+    const meta=['<span>'+E(lbl(RM_DEP_TYPES,e.type))+'</span>',e.responsible?'<span>'+E(e.responsible)+'</span>':'<span class="mut">Responsável não informado</span>',data,'<span'+(fecha?' class="mut"':'')+'>'+E(depAging(e,hoje))+'</span>'].filter(Boolean);
+    let h='<div class="dp-r'+(exp?' exp':'')+(fecha?' fechada':'')+'" data-dep="'+E(e.id)+'"><div class="dp-hd" role="button" tabindex="0" aria-expanded="'+exp+'" data-a="toggle" data-d="'+E(e.id)+'" onclick="Roadmap.depAcao(this,event)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();Roadmap.depAcao(this,event);}">'
+      +'<div class="dp-top"><div class="dp-t">'+E(e.description)+'</div><div class="dp-chips">'+depCritChip(e)+depStatChip(e)+'</div><i class="ti ti-chevron-down dp-ch"></i></div>'
+      +'<div class="dp-m">'+meta.join('')+'</div></div>';
+    if(exp){
+      h+='<div class="dp-x"><div class="dp-dl">'
+        +celula('Tipo',E(lbl(RM_DEP_TYPES,e.type)))+celula('Responsável',e.responsible?E(e.responsible):'<span class="rm-d-mut">Não informado</span>')+celula('Criticidade',depCritChip(e))
+        +celula('Situação',depStatChip(e)+'<div class="rm-d-mut rm-d-s">desde '+E(fmtD(e.statusAt))+'</div>')
+        +celula('Data esperada',e.expectedDate?E(depFmt(e.expectedDate)):'<span class="rm-d-mut">Não informada</span>')
+        +celula('Registrada em',E(fmtD(e.createdAt))+'<div class="rm-d-mut rm-d-s">atualizada em '+E(fmtD(e.updatedAt))+'</div>')
+        +celula('Observação',e.note?E(e.note):'<span class="rm-d-mut">Sem observação</span>',true)+'</div>';
+      if(ui.cancelar===e.id) h+='<div class="dp-conf"><b>Cancelar esta dependência?</b> Ela continua registrada, sai das ativas e pode ser reaberta depois.<div class="dp-act">'+depBtn('cancelar-sim',e.id,'Confirmar cancelamento','pri')+depBtn('cancelar-nao',e.id,'Voltar')+'</div></div>';
+      else h+='<div class="dp-act">'+(fecha?depBtn('reabrir',e.id,'Reabrir','pri','rotate'):depBtn('editar',e.id,'Editar',null,'pencil',off)+depBtn('resolver',e.id,'Resolver',null,'check')+depBtn('cancelar',e.id,'Cancelar dependência',null,'ban'))+'</div>';
+      h+='</div>';
+    }
+    return h+'</div>';
+  }
+  function depFormHtml(f){
+    const v=f.v,er=f.erros||{},ev=' oninput="Roadmap.depInput(this)" onchange="Roadmap.depInput(this)"';
+    const campo=(k,label,ctl,full,ajuda)=>'<div class="depm-field'+(full?' full':'')+'"><label class="depm-label">'+label+'</label>'+ctl+(er[k]?'<div class="dp-err" role="alert">'+E(er[k])+'</div>':'')+(ajuda?'<div class="dp-help">'+ajuda+'</div>':'')+'</div>';
+    const selD=(k,mapa,cur,ph)=>'<select class="depm-input" data-f="'+k+'"'+ev+(er[k]?' aria-invalid="true"':'')+'><option value=""'+(cur?'':' selected')+'>'+E(ph)+'</option>'+Object.keys(mapa).map(c=>'<option value="'+E(c)+'"'+(cur===c?' selected':'')+'>'+E(mapa[c])+'</option>').join('')+'</select>';
+    const txt=(k,val,max,ph)=>'<input class="depm-input" type="text" data-f="'+k+'" maxlength="'+max+'" value="'+E(val)+'"'+(ph?' placeholder="'+E(ph)+'"':'')+ev+(er[k]?' aria-invalid="true"':'')+'>';
+    const area=(k,val,max)=>'<textarea class="depm-input" data-f="'+k+'" maxlength="'+max+'"'+ev+(er[k]?' aria-invalid="true"':'')+'>'+E(val)+'</textarea>';
+    const edit=f.modo==='editar';
+    return '<div class="dp-form" id="rmDepForm"><h4>'+(edit?'Editar dependência':'Nova dependência')+'</h4>'
+      +(f.nota?'<div class="dp-conf" role="status">'+E(f.nota)+'</div>':'')
+      +campo('description','Descrição <span>*</span>',area('description',v.description,160),true,'De quem ou do que a iniciativa depende. Até 160 caracteres.')
+      +'<div class="depm-row">'+campo('type','Tipo <span>*</span>',selD('type',RM_DEP_TYPES,v.type,'Selecione'))+campo('criticality','Criticidade <span>*</span>',selD('criticality',RM_DEP_CRITS,v.criticality,'Selecione'),false,'Crítica: a iniciativa não é entregue sem ela.')+'</div>'
+      +'<div class="depm-row">'+campo('responsible','Responsável',txt('responsible',v.responsible,120,'Pessoa, time, área ou fornecedor'))+campo('expectedDate','Data esperada','<input class="depm-input" type="date" data-f="expectedDate" min="2000-01-01" max="2100-12-31" value="'+E(v.expectedDate)+'"'+ev+(er.expectedDate?' aria-invalid="true"':'')+'>',false,'Opcional. Passada a data, a dependência ativa aparece em atraso; a situação não muda sozinha.')+'</div>'
+      +(edit?'<div class="depm-row">'+campo('status','Situação',selD('status',{open:lbl(RM_DEP_STATS,'open'),monitoring:lbl(RM_DEP_STATS,'monitoring')},v.status,'Selecione'),false,'Resolver e cancelar ficam nos botões da dependência.')+'<div></div></div>':'')
+      +campo('note','Observação',area('note',v.note,240),true)
+      +(f.msg?'<div class="dp-av is-bad" role="alert" style="margin-top:10px">'+E(f.msg)+(f.conflito?' <button type="button" class="rm-pb pri" onclick="Roadmap.recarregar()">Recarregar dados</button>':'')+'</div>':'')
+      +'<div class="dp-formact">'+depBtn('descartar','','Descartar')+depBtn('salvar','','Salvar dependência','pri')+'</div></div>';
+  }
+  function depInvHtml(L){
+    const n=L.invalidas,t=L.preservadas.map(x=>typeof x==='string'?JSON.stringify(x):JSON.stringify(x,null,1)).join('\n---\n');
+    return '<div class="rm-d-capav dp-inv" role="status"><i class="ti ti-alert-triangle"></i> '+E(MSG_DEP)+'<div class="rm-d-mut rm-d-s">'+n+(n===1?' registro foi preservado sem alteração e não entra':' registros foram preservados sem alteração e não entram')+' em nenhum cálculo (resumo, aging, ordenação).</div>'
+      +'<details><summary>Ver conteúdo preservado</summary><pre>'+E(t.length>600?t.slice(0,600)+'…':t)+'</pre></details></div>';
+  }
+  function depSecaoHtml(it){
+    const hoje=FI_TEMPO.hoje(),items=core.get().items,L=dependenciasLer(it,items),ui=dUi(it.id),f=ui.form;
+    const ativas=depOrdenar(L.validas.filter(depAtiva)),enc=depOrdenarEnc(L.validas.filter(e=>!depAtiva(e)));
+    const ehLista=Array.isArray(it.dependencies);
+    const noTopo=!!f&&(f.modo==='nova'||!ativas.some(e=>e.id===f.depId)); // o rascunho nunca fica sem lugar na tela
+    let corpo='';
+    if(ui.aviso) corpo+='<div class="dp-av is-'+ui.aviso.k+'" role="'+(ui.aviso.k==='bad'?'alert':'status')+'">'+E(ui.aviso.t)+(ui.aviso.conflito?' <button type="button" class="rm-pb pri" onclick="Roadmap.recarregar()">Recarregar dados</button>':'')+'</div>';
+    const dica=!ehLista?MSG_DEP_LISTA:f?'Salve ou descarte o formulário aberto.':'';
+    corpo+='<div class="dp-bar"><span class="t">'+(L.validas.length?'Ordem: críticas primeiro, depois a maior criticidade e as mais antigas.':'De quem ou do que esta iniciativa depende.')+'</span>'
+      +'<button type="button" class="rm-pb pri" data-a="novo" onclick="Roadmap.depAcao(this,event)"'+(dica?' disabled title="'+E(dica)+'"':'')+'><i class="ti ti-plus"></i> Nova dependência</button></div>';
+    if(noTopo) corpo+=depFormHtml(f);
+    if(!L.validas.length&&!L.invalidas&&!noTopo) corpo+='<p class="dp-vz">Nenhuma dependência registrada.</p>';
+    if(ativas.length) corpo+='<div class="dp-list">'+ativas.map(e=>f&&!noTopo&&f.modo==='editar'&&f.depId===e.id?'<div class="dp-r dp-ed">'+depFormHtml(f)+'</div>':depLinhaHtml(e,ui,hoje)).join('')+'</div>';
+    else if(L.validas.length) corpo+='<p class="dp-vz">Nenhuma dependência ativa.</p>';
+    if(enc.length) corpo+='<details class="dp-enc" ontoggle="Roadmap.depEncToggle(this)"'+(ui.enc?' open':'')+'><summary><i class="ti ti-chevron-right"></i> Encerradas ('+enc.length+')</summary><div class="dp-list">'+enc.map(e=>depLinhaHtml(e,ui,hoje)).join('')+'</div></details>';
+    if(L.invalidas) corpo+=depInvHtml(L);
+    return '<details class="rm-d-sec" id="rmDDeps" ontoggle="Roadmap.depToggle(this)"'+(ui.aberta||f?' open':'')+'><summary><span class="rm-d-sn">Dependências</span><span class="rm-d-ss">'+depFrags(depResumo(it,hoje,items))+'</span><i class="ti ti-chevron-down"></i></summary><div class="rm-d-sb">'+corpo+'</div></details>';
+  }
+  // Selo único na linha da lista: um só texto, composto, quando há dados de capacidade e/ou de dependência que não puderam ser interpretados
+  function marcaDadosHtml(cap,dpd){
+    if(!cap.invalidas&&!dpd.invalidas) return '';
+    const txt=cap.invalidas&&dpd.invalidas?'Dados de capacidade e de dependência não interpretados':cap.invalidas?'Dados de capacidade não interpretados':'Dados de dependência não interpretados';
+    const tit=[cap.invalidas?MSG_CAP:'',dpd.invalidas?MSG_DEP:''].filter(Boolean).join(' ');
+    return '<div class="rm-own rm-cap-av" title="'+E(tit)+'"><i class="ti ti-alert-triangle"></i> '+txt+'</div>';
+  }
+  // Roda uma ação de dependência em um único commit. Conflito com outra aba, falha de gravação e cópia antiga diferente seguem o mesmo caminho do resto do Roadmap.
+  function depRodar(act,itemId,depId,v,ok,falha,opts){
+    const now=new Date().toISOString();
+    const r=core.commit(next=>aplicarDependencia(next,act,itemId,depId,v,now),opts);
+    if(!r.ok){
+      if(r.backupConflito){decAbrir('backup',s=>{depRodar(act,itemId,depId,v,ok,falha,{substituirBackup:s});renderPainel();});return r;}
+      falha(r);return r;
+    }
+    aposGravar(r);ok(r);render();
+    return r;
+  }
+  function depInput(el){
+    const ui=pnl!==null?view.depUi[pnl]:null;
+    if(!ui||!ui.form||!el.dataset.f) return;
+    ui.form.v[el.dataset.f]=el.value;
+    ui.form.msg=null;ui.form.conflito=false;ui.form.nota=null;
+    if(ui.form.erros) delete ui.form.erros[el.dataset.f];
+  }
+  function depToggle(el){if(pnl!==null) dUi(pnl).aberta=!!el.open;}
+  function depEncToggle(el){if(pnl!==null) dUi(pnl).enc=!!el.open;}
+  function depAcao(el,ev){
+    if(ev&&ev.stopPropagation) ev.stopPropagation();
+    if(pnl===null) return;
+    const a=el.dataset.a,d=el.dataset.d||'',it=find(core.get(),pnl);
+    if(!it) return;
+    const ui=dUi(pnl),L=dependenciasLer(it,core.get().items),e=L.validas.find(x=>x.id===d)||null;
+    ui.aviso=null;
+    const falhaLinha=r=>{ui.aviso={k:'bad',t:r.msg,conflito:!!r.conflict};};
+    if(a==='toggle'){ui.exp=ui.exp===d?null:d;ui.cancelar=null;}
+    else if(a==='novo'){
+      if(!ui.form&&Array.isArray(it.dependencies)){ui.form={modo:'nova',depId:null,v:depVazio(),erros:{},msg:null,conflito:false,nota:null,focar:'description'};ui.aberta=true;}
+    }else if(a==='editar'){
+      if(!ui.form&&e&&depAtiva(e)){ui.form={modo:'editar',depId:e.id,v:{description:e.description,type:e.type,criticality:e.criticality,responsible:e.responsible,expectedDate:e.expectedDate||'',note:e.note,status:e.status},erros:{},msg:null,conflito:false,nota:null,focar:'description'};ui.exp=null;ui.cancelar=null;ui.aberta=true;}
+    }else if(a==='descartar'){ui.form=null;}
+    else if(a==='salvar'){
+      const f=ui.form;
+      if(f){
+        const c=depCampos(f.v),er=depErros(c),k=Object.keys(er)[0];
+        f.erros=er;f.msg=null;f.conflito=false;f.nota=null;
+        if(k) f.focar=k;
+        else if(f.modo==='nova'){
+          depRodar('create',pnl,null,f.v,()=>{ui.form=null;ui.aviso={k:'ok',t:'Dependência registrada.'};},r=>{f.msg=r.msg;f.conflito=!!r.conflict;});
+        }else{
+          const eF=L.validas.find(x=>x.id===f.depId)||null,atual=eF&&depAtiva(eF)?eF:null;
+          if(atual&&atual.description===c.description&&atual.type===c.type&&atual.responsible===c.responsible&&atual.criticality===c.criticality&&atual.expectedDate===c.expectedDate&&atual.note===c.note&&atual.status===c.status){ui.form=null;ui.exp=atual.id;ui.aviso={k:'ok',t:'Nenhuma alteração para salvar.'};}
+          else depRodar('edit',pnl,f.depId,f.v,()=>{ui.form=null;ui.exp=f.depId;ui.aviso={k:'ok',t:'Dependência atualizada.'};},r=>{f.msg=r.msg;f.conflito=!!r.conflict;});
+        }
+      }
+    }else if(a==='resolver'){
+      depRodar('resolve',pnl,d,null,()=>{ui.exp=null;ui.aviso={k:'ok',t:'Dependência resolvida. Ela passou para Encerradas.'};},falhaLinha);
+    }else if(a==='cancelar'){ui.exp=d;ui.cancelar=d;}
+    else if(a==='cancelar-nao'){ui.cancelar=null;}
+    else if(a==='cancelar-sim'){
+      depRodar('cancel',pnl,d,null,()=>{ui.exp=null;ui.cancelar=null;ui.aviso={k:'ok',t:'Dependência cancelada. Ela continua registrada em Encerradas e pode ser reaberta.'};},falhaLinha);
+    }else if(a==='reabrir'){
+      depRodar('reopen',pnl,d,null,()=>{ui.exp=d;ui.aviso={k:'ok',t:'Dependência reaberta.'};},falhaLinha);
+    }
+    renderPainel();
+    const f2=ui.form;
+    if(f2&&f2.focar){const x=pnlBox().querySelector('[data-f="'+f2.focar+'"]');f2.focar=null;if(x) x.focus();}
+  }
   function painelHtml(it){
     const d=desloc(it),ft=forecastText(it),av=avisosConfianca(it);
     const risco=it.mainRiskCategory!==null||it.mainRiskText?'<b>'+E(lbl(RM_RISKS,it.mainRiskCategory))+'</b>'+(it.mainRiskCategory!==null&&it.mainRiskText?': ':'')+E(it.mainRiskText):'<span class="rm-d-mut">Nenhum fator informado</span>';
@@ -9517,6 +9887,7 @@ const Roadmap=(function(){
         +celula('Confiança informada',confBars(it)+(it.confidenceAt?'<div class="rm-d-mut rm-d-s">em '+E(fmtD(it.confidenceAt))+'</div>':''))
         +celula('Principal risco',risco,true)
       +'</div>'+capAvisoHtml(it)+avisoHtml(it,av)+'</div>'
+      +depSecaoHtml(it)
       +histHtml(it)
       +'<p class="rm-d-fim">Dados informados por você, salvos só neste navegador. As mudanças de previsão são registradas automaticamente e não podem ser editadas.</p>';
   }
@@ -9534,6 +9905,7 @@ const Roadmap=(function(){
     const it=find(core.get(),id);
     if(!it) return;
     pnl=id;view.aviso=null;
+    {const u=view.depUi[id];if(u){u.aviso=null;if(u.form) u.aberta=true;}} // o rascunho de um formulário aberto volta junto com o painel
     renderPainel();
     pnlEl().classList.add('open');pnlEl().setAttribute('aria-hidden','false');travar();
     pnlBox().focus();
@@ -9577,6 +9949,7 @@ const Roadmap=(function(){
   // Recarrega da memória do navegador o que está salvo (depois de um conflito entre abas); o que estava no formulário não é aplicado
   function recarregar(){
     core.load();
+    Object.keys(view.depUi).forEach(k=>{const u=view.depUi[k];u.aviso=null;if(u.form) u.form.nota=MSG_DEP_REC;}); // os rascunhos ficam, avisando que não foram salvos
     if(m) closeModal();
     decFechar();
     render();renderPainel();
@@ -9996,9 +10369,187 @@ const Roadmap=(function(){
     igual('capacity que nem é lista: o Roadmap abre, edita e preserva o valor original',[nNA.issue(),JSON.parse(sNA.get(KEY)).items[0].capacity,JSON.parse(sNA.get(KEY)).items[0].title],[null,'texto solto','Editada']);
     // Erros estruturais do envelope continuam colocando o Roadmap inteiro em modo somente leitura
     igual('erro estrutural do envelope continua global (items, counters, schema, estrutura principal)',[check(Object.assign(envA([]),{items:'x'})),check(Object.assign(envA([]),{counters:null})),check(Object.assign(envA([]),{schemaVersion:3})),check([]),check(Object.assign(envA([]),{counter:-1}))],['itens','contadores','schema mais novo','raiz','contador']);
-    // Premissa registrada para as próximas listas: hoje dependencies, blockers e evidences ainda exigem lista de objetos (sem formato próprio)
-    igual('dependencies, blockers e evidences ainda aceitam só lista de objetos e são preservadas',[checkItem(mk({dependencies:[{x:1}],blockers:[{y:2}],evidences:[{w:4}]})),normalize({counter:1,items:[mk({dependencies:[{x:1}],blockers:[{y:2}],evidences:[{w:4}]})]}).items[0].dependencies],['',[{x:1}]]);
-    igual('dependencies, blockers e evidences que não são lista de objetos ainda são recusadas (a tolerância chega com o formato de cada uma); capacity é tolerante',[checkItem(mk({dependencies:'x'})),checkItem(mk({blockers:[1]})),checkItem(mk({capacity:null})),checkItem(mk({evidences:{}}))],['lista dependencies','lista blockers','','lista evidences']);
+    // Premissa registrada para as próximas listas: dependencies já tem formato e tolerância (1B.2a); blockers e evidences ainda exigem lista de objetos (sem formato próprio)
+    igual('dependencies, blockers e evidences aceitam lista de objetos qualquer e são preservadas',[checkItem(mk({dependencies:[{x:1}],blockers:[{y:2}],evidences:[{w:4}]})),normalize({counter:1,items:[mk({dependencies:[{x:1}],blockers:[{y:2}],evidences:[{w:4}]})]}).items[0].dependencies],['',[{x:1}]]);
+    igual('blockers e evidences que não são lista de objetos ainda são recusados (a tolerância chega com o formato de cada um); capacity e dependencies são tolerantes',[checkItem(mk({dependencies:'x'})),checkItem(mk({blockers:[1]})),checkItem(mk({capacity:null})),checkItem(mk({evidences:{}}))],['','lista blockers','','lista evidences']);
+    // ── Roadmap 1B.2a: Dependências (formato, derivações, gravação atômica, invariante, tolerância e decisões aprovadas) ──
+    // Datas de teste em hora LOCAL (dpLoc): o resultado não depende do fuso de quem roda o autoteste. Tudo roda em armazenamentos falsos.
+    const dpLoc=(m,d,h)=>new Date(2026,m-1,d,h===undefined?12:h,0,0).toISOString();
+    const DP=o=>Object.assign({id:'dep-001',description:'API do gateway',type:'team',responsible:'Time Plataforma',criticality:'medium',status:'open',expectedDate:null,note:'',createdAt:dpLoc(10,28),updatedAt:dpLoc(10,28),statusAt:dpLoc(10,28)},o||{});
+    const dpHJ='2026-11-09',dpN=d=>dpLoc(11,d);
+    igual('dependências: códigos gravados (tipo, criticidade, situação)',[Object.keys(RM_DEP_TYPES),Object.keys(RM_DEP_CRITS),Object.keys(RM_DEP_STATS)],
+      [['team','technical','vendor','business','environment','approval','other'],['low','medium','high','critical'],['open','monitoring','resolved','cancelled']]);
+    igual('dependências: rótulos em português só nos mapas',[Object.values(RM_DEP_TYPES),Object.values(RM_DEP_CRITS),Object.values(RM_DEP_STATS)],
+      [['Time / Área','Técnica','Fornecedor','Negócio','Ambiente','Aprovação','Outro'],['Baixa','Média','Alta','Crítica'],['Aberta','Em acompanhamento','Resolvida','Cancelada']]);
+    igual('dependências: mensagem de dados não interpretados',MSG_DEP,'Há dados de dependência que não puderam ser interpretados.');
+    igual('dependência válida, com e sem data esperada',[checkDep(DP()),checkDep(DP({expectedDate:'2026-11-20'})),checkDep(DP({id:'dep-1234'})),checkDep(DP({expectedDate:'2028-02-29'}))],['','','','']);
+    igual('dependência: rótulo no lugar do código, ou valor ausente, em tipo, criticidade e situação é inválido',
+      [checkDep(DP({type:'Fornecedor'})),checkDep(DP({type:undefined})),checkDep(DP({criticality:'Crítica'})),checkDep(DP({criticality:null})),checkDep(DP({status:'Aberta'})),checkDep(DP({status:undefined}))],
+      ['tipo da dependência','tipo da dependência','criticidade da dependência','criticidade da dependência','situação da dependência','situação da dependência']);
+    igual('dependência: descrição vazia, só espaços, acima de 160 ou que não é texto é inválida; 160 é válida',
+      [checkDep(DP({description:''})),checkDep(DP({description:'   '})),checkDep(DP({description:'x'.repeat(161)})),checkDep(DP({description:7})),checkDep(DP({description:'x'.repeat(160)}))],
+      ['descrição da dependência','descrição da dependência','descrição da dependência','descrição da dependência','']);
+    igual('dependência: responsável pode ser vazio (texto livre) e vai até 120',[checkDep(DP({responsible:''})),checkDep(DP({responsible:'x'.repeat(120)})),checkDep(DP({responsible:'x'.repeat(121)})),checkDep(DP({responsible:null}))],['','','responsável da dependência','responsável da dependência']);
+    igual('dependência: data esperada precisa ser uma data real AAAA-MM-DD (ou null); ausência é null',
+      [checkDep(DP({expectedDate:'2026-02-30'})),checkDep(DP({expectedDate:'2026-13-01'})),checkDep(DP({expectedDate:'05/11/2026'})),checkDep(DP({expectedDate:20261105})),checkDep(DP({expectedDate:'2026-11-5'})),
+       checkDep(DP({expectedDate:'1999-12-31'})),checkDep(DP({expectedDate:'2101-01-01'})),checkDep(DP({expectedDate:'2027-02-29'})),checkDep(DP({expectedDate:undefined})),checkDep(DP({expectedDate:'2026-02-28'}))],
+      ['data esperada da dependência','data esperada da dependência','data esperada da dependência','data esperada da dependência','data esperada da dependência','data esperada da dependência','data esperada da dependência','data esperada da dependência','data esperada da dependência','']);
+    igual('dependência: observação até 240; datas de registro, atualização e situação precisam ser ISO',
+      [checkDep(DP({note:'x'.repeat(240)})),checkDep(DP({note:'x'.repeat(241)})),checkDep(DP({note:3})),checkDep(DP({createdAt:'x'})),checkDep(DP({updatedAt:null})),checkDep(DP({statusAt:undefined}))],
+      ['','observação da dependência','observação da dependência','datas da dependência','datas da dependência','datas da dependência']);
+    igual('dependência: id fora do padrão dep-NNN é inválido',[checkDep(DP({id:'dep-1'})),checkDep(DP({id:'DEP-001'})),checkDep(DP({id:'x'})),checkDep(DP({id:undefined}))],['id da dependência','id da dependência','id da dependência','id da dependência']);
+    igual('dependência: o que não é objeto é inválido',[checkDep(null),checkDep('texto'),checkDep(7),checkDep([])],['dependência','dependência','dependência','dependência']);
+    // Atraso: só ativa, só com data anterior a hoje; vencer hoje não é atraso; nunca muda a situação
+    igual('atraso em dias corridos: 05/11 → 4, 08/11 → 1, hoje → 0, amanhã → 0, sem data → 0',[depAtraso(DP({expectedDate:'2026-11-05'}),dpHJ),depAtraso(DP({expectedDate:'2026-11-08'}),dpHJ),depAtraso(DP({expectedDate:'2026-11-09'}),dpHJ),depAtraso(DP({expectedDate:'2026-11-10'}),dpHJ),depAtraso(DP(),dpHJ)],[4,1,0,0,0]);
+    igual('atraso só existe em dependência ativa (Aberta ou Em acompanhamento); resolvida e cancelada nunca atrasam',[depAtraso(DP({expectedDate:'2026-11-05',status:'monitoring'}),dpHJ),depAtraso(DP({expectedDate:'2026-11-05',status:'resolved'}),dpHJ),depAtraso(DP({expectedDate:'2026-11-05',status:'cancelled'}),dpHJ)],[4,0,0]);
+    igual('atraso cruza mês e ano',[depAtraso(DP({expectedDate:'2026-10-31'}),dpHJ),depAtraso(DP({expectedDate:'2026-12-30'}),'2027-01-02')],[9,3]);
+    // Aging em dias corridos, por data local, a partir do registro; nunca de updatedAt
+    igual('aging de dependência ativa: Em aberto há N dias (Aberta e Em acompanhamento contam igual)',[depAging(DP(),dpHJ),depAging(DP({status:'monitoring'}),dpHJ),depAging(DP({createdAt:dpLoc(11,8)}),dpHJ),depAging(DP({createdAt:dpLoc(11,9)}),dpHJ)],['Em aberto há 12 dias','Em aberto há 12 dias','Em aberto há 1 dia','Registrada hoje']);
+    igual('aging por data LOCAL: 23h30 de ontem conta 1 dia e 00h30 de hoje conta hoje, em qualquer fuso',[depAging(DP({createdAt:new Date(2026,10,8,23,30).toISOString()}),dpHJ),depAging(DP({createdAt:new Date(2026,10,9,0,30).toISOString()}),dpHJ)],['Em aberto há 1 dia','Registrada hoje']);
+    igual('aging de resolvida: Resolvida após N dias (até statusAt); mesmo dia',[depAging(DP({status:'resolved',createdAt:dpLoc(10,20),statusAt:dpLoc(10,28)}),dpHJ),depAging(DP({status:'resolved',createdAt:dpLoc(11,2),statusAt:dpLoc(11,2,18)}),dpHJ)],['Resolvida após 8 dias','Resolvida no mesmo dia']);
+    igual('aging de cancelada: redação equivalente e neutra, sem sugerir sucesso',[depAging(DP({status:'cancelled',createdAt:dpLoc(10,20),statusAt:dpLoc(11,2)}),dpHJ),depAging(DP({status:'cancelled',createdAt:dpLoc(11,2),statusAt:dpLoc(11,2,18)}),dpHJ),/resolvid|sucesso|conclu|entregue/i.test(depAging(DP({status:'cancelled',createdAt:dpLoc(10,20),statusAt:dpLoc(11,2)}),dpHJ))],['Cancelada após 13 dias','Cancelada no mesmo dia',false]);
+    igual('o aging nunca usa updatedAt: editar depois não muda a duração',[depAging(DP({updatedAt:dpLoc(11,8)}),dpHJ),depAging(DP({status:'resolved',createdAt:dpLoc(10,20),statusAt:dpLoc(10,28),updatedAt:dpLoc(11,8)}),dpHJ),depAging(DP({status:'cancelled',createdAt:dpLoc(10,20),statusAt:dpLoc(10,28),updatedAt:dpLoc(11,8)}),dpHJ)],['Em aberto há 12 dias','Resolvida após 8 dias','Cancelada após 8 dias']);
+    // Ordenação das ativas: maior criticidade, depois as mais antigas, depois o id; encerradas pela mais recente
+    const dpOrd=[DP({id:'dep-006',criticality:'low',createdAt:dpLoc(10,1)}),DP({id:'dep-004',criticality:'high',createdAt:dpLoc(10,5)}),DP({id:'dep-003',criticality:'critical',createdAt:dpLoc(10,20)}),
+      DP({id:'dep-005',criticality:'medium',createdAt:dpLoc(10,1)}),DP({id:'dep-002',criticality:'critical',createdAt:dpLoc(10,10)}),DP({id:'dep-001',criticality:'critical',createdAt:dpLoc(10,10)})];
+    igual('ordenação das ativas: críticas primeiro (mais antigas antes; empate pelo id), depois Alta, Média e Baixa',depOrdenar(dpOrd).map(e=>e.id),['dep-001','dep-002','dep-003','dep-004','dep-005','dep-006']);
+    igual('ordenação: a maior criticidade vem antes da idade (Alta nova antes de Média antiga)',depOrdenar([DP({id:'dep-001',criticality:'medium',createdAt:dpLoc(10,1)}),DP({id:'dep-002',criticality:'high',createdAt:dpLoc(11,1)})]).map(e=>e.id),['dep-002','dep-001']);
+    igual('ordenação das encerradas: a mais recente primeiro',depOrdenarEnc([DP({id:'dep-001',status:'resolved',statusAt:dpLoc(10,28)}),DP({id:'dep-002',status:'cancelled',statusAt:dpLoc(11,3)}),DP({id:'dep-003',status:'resolved',statusAt:dpLoc(11,1)})]).map(e=>e.id),['dep-002','dep-003','dep-001']);
+    igual('ordenar não altera a lista original',dpOrd.map(e=>e.id),['dep-006','dep-004','dep-003','dep-005','dep-002','dep-001']);
+    // Cabeçalho recolhido
+    const dpRs=l=>{const it=mk({dependencies:l});return depResumo(it,dpHJ,[it]);};
+    const dpRt=l=>dpRs(l).map(x=>x.t).join(' · ');
+    const dpInv1={id:'dep-002',description:'Mudança no contrato de dados',type:'Fornecedor',responsible:'Time Dados',status:'open',expectedDate:'2026-11-15'};
+    igual('cabeçalho: sem dependências; uma ativa',[dpRt([]),dpRt([DP()])],['Sem dependências','1 ativa']);
+    igual('cabeçalho: 3 ativas · 1 crítica · 1 vencida (resolvida e cancelada não entram em nada)',dpRt([DP({id:'dep-001',criticality:'critical',expectedDate:'2026-11-05'}),DP({id:'dep-002',status:'monitoring'}),DP({id:'dep-003',criticality:'low'}),
+      DP({id:'dep-004',criticality:'critical',status:'resolved',expectedDate:'2026-11-01'}),DP({id:'dep-005',criticality:'high',status:'cancelled',expectedDate:'2026-11-01'})]),'3 ativas · 1 crítica · 1 vencida');
+    igual('cabeçalho: só encerradas não parecem ativas',[dpRt([DP({status:'resolved'})]),dpRt([DP({status:'resolved'}),DP({id:'dep-002',status:'cancelled'})])],['Nenhuma ativa · 1 encerrada','Nenhuma ativa · 2 encerradas']);
+    igual('cabeçalho: vencida de qualquer criticidade; data de hoje e futura não são vencidas',[dpRt([DP({expectedDate:'2026-11-01'})]),dpRt([DP({expectedDate:'2026-11-09'})]),dpRt([DP({expectedDate:'2026-11-10'})]),dpRt([DP({criticality:'critical'}),DP({id:'dep-002',criticality:'critical'})])],['1 ativa · 1 vencida','1 ativa','1 ativa','2 ativas · 2 críticas']);
+    igual('cabeçalho: dados não interpretados aparecem contados e fora dos demais números',[dpRt([DP(),dpInv1,'texto solto']),dpRt([dpInv1]),dpRt([DP()]).indexOf('interpretada')],['1 ativa · 2 não interpretadas','1 não interpretada',-1]);
+    igual('cabeçalho: classes de destaque (vencida vermelho, não interpretadas âmbar, resto neutro)',[dpRs([DP({criticality:'critical',expectedDate:'2026-11-05'})]).map(x=>x.c),dpRs([DP(),dpInv1]).map(x=>x.c)],[['','','b'],['','w']]);
+    igual('cabeçalho: dependencies que nem é lista conta 1 registro não interpretado',[dpRt('x'),dpRt(undefined),dpRt(null)],['1 não interpretada','Sem dependências','1 não interpretada']);
+    // Leitura tolerante
+    const dpLer=(l,outros)=>{const it=mk({id:'roadmap-002',dependencies:l});return dependenciasLer(it,(outros||[]).concat([it]));};
+    const dpL1=dpLer([DP(),dpInv1,'texto solto',null]);
+    igual('leitura: válida fica, inválidas são contadas e preservadas na ordem',[dpL1.validas.map(e=>e.id),dpL1.invalidas,JSON.stringify(dpL1.preservadas)],[['dep-001'],3,JSON.stringify([dpInv1,'texto solto',null])]);
+    igual('leitura: id repetido na mesma iniciativa (vale o primeiro) e entre iniciativas',[dpLer([DP(),DP({description:'outra com o mesmo id'})]).validas.length,dpLer([DP(),DP({description:'outra com o mesmo id'})]).invalidas,dpLer([DP()],[mk({id:'roadmap-001',dependencies:[DP()]})]).invalidas],[1,1,1]);
+    igual('leitura: dependencies que não é lista conta 1 e vira conteúdo preservado; ausente não conta',[dpLer('texto solto').invalidas,dpLer('texto solto').preservadas,dpLer(undefined).invalidas,dependenciasLer({id:'x'},[]).validas.length],[1,['texto solto'],0,0]);
+    igual('o item com dependências inválidas continua válido e o envelope não tem erro global',[checkItem(mk({dependencies:[DP(),dpInv1,'texto solto']})),checkItem(mk({dependencies:'x'})),checkItem(mk({dependencies:null})),check(envA([mk({dependencies:[dpInv1]})],{dependency:2}))],['','','','']);
+    igual('blockers e evidences ainda exigem lista de objetos (a tolerância chega com o formato de cada uma)',[checkItem(mk({blockers:[1]})),checkItem(mk({evidences:{}}))],['lista blockers','lista evidences']);
+    igual('normalização: a entrada válida com os 11 campos sai na ordem canônica; campo a mais e inválidas saem como vieram',
+      [Object.keys(normalize(envA([mk({dependencies:[{updatedAt:dpN(1),statusAt:dpN(1),createdAt:dpN(1),note:'',expectedDate:null,status:'open',criticality:'low',responsible:'',type:'other',description:'Ordem trocada',id:'dep-001'}]})],{})).items[0].dependencies[0]),
+       JSON.stringify(normalize(envA([mk({dependencies:[DP({extra:1}),dpInv1,'texto solto']})],{})).items[0].dependencies),checkDep(DP({extra:1}))],
+      [['id','description','type','responsible','criticality','status','expectedDate','note','createdAt','updatedAt','statusAt'],JSON.stringify([DP({extra:1}),dpInv1,'texto solto']),'']);
+    igual('normalização: dependencies que nem é lista é preservada como veio; ausente vira lista vazia',[normalize(envA([mk({dependencies:'texto solto'})],{})).items[0].dependencies,normalize({counter:1,counters:cont0,items:[Object.assign({},mk({}),{dependencies:undefined})]}).items[0].dependencies],['texto solto',[]]);
+    // Gravação: criar, editar, resolver, cancelar e reabrir, cada uma em um único commit
+    const dpS=fake(),dpNu=criarNucleo(dpS);dpNu.load();
+    cria(dpNu,{title:'Com dependências',confidence:'high',condition:'blocked'},T0);
+    const dpIt=()=>dpNu.get().items[0],dpRaw=()=>dpS.get(KEY),dpD=()=>dpIt().dependencies[0];
+    const dpOp=(act,id,v,now,opts)=>dpNu.commit(next=>aplicarDependencia(next,act,'roadmap-001',id,v,now),opts);
+    const dpV=e=>({description:e.description,type:e.type,criticality:e.criticality,responsible:e.responsible,expectedDate:e.expectedDate,note:e.note,status:e.status});
+    const dpAntes=JSON.stringify([dpIt().confidence,dpIt().confidenceAt,dpIt().condition,dpIt().conditionAt,dpIt().relevantChangeAt,avisosConfianca(dpIt()).map(a=>a.k)]);
+    const dpC1=dpOp('create',null,{description:'  Certificação de cartão  ',type:'vendor',criticality:'critical',responsible:' Adquirente ',expectedDate:null,note:' nota '},dpN(2));
+    igual('criar: uma dependência Aberta, com os textos aparados, id dep-001, as três datas iguais e o contador no envelope',
+      [dpC1.ok,dpC1.revision,JSON.stringify(dpD()),dpNu.get().counters.dependency,dpIt().updatedAt],
+      [true,2,JSON.stringify({id:'dep-001',description:'Certificação de cartão',type:'vendor',responsible:'Adquirente',criticality:'critical',status:'open',expectedDate:null,note:'nota',createdAt:dpN(2),updatedAt:dpN(2),statusAt:dpN(2)}),1,dpN(2)]);
+    igual('criar uma dependência Crítica sem data NÃO toca em relevantChangeAt, confiança, Condição nem avisos (R3 e depRelevante ficam para a 1B.2b)',JSON.stringify([dpIt().confidence,dpIt().confidenceAt,dpIt().condition,dpIt().conditionAt,dpIt().relevantChangeAt,avisosConfianca(dpIt()).map(a=>a.k)]),dpAntes);
+    igual('criar: o que foi gravado no armazenamento é o mesmo estado em memória',JSON.stringify(JSON.parse(dpRaw()).items[0].dependencies),JSON.stringify(dpIt().dependencies));
+    const dpE1=dpOp('edit','dep-001',{description:'Certificação do adquirente',type:'technical',criticality:'high',responsible:'Time do adquirente',expectedDate:'2026-11-25',note:'n2'},dpN(3));
+    igual('editar texto, tipo, criticidade, responsável, data e nota NÃO mexe em statusAt; updatedAt acompanha; id, createdAt e situação ficam',
+      [dpE1.ok,dpD().statusAt,dpD().updatedAt,dpD().createdAt,dpD().id,dpD().status,dpD().description,dpD().type,dpD().criticality,dpD().responsible,dpD().expectedDate,dpD().note,dpIt().updatedAt],
+      [true,dpN(2),dpN(3),dpN(2),'dep-001','open','Certificação do adquirente','technical','high','Time do adquirente','2026-11-25','n2',dpN(3)]);
+    const dpE2=dpOp('edit','dep-001',Object.assign(dpV(dpD()),{status:'monitoring'}),dpN(4));
+    igual('trocar Aberta por Em acompanhamento muda statusAt e updatedAt, e não mexe em createdAt',[dpE2.ok,dpD().status,dpD().statusAt,dpD().updatedAt,dpD().createdAt],[true,'monitoring',dpN(4),dpN(4),dpN(2)]);
+    igual('Em acompanhamento: o aging continua contando do registro',depAging(dpD(),dpHJ),'Em aberto há 7 dias');
+    const dpE3=dpOp('edit','dep-001',Object.assign(dpV(dpD()),{note:'só a nota'}),dpN(5));
+    igual('editar só a nota depois de mudar de situação mantém statusAt e leva updatedAt',[dpE3.ok,dpD().statusAt,dpD().updatedAt,dpD().note],[true,dpN(4),dpN(5),'só a nota']);
+    const dpR1=dpOp('resolve','dep-001',null,dpN(6));
+    igual('resolver: Resolvida, statusAt e updatedAt de agora, createdAt intacto, aging "Resolvida após N dias" até statusAt',[dpR1.ok,dpD().status,dpD().statusAt,dpD().updatedAt,dpD().createdAt,depAging(dpD(),dpHJ)],[true,'resolved',dpN(6),dpN(6),dpN(2),'Resolvida após 4 dias']);
+    const dpRaw0=dpRaw(),dpRev0=dpNu.base().rev;
+    const dpRec=[dpOp('edit','dep-001',dpV(dpD()),dpN(7)),dpOp('resolve','dep-001',null,dpN(7)),dpOp('cancel','dep-001',null,dpN(7)),dpOp('reopen','dep-009',null,dpN(7)),dpOp('create',null,null,dpN(7))];
+    igual('uma dependência resolvida não pode ser editada, resolvida nem cancelada; id desconhecido é recusado; nada é gravado',
+      [dpRec.map(r=>r.ok),dpRec.slice(0,4).map(r=>r.msg),dpRaw()===dpRaw0,dpNu.base().rev===dpRev0],
+      [[false,false,false,false,false],['Reabra a dependência para editá-la.','Só uma dependência ativa pode ser resolvida.','Só uma dependência ativa pode ser cancelada.','Dependência não encontrada. Recarregue os dados e tente de novo.'],true,true]);
+    const dpP1=dpOp('reopen','dep-001',null,dpN(8));
+    igual('reabrir: volta a Aberta, statusAt e updatedAt de agora, createdAt intacto; o aging continua desde o registro',[dpP1.ok,dpD().status,dpD().statusAt,dpD().updatedAt,dpD().createdAt,depAging(dpD(),dpHJ)],[true,'open',dpN(8),dpN(8),dpN(2),'Em aberto há 7 dias']);
+    igual('reabrir uma dependência já ativa é recusado',dpOp('reopen','dep-001',null,dpN(9)).msg,'Esta dependência já está ativa.');
+    const dpK1=dpOp('cancel','dep-001',null,dpN(9));
+    igual('cancelar: Cancelada, statusAt e updatedAt de agora; continua registrada; aging neutro',[dpK1.ok,dpD().status,dpD().statusAt,dpD().updatedAt,dpIt().dependencies.length,depAging(dpD(),dpHJ)],[true,'cancelled',dpN(9),dpN(9),1,'Cancelada após 7 dias']);
+    igual('uma dependência cancelada não pode ser editada nem cancelada de novo',[dpOp('edit','dep-001',dpV(dpD()),dpN(9)).ok,dpOp('cancel','dep-001',null,dpN(9)).ok],[false,false]);
+    const dpP2=dpOp('reopen','dep-001',null,dpN(10));
+    igual('uma cancelada pode ser reaberta',[dpP2.ok,dpD().status,dpD().statusAt],[true,'open',dpN(10)]);
+    const dpSnap=JSON.stringify(dpD()),dpRevA=dpNu.base().rev,dpNo=dpOp('edit','dep-001',dpV(dpD()),dpN(11));
+    igual('editar sem mudar nada não carimba updatedAt nem statusAt',[dpNo.ok,JSON.stringify(dpD()),dpIt().updatedAt],[true,dpSnap,dpN(10)]);
+    igual('as ações nunca tocaram em relevantChangeAt, confiança, Condição nem avisos',JSON.stringify([dpIt().confidence,dpIt().confidenceAt,dpIt().condition,dpIt().conditionAt,dpIt().relevantChangeAt,avisosConfianca(dpIt()).map(a=>a.k)]),dpAntes);
+    igual('cada ação gravada soma uma revisão',dpNu.base().rev,dpRevA+1);
+    // Campos obrigatórios, sem valor padrão
+    const dpRaw1=dpRaw(),dpOk={description:'Nova',type:'other',criticality:'low'};
+    const dpBad=[Object.assign({},dpOk,{type:''}),Object.assign({},dpOk,{criticality:''}),{description:'Nova'},Object.assign({},dpOk,{description:'   '}),Object.assign({},dpOk,{description:'x'.repeat(161)}),
+      Object.assign({},dpOk,{expectedDate:'2026-02-30'}),Object.assign({},dpOk,{note:'x'.repeat(241)}),Object.assign({},dpOk,{responsible:'x'.repeat(121)}),Object.assign({},dpOk,{type:'Fornecedor'}),Object.assign({},dpOk,{criticality:'Crítica'})].map(v=>dpOp('create',null,v,dpN(11)));
+    igual('criar sem tipo, sem criticidade, sem descrição ou com valor inválido é recusado, com a mensagem do campo, e não grava nada',
+      [dpBad.map(r=>r.ok),dpBad.map(r=>r.msg),dpRaw()===dpRaw1],
+      [dpBad.map(()=>false),['Escolha o tipo da dependência.','Escolha a criticidade.','Escolha o tipo da dependência.','Informe a descrição da dependência.','A descrição pode ter no máximo 160 caracteres.','Informe uma data válida ou deixe em branco.','A observação pode ter no máximo 240 caracteres.','O responsável pode ter no máximo 120 caracteres.','Escolha o tipo da dependência.','Escolha a criticidade.'],true]);
+    igual('tipo e criticidade não têm valor padrão: o formulário novo nasce sem eles',[depVazio().type,depVazio().criticality],['','']);
+    igual('editar sem criticidade ou com data inválida é recusado',[dpOp('edit','dep-001',Object.assign(dpV(dpD()),{criticality:''}),dpN(11)).ok,dpOp('edit','dep-001',Object.assign(dpV(dpD()),{expectedDate:'31/12/2026'}),dpN(11)).ok,dpOp('edit','dep-001',Object.assign(dpV(dpD()),{status:'resolved'}),dpN(11)).ok],[false,false,false]);
+    igual('dependência nova sempre nasce Aberta, mesmo que venha pedindo outra situação',dpOp('create',null,Object.assign({},dpOk,{status:'resolved'}),dpN(11)).ok&&dpIt().dependencies[1].status,'open');
+    // IDs sequenciais e contador nunca reaproveitado
+    igual('ids sequenciais: a segunda é dep-002 e o contador acompanha',[dpIt().dependencies.map(e=>e.id),dpNu.get().counters.dependency],[['dep-001','dep-002'],2]);
+    cria(dpNu,{title:'Outra iniciativa'},T0);
+    igual('o contador é do envelope: a primeira dependência de outra iniciativa é dep-003',[dpNu.commit(next=>aplicarDependencia(next,'create','roadmap-002',null,dpOk,dpN(12))).ok,dpNu.get().items[1].dependencies.map(e=>e.id),dpNu.get().counters.dependency],[true,['dep-003'],3]);
+    igual('o contador não é reaproveitado depois de cancelar: a próxima continua crescendo',[dpOp('cancel','dep-002',null,dpN(12)).ok,dpOp('create',null,dpOk,dpN(12)).ok,dpIt().dependencies.map(e=>e.id),dpNu.get().counters.dependency],[true,true,['dep-001','dep-002','dep-004'],4]);
+    const dpEnvI=(ct,deps)=>{const s=fake();s.set(KEY,JSON.stringify(envA([mk({id:'roadmap-001',dependencies:deps})],{dependency:ct})));const n=criarNucleo(s);n.load();return{s:s,n:n,novo:()=>{const r=n.commit(next=>aplicarDependencia(next,'create','roadmap-001',null,dpOk,dpN(12)));return[r.ok,n.get().items[0].dependencies.slice(-1)[0].id,n.get().counters.dependency];}};};
+    igual('id novo é maior que o contador e que qualquer id existente, inclusive o de uma entrada inválida',[dpEnvI(2,[DP(),Object.assign({},dpInv1,{id:'dep-007'})]).novo(),dpEnvI(5,[DP(),DP({id:'dep-002'})]).novo(),dpEnvI(0,[]).novo()],[[true,'dep-008',8],[true,'dep-006',6],[true,'dep-001',1]]);
+    // Invariante de escrita
+    const dpTam=fn=>{const antes=dpRaw(),rev=dpNu.base().rev,r=dpNu.commit(next=>{fn(next);return '';});return[r.ok,r.msg===MSG_INV_DEP,dpRaw()===antes,dpNu.base().rev===rev];};
+    igual('invariante: remover um registro é recusado e nada é gravado',dpTam(n=>{n.items[0].dependencies.pop();}),[false,true,true,true]);
+    igual('invariante: trocar o id ou o createdAt de um registro é recusado',[dpTam(n=>{n.items[0].dependencies[0].id='dep-090';}),dpTam(n=>{n.items[0].dependencies[0].createdAt=dpN(1);})],[[false,true,true,true],[false,true,true,true]]);
+    igual('invariante: reaproveitar um id já usado é recusado',dpTam(n=>{n.items[0].dependencies.push(DP({id:'dep-001'}));}),[false,true,true,true]);
+    igual('invariante: o contador não pode diminuir',dpTam(n=>{n.counters.dependency=0;}),[false,true,true,true]);
+    igual('invariante: id novo precisa ser maior que o contador anterior',dpTam(n=>{n.items[0].dependencies.push(DP({id:'dep-002'}));}),[false,true,true,true]);
+    igual('invariante: uma iniciativa nova nasce sem dependências',dpTam(n=>{n.items.push(mk({id:'roadmap-009',dependencies:[DP({id:'dep-099'})]}));}),[false,true,true,true]);
+    // Aba desatualizada
+    const dpSB=fake();dpSB.set(KEY,JSON.stringify(envA([mk({id:'roadmap-001'})],{})));
+    const dpA1=criarNucleo(dpSB),dpA2=criarNucleo(dpSB);dpA1.load();dpA2.load();
+    const dpX1=dpA1.commit(next=>aplicarDependencia(next,'create','roadmap-001',null,dpOk,dpN(2))),dpX2=dpA2.commit(next=>aplicarDependencia(next,'create','roadmap-001',null,Object.assign({},dpOk,{description:'da outra aba'}),dpN(2)));
+    igual('aba desatualizada: a segunda gravação é bloqueada, nada se perde e o conteúdo da primeira fica',[dpX1.ok,dpX2.ok,dpX2.conflict===true,JSON.parse(dpSB.get(KEY)).items[0].dependencies.map(e=>e.description)],[true,false,true,['Nova']]);
+    igual('falha de gravação: nada muda em memória nem no armazenamento',(()=>{const s=fake();s.set(KEY,JSON.stringify(envA([mk({id:'roadmap-001'})],{})));const n=criarNucleo(s);n.load();const antes=s.get(KEY),m0=JSON.stringify(n.get());s.falha=true;const r=n.commit(next=>aplicarDependencia(next,'create','roadmap-001',null,dpOk,dpN(2)));return[r.ok,s.get(KEY)===antes,JSON.stringify(n.get())===m0];})(),[false,true,true]);
+    // Tolerância: válida e inválida na mesma iniciativa
+    const dpMix=[DP(),dpInv1,'texto solto'];
+    const dpSM=fake();dpSM.set(KEY,JSON.stringify(envA([mk({id:'roadmap-001',dependencies:dpMix}),mk({id:'roadmap-002',title:'Outra'})],{dependency:2})));
+    const dpNM=criarNucleo(dpSM);dpNM.load();
+    igual('válida + inválida: o Roadmap não entra em estado global de erro e as duas iniciativas aparecem',[dpNM.issue(),dpNM.get().items.map(i=>i.id),dependenciasLer(dpNM.get().items[0],dpNM.get().items).validas.length,dependenciasLer(dpNM.get().items[0],dpNM.get().items).invalidas],[null,['roadmap-001','roadmap-002'],1,2]);
+    edita(dpNM,'roadmap-001',{title:'Editada'},T3);
+    igual('editar a iniciativa preserva as inválidas exatamente, na mesma posição',[JSON.stringify(JSON.parse(dpSM.get(KEY)).items[0].dependencies),JSON.parse(dpSM.get(KEY)).items[0].title],[JSON.stringify(dpMix),'Editada']);
+    const dpNov=dpNM.commit(next=>aplicarDependencia(next,'create','roadmap-001',null,dpOk,dpN(3)));
+    igual('criar com inválidas presentes acrescenta ao fim e não mexe nas inválidas; o id considera o id da inválida',[dpNov.ok,JSON.stringify(JSON.parse(dpSM.get(KEY)).items[0].dependencies.slice(0,3)),JSON.parse(dpSM.get(KEY)).items[0].dependencies[3].id],[true,JSON.stringify(dpMix),'dep-003']);
+    const dpRes=dpNM.commit(next=>aplicarDependencia(next,'resolve','roadmap-001','dep-001',null,dpN(4)));
+    igual('resolver a válida preserva as inválidas',[dpRes.ok,JSON.stringify(JSON.parse(dpSM.get(KEY)).items[0].dependencies.slice(1,3)),JSON.parse(dpSM.get(KEY)).items[0].dependencies[0].status],[true,JSON.stringify([dpInv1,'texto solto']),'resolved']);
+    const dpAlvo=dpNM.commit(next=>aplicarDependencia(next,'edit','roadmap-001','dep-002',{description:'x',type:'other',criticality:'low'},dpN(5)));
+    igual('a entrada inválida nunca é alterada pela tela: o id dela não é encontrado como dependência válida',[dpAlvo.ok,JSON.stringify(JSON.parse(dpSM.get(KEY)).items[0].dependencies[1])],[false,JSON.stringify(dpInv1)]);
+    igual('a exportação leva as inválidas junto, sem alterar',JSON.stringify(JSON.parse(criarNucleo(dpSM).exportar(T4).json).data.items[0].dependencies.slice(1,3)),JSON.stringify([dpInv1,'texto solto']));
+    const dpSN=fake();dpSN.set(KEY,JSON.stringify(envA([mk({id:'roadmap-001',dependencies:'texto solto'})],{})));const dpNN=criarNucleo(dpSN);dpNN.load();
+    const dpNr=dpNN.commit(next=>aplicarDependencia(next,'create','roadmap-001',null,dpOk,dpN(2)));
+    igual('dependencies que nem é lista: o Roadmap abre, mas não se acrescenta nada (para não destruir o conteúdo)',[dpNN.issue(),dpNr.ok,dpNr.msg,JSON.parse(dpSN.get(KEY)).items[0].dependencies],[null,false,MSG_DEP_LISTA,'texto solto']);
+    edita(dpNN,'roadmap-001',{title:'Editada'},T3);
+    igual('dependencies que nem é lista: editar a iniciativa preserva o valor original',[JSON.parse(dpSN.get(KEY)).items[0].dependencies,JSON.parse(dpSN.get(KEY)).items[0].title],['texto solto','Editada']);
+    // Decisão 9: a Condição principal Dependência crítica não cria dependências (nem o contrário)
+    const dpSC=fake(),dpNC=criarNucleo(dpSC);dpNC.load();
+    cria(dpNC,{title:'Condição crítica',condition:'critical_dependency'},T0);
+    edita(dpNC,'roadmap-001',{title:'Editada'},T1);
+    igual('Condição Dependência crítica não cria dependências, nem ao criar nem ao editar a iniciativa',[dpNC.get().items[0].condition,dpNC.get().items[0].dependencies.length,dpNC.get().counters.dependency],['critical_dependency',0,0]);
+    dpNC.commit(next=>aplicarDependencia(next,'create','roadmap-001',null,dpOk,T2));
+    igual('registrar uma dependência não muda a Condição',[dpNC.get().items[0].condition,dpNC.get().items[0].conditionAt],['critical_dependency',null]);
+    edita(dpNC,'roadmap-001',{condition:'healthy'},T3);
+    igual('mudar a Condição não mexe nas dependências',[dpNC.get().items[0].dependencies.length,dpNC.get().items[0].dependencies[0].status],[1,'open']);
+    // Sem limite funcional: a quantidade de dependências por iniciativa não é regra de negócio (só o armazenamento do navegador limita, e a falha de gravação já é tratada)
+    const dpMuitas=n=>{const l=[];for(let i=1;i<=n;i++) l.push(DP({id:'dep-'+String(i).padStart(3,'0')}));return l;};
+    const dpEc=dpEnvI(100,dpMuitas(100)),dpCr=dpEc.n.commit(next=>aplicarDependencia(next,'create','roadmap-001',null,dpOk,dpN(2)));
+    igual('sem limite rígido: com 100 registros a 101ª é criada normalmente (dep-101), sem mensagem de limite',[dpCr.ok,dpCr.msg===undefined,dpEc.n.get().items[0].dependencies.length,dpEc.n.get().items[0].dependencies.slice(-1)[0].id,dpEc.n.get().counters.dependency],[true,true,101,'dep-101',101]);
+    const dpGrande=dpEnvI(250,dpMuitas(250)),dpCrGrande=dpGrande.n.commit(next=>aplicarDependencia(next,'create','roadmap-001',null,dpOk,dpN(2))),dpRsGrande=dpGrande.n.commit(next=>aplicarDependencia(next,'resolve','roadmap-001','dep-250',null,dpN(3)));
+    igual('sem limite rígido: com 250 registros também se cria, e editar e resolver continuam funcionando',[dpCrGrande.ok,dpGrande.n.get().items[0].dependencies.length,dpRsGrande.ok,dpGrande.n.get().items[0].dependencies[249].status,dpRt(dpGrande.n.get().items[0].dependencies)],[true,251,true,'resolved','250 ativas']);
+    // Conversão da versão 1: a primeira gravação de dependência também faz o backup integral
+    const dpV1=armV1(),dpCv=dpV1.n.commit(next=>aplicarDependencia(next,'create','roadmap-001',null,dpOk,dpN(2)));
+    igual('primeira gravação sobre dados da versão 1 (por uma dependência): converte, guarda a cópia integral e cria a dependência',[dpCv.ok,dpCv.convertido,dpV1.s.get(BKEY)===v1raw,dpV1.n.get().items[0].dependencies.map(e=>e.id),JSON.parse(dpV1.s.get(KEY)).schemaVersion],[true,true,true,['dep-001'],2]);
     // I: exportação
     const Ex=armV1();edita(Ex.n,'roadmap-001',{forecastStartSprintId:'2026-Q4-S6',forecastEndSprintId:'2026-Q4-S6'},T2,{by:'Rafa',reason:'Export'});
     const eI2=Ex.n.exportar(T4),oI=JSON.parse(eI2.json);
@@ -10020,7 +10571,7 @@ const Roadmap=(function(){
 
   core.load();
   return{render:render,click:click,close:closeModal,save:save,origem:origem,askDel:askDel,setAno:setAno,setFiltro:setFiltro,setDescartadas:setDescartadas,
-    closePanel:fecharPainel,confirmar:confirmar,alterarConfianca:alterarConfianca,editarDoPainel:editarDoPainel,histToggle:histToggle,recarregar:recarregar,prev:atualizarMudanca,exportar:exportar,exportData:exportData,capacidade:it=>capacidadeLer(it,core.get().items),decidir:decidir,iniciarRecomeco:iniciarRecomeco,
+    closePanel:fecharPainel,confirmar:confirmar,alterarConfianca:alterarConfianca,editarDoPainel:editarDoPainel,histToggle:histToggle,recarregar:recarregar,prev:atualizarMudanca,exportar:exportar,exportData:exportData,capacidade:it=>capacidadeLer(it,core.get().items),dependencias:it=>dependenciasLer(it,core.get().items),depAcao:depAcao,depInput:depInput,depToggle:depToggle,depEncToggle:depEncToggle,decidir:decidir,iniciarRecomeco:iniciarRecomeco,
     derive:it=>({desloc:desloc(it),forecastText:forecastText(it),avisos:avisosConfianca(it)}),validate:checkItem,autoteste:autoteste,
     state:()=>({issue:core.issue(),detalhe:core.detalhe(),conflito:core.conflito(),base:core.base(),panel:pnl,data:clone(core.get())})};
 })();
